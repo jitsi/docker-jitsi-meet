@@ -1,0 +1,77 @@
+version: '3'
+
+services:
+    # Frontend
+    web:
+        image: jitsi/web
+        ports:
+            - '8000:80'
+            - '8443:443'
+        volumes:
+            - ${CONFIG}/meet:/config
+        environment:
+            - XMPP_DOMAIN
+            - XMPP_BOSH_URL_BASE=http://prosody.meet.jitsi:5280
+            - TZ
+        networks:
+            meet.jitsi:
+                aliases:
+                    - web.meet.jitsi
+    # XMPP server
+    prosody:
+        image: jitsi/prosody
+        expose:
+            - '5222'
+            - '5347'
+            - '5280'
+        ports:
+            - '127.0.0.1:5347:5347'
+        volumes:
+            - ${CONFIG}/prosody:/config
+        environment:
+            - XMPP_DOMAIN
+            - JICOFO_COMPONENT_SECRET
+            - JVB_COMPONENT_SECRET
+            - JICOFO_AUTH_USER
+            - JICOFO_AUTH_PASSWORD
+            - TZ
+        networks:
+            meet.jitsi:
+                aliases:
+                    - prosody.meet.jitsi
+    # Focus component
+    jicofo:
+        image: jitsi/jicofo
+        volumes:
+            - ${CONFIG}/jicofo:/config
+        environment:
+            - XMPP_DOMAIN
+            - XMPP_SERVER=prosody.meet.jitsi
+            - JICOFO_COMPONENT_SECRET
+            - JICOFO_AUTH_USER
+            - JICOFO_AUTH_PASSWORD
+            - TZ
+        networks:
+            meet.jitsi:
+
+    # Video bridge
+    jvb:
+        image: jitsi/jvb
+        ports:
+            - "10000:10000/udp"
+            - "4443:4443"
+        volumes:
+            - ${CONFIG}/jvb:/config
+        environment:
+            - XMPP_DOMAIN
+            - XMPP_SERVER=127.0.0.1
+            - JVB_COMPONENT_SECRET
+            - JVB_STUN_SERVERS
+            - JICOFO_AUTH_USER
+            - TZ
+        network_mode: 'host'
+
+# Custom network so all services can communicate using a FQDN
+networks:
+    meet.jitsi:
+

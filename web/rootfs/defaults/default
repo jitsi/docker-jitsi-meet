@@ -1,0 +1,34 @@
+server {
+	listen 80 default_server;
+	listen 443 ssl;
+
+	ssl_certificate /config/keys/cert.crt;
+	ssl_certificate_key /config/keys/cert.key;
+
+	server_name _;
+
+	client_max_body_size 0;
+
+	root /usr/share/jitsi-meet;
+	index index.html
+	error_page 404 /static/404.html;
+
+	location ~ ^/([a-zA-Z0-9=\?]+)$ {
+		rewrite ^/(.*)$ / break;
+	}
+
+   	location /config.js {
+        	alias /config/config.js;
+	}
+
+	location / {
+		ssi on;
+	}
+
+	# BOSH
+	location /http-bind {
+		proxy_pass ${XMPP_BOSH_URL_BASE}/http-bind;
+		proxy_set_header X-Forwarded-For $remote_addr;
+		proxy_set_header Host ${XMPP_DOMAIN};
+	}
+}

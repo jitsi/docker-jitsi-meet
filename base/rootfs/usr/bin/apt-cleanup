@@ -1,0 +1,4 @@
+#!/bin/sh
+
+rm -f /*.deb
+rm -rf /var/lib/apt/lists/
