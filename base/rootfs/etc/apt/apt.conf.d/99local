@@ -1,0 +1,4 @@
+Dir::Cache "";
+Dir::Cache::archives "";
+APT::Install-Recommends "false";
+APT::Install-Suggests "false";

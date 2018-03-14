@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bash
+
+if [[ ! -f /config/sip-communicator.properties ]]; then
+    cp /defaults/sip-communicator.properties /config
+fi
+

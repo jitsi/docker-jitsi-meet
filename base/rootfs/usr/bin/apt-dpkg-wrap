@@ -1,0 +1,8 @@
+#!/bin/sh
+
+export LC_ALL=C
+export DEBIAN_FRONTEND=noninteractive
+
+bin=$1
+shift
+exec "$bin" "$@"
