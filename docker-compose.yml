@@ -11,12 +11,11 @@ services:
             - ${CONFIG}/meet:/config
         environment:
             - XMPP_DOMAIN
-            - XMPP_BOSH_URL_BASE=http://prosody.meet.jitsi:5280
+            - XMPP_BOSH_URL_BASE=http://xmpp.meet.jitsi:5280
             - TZ
         networks:
             meet.jitsi:
-                aliases:
-                    - web.meet.jitsi
+
     # XMPP server
     prosody:
         image: jitsi/prosody
@@ -38,7 +37,8 @@ services:
         networks:
             meet.jitsi:
                 aliases:
-                    - prosody.meet.jitsi
+                    - xmpp.meet.jitsi
+
     # Focus component
     jicofo:
         image: jitsi/jicofo
@@ -46,7 +46,7 @@ services:
             - ${CONFIG}/jicofo:/config
         environment:
             - XMPP_DOMAIN
-            - XMPP_SERVER=prosody.meet.jitsi
+            - XMPP_SERVER=xmpp.meet.jitsi
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
