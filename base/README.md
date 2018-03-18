@@ -5,7 +5,12 @@ image is used as the base for all the containers composing a Jitsi Meet installa
 
 ## Usage
 
-See the [S6 Overlay Documentation](https://github.com/just-containers/s6-overlay) for details on how to manage services.
+```
+docker run -it --rm \
+    -e TZ=Europe/Amsterdam \
+    jitsi/base \
+    /bin/bash
+```
 
 ### Parameters
 
