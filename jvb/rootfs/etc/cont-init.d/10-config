@@ -13,3 +13,12 @@ if [[ ! -f /config/logging.properties ]]; then
     cp /defaults/logging.properties /config
 fi
 
+# Do this for every run, since the local IP may change!
+if [[ ! -z "$DOCKER_HOST_ADDRESS" ]]; then
+    LOCAL_ADDRESS=$(hostname -I | cut -d " " -f1)
+    sed -i \
+        -e "s,^org.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=.*,org.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=$LOCAL_ADDRESS," \
+        -e "s,^org.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=.*,org.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=$DOCKER_HOST_ADDRESS," \
+        /config/sip-communicator.properties
+fi
+

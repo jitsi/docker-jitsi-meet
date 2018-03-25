@@ -23,8 +23,6 @@ services:
             - '5222'
             - '5347'
             - '5280'
-        ports:
-            - '127.0.0.1:5347:5347'
         volumes:
             - ${CONFIG}/prosody:/config
         environment:
@@ -63,13 +61,15 @@ services:
         volumes:
             - ${CONFIG}/jvb:/config
         environment:
+            - DOCKER_HOST_ADDRESS
             - XMPP_DOMAIN
-            - XMPP_SERVER=127.0.0.1
+            - XMPP_SERVER=xmpp.meet.jitsi
             - JVB_COMPONENT_SECRET
             - JVB_STUN_SERVERS
             - JICOFO_AUTH_USER
             - TZ
-        network_mode: 'host'
+        networks:
+            meet.jitsi:
 
 # Custom network so all services can communicate using a FQDN
 networks:
