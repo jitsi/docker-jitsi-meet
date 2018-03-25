@@ -64,6 +64,8 @@ The following variables can be set in the ``.env`` file to customize the install
 
 * ``CONFIG=/opt/jitsi-meet-cfg`` - Volume where the configuration of all the containers will
   be stored.
+* ``DOCKER_HOST_ADDRESS=192.168.1.1`` - IP address of the host running Docker. See the "Running
+  in a LAN environment" section for more details.
 * ``TZ=Europe/Amsterdam`` - System time zone.
 * ``XMPP_DOMAIN=meet.jitsi`` - Domain for the XMPP server. The default works fine, since
   the server is only accessible via the internal container network.
@@ -80,12 +82,9 @@ The following variables can be set in the ``.env`` file to customize the install
 
 ## Limitations
 
-Currently a single Jitsi Videobridge is supported, and it has to run in ``host`` mode, that is,
-directly connected to the host's network.
-
-Multiple container replicas are not supported.
-
-Docker Swarm mode is not yet supported.
+* Currently a single Jitsi Videobridge is supported.
+* Multiple container replicas are not supported.
+* Docker Swarm mode is not yet supported.
 
 
 [Jitsi]: https://jitsi.org/
