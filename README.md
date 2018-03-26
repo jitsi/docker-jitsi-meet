@@ -30,10 +30,14 @@ A Jitsi Meet installation can be broken down into the following components:
 * A conference focus component
 * A video router (could be more than one)
 
+![](resources/docker-jitsi-meet.png)
+
+The diagram shows a typical deployment in a host running Docker, with a separate container
+(not included in this project) which acts as a reverse proxy and SSL terminator, then
+passing the traffic to the web container serving Jitsi Meet.
+
 This project separates each of the components above into interlinked containers. To this end,
 several container images are provided.
-
-TODO: image.
 
 ### Images
 
