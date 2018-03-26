@@ -69,7 +69,7 @@ The following variables can be set in the ``.env`` file to customize the install
 * ``CONFIG=/opt/jitsi-meet-cfg`` - Volume where the configuration of all the containers will
   be stored.
 * ``DOCKER_HOST_ADDRESS=192.168.1.1`` - IP address of the host running Docker. See the "Running
-  in a LAN environment" section for more details.
+  on a LAN environment" section for more details.
 * ``TZ=Europe/Amsterdam`` - System time zone.
 * ``XMPP_DOMAIN=meet.jitsi`` - Domain for the XMPP server. The default works fine, since
   the server is only accessible via the internal container network.
@@ -83,6 +83,16 @@ The following variables can be set in the ``.env`` file to customize the install
   as a client.
 * ``JICOFO_AUTH_PASSWORD=passw0rd`` - Password used by Jicofo when connecting to the XMPP
   server as a client.
+
+### Running on a LAN environment
+
+If running in a LAN environment (as well as on the public Internet, via NAT-es ports) is a requirement,
+the ``DOCKER_HOST_ADDRESS`` should be set. This way, the Videobridge will advertise the IP address
+of the host running Docker instead of the internal IP address that Docker assigned it, thus making [ICE]
+succeed.
+
+The public IP address is discovered via [STUN]. STUN servers can be specified with the ``JVB_STUN_SERVERS``
+option.
 
 ## Limitations
 
@@ -101,4 +111,6 @@ The following variables can be set in the ``.env`` file to customize the install
 [Prosody]: https://prosody.im/
 [Jicofo]: https://github.com/jitsi/jicofo
 [Jitsi Videobridge]: https://github.com/jitsi/jitsi-videobridge
+[ICE]: https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment
+[STUN]: https://en.wikipedia.org/wiki/STUN
 
