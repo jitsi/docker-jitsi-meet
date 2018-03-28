@@ -1,6 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-AUTH_XMPP_DOMAIN="auth.$XMPP_DOMAIN"
 PROSODY_CFG="/config/prosody.cfg.lua"
 
 if [[ ! -d /config/data ]]; then
@@ -12,10 +11,11 @@ if [[ ! -f $PROSODY_CFG ]]; then
     cp -r /defaults/* /config
     sed -i \
         -e "s,\${XMPP_DOMAIN},$XMPP_DOMAIN,g" \
+        -e "s,\${XMPP_AUTH_DOMAIN},$XMPP_AUTH_DOMAIN,g" \
         -e "s,\${JICOFO_COMPONENT_SECRET},$JICOFO_COMPONENT_SECRET,g" \
         -e "s,\${JVB_COMPONENT_SECRET},$JVB_COMPONENT_SECRET,g" \
         /config/conf.d/jitsi-meet.cfg.lua
-    prosodyctl --config $PROSODY_CFG register $JICOFO_AUTH_USER $AUTH_XMPP_DOMAIN $JICOFO_AUTH_PASSWORD
+    prosodyctl --config $PROSODY_CFG register $JICOFO_AUTH_USER $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
 fi
 
 mkdir /config/certs
@@ -25,9 +25,9 @@ if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
     echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_DOMAIN
 fi
 
-if [[ ! -f /config/certs/$AUTH_XMPP_DOMAIN.crt ]]; then
+if [[ ! -f /config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
     # echo for using all default values
-    echo | prosodyctl --config $PROSODY_CFG cert generate $AUTH_XMPP_DOMAIN
+    echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_AUTH_DOMAIN
 fi
 
 # certs vill be created in /var/lib/prosody

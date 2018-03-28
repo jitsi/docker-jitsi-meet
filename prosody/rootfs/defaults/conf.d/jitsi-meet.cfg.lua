@@ -14,7 +14,7 @@ VirtualHost "${XMPP_DOMAIN}"
 
         c2s_require_encryption = false
 
-VirtualHost "auth.${XMPP_DOMAIN}"
+VirtualHost "${XMPP_AUTH_DOMAIN}"
     ssl = {
         key = "/config/certs/auth.${XMPP_DOMAIN}.key";
         certificate = "/config/certs/auth.${XMPP_DOMAIN}.crt";

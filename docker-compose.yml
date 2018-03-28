@@ -27,6 +27,7 @@ services:
             - ${CONFIG}/prosody:/config
         environment:
             - XMPP_DOMAIN
+            - XMPP_AUTH_DOMAIN
             - JICOFO_COMPONENT_SECRET
             - JVB_COMPONENT_SECRET
             - JICOFO_AUTH_USER
@@ -44,6 +45,7 @@ services:
             - ${CONFIG}/jicofo:/config
         environment:
             - XMPP_DOMAIN
+            - XMPP_AUTH_DOMAIN
             - XMPP_SERVER=xmpp.meet.jitsi
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
@@ -63,6 +65,7 @@ services:
         environment:
             - DOCKER_HOST_ADDRESS
             - XMPP_DOMAIN
+            - XMPP_AUTH_DOMAIN
             - XMPP_SERVER=xmpp.meet.jitsi
             - JVB_COMPONENT_SECRET
             - JVB_STUN_SERVERS
