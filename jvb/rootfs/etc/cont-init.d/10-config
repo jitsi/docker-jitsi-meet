@@ -4,6 +4,7 @@ if [[ ! -f /config/sip-communicator.properties ]]; then
     cp /defaults/sip-communicator.properties /config
     sed -i \
         -e "s,\${XMPP_DOMAIN},$XMPP_DOMAIN,g" \
+        -e "s,\${XMPP_AUTH_DOMAIN},$XMPP_AUTH_DOMAIN,g" \
         -e "s,\${JICOFO_AUTH_USER},$JICOFO_AUTH_USER,g" \
         -e "s#\${JVB_STUN_SERVERS}#$JVB_STUN_SERVERS#g" \
         /config/sip-communicator.properties
