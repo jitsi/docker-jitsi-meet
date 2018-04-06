@@ -1,4 +1,4 @@
-admins = { "focus@auth.${XMPP_DOMAIN}" }
+admins = { "focus@${XMPP_AUTH_DOMAIN}" }
 
 VirtualHost "${XMPP_DOMAIN}"
         authentication = "anonymous"
@@ -16,8 +16,8 @@ VirtualHost "${XMPP_DOMAIN}"
 
 VirtualHost "${XMPP_AUTH_DOMAIN}"
     ssl = {
-        key = "/config/certs/auth.${XMPP_DOMAIN}.key";
-        certificate = "/config/certs/auth.${XMPP_DOMAIN}.crt";
+        key = "/config/certs/${XMPP_AUTH_DOMAIN}.key";
+        certificate = "/config/certs/${XMPP_AUTH_DOMAIN}.crt";
     }
     authentication = "internal_plain"
 
