@@ -12,6 +12,7 @@ if [[ ! -f $PROSODY_CFG ]]; then
     sed -i \
         -e "s,\${XMPP_DOMAIN},$XMPP_DOMAIN,g" \
         -e "s,\${XMPP_AUTH_DOMAIN},$XMPP_AUTH_DOMAIN,g" \
+        -e "s,\${JICOFO_AUTH_USER},$JICOFO_AUTH_USER,g" \
         -e "s,\${JICOFO_COMPONENT_SECRET},$JICOFO_COMPONENT_SECRET,g" \
         -e "s,\${JVB_COMPONENT_SECRET},$JVB_COMPONENT_SECRET,g" \
         /config/conf.d/jitsi-meet.cfg.lua
