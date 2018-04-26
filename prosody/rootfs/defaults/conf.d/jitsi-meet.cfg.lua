@@ -1,4 +1,4 @@
-admins = { "focus@${XMPP_AUTH_DOMAIN}" }
+admins = { "${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}" }
 
 VirtualHost "${XMPP_DOMAIN}"
         authentication = "anonymous"
