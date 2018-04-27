@@ -1,4 +1,4 @@
 build:
-	docker build -t jitsi/jicofo .
+	docker build $(BUILD_ARGS) -t jitsi/jicofo .
 
 .PHONY: build

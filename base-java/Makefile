@@ -1,4 +1,4 @@
 build:
-	docker build -t jitsi/base-java .
+	docker build $(BUILD_ARGS) -t jitsi/base-java .
 
 .PHONY: build
