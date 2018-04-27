@@ -1,4 +1,4 @@
 build:
-	docker build -t jitsi/jvb .
+	docker build $(BUILD_ARGS) -t jitsi/jvb .
 
 .PHONY: build

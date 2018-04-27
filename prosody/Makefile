@@ -1,4 +1,4 @@
 build:
-	docker build -t jitsi/prosody .
+	docker build $(BUILD_ARGS) -t jitsi/prosody .
 
 .PHONY: build
