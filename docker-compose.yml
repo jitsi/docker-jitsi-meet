@@ -14,6 +14,7 @@ services:
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
+            - XMPP_MUC_DOMAIN
             - TZ
         networks:
             meet.jitsi:
@@ -30,6 +31,7 @@ services:
         environment:
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
+            - XMPP_MUC_DOMAIN
             - JICOFO_COMPONENT_SECRET
             - JVB_COMPONENT_SECRET
             - JICOFO_AUTH_USER

@@ -25,6 +25,7 @@ if [[ ! -f /config/config.js ]]; then
     sed -i \
         -e "s#jitsi-meet.example.com#$XMPP_DOMAIN#g" \
         -e "s#bosh:.*#bosh: '/http-bind',#" \
+        -e "s#muc:.*#muc: '${XMPP_MUC_DOMAIN}',#" \
         -e "s#// focusUserJid:.*#focusUserJid: '${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}',#" \
         /config/config.js
 fi
