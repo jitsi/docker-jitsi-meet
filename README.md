@@ -16,10 +16,11 @@ This repository contains the necessary tools to run a Jitsi Meet stack on [Docke
 In order to quickly run Jitsi Meet on a machine running Docker and Docker Compose,
 follow these steps:
 
+* Build all images by running ``make``.
 * Create a ``.env`` file by copying and adjusting ``env.example``.
 * Run ``docker-compose up -d``.
-* Access the web UI at ``https://localhost:8443`` (or a different port, in case you edited
-the compose file yourself.
+* Access the web UI at ``https://localhost:8443`` (or ``http://localhost:8000 for HTTP, or
+  a different port, in case you edited the compose file).
 
 ## Architecture
 
@@ -64,29 +65,13 @@ project.
 
 ## Configuration
 
-The following variables can be set in the ``.env`` file to customize the installation:
-
-* ``CONFIG=/opt/jitsi-meet-cfg`` - Volume where the configuration of all the containers will
-  be stored.
-* ``DOCKER_HOST_ADDRESS=192.168.1.1`` - IP address of the host running Docker. See the "Running
-  on a LAN environment" section for more details.
-* ``TZ=Europe/Amsterdam`` - System time zone.
-* ``XMPP_DOMAIN=meet.jitsi`` - Domain for the XMPP server. The default works fine, since
-  the server is only accessible via the internal container network.
-* ``JVB_COMPONENT_SECRET=s3cr3t`` - Password used by the Jitsi Videobridge when connecting
-  to the XMPP server as a component.
-* ``JVB_STUN_SERVERS=stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302`` - STUN
-  servers used to harvest the public IP address.
-* ``JICOFO_COMPONENT_SECRET=s3cr37`` - Password used by Jicodo when connecting to the XMPP server
-  as a component.
-* ``JICOFO_AUTH_USER=focus`` - Username used by Jocofo when connecting to the XMPP server
-  as a client.
-* ``JICOFO_AUTH_PASSWORD=passw0rd`` - Password used by Jicofo when connecting to the XMPP
-  server as a client.
+The configuration is performed via environment variables contained in a ``.env`` file. You
+can copy the provided ``env.example`` file as a reference, which contains documentation
+for all options.
 
 ### Running on a LAN environment
 
-If running in a LAN environment (as well as on the public Internet, via NAT-es ports) is a requirement,
+If running in a LAN environment (as well as on the public Internet, via NAT) is a requirement,
 the ``DOCKER_HOST_ADDRESS`` should be set. This way, the Videobridge will advertise the IP address
 of the host running Docker instead of the internal IP address that Docker assigned it, thus making [ICE]
 succeed.
