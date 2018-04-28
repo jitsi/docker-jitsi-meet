@@ -21,7 +21,7 @@ VirtualHost "${XMPP_AUTH_DOMAIN}"
     }
     authentication = "internal_plain"
 
-Component "conference.${XMPP_DOMAIN}" "muc"
+Component "${XMPP_MUC_DOMAIN}" "muc"
     storage = "null"
 
 Component "jitsi-videobridge.${XMPP_DOMAIN}"
