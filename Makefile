@@ -1,5 +1,5 @@
 FORCE_REBUILD ?= 0
-JITSI_RELEASE ?= "unstable"
+JITSI_RELEASE ?= "stable"
 
 ifeq ($(FORCE_REBUILD), 1)
   BUILD_ARGS = "--no-cache"
