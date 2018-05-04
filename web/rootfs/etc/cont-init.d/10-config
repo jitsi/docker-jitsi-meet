@@ -29,3 +29,8 @@ if [[ ! -f /config/config.js ]]; then
         -e "s#// focusUserJid:.*#focusUserJid: '${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}',#" \
         /config/config.js
 fi
+
+if [[ ! -f /config/interface_config.js ]]; then
+    cp /defaults/interface_config.js /config/interface_config.js
+fi
+
