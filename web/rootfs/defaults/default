@@ -21,6 +21,10 @@ server {
         	alias /config/config.js;
 	}
 
+   	location /interface_config.js {
+        	alias /config/interface_config.js;
+	}
+
 	location / {
 		ssi on;
 	}
