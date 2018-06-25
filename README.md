@@ -11,6 +11,19 @@ This repository contains the necessary tools to run a Jitsi Meet stack on [Docke
 
 **NOTE: This setup is experimental.**
 
+## Table of contents
+
+* [Quick start](#quick-start)
+* [Architecture](#architecture)
+  - [Images](#images)
+  - [Design considerations](#design-considerations)
+* [Configurations](#configuration)
+  - [Advanced configuration](#advanced-configuration)
+  - [Running on a LAN environment](#running-on-a-lan-environment)
+* [Limitations](#limitations)
+
+<hr />
+
 ## Quick start
 
 In order to quickly run Jitsi Meet on a machine running Docker and Docker Compose,
@@ -66,8 +79,29 @@ project.
 ## Configuration
 
 The configuration is performed via environment variables contained in a ``.env`` file. You
-can copy the provided ``env.example`` file as a reference, which contains documentation
-for all options.
+can copy the provided ``env.example`` file as a reference.
+
+Variable | Description | Example
+--- | --- | ---
+`CONFIG` | Directory where all configuration will be stored | /opt/jitsi-meet-cfg
+`TZ` | System Time Zone | Europe/Amsterdam
+`JVB_COMPONENT_SECRET` | XMPP component password for Jitsi Videobridge | s3cr3t
+`JVB_STUN_SERVERS` | STUN servers used to discover the server's public IP | stun.l.google.com:19302, stun1.l.google.com:19302, stun2.l.google.com:19302
+`JICOFO_COMPONENT_SECRET` | XMPP component password for Jicofo | s3cr37
+`JICOFO_AUTH_PASSWORD` | XMPP password for Jicofo client connections | passw0rd
+`DOCKER_HOST_ADDRESS` | IP addrss of the Docker host, needed for LAN environments | 192.168.1.1
+
+### Advanced configuration
+
+These configuration options are already set and generally don't need to be changed.
+
+Variable | Description | Default value
+--- | --- | ---
+`XMPP_DOMAIN` | Internal XMPP domain | meet.jitsi
+`XMPP_AUTH_DOMAIN` | Internal XMPP domain for authenticated services | auth.meet.jitsi
+`XMPP_BOSH_URL_BASE` | Base URL for XMPP BOSH connections | http://xmpp.meet.jitsi:5280
+`XMPP_MUC_DOMAIN` | XMPP domain for the MUC | muc.meet.jitsi
+`JICOFO_AUTH_USER` | XMPP user for Jicofo client connections | focus
 
 ### Running on a LAN environment
 
@@ -98,4 +132,3 @@ option.
 [Jitsi Videobridge]: https://github.com/jitsi/jitsi-videobridge
 [ICE]: https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment
 [STUN]: https://en.wikipedia.org/wiki/STUN
-
