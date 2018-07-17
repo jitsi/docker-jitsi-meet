@@ -113,11 +113,13 @@ succeed.
 The public IP address is discovered via [STUN]. STUN servers can be specified with the ``JVB_STUN_SERVERS``
 option.
 
-## Limitations
+## TODO
 
-* Currently a single Jitsi Videobridge is supported.
-* Multiple container replicas are not supported.
-* Docker Swarm mode is not yet supported.
+* Support multiple uJitsi Videobridge containers.
+* Support container replicas (where applicable).
+* Docker Swarm mode.
+* Native Let's Encrypt support.
+* Jigasi and Jibri containers.
 
 
 [Jitsi]: https://jitsi.org/
