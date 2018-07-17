@@ -57,6 +57,9 @@ var config = {
         // P2P test mode disables automatic switching to P2P when there are 2
         // participants in the conference.
         p2pTestMode: false
+
+        // Enables the test specific features consumed by jitsi-meet-torture
+        // testMode: false
     },
 
     // Disables ICE/UDP by filtering out local and remote UDP candidates in
@@ -111,6 +114,11 @@ var config = {
     // Enable / disable simulcast support.
     // disableSimulcast: false,
 
+    // Enable / disable layer suspension.  If enabled, endpoints whose HD
+    // layers are not in use will be suspended (no longer sent) until they
+    // are requested again.
+    // enableLayerSuspension: false,
+
     // Suspend sending video if bandwidth estimation is too low. This may cause
     // problems with audio playback. Disabled until these are fixed.
     disableSuspendVideo: true,
@@ -150,22 +158,8 @@ var config = {
     // Required version of Chrome extension
     desktopSharingChromeMinExtVersion: '0.1',
 
-    // The ID of the jidesha extension for Firefox. If null, we assume that no
-    // extension is required.
-    desktopSharingFirefoxExtId: null,
-
     // Whether desktop sharing should be disabled on Firefox.
     desktopSharingFirefoxDisabled: false,
-
-    // The maximum version of Firefox which requires a jidesha extension.
-    // Example: if set to 41, we will require the extension for Firefox versions
-    // up to and including 41. On Firefox 42 and higher, we will run without the
-    // extension.
-    // If set to -1, an extension will be required for all versions of Firefox.
-    desktopSharingFirefoxMaxVersionExtRequired: 51,
-
-    // The URL to the Firefox extension for desktop sharing.
-    desktopSharingFirefoxExtensionURL: null,
 
     // Optional desktop sharing frame rate options. Default value: min:5, max:5.
     // desktopSharingFrameRate: {
@@ -178,11 +172,11 @@ var config = {
 
     // Recording
 
-    // Whether to enable recording or not.
-    // enableRecording: false,
+    // Whether to enable file recording or not.
+    // fileRecordingsEnabled: false,
 
-    // Type for recording: one of jibri or jirecon.
-    // recordingType: 'jibri',
+    // Whether to enable live streaming or not.
+    // liveStreamingEnabled: false,
 
     // Misc
 
@@ -191,6 +185,23 @@ var config = {
 
     // Disables or enables RTX (RFC 4588) (defaults to false).
     // disableRtx: false,
+
+    // Disables or enables TCC (the default is in Jicofo and set to true)
+    // (draft-holmer-rmcat-transport-wide-cc-extensions-01). This setting
+    // affects congestion control, it practically enables send-side bandwidth
+    // estimations.
+    // enableTcc: true,
+
+    // Disables or enables REMB (the default is in Jicofo and set to false)
+    // (draft-alvestrand-rmcat-remb-03). This setting affects congestion
+    // control, it practically enables recv-side bandwidth estimations. When
+    // both TCC and REMB are enabled, TCC takes precedence. When both are
+    // disabled, then bandwidth estimations are disabled.
+    // enableRemb: false,
+
+    // Defines the minimum number of participants to start a call (the default
+    // is set in Jicofo and set to 2).
+    // minParticipants: 2,
 
     // Use XEP-0215 to fetch STUN and TURN servers.
     // useStunTurn: true,
@@ -333,11 +344,8 @@ var config = {
         // userRegion: "asia"
     }
 
-
     // List of undocumented settings used in jitsi-meet
     /**
-     alwaysVisibleToolbar
-     autoEnableDesktopSharing
      autoRecord
      autoRecordToken
      debug
@@ -353,6 +361,7 @@ var config = {
      etherpad_base
      externalConnectUrl
      firefox_fake_device
+     googleApiApplicationClientID
      iAmRecorder
      iAmSipGateway
      peopleSearchQueryTypes
