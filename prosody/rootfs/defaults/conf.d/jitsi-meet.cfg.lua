@@ -22,7 +22,7 @@ VirtualHost "${XMPP_AUTH_DOMAIN}"
     authentication = "internal_plain"
 
 Component "${XMPP_MUC_DOMAIN}" "muc"
-    storage = "null"
+    storage = "none"
 
 Component "jitsi-videobridge.${XMPP_DOMAIN}"
     component_secret = "${JVB_COMPONENT_SECRET}"
