@@ -11,7 +11,7 @@ RUN \
 	tar xfz /tmp/s6-overlay.tar.gz -C / && \
 	rm -f /tmp/*.tar.gz && \
 	apt-dpkg-wrap apt-get update && \
-	apt-dpkg-wrap apt-get install -y apt-transport-https ca-certificates gnupg && \
+	apt-dpkg-wrap apt-get install -y apt-transport-https apt-utils ca-certificates gnupg && \
 	apt-key add /tmp/jitsi.key && \
 	rm -f /tmp/jitsi.key && \
 	echo "deb https://download.jitsi.org $JITSI_RELEASE/" > /etc/apt/sources.list.d/jitsi.list && \
