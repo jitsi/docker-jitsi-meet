@@ -2,7 +2,7 @@ FROM debian:stretch-slim
 
 ARG JITSI_RELEASE=stable
 
-ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.2.2/s6-overlay-amd64.tar.gz /tmp/s6-overlay.tar.gz
+ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.4.0/s6-overlay-amd64.tar.gz /tmp/s6-overlay.tar.gz
 ADD https://download.jitsi.org/jitsi-key.gpg.key /tmp/jitsi.key
 
 COPY rootfs /
