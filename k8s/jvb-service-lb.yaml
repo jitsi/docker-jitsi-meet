@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: jvb
+  name: jvb-tcp
+spec:
+  type: LoadBalancer
+  loadBalancerIP: <External IP address you want to assign to your service>
+  ports:
+  - name: "4443"
+    port: 4443
+    targetPort: 4443
+  selector:
+    service: jvb
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: jvb
+  name: jvb-udp
+spec:
+  type: LoadBalancer
+  loadBalancerIP: <External IP address you want to assign to your service>
+  ports:
+  - name: "10000"
+    port: 10000
+    protocol: UDP
+    targetPort: 10000
+  selector:
+    service: jvb
+status:
+  loadBalancer: {}
