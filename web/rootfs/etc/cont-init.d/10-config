@@ -13,11 +13,7 @@ if [[ ! -f /config/nginx/nginx.conf ]]; then
 fi
 
 if [[ ! -f /config/nginx/site-confs/default ]]; then
-    cp /defaults/default /config/nginx/site-confs/default
-    sed -i \
-        -e "s,\${XMPP_DOMAIN},$XMPP_DOMAIN,g" \
-        -e "s,\${XMPP_BOSH_URL_BASE},$XMPP_BOSH_URL_BASE,g" \
-        /config/nginx/site-confs/default
+    tpl /defaults/default > /config/nginx/site-confs/default
 fi
 
 if [[ ! -f /config/config.js ]]; then
