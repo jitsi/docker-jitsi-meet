@@ -9,4 +9,4 @@ COPY rootfs/ /
 
 VOLUME /config
 
-EXPOSE 10000/udp 4443
+EXPOSE 10000/udp
