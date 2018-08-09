@@ -63,7 +63,6 @@ services:
         image: jitsi/jvb
         ports:
             - "10000:10000/udp"
-            - "4443:4443"
         volumes:
             - ${CONFIG}/jvb:/config
         environment:
