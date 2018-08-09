@@ -114,11 +114,12 @@ option.
 
 ## TODO
 
-* Support multiple uJitsi Videobridge containers.
+* Support multiple Jitsi Videobridge containers.
 * Support container replicas (where applicable).
 * Docker Swarm mode.
 * Native Let's Encrypt support.
 * Jigasi and Jibri containers.
+* TURN server container.
 
 
 [Jitsi]: https://jitsi.org/
