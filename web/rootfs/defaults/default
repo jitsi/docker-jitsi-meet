@@ -31,8 +31,8 @@ server {
 
 	# BOSH
 	location /http-bind {
-		proxy_pass ${XMPP_BOSH_URL_BASE}/http-bind;
+		proxy_pass {{ .Env.XMPP_BOSH_URL_BASE }}/http-bind;
 		proxy_set_header X-Forwarded-For $remote_addr;
-		proxy_set_header Host ${XMPP_DOMAIN};
+		proxy_set_header Host {{ .Env.XMPP_DOMAIN }};
 	}
 }

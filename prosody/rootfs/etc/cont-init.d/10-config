@@ -9,14 +9,7 @@ fi
 
 if [[ ! -f $PROSODY_CFG ]]; then
     cp -r /defaults/* /config
-    sed -i \
-        -e "s,\${XMPP_DOMAIN},$XMPP_DOMAIN,g" \
-        -e "s,\${XMPP_AUTH_DOMAIN},$XMPP_AUTH_DOMAIN,g" \
-        -e "s,\${XMPP_MUC_DOMAIN},$XMPP_MUC_DOMAIN,g" \
-        -e "s,\${JICOFO_AUTH_USER},$JICOFO_AUTH_USER,g" \
-        -e "s,\${JICOFO_COMPONENT_SECRET},$JICOFO_COMPONENT_SECRET,g" \
-        -e "s,\${JVB_COMPONENT_SECRET},$JVB_COMPONENT_SECRET,g" \
-        /config/conf.d/jitsi-meet.cfg.lua
+    tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua
     prosodyctl --config $PROSODY_CFG register $JICOFO_AUTH_USER $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
 fi
 
