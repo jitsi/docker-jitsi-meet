@@ -13,4 +13,12 @@ build-all:
 	BUILD_ARGS=$(BUILD_ARGS) $(MAKE) -C jicofo build
 	BUILD_ARGS=$(BUILD_ARGS) $(MAKE) -C jvb build
 
-.PHONY: build-all
+push-all:
+	cd base && docker push jitsi/base && cd ..
+	cd base-java && docker push jitsi/base-java && cd ..
+	cd web && docker push jitsi/web && cd ..
+	cd prosody && docker push jitsi/prosody && cd ..
+	cd jicofo && docker push jitsi/jicofo && cd ..
+	cd jvb && docker push jitsi/jvb && cd ..
+
+.PHONY: build-all push-all
