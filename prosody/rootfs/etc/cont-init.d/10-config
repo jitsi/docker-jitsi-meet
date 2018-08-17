@@ -13,7 +13,7 @@ if [[ ! -f $PROSODY_CFG ]]; then
     prosodyctl --config $PROSODY_CFG register $JICOFO_AUTH_USER $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
 fi
 
-mkdir /config/certs
+mkdir -p /config/certs
 
 if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
     # echo for using all default values
