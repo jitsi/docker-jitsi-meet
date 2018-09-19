@@ -84,6 +84,8 @@ Variable | Description | Example
 --- | --- | ---
 `CONFIG` | Directory where all configuration will be stored | /opt/jitsi-meet-cfg
 `TZ` | System Time Zone | Europe/Amsterdam
+`HTTP_PORT` | Exposed port for HTTP traffic | 8000
+`HTTPS_PORT` | Exposed port for HTTPS traffic | 8443
 `JVB_COMPONENT_SECRET` | XMPP component password for Jitsi Videobridge | s3cr3t
 `JVB_STUN_SERVERS` | STUN servers used to discover the server's public IP | stun.l.google.com:19302, stun1.l.google.com:19302, stun2.l.google.com:19302
 `JICOFO_COMPONENT_SECRET` | XMPP component password for Jicofo | s3cr37
@@ -101,6 +103,7 @@ Variable | Description | Default value
 `XMPP_BOSH_URL_BASE` | Base URL for XMPP BOSH connections | http://xmpp.meet.jitsi:5280
 `XMPP_MUC_DOMAIN` | XMPP domain for the MUC | muc.meet.jitsi
 `JICOFO_AUTH_USER` | XMPP user for Jicofo client connections | focus
+`JVB_PORT` | Port for media used by Jitsi Videobridge | 10000
 
 ### Running on a LAN environment
 

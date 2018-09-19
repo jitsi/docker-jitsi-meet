@@ -5,8 +5,8 @@ services:
     web:
         image: jitsi/web
         ports:
-            - '8000:80'
-            - '8443:443'
+            - '${HTTP_PORT}:80'
+            - '${HTTPS_PORT}:443'
         volumes:
             - ${CONFIG}/meet:/config
         environment:
@@ -62,7 +62,7 @@ services:
     jvb:
         image: jitsi/jvb
         ports:
-            - "10000:10000/udp"
+            - '${JVB_PORT}:${JVB_PORT}/udp'
         volumes:
             - ${CONFIG}/jvb:/config
         environment:
@@ -71,6 +71,7 @@ services:
             - XMPP_AUTH_DOMAIN
             - XMPP_SERVER=xmpp.meet.jitsi
             - JVB_COMPONENT_SECRET
+            - JVB_PORT
             - JVB_STUN_SERVERS
             - JICOFO_AUTH_USER
             - TZ

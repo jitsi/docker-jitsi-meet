@@ -8,5 +8,3 @@ RUN \
 COPY rootfs/ /
 
 VOLUME /config
-
-EXPOSE 10000/udp
