@@ -1,6 +1,12 @@
 #!/usr/bin/with-contenv bash
 
 JAVA_SYS_PROPS="-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/ -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=config -Djava.util.logging.config.file=/config/logging.properties"
+
+if [[ ! -z "$DOCKER_HOST_ADDRESS" ]]; then
+    LOCAL_ADDRESS=$(hostname -I | cut -d " " -f1)
+    JAVA_SYS_PROPS="$JAVA_SYS_PROPS -Dorg.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=$LOCAL_ADDRESS -Dorg.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=$DOCKER_HOST_ADDRESS"
+fi
+
 DAEMON=/usr/share/jitsi-videobridge/jvb.sh
 DAEMON_OPTS="--domain=$XMPP_DOMAIN --host=$XMPP_SERVER --port=5347 --secret=$JVB_COMPONENT_SECRET"
 
