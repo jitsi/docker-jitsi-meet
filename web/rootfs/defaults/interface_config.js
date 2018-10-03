@@ -6,11 +6,11 @@ var interfaceConfig = {
     DEFAULT_BACKGROUND: '#474747',
 
     /**
-     * In case the desktop sharing is disabled through the config the button
-     * will not be hidden, but displayed as disabled with this text us as
-     * a tooltip.
+     * Whether or not the blurred video background for large video should be
+     * displayed on browsers that can support it.
      */
-    DESKTOP_SHARING_BUTTON_DISABLED_TOOLTIP: null,
+    DISABLE_VIDEO_BACKGROUND: false,
+
     INITIAL_TOOLBAR_TIMEOUT: 20000,
     TOOLBAR_TIMEOUT: 4000,
     TOOLBAR_ALWAYS_VISIBLE: false,
@@ -45,13 +45,14 @@ var interfaceConfig = {
      * jwt.
      */
     TOOLBAR_BUTTONS: [
-        'microphone', 'camera', 'desktop', 'fullscreen', 'fodeviceselection', 'hangup',
-        'profile', 'info', 'chat', 'recording', 'livestreaming', 'etherpad',
-        'sharedvideo', 'settings', 'raisehand', 'videoquality', 'filmstrip',
-        'invite', 'feedback', 'stats', 'shortcuts'
+        'microphone', 'camera', 'closedcaptions', 'desktop', 'fullscreen',
+        'fodeviceselection', 'hangup', 'profile', 'info', 'chat', 'recording',
+        'livestreaming', 'etherpad', 'sharedvideo', 'settings', 'raisehand',
+        'videoquality', 'filmstrip', 'invite', 'feedback', 'stats', 'shortcuts',
+        'tileview'
     ],
 
-    SETTINGS_SECTIONS: [ 'language', 'devices', 'moderator' ],
+    SETTINGS_SECTIONS: [ 'devices', 'language', 'moderator', 'profile', 'calendar' ],
 
     // Determines how the video would fit the screen. 'both' would fit the whole
     // screen, 'height' would fit the original video height to the height of the
@@ -79,6 +80,14 @@ var interfaceConfig = {
     ENABLE_FEEDBACK_ANIMATION: false,
     DISABLE_FOCUS_INDICATOR: false,
     DISABLE_DOMINANT_SPEAKER_INDICATOR: false,
+
+    /**
+     * Whether the speech to text transcription subtitles panel is disabled.
+     * If {@code undefined}, defaults to {@code false}.
+     *
+     * @type {boolean}
+     */
+    DISABLE_TRANSCRIPTION_SUBTITLES: false,
 
     /**
      * Whether the ringing sound in the call/ring overlay is disabled. If
@@ -138,6 +147,13 @@ var interfaceConfig = {
     CONNECTION_INDICATOR_AUTO_HIDE_TIMEOUT: 5000,
 
     /**
+     * If true, hides the connection indicators completely.
+     *
+     * @type {boolean}
+     */
+    CONNECTION_INDICATOR_DISABLED: false,
+
+    /**
      * The name of the application connected to the "Add people" search service.
      */
     // ADD_PEOPLE_APP_NAME: "",
@@ -151,14 +167,17 @@ var interfaceConfig = {
     VIDEO_QUALITY_LABEL_DISABLED: false,
 
     /**
-     * Temporary feature flag to debug performance with the large video
-     * background blur. On initial implementation, blur was always enabled so a
-     * falsy value here will be used to keep blur enabled, as will the value
-     * "video", and will render the blur over a video element. The value
-     * "canvas" will display the blur over a canvas element, while the value
-     * "off" will prevent the background from rendering.
+     * If true, will display recent list
+     *
+     * @type {boolean}
      */
-    _BACKGROUND_BLUR: 'canvas'
+    RECENT_LIST_ENABLED: true
+
+    /**
+     * How many columns the tile view can expand to. The respected range is
+     * between 1 and 5.
+     */
+    // TILE_VIEW_MAX_COLUMNS: 5,
 
     /**
      * Specify custom URL for downloading android mobile app.
