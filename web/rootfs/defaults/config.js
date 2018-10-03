@@ -99,13 +99,13 @@ var config = {
     // used by browsers that return true from lib-jitsi-meet's
     // util#browser#usesNewGumFlow. The constraints are independency from
     // this config's resolution value. Defaults to requesting an ideal aspect
-    // ratio of 16:9 with an ideal resolution of 1080p.
+    // ratio of 16:9 with an ideal resolution of 720.
     // constraints: {
     //     video: {
     //         aspectRatio: 16 / 9,
     //         height: {
-    //             ideal: 1080,
-    //             max: 1080,
+    //             ideal: 720,
+    //             max: 720,
     //             min: 240
     //         }
     //     }
@@ -142,9 +142,6 @@ var config = {
 
     // Desktop sharing
 
-    // Enable / disable desktop sharing
-    // disableDesktopSharing: false,
-
     // The ID of the jidesha extension for Chrome.
     desktopSharingChromeExtId: null,
 
@@ -177,6 +174,10 @@ var config = {
 
     // Whether to enable live streaming or not.
     // liveStreamingEnabled: false,
+
+    // Transcription (in interface_config,
+    // subtitles and buttons can be configured)
+    // transcribingEnabled: false,
 
     // Misc
 
@@ -248,10 +249,16 @@ var config = {
     // edit their profile.
     enableUserRolesBasedOnToken: false,
 
+    // Whether or not some features are checked based on token.
+    // enableFeaturesBasedOnToken: false,
+
     // Message to show the users. Example: 'The service will be down for
     // maintenance at 01:00 AM GMT,
     // noticeMessage: '',
 
+    // Enables calendar integration, depends on googleApiApplicationClientID
+    // and microsoftApiApplicationClientID
+    // enableCalendarIntegration: false,
 
     // Stats
     //
@@ -344,8 +351,39 @@ var config = {
         // userRegion: "asia"
     }
 
+    // Local Recording
+    //
+
+    // localRecording: {
+    // Enables local recording.
+    // Additionally, 'localrecording' (all lowercase) needs to be added to
+    // TOOLBAR_BUTTONS in interface_config.js for the Local Recording
+    // button to show up on the toolbar.
+    //
+    //     enabled: true,
+    //
+
+    // The recording format, can be one of 'ogg', 'flac' or 'wav'.
+    //     format: 'flac'
+    //
+
+    // }
+
+    // Options related to end-to-end (participant to participant) ping.
+    // e2eping: {
+    //   // The interval in milliseconds at which pings will be sent.
+    //   // Defaults to 10000, set to <= 0 to disable.
+    //   pingInterval: 10000,
+    //
+    //   // The interval in milliseconds at which analytics events
+    //   // with the measured RTT will be sent. Defaults to 60000, set
+    //   // to <= 0 to disable.
+    //   analyticsInterval: 60000,
+    //   }
+
     // List of undocumented settings used in jitsi-meet
     /**
+     _immediateReloadThreshold
      autoRecord
      autoRecordToken
      debug
@@ -362,8 +400,10 @@ var config = {
      externalConnectUrl
      firefox_fake_device
      googleApiApplicationClientID
+     googleApiIOSClientID
      iAmRecorder
      iAmSipGateway
+     microsoftApiApplicationClientID
      peopleSearchQueryTypes
      peopleSearchUrl
      requireDisplayName
@@ -392,6 +432,7 @@ var config = {
      nick
      startBitrate
      */
+
 };
 
 /* eslint-enable no-unused-vars, no-var */
