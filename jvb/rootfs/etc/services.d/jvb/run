@@ -8,7 +8,7 @@ if [[ ! -z "$DOCKER_HOST_ADDRESS" ]]; then
 fi
 
 DAEMON=/usr/share/jitsi-videobridge/jvb.sh
-DAEMON_OPTS="--domain=$XMPP_DOMAIN --host=$XMPP_SERVER --port=5347 --secret=$JVB_COMPONENT_SECRET"
+DAEMON_OPTS="--apis=none"
 
 exec s6-setuidgid jvb /bin/bash -c "JAVA_SYS_PROPS=\"$JAVA_SYS_PROPS\" exec $DAEMON $DAEMON_OPTS"
 

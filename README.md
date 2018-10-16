@@ -86,7 +86,7 @@ Variable | Description | Example
 `TZ` | System Time Zone | Europe/Amsterdam
 `HTTP_PORT` | Exposed port for HTTP traffic | 8000
 `HTTPS_PORT` | Exposed port for HTTPS traffic | 8443
-`JVB_COMPONENT_SECRET` | XMPP component password for Jitsi Videobridge | s3cr3t
+`JVB_AUTH_PASSWORD` | XMPP password for JVB MUC client connections | passw0rd
 `JVB_STUN_SERVERS` | STUN servers used to discover the server's public IP | stun.l.google.com:19302, stun1.l.google.com:19302, stun2.l.google.com:19302
 `JICOFO_COMPONENT_SECRET` | XMPP component password for Jicofo | s3cr37
 `JICOFO_AUTH_PASSWORD` | XMPP password for Jicofo client connections | passw0rd
@@ -102,8 +102,11 @@ Variable | Description | Default value
 `XMPP_AUTH_DOMAIN` | Internal XMPP domain for authenticated services | auth.meet.jitsi
 `XMPP_BOSH_URL_BASE` | Base URL for XMPP BOSH connections | http://xmpp.meet.jitsi:5280
 `XMPP_MUC_DOMAIN` | XMPP domain for the MUC | muc.meet.jitsi
+`XMPP_INTERNAL_MUC_DOMAIN` | XMPP domain for the internal MUC | internal-muc.meet.jitsi
 `JICOFO_AUTH_USER` | XMPP user for Jicofo client connections | focus
+`JVB_AUTH_USER` | XMPP user for JVB MUC client connections | jvb
 `JVB_PORT` | Port for media used by Jitsi Videobridge | 10000
+`JVB_BREWERY_MUC` | MUC name for the JVB pool | jvbbrewery
 
 ### Running on a LAN environment
 
