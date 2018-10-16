@@ -1,6 +1,10 @@
 #!/usr/bin/with-contenv bash
 
 if [[ ! -f /config/sip-communicator.properties ]]; then
-    cp /defaults/sip-communicator.properties /config
+    tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
+fi
+
+if [[ ! -f /config/logging.properties ]]; then
+    cp /defaults/logging.properties /config
 fi
 
