@@ -21,11 +21,15 @@ VirtualHost "{{ .Env.XMPP_AUTH_DOMAIN }}"
     }
     authentication = "internal_plain"
 
+Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
+    modules_enabled = {
+      "ping";
+    }
+    storage = "none"
+    muc_room_cache_size = 1000
+
 Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     storage = "none"
-
-Component "jitsi-videobridge.{{ .Env.XMPP_DOMAIN }}"
-    component_secret = "{{ .Env.JVB_COMPONENT_SECRET }}"
 
 Component "focus.{{ .Env.XMPP_DOMAIN }}"
     component_secret = "{{ .Env.JICOFO_COMPONENT_SECRET }}"
