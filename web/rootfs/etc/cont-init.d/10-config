@@ -24,6 +24,18 @@ if [[ ! -f /config/config.js ]]; then
         -e "s#muc:.*#muc: '${XMPP_MUC_DOMAIN}',#" \
         -e "s#// focusUserJid:.*#focusUserJid: '${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}',#" \
         /config/config.js
+
+    if [[ $ENABLE_AUTH -eq 1 ]]; then
+        if [[ $ENABLE_GUESTS -eq 1 ]]; then
+            sed -i \
+                -e "s#// anonymousdomain:.*#anonymousdomain: '${XMPP_GUEST_DOMAIN}',#" \
+                /config/config.js
+        fi
+
+        sed -i \
+            -e "s#// authdomain:.*#authdomain: '${XMPP_DOMAIN}',#" \
+            /config/config.js
+    fi
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then

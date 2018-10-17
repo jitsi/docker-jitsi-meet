@@ -1,18 +1,28 @@
 admins = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
 
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
-        authentication = "anonymous"
-        ssl = {
-                key = "/config/certs/{{ .Env.XMPP_DOMAIN }}.key";
-                certificate = "/config/certs/{{ .Env.XMPP_DOMAIN }}.crt";
-        }
-        modules_enabled = {
-            "bosh";
-            "pubsub";
-            "ping";
-        }
+    {{ if .Env.ENABLE_AUTH }}
+    authentication = "internal_plain"
+    {{ else }}
+    authentication = "anonymous"
+    {{ end }}
+    ssl = {
+            key = "/config/certs/{{ .Env.XMPP_DOMAIN }}.key";
+            certificate = "/config/certs/{{ .Env.XMPP_DOMAIN }}.crt";
+    }
+    modules_enabled = {
+        "bosh";
+        "pubsub";
+        "ping";
+    }
 
-        c2s_require_encryption = false
+    c2s_require_encryption = false
+
+{{ if and .Env.ENABLE_AUTH .Env.ENABLE_GUESTS }}
+VirtualHost "{{ .Env.XMPP_GUEST_DOMAIN }}"
+    authentication = "anonymous"
+    c2s_require_encryption = false
+{{ end }}
 
 VirtualHost "{{ .Env.XMPP_AUTH_DOMAIN }}"
     ssl = {

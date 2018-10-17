@@ -9,6 +9,7 @@ services:
         volumes:
             - ${CONFIG}/jigasi:/config
         environment:
+            - ENABLE_AUTH
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER=xmpp.meet.jitsi
