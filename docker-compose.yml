@@ -13,7 +13,7 @@ services:
             - JICOFO_AUTH_USER
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
-            - XMPP_BOSH_URL_BASE
+            - XMPP_BOSH_URL_BASE=http://xmpp.meet.jitsi:5280
             - XMPP_MUC_DOMAIN
             - TZ
         networks:
