@@ -31,7 +31,7 @@ follow these steps:
 
 * Create a ``.env`` file by copying and adjusting ``env.example``.
 * Run ``docker-compose up -d``.
-* Access the web UI at ``https://localhost:8443`` (or ``http://localhost:8000 for HTTP, or
+* Access the web UI at ``https://localhost:8443`` (or ``http://localhost:8000`` for HTTP, or
   a different port, in case you edited the compose file).
 
 If you want to use jigasi too, first configure your env file with SIP credentials
