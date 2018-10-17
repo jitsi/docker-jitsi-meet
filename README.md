@@ -91,6 +91,8 @@ Variable | Description | Example
 `HTTPS_PORT` | Exposed port for HTTPS traffic | 8443
 `DOCKER_HOST_ADDRESS` | IP addrss of the Docker host, needed for LAN environments | 192.168.1.1
 
+### SIP gateway configuration
+
 If you want to enable the SIP gateway, these options are required:
 
 Variable | Description | Example
@@ -98,6 +100,27 @@ Variable | Description | Example
 `JIGASI_SIP_URI` | SIP URI for incoming / outgoing calls | test@sip2sip.info
 `JIGASI_SIP_PASSWORD` | Password for the specified SIP account | passw0rd
 `JIGASI_SIP_SERVER` | SIP server (use the SIP account domain if in doubt) | sip2sip.info
+
+### Authentication
+
+Authentication can be controlled with the environment variables below. If guest
+access is enabled, unauthenticated users will need to wait until a user authenticates
+before they can join a room. If guest access is not enabled, every user will need
+to authenticate before they can join.
+
+Variable | Description | Example
+--- | --- | ---
+`ENABLE_AUTH` | Enable authentication | 1
+`ENABLE_GUESTS` | Enable guest access | 1
+
+Users must be created with the ``prosodyctl`` utility in the ``prosody`` container.
+In order to do that, first execute a shell in the corresponding container:
+
+``docker-compose exec prosody /bin/bash``
+
+Once in the container, run the following command to create a user:
+
+``prosodyctl --config /config/prosody.cfg.lua register user meet.jitsi password``
 
 ### Advanced configuration
 
