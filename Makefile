@@ -23,4 +23,9 @@ push-all:
 	cd jvb && docker push jitsi/jvb && cd ..
 	cd jigasi && docker push jitsi/jigasi && cd ..
 
-.PHONY: build-all push-all
+clean:
+	docker-compose stop
+	docker-compose rm
+	docker network prune
+
+.PHONY: build-all push-all clean
