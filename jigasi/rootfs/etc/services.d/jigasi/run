@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+
+JAVA_SYS_PROPS="-Djava.util.logging.config.file=/config/logging.properties"
+
+DAEMON=/usr/share/jigasi/jigasi.sh
+DAEMON_OPTS="--nocomponent=true --configdir=/ --configdirname=config --min-port=$JIGASI_PORT_MIN --max-port=$JIGASI_PORT_MAX"
+
+exec s6-setuidgid jigasi /bin/bash -c "JAVA_SYS_PROPS=\"$JAVA_SYS_PROPS\" exec $DAEMON $DAEMON_OPTS"
+

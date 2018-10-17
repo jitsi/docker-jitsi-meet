@@ -34,6 +34,9 @@ follow these steps:
 * Access the web UI at ``https://localhost:8443`` (or ``http://localhost:8000 for HTTP, or
   a different port, in case you edited the compose file).
 
+If you want to use jigasi too, first configure your env file with SIP credentials
+and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jigasi.yml up -d``
+
 ## Architecture
 
 A Jitsi Meet installation can be broken down into the following components:
@@ -42,6 +45,7 @@ A Jitsi Meet installation can be broken down into the following components:
 * An XMPP server
 * A conference focus component
 * A video router (could be more than one)
+* A SIP gateway for audio calls
 
 ![](resources/docker-jitsi-meet.png)
 
@@ -61,10 +65,7 @@ several container images are provided.
 * **prosody**: [Prosody], the XMPP server.
 * **jicofo**: [Jicofo], the XMPP focus component.
 * **jvb**: [Jitsi Videobridge], the video router.
-
-Note: see the README on each image for a description of all possible configuration options.
-Not all of them need to be set for a compose setup, please check ``docker-compose.yml`` and
-``env.example`` for the required ones.
+* **jigasi**: [Jigasi], the SIP (audio only) gateway.
 
 ### Design considerations
 
@@ -92,6 +93,14 @@ Variable | Description | Example
 `JICOFO_AUTH_PASSWORD` | XMPP password for Jicofo client connections | passw0rd
 `DOCKER_HOST_ADDRESS` | IP addrss of the Docker host, needed for LAN environments | 192.168.1.1
 
+If you want to enable the SIP gateway, these options are required:
+
+Variable | Description | Example
+--- | --- | ---
+`JIGASI_SIP_URI` | SIP URI for incoming / outgoing calls | test@sip2sip.info
+`JIGASI_SIP_PASSWORD` | Password for the specified SIP account | passw0rd
+`JIGASI_SIP_SERVER` | SIP server (use the SIP account domain if in doubt) | sip2sip.info
+
 ### Advanced configuration
 
 These configuration options are already set and generally don't need to be changed.
@@ -107,6 +116,11 @@ Variable | Description | Default value
 `JVB_AUTH_USER` | XMPP user for JVB MUC client connections | jvb
 `JVB_PORT` | Port for media used by Jitsi Videobridge | 10000
 `JVB_BREWERY_MUC` | MUC name for the JVB pool | jvbbrewery
+`JIGASI_XMPP_USER` | XMPP user for Jigasi MUC client connections | jigasi
+`JIGASI_XMPP_PASSWORD` | XMPP password for Jigasi MUC client connections | passw0rd
+`JIGASI_BREWERY_MUC` | MUC name for the Jigasi pool | jigasibrewery
+`JIGASI_PORT_MIN` | Minimum port for media used by Jigasi | 20000
+`JIGASI_PORT_MAX` | Maximum port for media used by Jigasi | 20050
 
 ### Running on a LAN environment
 
@@ -124,9 +138,9 @@ option.
 * Support container replicas (where applicable).
 * Docker Swarm mode.
 * Native Let's Encrypt support.
-* Jigasi and Jibri containers.
-* TURN server container.
-
+* More services:
+  * Jibri.
+  * TURN server.
 
 [Jitsi]: https://jitsi.org/
 [Jitsi Meet]: https://jitsi.org/jitsi-meet/
@@ -138,5 +152,6 @@ option.
 [Prosody]: https://prosody.im/
 [Jicofo]: https://github.com/jitsi/jicofo
 [Jitsi Videobridge]: https://github.com/jitsi/jitsi-videobridge
+[Jigasi]: https://github.com/jitsi/jigasi
 [ICE]: https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment
 [STUN]: https://en.wikipedia.org/wiki/STUN
