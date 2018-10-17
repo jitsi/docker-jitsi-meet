@@ -105,7 +105,6 @@ Variable | Description | Default value
 --- | --- | ---
 `XMPP_DOMAIN` | Internal XMPP domain | meet.jitsi
 `XMPP_AUTH_DOMAIN` | Internal XMPP domain for authenticated services | auth.meet.jitsi
-`XMPP_BOSH_URL_BASE` | Base URL for XMPP BOSH connections | http://xmpp.meet.jitsi:5280
 `XMPP_MUC_DOMAIN` | XMPP domain for the MUC | muc.meet.jitsi
 `XMPP_INTERNAL_MUC_DOMAIN` | XMPP domain for the internal MUC | internal-muc.meet.jitsi
 `JICOFO_COMPONENT_SECRET` | XMPP component password for Jicofo | s3cr37
