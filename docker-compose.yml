@@ -38,6 +38,8 @@ services:
             - JICOFO_AUTH_PASSWORD
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
+            - JIGASI_XMPP_USER
+            - JIGASI_XMPP_PASSWORD
             - TZ
         networks:
             meet.jitsi:
@@ -58,6 +60,7 @@ services:
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
             - JVB_BREWERY_MUC
+            - JIGASI_BREWERY_MUC
             - TZ
         networks:
             meet.jitsi:
@@ -87,4 +90,3 @@ services:
 # Custom network so all services can communicate using a FQDN
 networks:
     meet.jitsi:
-

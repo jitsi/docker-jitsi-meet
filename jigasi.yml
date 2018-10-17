@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+    # SIP gateway (audio)
+    jigasi:
+        image: jitsi/jigasi
+        ports:
+            - '${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}:${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}/udp'
+        volumes:
+            - ${CONFIG}/jigasi:/config
+        environment:
+            - XMPP_AUTH_DOMAIN
+            - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_SERVER=xmpp.meet.jitsi
+            - XMPP_DOMAIN
+            - JIGASI_SIP_URI
+            - JIGASI_SIP_PASSWORD
+            - JIGASI_SIP_SERVER
+            - JIGASI_XMPP_USER
+            - JIGASI_XMPP_PASSWORD
+            - JIGASI_BREWERY_MUC
+            - JIGASI_PORT_MIN
+            - JIGASI_PORT_MAX
+            - TZ
+        networks:
+            meet.jitsi:
