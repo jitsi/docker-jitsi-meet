@@ -1,5 +1,7 @@
 # Jitsi Meet on Docker
 
+![](resources/jitsi-docker.png)
+
 [Jitsi] is a set of Open Source projects that allows you to easily build and deploy secure
 videoconferencing solutions.
 
