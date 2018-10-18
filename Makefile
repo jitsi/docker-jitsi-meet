@@ -15,13 +15,13 @@ build-all:
 	BUILD_ARGS=$(BUILD_ARGS) $(MAKE) -C jigasi build
 
 push-all:
-	cd base && docker push jitsi/base && cd ..
-	cd base-java && docker push jitsi/base-java && cd ..
-	cd web && docker push jitsi/web && cd ..
-	cd prosody && docker push jitsi/prosody && cd ..
-	cd jicofo && docker push jitsi/jicofo && cd ..
-	cd jvb && docker push jitsi/jvb && cd ..
-	cd jigasi && docker push jitsi/jigasi && cd ..
+	docker push jitsi/base
+	docker push jitsi/base-java
+	docker push jitsi/web
+	docker push jitsi/prosody
+	docker push jitsi/jicofo
+	docker push jitsi/jvb
+	docker push jitsi/jigasi
 
 clean:
 	docker-compose stop
