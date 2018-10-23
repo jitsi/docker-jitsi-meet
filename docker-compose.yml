@@ -69,6 +69,8 @@ services:
             - JVB_BREWERY_MUC
             - JIGASI_BREWERY_MUC
             - TZ
+        depends_on:
+            - prosody
         networks:
             meet.jitsi:
 
@@ -91,6 +93,8 @@ services:
             - JVB_STUN_SERVERS
             - JICOFO_AUTH_USER
             - TZ
+        depends_on:
+            - prosody
         networks:
             meet.jitsi:
 
