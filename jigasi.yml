@@ -23,5 +23,7 @@ services:
             - JIGASI_PORT_MIN
             - JIGASI_PORT_MAX
             - TZ
+        depends_on:
+            - prosody
         networks:
             meet.jitsi:
