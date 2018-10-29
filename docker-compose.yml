@@ -91,6 +91,7 @@ services:
             - JVB_BREWERY_MUC
             - JVB_PORT
             - JVB_STUN_SERVERS
+            - JVB_ENABLE_APIS
             - JICOFO_AUTH_USER
             - TZ
         depends_on:

@@ -140,6 +140,7 @@ Variable | Description | Default value
 `JVB_STUN_SERVERS` | STUN servers used to discover the server's public IP | stun.l.google.com:19302, stun1.l.google.com:19302, stun2.l.google.com:19302
 `JVB_PORT` | Port for media used by Jitsi Videobridge | 10000
 `JVB_BREWERY_MUC` | MUC name for the JVB pool | jvbbrewery
+`JVB_ENABLE_APIS` | Comma separated list of JVB APIs to enable | none
 `JIGASI_XMPP_USER` | XMPP user for Jigasi MUC client connections | jigasi
 `JIGASI_XMPP_PASSWORD` | XMPP password for Jigasi MUC client connections | passw0rd
 `JIGASI_BREWERY_MUC` | MUC name for the Jigasi pool | jigasibrewery
