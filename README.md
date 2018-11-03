@@ -32,6 +32,7 @@ In order to quickly run Jitsi Meet on a machine running Docker and Docker Compos
 follow these steps:
 
 * Create a ``.env`` file by copying and adjusting ``env.example``.
+* Chmod 777 on the folder `CONFIG` set up into ``.env`` (Default is ``~/.jitsi-meet-cfg``). 
 * Run ``docker-compose up -d``.
 * Access the web UI at ``https://localhost:8443`` (or ``http://localhost:8000`` for HTTP, or
   a different port, in case you edited the compose file).
