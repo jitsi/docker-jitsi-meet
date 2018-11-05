@@ -8,7 +8,9 @@ if [[ ! -z "$DOCKER_HOST_ADDRESS" ]]; then
 fi
 
 DAEMON=/usr/share/jitsi-videobridge/jvb.sh
-DAEMON_OPTS="--apis=none"
+DEFAULT_DAEMON_OPTS="none"
 
-exec s6-setuidgid jvb /bin/bash -c "JAVA_SYS_PROPS=\"$JAVA_SYS_PROPS\" exec $DAEMON $DAEMON_OPTS"
+DAEMON_OPTS=${JVB_ENABLE_APIS:=$DEFAULT_DAEMON_OPTS}
+
+exec s6-setuidgid jvb /bin/bash -c "JAVA_SYS_PROPS=\"$JAVA_SYS_PROPS\" exec $DAEMON --apis=${DAEMON_OPTS}"
 
