@@ -7,6 +7,15 @@ mkdir -p \
     /var/lib/nginx/tmp/client_body \
     /var/tmp/nginx
 
+# generate keys (maybe)
+if [[ -f /config/keys/cert.key && -f /config/keys/cert.crt ]]; then
+	echo "using keys found in /config/keys"
+else
+	echo "generating self-signed keys in /config/keys, you can replace these with your own keys if required"
+	SUBJECT="/C=US/ST=TX/L=Austin/O=jitsi.org/OU=Jitsi Server/CN=*"
+	openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
+fi
+
 # copy config files
 if [[ ! -f /config/nginx/nginx.conf ]]; then
     cp /defaults/nginx.conf /config/nginx/nginx.conf
