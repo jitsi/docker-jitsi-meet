@@ -8,25 +8,30 @@ mkdir -p \
     /var/tmp/nginx
 
 # generate keys (maybe)
-if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
-    if [[ ! -f /etc/letsencrypt/live/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
-        certbot certonly \
-            --noninteractive \
-            --standalone \
-            --preferred-challenges http \
-            -d $LETSENCRYPT_DOMAIN \
-            --agree-tos \
-            --email $LETSENCRYPT_EMAIL
-        cp /defaults/letsencrypt-renew /etc/cron.monthly/
-    fi
-else
-    # use self-signed certs
-    if [[ -f /config/keys/cert.key && -f /config/keys/cert.crt ]]; then
-        echo "using keys found in /config/keys"
+if [[ $DISABLE_HTTPS -ne 1 ]]; then
+    if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
+        if [[ ! -f /etc/letsencrypt/live/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
+            certbot certonly \
+                --noninteractive \
+                --standalone \
+                --preferred-challenges http \
+                -d $LETSENCRYPT_DOMAIN \
+                --agree-tos \
+                --email $LETSENCRYPT_EMAIL
+            cp /defaults/letsencrypt-renew /etc/cron.monthly/
+        fi
     else
-        echo "generating self-signed keys in /config/keys, you can replace these with your own keys if required"
-        SUBJECT="/C=US/ST=TX/L=Austin/O=jitsi.org/OU=Jitsi Server/CN=*"
-        openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
+        # use self-signed certs
+        if [[ -f /config/keys/cert.key && -f /config/keys/cert.crt ]]; then
+            echo "using keys found in /config/keys"
+        else
+            echo "generating self-signed keys in /config/keys, you can replace these with your own keys if required"
+            SUBJECT="/C=US/ST=TX/L=Austin/O=jitsi.org/OU=Jitsi Server/CN=*"
+            openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
+        fi
+    fi
+    if [[ ! -f /config/nginx/dhparams.pem ]]; then
+        openssl dhparam -out /config/nginx/dhparams.pem 2048
     fi
 fi
 
@@ -43,12 +48,8 @@ if [[ ! -f /config/nginx/ssl.conf ]]; then
     tpl /defaults/ssl.conf > /config/nginx/ssl.conf
 fi
 
-if [ ! -f "/config/nginx/dhparams.pem" ]; then
-    openssl dhparam -out /config/nginx/dhparams.pem 2048
-fi
-
 if [[ ! -f /config/nginx/site-confs/default ]]; then
-    cp /defaults/default /config/nginx/site-confs/default
+    tpl /defaults/default > /config/nginx/site-confs/default
 fi
 
 if [[ ! -f /config/config.js ]]; then
