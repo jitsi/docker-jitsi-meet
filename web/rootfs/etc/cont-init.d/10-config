@@ -35,6 +35,10 @@ if [[ ! -f /config/nginx/nginx.conf ]]; then
     cp /defaults/nginx.conf /config/nginx/nginx.conf
 fi
 
+if [[ ! -f /config/nginx/meet.conf ]]; then
+    tpl /defaults/meet.conf > /config/nginx/meet.conf
+fi
+
 if [[ ! -f /config/nginx/ssl.conf ]]; then
     tpl /defaults/ssl.conf > /config/nginx/ssl.conf
 fi
@@ -44,7 +48,7 @@ if [ ! -f "/config/nginx/dhparams.pem" ]; then
 fi
 
 if [[ ! -f /config/nginx/site-confs/default ]]; then
-    tpl /defaults/default > /config/nginx/site-confs/default
+    cp /defaults/default /config/nginx/site-confs/default
 fi
 
 if [[ ! -f /config/config.js ]]; then

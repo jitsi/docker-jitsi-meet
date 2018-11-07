@@ -1,41 +1,12 @@
 server {
 	listen 80 default_server;
+
+	include /config/nginx/meet.conf;
+}
+
+server {
 	listen 443 ssl;
 
-	server_name _;
-
 	include /config/nginx/ssl.conf;
-
-	client_max_body_size 0;
-
-	root /usr/share/jitsi-meet;
-	index index.html
-	error_page 404 /static/404.html;
-
-	location ~ ^/([a-zA-Z0-9=\?]+)$ {
-		rewrite ^/(.*)$ / break;
-	}
-
-   	location /config.js {
-        alias /config/config.js;
-	}
-
-   	location /interface_config.js {
-        alias /config/interface_config.js;
-	}
-
-   	location /external_api.js {
-        alias /usr/share/jitsi-meet/libs/external_api.min.js;
-	}
-
-    location / {
-        ssi on;
-    }
-
-	# BOSH
-	location /http-bind {
-		proxy_pass {{ .Env.XMPP_BOSH_URL_BASE }}/http-bind;
-		proxy_set_header X-Forwarded-For $remote_addr;
-		proxy_set_header Host {{ .Env.XMPP_DOMAIN }};
-	}
+	include /config/nginx/meet.conf;
 }
