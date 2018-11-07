@@ -4,9 +4,11 @@ server {
 	include /config/nginx/meet.conf;
 }
 
+{{ if not .Env.DISABLE_HTTPS }}
 server {
 	listen 443 ssl;
 
 	include /config/nginx/ssl.conf;
 	include /config/nginx/meet.conf;
 }
+{{ end }}

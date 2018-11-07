@@ -160,6 +160,7 @@ Variable | Description | Default value
 `JIGASI_BREWERY_MUC` | MUC name for the Jigasi pool | jigasibrewery
 `JIGASI_PORT_MIN` | Minimum port for media used by Jigasi | 20000
 `JIGASI_PORT_MAX` | Maximum port for media used by Jigasi | 20050
+`DISABLE_HTTPS` | Disable HTTPS, this can be useful if TLS connections are going to be handled outside of this setup | 1
 
 ### Running on a LAN environment
 
