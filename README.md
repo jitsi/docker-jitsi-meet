@@ -161,6 +161,7 @@ Variable | Description | Default value
 `JIGASI_PORT_MIN` | Minimum port for media used by Jigasi | 20000
 `JIGASI_PORT_MAX` | Maximum port for media used by Jigasi | 20050
 `DISABLE_HTTPS` | Disable HTTPS, this can be useful if TLS connections are going to be handled outside of this setup | 1
+`ENABLE_HTTP_REDIRECT` | Redirects HTTP traffic to HTTPS | 1
 
 ### Running on a LAN environment
 
