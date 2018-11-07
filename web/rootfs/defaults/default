@@ -18,20 +18,20 @@ server {
 	}
 
    	location /config.js {
-        	alias /config/config.js;
+        alias /config/config.js;
 	}
 
    	location /interface_config.js {
-        	alias /config/interface_config.js;
+        alias /config/interface_config.js;
 	}
 
    	location /external_api.js {
-        	alias /usr/share/jitsi-meet/libs/external_api.min.js;
+        alias /usr/share/jitsi-meet/libs/external_api.min.js;
 	}
 
-        location / {
-            ssi on;
-        }
+    location / {
+        ssi on;
+    }
 
 	# BOSH
 	location /http-bind {
