@@ -1,7 +1,11 @@
 server {
 	listen 80 default_server;
 
+	{{ if .Env.ENABLE_HTTP_REDIRECT }}
+	return 301 https://$host$request_uri;
+	{{ else }}
 	include /config/nginx/meet.conf;
+	{{ end }}
 }
 
 {{ if not .Env.DISABLE_HTTPS }}

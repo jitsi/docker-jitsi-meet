@@ -13,6 +13,7 @@ services:
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
+            - ENABLE_HTTP_REDIRECT
             - DISABLE_HTTPS
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
