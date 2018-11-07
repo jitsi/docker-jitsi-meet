@@ -30,4 +30,4 @@ fi
 
 # certs vill be created in /var/lib/prosody
 mv /var/lib/prosody/*.{crt,key} /config/certs/
-
+rm -f /var/lib/prosody/*.cnf
