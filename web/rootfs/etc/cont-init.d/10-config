@@ -12,6 +12,14 @@ if [[ ! -f /config/nginx/nginx.conf ]]; then
     cp /defaults/nginx.conf /config/nginx/nginx.conf
 fi
 
+if [[ ! -f /config/nginx/ssl.conf ]]; then
+    cp /defaults/ssl.conf /config/nginx/ssl.conf
+fi
+
+if [ ! -f "/config/nginx/dhparams.pem" ]; then
+    openssl dhparam -out /config/nginx/dhparams.pem 2048
+fi
+
 if [[ ! -f /config/nginx/site-confs/default ]]; then
     tpl /defaults/default > /config/nginx/site-confs/default
 fi

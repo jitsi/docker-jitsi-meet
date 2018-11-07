@@ -2,10 +2,9 @@ server {
 	listen 80 default_server;
 	listen 443 ssl;
 
-	ssl_certificate /config/keys/cert.crt;
-	ssl_certificate_key /config/keys/cert.key;
-
 	server_name _;
+
+	include /config/nginx/ssl.conf;
 
 	client_max_body_size 0;
 
