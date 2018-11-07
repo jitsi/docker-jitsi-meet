@@ -175,7 +175,6 @@ option.
 
 ## TODO
 
-* Support multiple Jitsi Videobridge containers.
 * Support container replicas (where applicable).
 * Docker Swarm mode.
 * More services:
