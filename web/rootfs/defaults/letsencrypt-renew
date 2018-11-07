@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # stop nginx
-s6-svc -u /var/run/s6/services/nginx
+s6-svc -d /var/run/s6/services/nginx
 
 # renew cert
 certbot -n renew >> /config/le-renew.log
