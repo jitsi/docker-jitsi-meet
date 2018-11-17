@@ -1,3 +1,7 @@
 #!/usr/bin/with-contenv bash
 
-exec cron -f
+if [[ $DISABLE_HTTPS -ne 1 ]]; then
+    if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
+      exec cron -f
+    fi
+fi
