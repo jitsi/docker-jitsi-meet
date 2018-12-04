@@ -114,6 +114,8 @@ Variable | Description | Example
 `JIGASI_SIP_URI` | SIP URI for incoming / outgoing calls | test@sip2sip.info
 `JIGASI_SIP_PASSWORD` | Password for the specified SIP account | passw0rd
 `JIGASI_SIP_SERVER` | SIP server (use the SIP account domain if in doubt) | sip2sip.info
+`JIGASI_SIP_PORT` | SIP server port | 5060
+`JIGASI_SIP_TRANSPORT` | SIP transport | UDP
 
 ### Authentication
 
