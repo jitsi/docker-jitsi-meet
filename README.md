@@ -80,6 +80,10 @@ project.
 The configuration is performed via environment variables contained in a ``.env`` file. You
 can copy the provided ``env.example`` file as a reference.
 
+**IMPORTANT**: At the moment, configuration is not regenerated on every container boot, so
+if you make any changes to your ``.env`` file, make sure you remove the configuration directory
+before starting your containers again.
+
 Variable | Description | Example
 --- | --- | ---
 `CONFIG` | Directory where all configuration will be stored | /opt/jitsi-meet-cfg
