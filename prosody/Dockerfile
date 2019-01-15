@@ -10,5 +10,4 @@ COPY rootfs/ /
 
 EXPOSE 5222 5269 5347 5280
 
-VOLUME /config
-
+VOLUME ["/config", "/prosody-plugins-custom"]
