@@ -4,7 +4,6 @@ PROSODY_CFG="/config/prosody.cfg.lua"
 
 if [[ ! -d /config/data ]]; then
     mkdir -p /config/data
-    chown prosody:prosody /config/data
     chmod 777 /config/data
 fi
 
