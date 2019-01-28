@@ -2,7 +2,7 @@ admins = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
 plugin_paths = { "/prosody-plugins-custom" }
 
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
-    {{ if .Env.ENABLE_AUTH }}
+    {{ if .Env.ENABLE_AUTH | default "0" | toBool }}
     authentication = "internal_plain"
     {{ else }}
     authentication = "anonymous"
@@ -22,7 +22,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 
     c2s_require_encryption = false
 
-{{ if and .Env.ENABLE_AUTH .Env.ENABLE_GUESTS }}
+{{ if and (.Env.ENABLE_AUTH | default "0" | toBool) (.Env.ENABLE_GUESTS | default "0" | toBool) }}
 VirtualHost "{{ .Env.XMPP_GUEST_DOMAIN }}"
     authentication = "anonymous"
     c2s_require_encryption = false
