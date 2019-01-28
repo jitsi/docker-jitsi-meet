@@ -35,11 +35,11 @@ Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     modules_enabled = {
       "ping";
     }
-    storage = "none"
+    storage = "internal"
     muc_room_cache_size = 1000
 
 Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
-    storage = "none"
+    storage = "internal"
 
 Component "focus.{{ .Env.XMPP_DOMAIN }}"
     component_secret = "{{ .Env.JICOFO_COMPONENT_SECRET }}"
