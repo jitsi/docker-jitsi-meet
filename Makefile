@@ -14,6 +14,7 @@ build-all:
 	BUILD_ARGS=$(BUILD_ARGS) $(MAKE) -C jicofo build
 	BUILD_ARGS=$(BUILD_ARGS) $(MAKE) -C jvb build
 	BUILD_ARGS=$(BUILD_ARGS) $(MAKE) -C jigasi build
+	BUILD_ARGS=$(BUILD_ARGS) $(MAKE) -C jibri build
 
 tag-all:
 	docker tag jitsi/base:latest jitsi/base:$(JITSI_BUILD)
@@ -32,6 +33,7 @@ push-all:
 	docker push jitsi/jicofo
 	docker push jitsi/jvb
 	docker push jitsi/jigasi
+	docker push jitsi/jibri
 
 clean:
 	docker-compose stop
