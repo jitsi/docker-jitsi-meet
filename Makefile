@@ -17,7 +17,7 @@ build-all:
 
 tag-all:
 	docker tag jitsi/base:latest jitsi/base:$(JITSI_BUILD)
-	docker tag jitsi/base-java:latest jitsi/base-jave:$(JITSI_BUILD)
+	docker tag jitsi/base-java:latest jitsi/base-java:$(JITSI_BUILD)
 	docker tag jitsi/web:latest jitsi/web:$(JITSI_BUILD)
 	docker tag jitsi/prosody:latest jitsi/prosody:$(JITSI_BUILD)
 	docker tag jitsi/jicofo:latest jitsi/jicofo:$(JITSI_BUILD)
