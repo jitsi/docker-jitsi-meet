@@ -72,6 +72,13 @@ if [[ ! -f /config/config.js ]]; then
             -e "s#// authdomain:.*#authdomain: '${XMPP_DOMAIN}',#" \
             /config/config.js
     fi
+
+    if [[ $ENABLE_CHROME_SCREEN_SHARING -eq 1 ]]; then
+        sed -i \
+            -e "s#desktopSharingChromeDisabled:.*#desktopSharingChromeDisabled: false,#" \
+            /config/config.js
+    fi
+
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then

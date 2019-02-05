@@ -18,6 +18,7 @@ services:
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
+            - ENABLE_CHROME_SCREEN_SHARING
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE=http://xmpp.meet.jitsi:5280
