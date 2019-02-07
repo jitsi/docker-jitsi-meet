@@ -91,6 +91,7 @@ Variable | Description | Example
 `HTTP_PORT` | Exposed port for HTTP traffic | 8000
 `HTTPS_PORT` | Exposed port for HTTPS traffic | 8443
 `DOCKER_HOST_ADDRESS` | IP address of the Docker host, needed for LAN environments | 192.168.1.1
+`PUBLIC_DOMAIN` | Public domain name of the web service | meet.example.com
 
 **NOTE**: The mobile apps won't work with self-signed certificates (the default)
 see below for instructions on how to obtain a proper certificate with Let's Encrypt.
@@ -142,6 +143,17 @@ Once in the container, run the following command to create a user:
 
 ``prosodyctl --config /config/prosody.cfg.lua register user meet.jitsi password``
 
+### Transcription configuration
+
+If you want to enable the Transcribing function, these options are required:
+
+Variable | Description | Example
+--- | --- | ---
+`ENABLE_TRANSCRIPTIONS` | Enable Jigasi transcription in a conference | 1
+`GOOGLE_APPLICATION_CREDENTIALS` | Credentials for connect to Cloud Google API from Jigasi. Path located inside the container | /config/key.json
+
+For setting `GOOGLE_APPLICATION_CREDENTIALS` please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
+
 ### Advanced configuration
 
 These configuration options are already set and generally don't need to be changed.
@@ -172,6 +184,9 @@ Variable | Description | Default value
 `JIGASI_BREWERY_MUC` | MUC name for the Jigasi pool | jigasibrewery
 `JIGASI_PORT_MIN` | Minimum port for media used by Jigasi | 20000
 `JIGASI_PORT_MAX` | Maximum port for media used by Jigasi | 20050
+`JIGASI_TRANSCRIBER_RECORD_AUDIO` | Jigasi will recordord an audio when transcriber is on | true
+`JIGASI_TRANSCRIBER_SEND_TXT` | Jigasi will send transcribed text to the chat when transcriber is on | true
+`JIGASI_TRANSCRIBER_ADVERTISE_URL` | Jigasi post to the chat an url with transcription file | true
 `DISABLE_HTTPS` | Disable HTTPS, this can be useful if TLS connections are going to be handled outside of this setup | 1
 `ENABLE_HTTP_REDIRECT` | Redirects HTTP traffic to HTTPS | 1
 
