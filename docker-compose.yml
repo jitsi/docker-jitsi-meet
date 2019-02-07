@@ -10,15 +10,18 @@ services:
         volumes:
             - ${CONFIG}/web:/config
             - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
+            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
         environment:
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
+            - ENABLE_TRANSCRIPTIONS
             - DISABLE_HTTPS
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
+            - PUBLIC_URL
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
