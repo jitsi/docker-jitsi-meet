@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    service: jicofo
+  name: jicofo
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        service: jicofo
+    spec:
+      containers:
+      - env:
+        - name: XMPP_SERVER
+          value: prosody.default.svc.cluster.local
+        - name: XMPP_DOMAIN
+          value: meet.jitsi
+        - name: XMPP_AUTH_DOMAIN
+          value: auth.meet.jitsi
+        - name: JICOFO_COMPONENT_SECRET
+          value: s3cr37
+        - name: JICOFO_AUTH_USER
+          value: focus
+        - name: JICOFO_AUTH_PASSWORD
+          value: passw0rd
+        - name: JVB_BREWERY_MUC
+          value: jvbbrewery
+        - name: XMPP_INTERNAL_MUC_DOMAIN
+          value: internal-muc.meet.jitsi
+        - name: TZ
+          value: Europe/Paris
+        image: jitsi/jicofo
+        name: jicofo
+        resources: {}
+      restartPolicy: Always
+status: {}
