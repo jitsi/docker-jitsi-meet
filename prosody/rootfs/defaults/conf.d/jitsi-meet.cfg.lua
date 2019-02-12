@@ -1,5 +1,6 @@
 admins = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
 plugin_paths = { "/prosody-plugins-custom" }
+http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     {{ if .Env.ENABLE_AUTH | default "0" | toBool }}
