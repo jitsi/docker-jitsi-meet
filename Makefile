@@ -25,13 +25,21 @@ tag-all:
 	docker tag jitsi/jigasi:latest jitsi/jigasi:$(JITSI_BUILD)
 
 push-all:
-	docker push jitsi/base
-	docker push jitsi/base-java
-	docker push jitsi/web
-	docker push jitsi/prosody
-	docker push jitsi/jicofo
-	docker push jitsi/jvb
-	docker push jitsi/jigasi
+	docker push jitsi/base:latest
+	docker push jitsi/base-java:latest
+	docker push jitsi/web:latest
+	docker push jitsi/prosody:latest
+	docker push jitsi/jicofo:latest
+	docker push jitsi/jvb:latest
+	docker push jitsi/jigasi:latest
+	docker push jitsi/base:$(JITSI_BUILD)
+	docker push jitsi/base-java:$(JITSI_BUILD)
+	docker push jitsi/web:$(JITSI_BUILD)
+	docker push jitsi/prosody:$(JITSI_BUILD)
+	docker push jitsi/jicofo:$(JITSI_BUILD)
+	docker push jitsi/jvb:$(JITSI_BUILD)
+	docker push jitsi/jigasi:$(JITSI_BUILD)
+
 
 clean:
 	docker-compose stop
