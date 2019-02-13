@@ -10,6 +10,14 @@ if [[ "$(stat -c %U /config)" != "prosody" ]]; then
     chown -R prosody /config
 fi
 
+if [[ "$(stat -c %U /prosody-plugins)" != "prosody" ]]; then
+    chown -R prosody /prosody-plugins
+fi
+
+if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
+    chown -R prosody /prosody-plugins-custom
+fi
+
 if [[ ! -f $PROSODY_CFG ]]; then
     cp -r /defaults/* /config
     tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua

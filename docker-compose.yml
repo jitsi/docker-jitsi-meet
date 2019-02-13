@@ -54,6 +54,11 @@ services:
             - JVB_AUTH_PASSWORD
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
+            - JWT_ENABLE_TOKEN_AUTH
+            - JWT_APP_ID
+            - JWT_APP_SECRET
+            - JWT_ACCEPTED_ISSUERS
+            - JWT_ACCEPTED_AUDIENCES
             - TZ
         networks:
             meet.jitsi:

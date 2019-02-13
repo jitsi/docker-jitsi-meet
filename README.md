@@ -140,6 +140,17 @@ Once in the container, run the following command to create a user:
 
 ``prosodyctl --config /config/prosody.cfg.lua register user meet.jitsi password``
 
+#### Authentication using JWT tokens
+You can also use JWT tokens to authenticate users. To enable it you have to enable authentication via both `ENABLE_AUTH` & `JWT_ENABLE_TOKEN_AUTH` environment variables and configure the settings you can see below.
+
+Variable | Description | Example
+--- | --- | ---
+`JWT_ENABLE_TOKEN_AUTH` | Enable authentication via JWT tokens | 1
+`JWT_APP_ID` | Application identifier | my_jitsi_app_id
+`JWT_APP_SECRET` | Application secret known only to your token | my_jitsi_app_secret
+`JWT_ACCEPTED_ISSUERS` | (Optional) Set asap_accepted_issuers as a comma separated list | my_web_client,my_app_client
+`JWT_ACCEPTED_AUDIENCES` | (Optional) Set asap_accepted_audiences as a comma separated list | my_server1,my_server2
+
 ### Advanced configuration
 
 These configuration options are already set and generally don't need to be changed.
