@@ -43,11 +43,11 @@ Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
         {{ end }}
     }
-    storage = "internal"
+    storage = "memory"
     muc_room_cache_size = 1000
 
 Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
-    storage = "internal"
+    storage = "memory"
     modules_enabled = {
         {{ if .Env.XMPP_MUC_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
