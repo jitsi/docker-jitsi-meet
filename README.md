@@ -11,8 +11,6 @@ all day, every day, for free — with no account needed.
 This repository contains the necessary tools to run a Jitsi Meet stack on [Docker] using
 [Docker Compose].
 
-**NOTE: This setup is experimental.**
-
 ## Table of contents
 
 * [Quick start](#quick-start)
