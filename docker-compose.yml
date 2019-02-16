@@ -109,6 +109,13 @@ services:
             - prosody
         networks:
             meet.jitsi:
+    recorder:
+        build: jibri
+        privileged: true
+        volumes:
+            - ${CONFIG}/jibri:/etc/jitsi/jibri
+        networks:
+            meet.jitsi:
 
 # Custom network so all services can communicate using a FQDN
 networks:
