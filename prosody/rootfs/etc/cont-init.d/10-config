@@ -3,8 +3,11 @@
 PROSODY_CFG="/config/prosody.cfg.lua"
 
 if [[ ! -d /config/data ]]; then
-    mkdir -p /config/data
-    chmod 777 /config/data
+    mkdir -pm 750 /config/data
+fi
+
+if [[ "$(stat -c %U /config)" != "prosody" ]]; then
+    chown -R prosody /config
 fi
 
 if [[ ! -f $PROSODY_CFG ]]; then
