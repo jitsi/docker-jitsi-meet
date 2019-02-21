@@ -1,13 +1,28 @@
 admins = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
-plugin_paths = { "/prosody-plugins-custom" }
+plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
+{{ if and (.Env.ENABLE_AUTH | default "0" | toBool) (.Env.JWT_ENABLE_TOKEN_AUTH | default "0" | toBool) .Env.JWT_ACCEPTED_ISSUERS }}
+asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
+{{ end }}
+
+{{ if and (.Env.ENABLE_AUTH | default "0" | toBool) (.Env.JWT_ENABLE_TOKEN_AUTH | default "0" | toBool) .Env.JWT_ACCEPTED_AUDIENCES }}
+asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES) }}" }
+{{ end }}
+
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
-    {{ if .Env.ENABLE_AUTH | default "0" | toBool }}
-    authentication = "internal_plain"
+{{ if .Env.ENABLE_AUTH | default "0" | toBool }}
+    {{ if .Env.JWT_ENABLE_TOKEN_AUTH | default "0" | toBool }}
+    authentication = "token"
+    app_id = "{{ .Env.JWT_APP_ID }}"
+    app_secret = "{{ .Env.JWT_APP_SECRET }}"
+    allow_empty_token = false
     {{ else }}
-    authentication = "anonymous"
+    authentication = "internal_plain"
     {{ end }}
+{{ else }}
+    authentication = "anonymous"
+{{ end }}
     ssl = {
         key = "/config/certs/{{ .Env.XMPP_DOMAIN }}.key";
         certificate = "/config/certs/{{ .Env.XMPP_DOMAIN }}.crt";
@@ -52,8 +67,10 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         {{ if .Env.XMPP_MUC_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end }}
+        {{ if .Env.JWT_ENABLE_TOKEN_AUTH | default "0" | toBool }}
+        "token_verification";
+        {{ end }}
     }
 
 Component "focus.{{ .Env.XMPP_DOMAIN }}"
     component_secret = "{{ .Env.JICOFO_COMPONENT_SECRET }}"
-
