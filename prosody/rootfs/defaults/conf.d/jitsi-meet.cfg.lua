@@ -12,14 +12,18 @@ asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AU
 
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 {{ if .Env.ENABLE_AUTH | default "0" | toBool }}
-    {{ if .Env.JWT_ENABLE_TOKEN_AUTH | default "0" | toBool }}
+  {{ if .Env.JWT_ENABLE_TOKEN_AUTH | default "0" | toBool }}
     authentication = "token"
     app_id = "{{ .Env.JWT_APP_ID }}"
     app_secret = "{{ .Env.JWT_APP_SECRET }}"
     allow_empty_token = false
-    {{ else }}
+  {{ else if .Env.ENABLE_LDAP_AUTH | default "0" | toBool }}
+    authentication = "cyrus"
+    cyrus_application_name = "xmpp"
+    allow_unencrypted_plain_auth = true
+  {{ else }}
     authentication = "internal_plain"
-    {{ end }}
+  {{ end }}
 {{ else }}
     authentication = "anonymous"
 {{ end }}
@@ -34,6 +38,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
         {{ end }}
+        {{ if .Env.ENABLE_LDAP_AUTH | default "0" | toBool }}
+        "auth_cyrus";
+        {{end}}
     }
 
     c2s_require_encryption = false
