@@ -1,5 +1,16 @@
 #!/usr/bin/with-contenv bash
 
+if [[ ! -f /config/saslauthd.conf ]]; then
+  cp /defaults/saslauthd.conf /config/
+fi
+
+if [[ ! -f /etc/saslauthd.conf ]]; then
+  tpl /config/saslauthd.conf > /etc/saslauthd.conf
+  mkdir -pm777 /var/run/saslauthd
+  adduser prosody sasl
+  echo >> /etc/ldap/ldap.conf "TLS_REQCERT allow"
+fi
+
 PROSODY_CFG="/config/prosody.cfg.lua"
 
 if [[ ! -d /config/data ]]; then

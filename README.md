@@ -130,8 +130,26 @@ Variable | Description | Example
 --- | --- | ---
 `ENABLE_AUTH` | Enable authentication | 1
 `ENABLE_GUESTS` | Enable guest access | 1
+`ENABLE_LDAP_AUTH` | Enable authentication via LDAP. Depends on `ENABLE_AUTH` | 1
 
-Users must be created with the ``prosodyctl`` utility in the ``prosody`` container.
+Variables that might be configured if the `ENABLE_LDAP_AUTH` is set:
+
+Variable | Description | Example
+--- | --- | ---
+`LDAP_URL` | URL for ldap connection | ldaps://ldap.domain.com/
+`LDAP_BASE` | LDAP base DN. Can be empty. | DC=example,DC=domain,DC=com
+`LDAP_BINDDN` | LDAP user DN. Do not specify this parameter for the anonymous bind. | CN=binduser,OU=users,DC=example,DC=domain,DC=com
+`LDAP_BINDPW` | LDAP user password. Do not specify this parameter for the anonymous bind. | LdapUserPassw0rd
+`LDAP_FILTER` | LDAP filter. | (sAMAccountName=%u)
+`LDAP_AUTH_METHOD` | LDAP authentication method. | bind
+`LDAP_VERSION` | LDAP protocol version | 3
+`LDAP_USE_TLS` | Enable LDAP TLS | 1
+`LDAP_TLS_CIPHERS` | Set TLS ciphers list to allow | SECURE256:SECURE128
+`LDAP_TLS_CHECK_PEER` | Require and verify LDAP server certificate | 1
+`LDAP_TLS_CACERT_FILE` | Path to CA cert file. Used when server sertificate verify is enabled | /etc/ssl/certs/ca-certificates.crt
+`LDAP_TLS_CACERT_DIR` | Path to CA certs directory. Used when server sertificate verify is enabled. | /etc/ssl/certs
+
+Internal users must be created with the ``prosodyctl`` utility in the ``prosody`` container.
 In order to do that, first execute a shell in the corresponding container:
 
 ``docker-compose exec prosody /bin/bash``
