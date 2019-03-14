@@ -12,7 +12,7 @@ services:
             - ENABLE_AUTH
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
-            - XMPP_SERVER=xmpp.meet.jitsi
+            - XMPP_SERVER
             - XMPP_DOMAIN
             - JIGASI_SIP_URI
             - JIGASI_SIP_PASSWORD
