@@ -20,7 +20,7 @@ services:
             - LETSENCRYPT_EMAIL
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
-            - XMPP_BOSH_URL_BASE=http://xmpp.meet.jitsi:5280
+            - XMPP_BOSH_URL_BASE
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - TZ
@@ -63,7 +63,7 @@ services:
         networks:
             meet.jitsi:
                 aliases:
-                    - xmpp.meet.jitsi
+                    - ${XMPP_SERVER}
 
     # Focus component
     jicofo:
@@ -75,7 +75,7 @@ services:
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
-            - XMPP_SERVER=xmpp.meet.jitsi
+            - XMPP_SERVER
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
@@ -99,7 +99,7 @@ services:
             - DOCKER_HOST_ADDRESS
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
-            - XMPP_SERVER=xmpp.meet.jitsi
+            - XMPP_SERVER
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
