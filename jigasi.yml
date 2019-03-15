@@ -24,6 +24,10 @@ services:
             - JIGASI_BREWERY_MUC
             - JIGASI_PORT_MIN
             - JIGASI_PORT_MAX
+            - JIGASI_HEALTH_CHECK_SIP_URI
+            - JIGASI_HEALTH_CHECK_INTERVAL
+            - JIGASI_SIP_KEEP_ALIVE_METHOD
+            - JIGASI_ENABLE_SDES_SRTP
             - TZ
         depends_on:
             - prosody
