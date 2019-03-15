@@ -15,6 +15,7 @@ services:
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
             - DISABLE_HTTPS
+            - START_WITH_VIDEO_MUTED
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
