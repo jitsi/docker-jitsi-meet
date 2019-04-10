@@ -390,6 +390,11 @@ Variable | Description | Default value
 `ENABLE_HTTP_REDIRECT` | Redirects HTTP traffic to HTTPS | 1
 `LOG_LEVEL` | Controls which logs are output from prosody and associated modules | info
 
+#### Jitsi Meet `config.js`
+To change a setting in the config.js you have to add a `config.json` to the `/config` volume for the web container.
+
+After this file was added it will be merged into the default configuration.
+
 ### Running behind NAT or on a LAN environment
 
 If running in a LAN environment (as well as on the public Internet, via NAT) is a requirement,

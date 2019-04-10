@@ -62,45 +62,23 @@ if [[ ! -f /config/nginx/site-confs/default ]]; then
 fi
 
 if [[ ! -f /config/config.js ]]; then
-    cp /defaults/config.js /config/config.js
-    sed -i \
-        -e "s#jitsi-meet.example.com#$XMPP_DOMAIN#g" \
-        -e "s#bosh:.*#bosh: '/http-bind',#" \
-        -e "s#muc:.*#muc: '${XMPP_MUC_DOMAIN}',#" \
-        -e "s#// focusUserJid:.*#focusUserJid: '${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}',#" \
-        /config/config.js
+    # Add environment variables to config
+    tpl /defaults/config.json > /tmp/default.json
 
-    if [[ $ENABLE_RECORDING -eq 1 || x$ENABLE_RECORDING == xtrue ]]; then
-        sed -i \
-            -e "/\/\/ Recording.*/a hiddenDomain: '$XMPP_RECORDER_DOMAIN'," \
-            -e "s#// fileRecordingsEnabled:.*#fileRecordingsEnabled: true,#" \
-            -e "s#// liveStreamingEnabled:.*#liveStreamingEnabled: true,#" \
-        /config/config.js
+    # Remove comments from config.json
+    config=$(jsonlint-py -Sf /tmp/default.json)
+    echo "$config" > /tmp/default.json
+
+    if [[ -f /config/config.json ]]; then
+        # Remove comments from custom config.json
+        jsonlint-py -Sf /config/config.json > /tmp/custom.json
+
+        # Merge custom config into default config
+        config=$(jq -s '.[0] * .[1]' /tmp/default.json /tmp/custom.json)
     fi
 
-    if [[ $ENABLE_AUTH -eq 1 ]]; then
-        if [[ $ENABLE_GUESTS -eq 1 ]]; then
-            sed -i \
-                -e "s#// anonymousdomain:.*#anonymousdomain: '${XMPP_GUEST_DOMAIN}',#" \
-                /config/config.js
-        fi
-
-        sed -i \
-            -e "s#// authdomain:.*#authdomain: '${XMPP_DOMAIN}',#" \
-            /config/config.js
-    fi
-
-    if [[ ! -z "${ETHERPAD_URL_BASE}" && -z "$(grep -om1 'etherpad_base:' /config/config.js)" ]]; then
-        sed -i \
-            -e "/enableWelcomePage/a\    etherpad_base: '/etherpad/p/'," \
-            /config/config.js
-    fi
-
-    if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || "$ENABLE_TRANSCRIPTIONS" == "true" ]]; then
-        sed -i \
-             -e "s#// transcribingEnabled:.*#transcribingEnabled: true,#" \
-             /config/config.js
-    fi
+    # Save merged config as .js file
+    tpl /defaults/config.js --json "{\"config\": $config}" > /config/config.js
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then

@@ -1,4 +1,4 @@
 #!/bin/bash
-
-exec frep $1:-
-
+input=$1
+shift
+exec frep "$@" $input:- 

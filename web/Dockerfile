@@ -3,7 +3,7 @@ FROM ${JITSI_REPO}/base
 
 RUN \
 	apt-dpkg-wrap apt-get update && \
-	apt-dpkg-wrap apt-get install -y cron nginx-extras jitsi-meet-web && \
+	apt-dpkg-wrap apt-get install -y cron nginx-extras jitsi-meet-web python-demjson jq && \
 	apt-dpkg-wrap apt-get install -y -t stretch-backports certbot && \
 	apt-cleanup && \
 	rm -f /etc/nginx/conf.d/default.conf && \
