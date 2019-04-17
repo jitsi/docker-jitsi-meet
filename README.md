@@ -141,7 +141,9 @@ Once in the container, run the following command to create a user:
 ``prosodyctl --config /config/prosody.cfg.lua register user meet.jitsi password``
 
 #### Authentication using JWT tokens
-You can also use JWT tokens to authenticate users. To enable it you have to enable authentication via both `ENABLE_AUTH` & `JWT_ENABLE_TOKEN_AUTH` environment variables and configure the settings you can see below.
+
+You can also use JWT tokens to authenticate users. To enable it you have to enable authentication via both
+`ENABLE_AUTH` & `JWT_ENABLE_TOKEN_AUTH` environment variables and configure the settings you can see below.
 
 Variable | Description | Example
 --- | --- | ---
@@ -150,6 +152,24 @@ Variable | Description | Example
 `JWT_APP_SECRET` | Application secret known only to your token | my_jitsi_app_secret
 `JWT_ACCEPTED_ISSUERS` | (Optional) Set asap_accepted_issuers as a comma separated list | my_web_client,my_app_client
 `JWT_ACCEPTED_AUDIENCES` | (Optional) Set asap_accepted_audiences as a comma separated list | my_server1,my_server2
+
+This can be tested using the [jwt.io] debugger. Use the following samople payload:
+
+```
+{
+  "context": {
+    "user": {
+      "avatar": "https://robohash.org/john-doe",
+      "name": "John Doe",
+      "email": "jdoe@example.com"
+    }
+  },
+  "aud": "my_jitsi_app_id",
+  "iss": "my_jitsi_app_id",
+  "sub": "meet.jitsi",
+  "room": "*"
+}
+```
 
 ### Advanced configuration
 
@@ -217,3 +237,5 @@ option.
 [Jigasi]: https://github.com/jitsi/jigasi
 [ICE]: https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment
 [STUN]: https://en.wikipedia.org/wiki/STUN
+[jwt.io]: https://jwt.io/#debugger-io
+
