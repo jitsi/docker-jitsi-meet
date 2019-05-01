@@ -9,6 +9,7 @@ services:
             - '${HTTPS_PORT}:443'
         volumes:
             - ${CONFIG}/web:/config
+            - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
         environment:
             - ENABLE_AUTH
             - ENABLE_GUESTS
