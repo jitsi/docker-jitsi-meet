@@ -130,9 +130,27 @@ Variable | Description | Example
 --- | --- | ---
 `ENABLE_AUTH` | Enable authentication | 1
 `ENABLE_GUESTS` | Enable guest access | 1
-`ENABLE_LDAP_AUTH` | Enable authentication via LDAP. Depends on `ENABLE_AUTH` | 1
+`AUTH_TYPE` | Select authentication type (internal, jwt or ldap) | internal
 
-Variables that might be configured if the `ENABLE_LDAP_AUTH` is set:
+#### Internal authentication
+
+The default authentication mode (`internal`) uses XMPP credentials to authenticate users.
+To enable it you have to enable authentication with `ENABLE_AUTH` and set `AUTH_TYPE` to `internal`,
+then configure the settings you can see below.
+
+Internal users must be created with the ``prosodyctl`` utility in the ``prosody`` container.
+In order to do that, first execute a shell in the corresponding container:
+
+``docker-compose exec prosody /bin/bash``
+
+Once in the container, run the following command to create a user:
+
+``prosodyctl --config /config/prosody.cfg.lua register user meet.jitsi password``
+
+#### Authentication using LDAP
+
+You can use LDAP to authenticate users. To enable it you have to enable authentication with `ENABLE_AUTH` and
+set `AUTH_TYPE` to `ldap`, then configure the settings you can see below.
 
 Variable | Description | Example
 --- | --- | ---
@@ -149,23 +167,13 @@ Variable | Description | Example
 `LDAP_TLS_CACERT_FILE` | Path to CA cert file. Used when server sertificate verify is enabled | /etc/ssl/certs/ca-certificates.crt
 `LDAP_TLS_CACERT_DIR` | Path to CA certs directory. Used when server sertificate verify is enabled. | /etc/ssl/certs
 
-Internal users must be created with the ``prosodyctl`` utility in the ``prosody`` container.
-In order to do that, first execute a shell in the corresponding container:
-
-``docker-compose exec prosody /bin/bash``
-
-Once in the container, run the following command to create a user:
-
-``prosodyctl --config /config/prosody.cfg.lua register user meet.jitsi password``
-
 #### Authentication using JWT tokens
 
-You can also use JWT tokens to authenticate users. To enable it you have to enable authentication via both
-`ENABLE_AUTH` & `JWT_ENABLE_TOKEN_AUTH` environment variables and configure the settings you can see below.
+You can use JWT tokens to authenticate users. To enable it you have to enable authentication with `ENABLE_AUTH` and
+set `AUTH_TYPE` to `jwt`, then configure the settings you can see below.
 
 Variable | Description | Example
 --- | --- | ---
-`JWT_ENABLE_TOKEN_AUTH` | Enable authentication via JWT tokens | 1
 `JWT_APP_ID` | Application identifier | my_jitsi_app_id
 `JWT_APP_SECRET` | Application secret known only to your token | my_jitsi_app_secret
 `JWT_ACCEPTED_ISSUERS` | (Optional) Set asap_accepted_issuers as a comma separated list | my_web_client,my_app_client

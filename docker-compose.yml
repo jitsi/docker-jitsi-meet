@@ -38,9 +38,9 @@ services:
         volumes:
             - ${CONFIG}/prosody:/config
         environment:
+            - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
-            - ENABLE_LDAP_AUTH
             - LDAP_URL
             - LDAP_BASE
             - LDAP_BINDDN
@@ -68,7 +68,6 @@ services:
             - JVB_AUTH_PASSWORD
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
-            - JWT_ENABLE_TOKEN_AUTH
             - JWT_APP_ID
             - JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
