@@ -16,7 +16,7 @@ spec:
       containers:
       - env:
         - name: XMPP_SERVER
-          value: prosody.default.svc.cluster.local
+          value: prosody
         - name: DOCKER_HOST_ADDRESS
           valueFrom:
             fieldRef:
@@ -43,7 +43,7 @@ spec:
           value: focus
         - name: TZ
           value: Europe/Paris
-        image: jitsi/jvb
+        image: 103425057857.dkr.ecr.us-west-2.amazonaws.com/jitsi/jvb
         name: jvb
         ports:
         - containerPort: 30000
