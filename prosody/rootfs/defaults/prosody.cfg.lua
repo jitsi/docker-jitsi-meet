@@ -1,3 +1,5 @@
+{{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
+
 -- Prosody Example Configuration File
 --
 -- Information on configuring Prosody can be found on our
@@ -70,6 +72,9 @@ modules_enabled = {
 		--"watchregistrations"; -- Alert admins of registrations
 		--"motd"; -- Send a message to users when they log in
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
+        {{ if .Env.GLOBAL_MODULES }}
+        "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
+        {{ end }}
 };
 
 https_ports = { }
@@ -143,8 +148,13 @@ authentication = "internal_plain"
 --  Logs info and higher to /var/log
 --  Logs errors to syslog also
 log = {
-	{ levels = {min = "info"}, to = "console"};
+	{ levels = {min = "{{ $LOG_LEVEL }}"}, to = "console"};
 }
+
+{{ if .Env.GLOBAL_CONFIG }}
+{{ join ";\n" (splitList "," .Env.GLOBAL_CONFIG) }};
+{{ end }}
+
 
 component_interface = { "*" }
 
