@@ -7,6 +7,7 @@ http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
 {{ $JWT_ALL_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
+{{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
 
 {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
@@ -85,7 +86,7 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end }}
         {{ if .Env.JWT_ENABLE_TOKEN_AUTH | default "0" | toBool }}
-        "token_verification";
+        "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
     }
 
