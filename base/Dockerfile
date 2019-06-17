@@ -19,8 +19,14 @@ RUN \
 	echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/backports.list && \
 	apt-dpkg-wrap apt-get update && \
 	apt-dpkg-wrap apt-get dist-upgrade -y && \
-	apt-dpkg-wrap apt-get autoremove -y --purge gnupg && \
 	apt-cleanup && \
 	chmod +x /usr/bin/frep
+
+RUN \
+	[[ "$JITSI_RELEASE" == "unstable" ]] && \
+	apt-dpkg-wrap apt-get update && \
+	apt-dpkg-wrap apt-get install -y jq procps curl vim iputils-ping net-tools && \
+	apt-cleanup || \
+	true
 
 ENTRYPOINT [ "/init" ]
