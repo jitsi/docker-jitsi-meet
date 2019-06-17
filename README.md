@@ -196,6 +196,15 @@ This can be tested using the [jwt.io] debugger. Use the following samople payloa
   "room": "*"
 }
 ```
+### Sharing a document using Etherpad
+
+You can use sharing a document via Etherpad addon. For enable the addon, run docker-compose with additional config `etherpad.yml`.
+
+Here are the required options:
+
+Variable | Description | Example
+--- | --- | ---
+`ETHERPAD_URL_BASE` | Set etherpad-lite URL | http://etherpad:9001
 
 ### Advanced configuration
 

@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+    # Etherpad: real-time collaborative document editing
+    etherpad:
+        image: jitsi/etherpad
+        networks:
+            meet.jitsi:
