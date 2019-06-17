@@ -16,6 +16,7 @@ services:
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
             - DISABLE_HTTPS
+            - CALENDAR_MS_APP_ID
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL

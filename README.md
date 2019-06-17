@@ -196,6 +196,21 @@ This can be tested using the [jwt.io] debugger. Use the following samople payloa
   "room": "*"
 }
 ```
+### Calendar integration
+
+#### Microsoft Azure calendar integration
+
+This option could be enabled for integrate Microsoft Azure calendar to start page.
+
+For settings in Azure please go to https://portal.azure.com page and login as Administrator, then choose:
+
+* `Azire Active Directory` -> `App Registrations` -> `+ New registration`
+* Fill `Name` field, select `Redirect URI` as `Web` and enter url like `https://your.public.domain:443/static/msredirect.html`
+* set value from `Application (client) ID` as `CALENDAR_MS_APP_ID` in .env file
+
+Variable | Description | Default value
+--- | --- | ---
+`CALENDAR_MS_APP_ID` | Enable Microsoft calendar integarion. Set Azure application ID | 00000000-0000-0000-0000-00004024006
 
 ### Advanced configuration
 
