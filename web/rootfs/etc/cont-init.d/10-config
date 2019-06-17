@@ -72,6 +72,12 @@ if [[ ! -f /config/config.js ]]; then
             -e "s#// authdomain:.*#authdomain: '${XMPP_DOMAIN}',#" \
             /config/config.js
     fi
+
+    if [[ ! -z "${ETHERPAD_URL_BASE}" && -z "$(grep -om1 'etherpad_base:' /config/config.js)" ]]; then
+        sed -i \
+            -e "/enableWelcomePage/a\    etherpad_base: '/etherpad/p/'," \
+            /config/config.js
+    fi
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then

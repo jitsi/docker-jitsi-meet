@@ -35,7 +35,10 @@ follow these steps:
   a different port, in case you edited the compose file).
 
 If you want to use jigasi too, first configure your env file with SIP credentials
-and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jigasi.yml up -d``
+and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jigasi.yml up``
+
+If you want to enable document sharing via [Etherpad], configure it and run Docker Compose as
+follows: ``docker-compose -f docker-compose.yml -f etherpad.yml up``
 
 ## Architecture
 
@@ -199,6 +202,17 @@ This can be tested using the [jwt.io] debugger. Use the following samople payloa
 }
 ```
 
+### Shared document editing using Etherpad
+
+You can collaboratively edit a document via [Etherpad]. In order to enable it, set the config options bellow and run
+Docker Compose with the additional config file `etherpad.yml`.
+
+Here are the required options:
+
+Variable | Description | Example
+--- | --- | ---
+`ETHERPAD_URL_BASE` | Set etherpad-lite URL | http://etherpad.meet.jitsi:9001
+
 ### Advanced configuration
 
 These configuration options are already set and generally don't need to be changed.
@@ -270,4 +284,5 @@ option.
 [ICE]: https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment
 [STUN]: https://en.wikipedia.org/wiki/STUN
 [jwt.io]: https://jwt.io/#debugger-io
+[Etherpad]: https://github.com/ether/etherpad-lite
 
