@@ -77,7 +77,7 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         {{ if .Env.XMPP_MUC_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end }}
-        {{ if .Env.JWT_ENABLE_TOKEN_AUTH | default "0" | toBool }}
+        {{ if eq $AUTH_TYPE "jwt" }}
         "token_verification";
         {{ end }}
     }
