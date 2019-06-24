@@ -9,7 +9,9 @@ ifeq ($(FORCE_REBUILD), 1)
 endif
 
 
-all:	build-all tag-all push-all
+all:	build-all
+
+release: tag-all push-all
 
 build:
 	$(MAKE) BUILD_ARGS=$(BUILD_ARGS) JITSI_RELEASE=$(JITSI_RELEASE) -C $(JITSI_SERVICE) build
