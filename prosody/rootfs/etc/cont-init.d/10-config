@@ -4,7 +4,7 @@ PROSODY_CFG="/config/prosody.cfg.lua"
 
 if [[ ! -d /config/data ]]; then
     mkdir -p /config/data
-    chmod 777 /config/data
+    chown -R prosody:prosody /config/data
 fi
 
 if [[ ! -f $PROSODY_CFG ]]; then
@@ -19,18 +19,25 @@ if [[ ! -f $PROSODY_CFG ]]; then
     fi
 fi
 
-mkdir -p /config/certs
+if [[ ! -d /config/certs ]]; then
+    mkdir -p /config/certs
+    chown -R prosody:prosody /config/certs
+fi
 
 if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
     # echo for using all default values
     echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_DOMAIN
+
+    # certs will be created in /config/data
+    mv /config/data/*.{crt,key} /config/certs/
+    rm -f /config/data/*.cnf
 fi
 
 if [[ ! -f /config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
     # echo for using all default values
     echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_AUTH_DOMAIN
-fi
 
-# certs will be created in /config/data
-mv /config/data/*.{crt,key} /config/certs/
-rm -f /config/data/*.cnf
+    # certs will be created in /config/data
+    mv /config/data/*.{crt,key} /config/certs/
+    rm -f /config/data/*.cnf
+fi
