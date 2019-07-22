@@ -12,5 +12,4 @@ COPY rootfs/ /
 
 EXPOSE 80 443
 
-VOLUME /config
-
+VOLUME ["/config", "/etc/letsencrypt"]
