@@ -152,9 +152,8 @@ log = {
 }
 
 {{ if .Env.GLOBAL_CONFIG }}
-{{ join ";\n" (splitList "," .Env.GLOBAL_CONFIG) }};
+{{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG) }}
 {{ end }}
-
 
 component_interface = { "*" }
 
