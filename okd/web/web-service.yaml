@@ -1,0 +1,19 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: jitsi
+    name: web
+  spec:
+    ports:
+    - name: "http"
+      port: 8080
+      targetPort: 8080
+    - name: "https"
+      port: 4443
+      targetPort: 4443
+    selector:
+      app: jitsi
+      name: web

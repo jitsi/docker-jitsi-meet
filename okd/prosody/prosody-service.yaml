@@ -1,0 +1,24 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: jitsi
+    name: prosody
+  spec:
+    ports:
+    - name: "5222"
+      port: 5222
+      targetPort: 5222
+    - name: "5280"
+      port: 5280
+      targetPort: 5280
+    - name: "5347"
+      port: 5347
+      targetPort: 5347
+    selector:
+      app: jitsi
+      name: prosody
+  status:
+    loadBalancer: {}

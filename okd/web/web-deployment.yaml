@@ -1,0 +1,44 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: jitsi
+    name: web
+  spec:
+    replicas: 1
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: jitsi
+          name: web
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: jitsi-config
+          - secretRef:
+              name: jitsi-secret
+          env:
+          - name: XMPP_BOSH_URL_BASE
+            value: http://$(PROSODY_SERVICE_HOST):$(PROSODY_SERVICE_PORT_5280)
+          image: jitsi/web
+          imagePullPolicy: Always
+          name: web
+          ports:
+          - containerPort: 8080
+          - containerPort: 4443
+          resources: {}
+          volumeMounts:
+          - mountPath: /etc/letsencrypt
+            name: web-letsencrypt
+        volumes:
+        - name: web-letsencrypt
+          persistentVolumeClaim:
+            claimName: web-letsencrypt-volume
+    triggers:
+    - type: ConfigChange
+  status: {}

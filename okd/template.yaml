@@ -1,0 +1,228 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: jitsi
+objects: (( merge ))
+parameters:
+#
+# Basic configuration options
+#
+- name: HOSTNAME
+  displayName: Hostname
+  required: true
+- name: TZ
+  displayName: Timezone
+  required: true
+  value: Europe/Amsterdam
+
+
+#
+# HTTPS configuration
+#
+- name: DISABLE_HTTPS
+  displayName: Disable HTTPS
+  description: This can be useful if TLS connections are going to be handled outside of this setup
+- name: ENABLE_HTTP_REDIRECT
+  displayName: Redirects HTTP traffic to HTTPS
+  description: Only works with the standard HTTPS port (443)
+
+
+#
+# Authentication configuration
+#
+- name: ENABLE_AUTH
+  displayName: Enable authentication
+- name: AUTH_TYPE
+  displayName: Select authentication type
+  description: internal, jwt or ldap
+  value: internal
+- name: ENABLE_GUESTS
+  displayName: Enable guest access
+
+- name: JWT_APP_ID
+  displayName: Application identifier
+  value: "my_server"
+- name: JWT_APP_SECRET
+  displayName: Application secret known only to your token
+  value: "appsecret321"
+- name: JWT_ACCEPTED_ISSUERS
+  displayName: Set asap_accepted_issuers as a comma separated list
+  value: "my_client"
+- name: JWT_ACCEPTED_AUDIENCES
+  displayName: Set asap_accepted_audiences as a comma separated list
+  value: "my_server"
+
+- name: LDAP_URL
+  displayName: LDAP url for connection
+  value: ldaps://ldap.domain.com/
+- name: LDAP_BASE
+  displayName: LDAP base DN. Can be empty
+  value: DC=example,DC=domain,DC=com
+- name: LDAP_BINDDN
+  displayName: LDAP user DN. Do not specify this parameter for the anonymous bind
+  value: CN=binduser,OU=users,DC=example,DC=domain,DC=com
+- name: LDAP_BINDPW
+  displayName: LDAP user password. Do not specify this parameter for the anonymous bind
+  value: LdapUserPassw0rd
+- name: LDAP_FILTER
+  displayName: LDAP filter
+  value: (sAMAccountName=%u)
+  description: "%1-9 - if the input key is user@mail.domain.com, then %1 is com, %2 is domain and %3 is mail.
+                %s - %s is replaced by the complete service string.
+                %r - %r is replaced by the complete realm string."
+- name: LDAP_AUTH_METHOD
+  displayName: LDAP authentication method
+  value: bind
+- name: LDAP_VERSION
+  displayName: LDAP version
+  value: "3"
+- name: LDAP_USE_TLS
+  displayName: LDAP TLS using
+  value: "1"
+- name: LDAP_TLS_CIPHERS
+  displayName: List of SSL/TLS ciphers to allow
+  value: SECURE256:SECURE128:!AES-128-CBC:!ARCFOUR-128:!CAMELLIA-128-CBC:!3DES-CBC:!CAMELLIA-128-CBC
+- name: LDAP_TLS_CHECK_PEER
+  displayName: Require and verify server certificate
+  value: "1"
+- name: LDAP_TLS_CACERT_FILE
+  displayName: Path to CA cert file
+  value: /etc/ssl/certs/ca-certificates.crt
+  description: Used when server sertificate verify is enabled
+- name: LDAP_TLS_CACERT_DIR
+  displayName: Path to CA certs directory
+  value: /etc/ssl/certs
+  description: Used when server sertificate verify is enabled
+
+
+#
+# A comma separated list of APIs to enable when the JVB is started. The default is none.
+# See https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md for more information
+#
+- name: JVB_ENABLE_APIS
+  displayName: A comma separated list of APIs to enable when the JVB is started
+  description: See https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md for more information
+  required: true
+  value: rest
+
+
+#
+# Advanced configuration options
+#
+- name: JVB_PORT
+  displayName: Media port for the Jitsi Videobridge
+  required: true
+  value: "30000"
+- name: JVB_TCP_HARVESTER_DISABLED
+  displayName: TCP Fallback for Jitsi Videobridge for when UDP isn't available
+  description: "true or false"
+  required: true
+  value: "true"
+- name: JVB_TCP_PORT
+  displayName: TCP Fallback Port for Jitsi Videobridge for when UDP isn't available
+  required: true
+  value: "30000"
+- name: JVB_BREWERY_MUC
+  displayName: MUC for the JVB pool
+  required: true
+  value: "jvbbrewery"
+- name: JVB_AUTH_USER
+  displayName: XMPP user for JVB client connections
+  required: true
+  value: jvb
+- name: JVB_AUTH_PASSWORD
+  displayName: XMPP password for JVB client connections
+  required: true
+  value: passw0rd
+- name: JVB_STUN_SERVERS
+  displayName: STUN servers used to discover the server's public IP
+  required: true
+  value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+
+
+- name: JICOFO_COMPONENT_SECRET
+  displayName: XMPP component password for Jicofo
+  required: true
+  value: s3cr37
+- name: JICOFO_AUTH_USER
+  displayName: XMPP user for Jicofo client connections
+  required: true
+  value: focus
+- name: JICOFO_AUTH_PASSWORD
+  displayName: XMPP password for Jicofo client connections
+  required: true
+  value: passw0rd
+
+
+- name: XMPP_MODULES
+  displayName: Custom Prosody modules for XMPP_DOMAIN (comma separated)
+- name: XMPP_MUC_MODULES
+  displayName: Custom Prosody modules for MUC component (comma separated)
+- name: XMPP_INTERNAL_MUC_MODULES
+  displayName: Custom Prosody modules for internal MUC component (comma separated)
+
+
+#
+# Jigasi configuration options (needed for SIP gateway support)
+#
+- name: JIGASI_XMPP_USER
+  displayName: XMPP user for Jigasi MUC client connections
+  required: true
+  value: jigasi
+- name: JIGASI_XMPP_PASSWORD
+  displayName: XMPP password for Jigasi MUC client connections
+  required: true
+  value: passw0rd
+- name: JIGASI_BREWERY_MUC
+  displayName: MUC name for the Jigasi pool
+  required: true
+  value: jigasibrewery
+- name: JIGASI_PORT_MIN
+  displayName: Minimum port for media used by Jigasi
+  required: true
+  value: "20000"
+- name: JIGASI_PORT_MAX
+  displayName: Maximum port for media used by Jigasi
+  required: true
+  value: "20050"
+- name: JIGASI_SIP_URI
+  displayName: SIP URI for incoming / outgoing calls
+  required: true
+  value: test@sip2sip.info
+- name: JIGASI_SIP_PASSWORD
+  displayName: Password for the specified SIP account as a clear text
+  required: true
+  value: passw0rd
+- name: JIGASI_SIP_SERVER
+  displayName: SIP server (use the SIP account domain if in doubt)
+  required: true
+  value: sip2sip.info
+- name: JIGASI_SIP_PORT
+  displayName: SIP server port
+  required: true
+  value: "5060"
+- name: JIGASI_SIP_TRANSPORT
+  displayName: SIP server transport
+  required: true
+  value: UDP
+- name: JIGASI_ENABLE_SDES_SRTP
+  displayName: Enable SDES srtp
+  value: "1"
+- name: JIGASI_SIP_KEEP_ALIVE_METHOD
+  displayName: Keepalive method
+  value: OPTIONS
+- name: JIGASI_HEALTH_CHECK_SIP_URI
+  displayName: Health-check extension
+  value: keepalive
+- name: JIGASI_HEALTH_CHECK_INTERVAL
+  displayName: Health-check interval
+  value: "300000"
+
+
+#
+# Let's Encrypt configuration
+#
+- name: ENABLE_LETSENCRYPT
+  displayName: Enable Let's Encrypt certificate generation
+- name: LETSENCRYPT_EMAIL
+  displayName: E-Mail for receiving important account notifications (mandatory)

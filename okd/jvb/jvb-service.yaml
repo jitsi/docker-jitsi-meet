@@ -1,0 +1,24 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: jitsi
+    name: jvb
+  spec:
+    type: NodePort
+    ports:
+    - name: udp
+      nodePort: ${{JVB_PORT}}
+      port: ${{JVB_PORT}}
+      protocol: UDP
+      targetPort: ${{JVB_PORT}}
+    - name: tcp
+      nodePort: ${{JVB_TCP_PORT}}
+      port: ${{JVB_TCP_PORT}}
+      protocol: TCP
+      targetPort: ${{JVB_TCP_PORT}}
+    selector:
+      app: jitsi
+      name: jvb
