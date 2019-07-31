@@ -23,7 +23,7 @@ RUN \
 	chmod +x /usr/bin/frep
 
 RUN \
-	[[ "$JITSI_RELEASE" == "unstable" ]] && \
+	[ "$JITSI_RELEASE" = "unstable" ] && \
 	apt-dpkg-wrap apt-get update && \
 	apt-dpkg-wrap apt-get install -y jq procps curl vim iputils-ping net-tools && \
 	apt-cleanup || \
