@@ -5,6 +5,7 @@ services:
         image: jitsi/jibri
         volumes:
             - ${CONFIG}/jibri:/config
+            - /dev/shm:/dev/shm
         cap_add:
             - SYS_ADMIN
             - NET_BIND_SERVICE
