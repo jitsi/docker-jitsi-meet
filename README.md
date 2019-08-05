@@ -204,7 +204,7 @@ Here are the required options:
 
 Variable | Description | Example
 --- | --- | ---
-`ETHERPAD_URL_BASE` | Set etherpad-lite URL | http://etherpad:9001
+`ETHERPAD_URL_BASE` | Set etherpad-lite URL | http://etherpad.meet.jitsi:9001
 
 ### Advanced configuration
 
