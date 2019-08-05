@@ -46,6 +46,7 @@ A Jitsi Meet installation can be broken down into the following components:
 * A conference focus component
 * A video router (could be more than one)
 * A SIP gateway for audio calls
+* A BRoadcasting Infrastructure for recording or streaming a conference.
 
 ![](resources/docker-jitsi-meet.png)
 
@@ -63,6 +64,7 @@ several container images are provided.
 * **jicofo**: [Jicofo], the XMPP focus component.
 * **jvb**: [Jitsi Videobridge], the video router.
 * **jigasi**: [Jigasi], the SIP (audio only) gateway.
+* **jibri**: [Jibri], the BRoadcasting Infrastructure.
 
 ### Design considerations
 
@@ -118,6 +120,103 @@ Variable | Description | Example
 `JIGASI_SIP_SERVER` | SIP server (use the SIP account domain if in doubt) | sip2sip.info
 `JIGASI_SIP_PORT` | SIP server port | 5060
 `JIGASI_SIP_TRANSPORT` | SIP transport | UDP
+
+### JItsi BRoadcasting Infrastructure configuration
+
+For working jibri, you need setup alsa loopback on the host:
+
+#### for Centos 7, module already compiled with kernel, so just run:
+```
+# configure 5 capture/playback interfaces
+echo "options snd-aloop enable=1,1,1,1,1 index=0,1,2,3,4" > /etc/modprobe.d/asound.conf
+# setup autoload the module
+echo "snd_aloop" > /etc/modules-load.d/snd_aloop.conf
+# load the module
+modprobe snd-aloop
+# check that the module is loaded
+lsmod | grep snd_aloop
+```
+#### for Ubuntu 16.04 (Xenial):
+```
+# install the module
+apt update && apt install linux-image-extra-virtual
+# configure 5 capture/playback interfaces
+echo "options snd-aloop enable=1,1,1,1,1 index=0,1,2,3,4" > /etc/modprobe.d/asound.conf
+# setup autoload the module
+echo "snd-aloop" >> /etc/modules
+# check that the module is loaded
+lsmod | grep snd_aloop
+```
+
+If you want to enable the JIBRI, these options are required:
+
+Variable | Description | Example
+--- | --- | ---
+`ENABLE_RECORDING` | Enable recording conference to local disk | 1
+
+Extended JIBRI configuration:
+
+Variable | Description | Example
+--- | --- | ---
+`JIBRI_RECORDER_USER` | Internal recorder user for Jibri client connections | recorder
+`JIBRI_RECORDER_PASSWORD` | Internal recorder password for Jibri client connections | passw0rd
+`JIBRI_RECORDING_DIR` | Directory for recordings inside Jibri container | /config/recordings
+`JIBRI_FINALIZE_RECORDING_SCRIPT_PATH` | The finalizing script. Will run after recording is complete | /config/finalize.sh
+`JIBRI_XMPP_USER` | Internal user for Jibri client connections. | jibri
+`JIBRI_RECORDER_PASSWORD` | Internal user for Jibri client connections | passw0rd
+`JIBRI_STRIP_DOMAIN_JID` | Prefix domain for strip inside Jibri (please see env.example for details) | muc
+`JIBRI_BREWERY_MUC` | MUC name for the Jibri pool | jibribrewery
+`JIBRI_PENDING_TIMEOUT` | MUC connection timeout | 90
+`JIBRI_LOGS_DIR` | Directory for logs inside Jibri container | /config/logs
+
+For using JIBRI multi-instance, you have to select loopback interfce for each instance manually.
+<details>
+  <summary>Set interface you can in file `/home/jibri/.asoundrc` inside a docker container.</summary>
+
+  Default the first instance has:
+
+  ```
+  ...
+  slave.pcm "hw:Loopback,0,0"
+  ...
+  slave.pcm "hw:Loopback,0,1"
+  ...
+  slave.pcm "hw:Loopback,1,1"
+  ...
+  slave.pcm "hw:Loopback,1,0"
+  ...
+  ```
+
+  For setup the second instance, run container with changed `/home/jibri/.asoundrc`:
+
+  ```
+  ...
+  slave.pcm "hw:Loopback_1,0,0"
+  ...
+  slave.pcm "hw:Loopback_1,0,1"
+  ...
+  slave.pcm "hw:Loopback_1,1,1"
+  ...
+  slave.pcm "hw:Loopback_1,1,0"
+  ...
+  ```
+
+  Also you can use numbering id for set loopback interface. The third instance will have `.asoundrc` that looks like:
+
+  ```
+  ...
+  slave.pcm "hw:2,0,0"
+  ...
+  slave.pcm "hw:2,0,1"
+  ...
+  slave.pcm "hw:2,1,1"
+  ...
+  slave.pcm "hw:2,1,0"
+  ...
+
+  ```
+
+</details>
 
 ### Authentication
 
@@ -212,6 +311,7 @@ Variable | Description | Default value
 `XMPP_MUC_DOMAIN` | XMPP domain for the MUC | muc.meet.jitsi
 `XMPP_INTERNAL_MUC_DOMAIN` | XMPP domain for the internal MUC | internal-muc.meet.jitsi
 `XMPP_GUEST_DOMAIN` | XMPP domain for unauthenticated users | guest.meet.jitsi
+`XMPP_RECORDER_DOMAIN` | Domain for the jibri recorder | recorder.meet.jitsi
 `XMPP_MODULES` | Custom Prosody modules for XMPP_DOMAIN (comma separated) | mod_info,mod_alert
 `XMPP_MUC_MODULES` | Custom Prosody modules for MUC component (comma separated) | mod_info,mod_alert
 `XMPP_INTERNAL_MUC_MODULES` | Custom Prosody modules for internal MUC component (comma separated) | mod_info,mod_alert
@@ -253,7 +353,6 @@ option.
 * Support container replicas (where applicable).
 * Docker Swarm mode.
 * More services:
-  * Jibri.
   * TURN server.
 
 [Jitsi]: https://jitsi.org/
