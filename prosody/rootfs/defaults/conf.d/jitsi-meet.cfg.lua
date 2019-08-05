@@ -69,6 +69,14 @@ VirtualHost "{{ .Env.XMPP_AUTH_DOMAIN }}"
     }
     authentication = "internal_plain"
 
+{{ if .Env.XMPP_RECORDER_DOMAIN }}
+VirtualHost "{{ .Env.XMPP_RECORDER_DOMAIN }}"
+    modules_enabled = {
+      "ping";
+    }
+    authentication = "internal_plain"
+{{ end }}
+
 Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     modules_enabled = {
         "ping";

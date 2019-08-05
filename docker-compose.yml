@@ -27,10 +27,20 @@ services:
             - XMPP_BOSH_URL_BASE
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
+            - XMPP_RECORDER_DOMAIN
             - ETHERPAD_URL_BASE
             - TZ
+            - JIBRI_BREWERY_MUC
+            - JIBRI_PENDING_TIMEOUT
+            - JIBRI_XMPP_USER
+            - JIBRI_XMPP_PASSWORD
+            - JIBRI_RECORDER_USER
+            - JIBRI_RECORDER_PASSWORD
+            - ENABLE_RECORDING
         networks:
             meet.jitsi:
+                aliases:
+                    - ${XMPP_DOMAIN}
 
     # XMPP server
     prosody:
@@ -67,6 +77,7 @@ services:
             - XMPP_MODULES
             - XMPP_MUC_MODULES
             - XMPP_INTERNAL_MUC_MODULES
+            - XMPP_RECORDER_DOMAIN
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
@@ -74,6 +85,10 @@ services:
             - JVB_AUTH_PASSWORD
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
+            - JIBRI_XMPP_USER
+            - JIBRI_XMPP_PASSWORD
+            - JIBRI_RECORDER_USER
+            - JIBRI_RECORDER_PASSWORD
             - JWT_APP_ID
             - JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
@@ -105,6 +120,8 @@ services:
             - JICOFO_AUTH_PASSWORD
             - JVB_BREWERY_MUC
             - JIGASI_BREWERY_MUC
+            - JIBRI_BREWERY_MUC
+            - JIBRI_PENDING_TIMEOUT
             - TZ
         depends_on:
             - prosody

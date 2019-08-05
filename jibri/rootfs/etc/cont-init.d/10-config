@@ -1,0 +1,38 @@
+#!/usr/bin/with-contenv bash
+
+# DISPLAY is necessary for start
+[ -z "${DISPLAY}" ] \
+&& ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
+
+# check loaded snd_aloop module and exit if is not loaded on the host
+[ -z "$(lsmod | grep -om1 snd_aloop)" ] \
+&& ( echo -e "\e[31mERROR: Please load snd-aloop module on the docker host.\e[39m"; kill 1; exit 1 )
+
+# get host's audio group id
+host_audio_group="$(stat -c %g /dev/snd/pcmC0D0p)"
+# try to create group with this id. If group with the id already exists, just skip
+groupadd -g ${host_audio_group} jibri-audio >/dev/null 2>&1
+# include user to the group by id
+usermod -aG ${host_audio_group} jibri
+
+# script for finalizing must have executing bit.
+[ ! -z "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
+&& [ ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
+&& chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}
+
+# set rundom jibri nickname for the instance if is not set
+[ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID=$(date +%N)
+
+# always recreate configs
+tpl /defaults/config.json > /etc/jitsi/jibri/config.json
+tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
+
+# make recording dir
+[ -z "${JIBRI_RECORDING_DIR}" ] && export JIBRI_RECORDING_DIR=/config/recordings
+mkdir -p ${JIBRI_RECORDING_DIR}
+chown -R jibri ${JIBRI_RECORDING_DIR}
+
+# make logs dir
+[ -z "${JIBRI_LOGS_DIR}" ] && export JIBRI_LOGS_DIR=/config/logs
+mkdir -p ${JIBRI_LOGS_DIR}
+chown -R jibri ${JIBRI_LOGS_DIR}

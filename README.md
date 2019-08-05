@@ -43,6 +43,10 @@ and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -
 If you want to enable document sharing via [Etherpad], configure it and run Docker Compose as
 follows: ``docker-compose -f docker-compose.yml -f etherpad.yml up``
 
+If you want to use jibri too, first configure host as described in JItsi BRoadcasting Infrastructure configuration section
+and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jibri.yml up -d``
+or to use jigasi too: ``docker-compose -f docker-compose.yml -f jigasi.yml -f jibri.yml up -d``
+
 ## Architecture
 
 A Jitsi Meet installation can be broken down into the following components:
@@ -52,6 +56,7 @@ A Jitsi Meet installation can be broken down into the following components:
 * A conference focus component
 * A video router (could be more than one)
 * A SIP gateway for audio calls
+* A Broadcasting Infrastructure for recording or streaming a conference.
 
 ![](resources/docker-jitsi-meet.png)
 
@@ -70,6 +75,7 @@ several container images are provided.
 * **jvb**: [Jitsi Videobridge], the video router.
 * **jigasi**: [Jigasi], the SIP (audio only) gateway.
 * **etherpad**: [Etherpad], shared document editing addon.
+* **jibri**: [Jibri], the brooadcasting infrastructure.
 
 ### Design considerations
 
@@ -126,6 +132,110 @@ Variable | Description | Example
 `JIGASI_SIP_SERVER` | SIP server (use the SIP account domain if in doubt) | sip2sip.info
 `JIGASI_SIP_PORT` | SIP server port | 5060
 `JIGASI_SIP_TRANSPORT` | SIP transport | UDP
+
+### JItsi BRoadcasting Infrastructure configuration
+
+Before running Jibri, you need to setup an ALSA loopback device on the host:
+
+For CentOS 7, the module is already compiled with the kernel, so just run:
+
+```
+# configure 5 capture/playback interfaces
+echo "options snd-aloop enable=1,1,1,1,1 index=0,1,2,3,4" > /etc/modprobe.d/alsa-loopback.conf
+# setup autoload the module
+echo "snd_aloop" > /etc/modules-load.d/snd_aloop.conf
+# load the module
+modprobe snd-aloop
+# check that the module is loaded
+lsmod | grep snd_aloop
+```
+
+For Ubuntu:
+
+```
+# install the module
+apt update && apt install linux-image-extra-virtual
+# configure 5 capture/playback interfaces
+echo "options snd-aloop enable=1,1,1,1,1 index=0,1,2,3,4" > /etc/modprobe.d/alsa-loopback.conf
+# setup autoload the module
+echo "snd-aloop" >> /etc/modules
+# check that the module is loaded
+lsmod | grep snd_aloop
+```
+
+NOTE: if you are running on AWS you may need to reboot your machine to ue the generic kernel instead
+of the "aws" kernel.
+
+If you want to enable Jibri these options are required:
+
+Variable | Description | Example
+--- | --- | ---
+`ENABLE_RECORDING` | Enable recording conference to local disk | 1
+
+Extended Jibri configuration:
+
+Variable | Description | Example
+--- | --- | ---
+`JIBRI_RECORDER_USER` | Internal recorder user for Jibri client connections | recorder
+`JIBRI_RECORDER_PASSWORD` | Internal recorder password for Jibri client connections | passw0rd
+`JIBRI_RECORDING_DIR` | Directory for recordings inside Jibri container | /config/recordings
+`JIBRI_FINALIZE_RECORDING_SCRIPT_PATH` | The finalizing script. Will run after recording is complete | /config/finalize.sh
+`JIBRI_XMPP_USER` | Internal user for Jibri client connections. | jibri
+`JIBRI_RECORDER_PASSWORD` | Internal user for Jibri client connections | passw0rd
+`JIBRI_STRIP_DOMAIN_JID` | Prefix domain for strip inside Jibri (please see env.example for details) | muc
+`JIBRI_BREWERY_MUC` | MUC name for the Jibri pool | jibribrewery
+`JIBRI_PENDING_TIMEOUT` | MUC connection timeout | 90
+`JIBRI_LOGS_DIR` | Directory for logs inside Jibri container | /config/logs
+
+For using multiple Jibri instances, you have to select different loopback interfces for each instance manually.
+
+<details>
+  <summary>Set interface you can in file `/home/jibri/.asoundrc` inside a docker container.</summary>
+
+  Default the first instance has:
+
+  ```
+  ...
+  slave.pcm "hw:Loopback,0,0"
+  ...
+  slave.pcm "hw:Loopback,0,1"
+  ...
+  slave.pcm "hw:Loopback,1,1"
+  ...
+  slave.pcm "hw:Loopback,1,0"
+  ...
+  ```
+
+  For setup the second instance, run container with changed `/home/jibri/.asoundrc`:
+
+  ```
+  ...
+  slave.pcm "hw:Loopback_1,0,0"
+  ...
+  slave.pcm "hw:Loopback_1,0,1"
+  ...
+  slave.pcm "hw:Loopback_1,1,1"
+  ...
+  slave.pcm "hw:Loopback_1,1,0"
+  ...
+  ```
+
+  Also you can use numbering id for set loopback interface. The third instance will have `.asoundrc` that looks like:
+
+  ```
+  ...
+  slave.pcm "hw:2,0,0"
+  ...
+  slave.pcm "hw:2,0,1"
+  ...
+  slave.pcm "hw:2,1,1"
+  ...
+  slave.pcm "hw:2,1,0"
+  ...
+
+  ```
+
+</details>
 
 ### Authentication
 
@@ -246,6 +356,7 @@ Variable | Description | Default value
 `XMPP_MUC_DOMAIN` | XMPP domain for the MUC | muc.meet.jitsi
 `XMPP_INTERNAL_MUC_DOMAIN` | XMPP domain for the internal MUC | internal-muc.meet.jitsi
 `XMPP_GUEST_DOMAIN` | XMPP domain for unauthenticated users | guest.meet.jitsi
+`XMPP_RECORDER_DOMAIN` | Domain for the jibri recorder | recorder.meet.jitsi
 `XMPP_MODULES` | Custom Prosody modules for XMPP_DOMAIN (comma separated) | info,alert
 `XMPP_MUC_MODULES` | Custom Prosody modules for MUC component (comma separated) | info,alert
 `XMPP_INTERNAL_MUC_MODULES` | Custom Prosody modules for internal MUC component (comma separated) | info,alert
@@ -293,7 +404,6 @@ option.
 * Support container replicas (where applicable).
 * Docker Swarm mode.
 * More services:
-  * Jibri.
   * TURN server.
 
 [Jitsi]: https://jitsi.org/
