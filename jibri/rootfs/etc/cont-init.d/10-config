@@ -8,10 +8,12 @@
 [ -z "$(lsmod |grep -om1 snd_aloop)" ] \
 && ( echo -e "\e[31mERROR: Please load snd-aloop module on the docker host.\e[39m"; kill 1; exit 1 )
 
-# multi-distributive mod for alsa driver. the changes will apply only to the container.
-# if the group of sound device is different then "audio" (gid=29 in debian) then change the group.
-[ "$(stat -c %G /dev/snd/pcmC0D0p)" != "audio" ] \
-&& chown -R .audio /dev/snd/*
+# get host's audio group id
+host_audio_group="$(stat -c %g /dev/snd/pcmC0D0p)"
+# try to create group with this id. If group with the id already exists, just skip
+groupadd -g ${host_audio_group} jibri-audio >/dev/null 2>&1
+# include user to the group by id
+usermod -aG ${host_audio_group} jibri
 
 # script for finalizing must have executing bit.
 [ ! -z "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
