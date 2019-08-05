@@ -20,7 +20,7 @@ services:
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
-            - PUBLIC_DOMAIN
+            - PUBLIC_URL
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE=http://xmpp.meet.jitsi:5280

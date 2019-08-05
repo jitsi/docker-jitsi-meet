@@ -91,7 +91,7 @@ Variable | Description | Example
 `HTTP_PORT` | Exposed port for HTTP traffic | 8000
 `HTTPS_PORT` | Exposed port for HTTPS traffic | 8443
 `DOCKER_HOST_ADDRESS` | IP address of the Docker host, needed for LAN environments | 192.168.1.1
-`PUBLIC_DOMAIN` | Public domain name of the web service | meet.example.com
+`PUBLIC_URL` | Public url for the web service | https://meet.example.com
 
 **NOTE**: The mobile apps won't work with self-signed certificates (the default)
 see below for instructions on how to obtain a proper certificate with Let's Encrypt.
