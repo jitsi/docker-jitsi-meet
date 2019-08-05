@@ -37,6 +37,10 @@ follow these steps:
 If you want to use jigasi too, first configure your env file with SIP credentials
 and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jigasi.yml up -d``
 
+If you want to use jibri too, first configure host as described in JItsi BRoadcasting Infrastructure configuration section
+and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jibri.yml up -d``
+or to use jigasi too: ``docker-compose -f docker-compose.yml -f jigasi.yml -f jibri.yml up -d``
+
 ## Architecture
 
 A Jitsi Meet installation can be broken down into the following components:
