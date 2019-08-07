@@ -1,8 +1,8 @@
 FROM jitsi/base-java
 
 ARG JITSI_RELEASE=unstable
-ARG CHROME_RELEASE=75.0.3770.142-1
-ARG CHROMEDRIVER_MAJOR_RELEASE=75
+ARG CHROME_RELEASE=latest
+ARG CHROMEDRIVER_MAJOR_RELEASE=latest
 
 RUN \
 	echo "deb https://download.jitsi.org $JITSI_RELEASE/" > /etc/apt/sources.list.d/jitsi.list \
