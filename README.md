@@ -66,6 +66,7 @@ several container images are provided.
 * **jicofo**: [Jicofo], the XMPP focus component.
 * **jvb**: [Jitsi Videobridge], the video router.
 * **jigasi**: [Jigasi], the SIP (audio only) gateway.
+* **etherpad**: [Etherpad], shared document editing addon.
 
 ### Design considerations
 
@@ -252,7 +253,7 @@ Variable | Description | Default value
 `DISABLE_HTTPS` | Disable HTTPS, this can be useful if TLS connections are going to be handled outside of this setup | 1
 `ENABLE_HTTP_REDIRECT` | Redirects HTTP traffic to HTTPS | 1
 
-### Running on a LAN environment
+### Running behind NAT or on a LAN environment
 
 If running in a LAN environment (as well as on the public Internet, via NAT) is a requirement,
 the ``DOCKER_HOST_ADDRESS`` should be set. This way, the Videobridge will advertise the IP address
