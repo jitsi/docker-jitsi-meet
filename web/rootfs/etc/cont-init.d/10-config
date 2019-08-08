@@ -97,5 +97,12 @@ if [[ ! -f /config/interface_config.js ]]; then
             /config/interface_config.js
     fi
 
+    if [[ ! -z "$JVB_OCTO_REGION" ]]; then
+        sed -i \
+            -e "/testing: {/a\      // Enable jvb cascading\n      octo: {\n          probability: 1\n      }," \
+            -e "s,// userRegion:.*,userRegion: '<\!--#echo var="http_x_user_region" default="us-east-1" -->'," \
+            /config/config.js
+    fi
+
 fi
 
