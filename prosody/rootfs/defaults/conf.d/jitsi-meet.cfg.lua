@@ -45,7 +45,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         "auth_cyrus";
         {{end}}
     }
-
+    {{ if .Env.ENABLE_SPEAKER_STATS | default "0" | toBool }}
+    speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
+    {{ end }}
     c2s_require_encryption = false
 
 {{ if and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) }}
@@ -60,6 +62,11 @@ VirtualHost "{{ .Env.XMPP_AUTH_DOMAIN }}"
         certificate = "/config/certs/{{ .Env.XMPP_AUTH_DOMAIN }}.crt";
     }
     authentication = "internal_plain"
+
+{{ if .Env.ENABLE_SPEAKER_STATS | default "0" | toBool }}
+Component "speakerstats.{{ .Env.XMPP_DOMAIN }}" "speakerstats_component"
+    muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+{{ end }}
 
 Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     modules_enabled = {

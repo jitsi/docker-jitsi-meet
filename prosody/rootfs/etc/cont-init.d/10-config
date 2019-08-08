@@ -29,6 +29,8 @@ if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
     chown -R prosody /prosody-plugins-custom
 fi
 
+grep -q speakerstats <<< ${XMPP_MUC_MODULES} && export ENABLE_SPEAKER_STATS=1
+
 if [[ ! -f $PROSODY_CFG ]]; then
     cp -r /defaults/* /config
     tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua
