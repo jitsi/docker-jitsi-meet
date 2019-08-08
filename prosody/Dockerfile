@@ -1,11 +1,5 @@
 FROM jitsi/base
 
-ADD https://raw.githubusercontent.com/jitsi/jitsi-meet/fc129d9849ca5e26245d54df6451931b6c179987/resources/prosody-plugins/token/util.lib.lua /prosody-plugins/token/util.lib.lua
-ADD https://raw.githubusercontent.com/jitsi/jitsi-meet/fc129d9849ca5e26245d54df6451931b6c179987/resources/prosody-plugins/mod_token_verification.lua /prosody-plugins/mod_token_verification.lua
-ADD https://raw.githubusercontent.com/jitsi/jitsi-meet/fc129d9849ca5e26245d54df6451931b6c179987/resources/prosody-plugins/mod_auth_token.lua /prosody-plugins/mod_auth_token.lua
-
-RUN sed -i s/hook/hook_global/g /prosody-plugins/mod_auth_token.lua
-
 RUN \
     apt-dpkg-wrap apt-get update \
     && apt-dpkg-wrap apt-get install -t stretch-backports -y \
@@ -31,7 +25,18 @@ RUN \
       libssl1.0-dev \
       liblua5.2-dev \
     && apt-cleanup \
-    && rm -rf /etc/prosody
+    && rm -rf /etc/prosody /var/cache/apt
+
+RUN \
+    apt-dpkg-wrap apt-get update \
+    && apt-dpkg-wrap apt-get -d install -y jitsi-meet-tokens \
+    && dpkg -x /var/cache/apt/archives/jitsi-meet-tokens*.deb /tmp \
+    && mv /tmp/usr/share/jitsi-meet/prosody-plugins /prosody-plugins \
+    && apt-cleanup \
+    && rm -rf /tmp/usr /var/cache/apt
+
+RUN \
+    sed -i s/hook/hook_global/g /prosody-plugins/mod_auth_token.lua
 
 COPY rootfs/ /
 
