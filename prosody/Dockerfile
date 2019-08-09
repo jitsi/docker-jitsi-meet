@@ -14,6 +14,7 @@ RUN \
       luarocks \
       git \
       gcc \
+      patch \
     && luarocks install cyrussasl 1.1.0-1 \
     && luarocks install lua-cjson 2.1.0-1 \
     && luarocks install luajwtjitsi 1.3-7 \
@@ -36,7 +37,8 @@ RUN \
     && rm -rf /tmp/usr /var/cache/apt
 
 RUN \
-    sed -i s/hook/hook_global/g /prosody-plugins/mod_auth_token.lua
+    sed -i s/hook/hook_global/g /prosody-plugins/mod_auth_token.lua \
+    && patch -d /usr/lib/prosody/modules/muc -p0 < /prosody-plugins/muc_owner_allow_kick.patch
 
 COPY rootfs/ /
 
