@@ -8,9 +8,6 @@ if [[ ! -f /config/logging.properties ]]; then
     cp /defaults/logging.properties /config
 fi
 
-mkdir -pm777 /tmp/transcripts
-chown jigasi:jitsi /tmp/transcripts
-
 # Create Google Cloud Credentials
 if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || $ENABLE_TRANSCRIPTIONS == "true" ]] && [[ ! -f /config/key.json ]]; then
     if [[ -z $GC_PROJECT_ID || -z $GC_PRIVATE_KEY_ID || -z $GC_PRIVATE_KEY || -z $GC_CLIENT_EMAIL || -z $GC_CLIENT_ID || -z $GC_CLIENT_CERT_URL ]]; then

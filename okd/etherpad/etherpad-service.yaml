@@ -1,0 +1,17 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: jitsi
+    name: etherpad
+  spec:
+    ports:
+    - port: 9001
+      targetPort: 9001
+    selector:
+      app: jitsi
+      name: etherpad
+  status:
+    loadBalancer: {}

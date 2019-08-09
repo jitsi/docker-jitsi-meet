@@ -220,6 +220,34 @@ parameters:
 
 
 #
+# Transcription
+#
+- name: ENABLE_TRANSCRIPTIONS
+  displayName: Enable Jigasi transcription
+- name: JIGASI_TRANSCRIBER_RECORD_AUDIO
+  displayName: Jigasi will recordord an audio when transcriber is on
+  description: Default false
+- name: JIGASI_TRANSCRIBER_SEND_TXT
+  displayName: Jigasi will send transcribed text to the chat when transcriber is on
+  description: Default false
+- name: JIGASI_TRANSCRIBER_ADVERTISE_URL
+  displayName: Jigasi post to the chat an url with transcription file
+  description: Default false
+- name: GC_PROJECT_ID
+  displayName: project_id from Google Cloud Credetials
+- name: GC_PRIVATE_KEY_ID
+  displayName: private_key_id from Google Cloud Credetials
+- name: GC_PRIVATE_KEY
+  displayName: private_key from Google Cloud Credetials
+- name: GC_CLIENT_EMAIL
+  displayName: client_email from Google Cloud Credetials
+- name: GC_CLIENT_ID
+  displayName: client_id from Google Cloud Credetials
+- name: GC_CLIENT_CERT_URL
+  displayName: client_x509_cert_url from Google Cloud Credetials
+
+
+#
 # Let's Encrypt configuration
 #
 - name: ENABLE_LETSENCRYPT

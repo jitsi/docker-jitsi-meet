@@ -1,0 +1,42 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: jitsi
+    name: etherpad
+  spec:
+    replicas: 1
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: jitsi
+          name: etherpad
+      spec:
+        containers:
+          image: jitsi/etherpad
+          imagePullPolicy: Always
+          name: etherpad
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 9001
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            timeoutSeconds: 60
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 9001
+            initialDelaySeconds: 120
+            periodSeconds: 10
+          ports:
+          - containerPort: 9001
+          resources: {}
+        restartPolicy: Always
+    triggers:
+    - type: ConfigChange
+  status: {}

@@ -29,6 +29,13 @@ objects:
           imagePullPolicy: Always
           name: jigasi
           resources: {}
+          volumeMounts:
+          - mountPath: /tmp/transcripts
+            name: jigasi-transcripts
+        volumes:
+        - name: jigasi-transcripts
+          persistentVolumeClaim:
+            claimName: jigasi-transcripts-volume
         restartPolicy: Always
     triggers:
     - type: ConfigChange

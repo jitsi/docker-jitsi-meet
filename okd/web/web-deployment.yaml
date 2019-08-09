@@ -25,6 +25,8 @@ objects:
           env:
           - name: XMPP_BOSH_URL_BASE
             value: http://$(PROSODY_SERVICE_HOST):$(PROSODY_SERVICE_PORT_5280)
+          - name: ETHERPAD_URL_BASE
+            value: http://$(ETHERPAD_SERVICE_HOST):$(ETHERPAD_SERVICE_PORT)
           image: jitsi/web
           imagePullPolicy: Always
           name: web
@@ -35,10 +37,15 @@ objects:
           volumeMounts:
           - mountPath: /etc/letsencrypt
             name: web-letsencrypt
+          - mountPath: /usr/share/jitsi-meet/transcripts
+            name: jigasi-transcripts
         volumes:
         - name: web-letsencrypt
           persistentVolumeClaim:
             claimName: web-letsencrypt-volume
+        - name: jigasi-transcripts
+          persistentVolumeClaim:
+            claimName: jigasi-transcripts-volume
     triggers:
     - type: ConfigChange
   status: {}
