@@ -37,7 +37,7 @@ services:
         networks:
             meet.jitsi:
                 aliases:
-                    - meet.jitsi
+                    - ${XMPP_DOMAIN}
 
     # XMPP server
     prosody:
