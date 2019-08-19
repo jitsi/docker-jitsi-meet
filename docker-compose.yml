@@ -41,6 +41,8 @@ services:
             - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - GLOBAL_MODULES
+            - GLOBAL_CONFIG
             - LDAP_URL
             - LDAP_BASE
             - LDAP_BINDDN
