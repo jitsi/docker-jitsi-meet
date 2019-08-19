@@ -72,6 +72,11 @@ services:
             - JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
             - JWT_ACCEPTED_AUDIENCES
+            - JWT_ASAP_KEYSERVER
+            - JWT_ALLOW_EMPTY
+            - JWT_AUTH_TYPE
+            - JWT_TOKEN_AUTH_MODULE
+            - LOG_LEVEL
             - TZ
         networks:
             meet.jitsi:

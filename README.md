@@ -180,6 +180,10 @@ Variable | Description | Example
 `JWT_APP_SECRET` | Application secret known only to your token | my_jitsi_app_secret
 `JWT_ACCEPTED_ISSUERS` | (Optional) Set asap_accepted_issuers as a comma separated list | my_web_client,my_app_client
 `JWT_ACCEPTED_AUDIENCES` | (Optional) Set asap_accepted_audiences as a comma separated list | my_server1,my_server2
+`JWT_ASAP_KEYSERVER` | (Optional) Set asap_keyserver to a url where public keys can be found | https://example.com/asap
+`JWT_ALLOW_EMPTY` | (Optional) Allow anonymous users with no JWT while validating JWTs when provided | 0
+`JWT_AUTH_TYPE` | (Optional) Controls which module is used for processing incoming JWTs | token
+`JWT_TOKEN_AUTH_MODULE` | (Optional) Controls which module is used for validating JWTs | token_verification
 
 This can be tested using the [jwt.io] debugger. Use the following samople payload:
 
@@ -237,6 +241,7 @@ Variable | Description | Default value
 `JIGASI_HEALTH_CHECK_INTERVAL` | Interval of healthcheck in milliseconds | 300000
 `DISABLE_HTTPS` | Disable HTTPS, this can be useful if TLS connections are going to be handled outside of this setup | 1
 `ENABLE_HTTP_REDIRECT` | Redirects HTTP traffic to HTTPS | 1
+`LOG_LEVEL` | Controls which logs are output from prosody and associated modules | info
 
 ### Running on a LAN environment
 
