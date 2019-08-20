@@ -45,6 +45,8 @@ services:
             - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - GLOBAL_MODULES
+            - GLOBAL_CONFIG
             - LDAP_URL
             - LDAP_BASE
             - LDAP_BINDDN
@@ -76,6 +78,11 @@ services:
             - JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
             - JWT_ACCEPTED_AUDIENCES
+            - JWT_ASAP_KEYSERVER
+            - JWT_ALLOW_EMPTY
+            - JWT_AUTH_TYPE
+            - JWT_TOKEN_AUTH_MODULE
+            - LOG_LEVEL
             - TZ
         networks:
             meet.jitsi:
