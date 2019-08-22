@@ -17,9 +17,10 @@ build:
 	$(MAKE) BUILD_ARGS=$(BUILD_ARGS) JITSI_RELEASE=$(JITSI_RELEASE) -C $(JITSI_SERVICE) build
 
 tag:
-	docker tag jitsi/$(JITSI_SERVICE):latest $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
+	docker tag $(JITSI_REPO)/$(JITSI_SERVICE):latest $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
 
 push:
+	docker push $(JITSI_REPO)/$(JITSI_SERVICE):latest
 	docker push $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
 
 %-all:
