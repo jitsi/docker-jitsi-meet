@@ -5,7 +5,7 @@ ARG CHROMEDRIVER_MAJOR_RELEASE=latest
 
 RUN \
 	apt-dpkg-wrap apt-get update \
-	&& apt-dpkg-wrap apt-get install -y jibri jitsi-upload-integrations \
+	&& apt-dpkg-wrap apt-get install -y jibri \
 	&& apt-cleanup
 
 RUN \
@@ -33,6 +33,12 @@ RUN \
 	| zcat >> /usr/bin/chromedriver \
 	&& chmod +x /usr/bin/chromedriver \
 	&& chromedriver --version
+
+RUN \
+        [ "$JITSI_RELEASE" = "unstable" ] && \
+        && apt-dpkg-wrap apt-get update \
+        && apt-dpkg-wrap apt-get install -y jitsi-upload-integrations \
+        && apt-cleanup
 
 COPY rootfs/ /
 
