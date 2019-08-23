@@ -35,7 +35,10 @@ follow these steps:
   a different port, in case you edited the compose file).
 
 If you want to use jigasi too, first configure your env file with SIP credentials
-and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jigasi.yml up -d``
+and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jigasi.yml up``
+
+If you want to enable document sharing via [Etherpad], configure it and run Docker Compose as
+follows: ``docker-compose -f docker-compose.yml -f etherpad.yml up``
 
 If you want to use jibri too, first configure host as described in JItsi BRoadcasting Infrastructure configuration section
 and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jibri.yml up -d``
@@ -69,6 +72,7 @@ several container images are provided.
 * **jvb**: [Jitsi Videobridge], the video router.
 * **jigasi**: [Jigasi], the SIP (audio only) gateway.
 * **jibri**: [Jibri], the BRoadcasting Infrastructure.
+* **etherpad**: [Etherpad], shared document editing addon.
 
 ### Design considerations
 
@@ -95,6 +99,7 @@ Variable | Description | Example
 `HTTP_PORT` | Exposed port for HTTP traffic | 8000
 `HTTPS_PORT` | Exposed port for HTTPS traffic | 8443
 `DOCKER_HOST_ADDRESS` | IP address of the Docker host, needed for LAN environments | 192.168.1.1
+`PUBLIC_URL` | Public url for the web service | https://meet.example.com
 
 **NOTE**: The mobile apps won't work with self-signed certificates (the default)
 see below for instructions on how to obtain a proper certificate with Let's Encrypt.
@@ -283,6 +288,10 @@ Variable | Description | Example
 `JWT_APP_SECRET` | Application secret known only to your token | my_jitsi_app_secret
 `JWT_ACCEPTED_ISSUERS` | (Optional) Set asap_accepted_issuers as a comma separated list | my_web_client,my_app_client
 `JWT_ACCEPTED_AUDIENCES` | (Optional) Set asap_accepted_audiences as a comma separated list | my_server1,my_server2
+`JWT_ASAP_KEYSERVER` | (Optional) Set asap_keyserver to a url where public keys can be found | https://example.com/asap
+`JWT_ALLOW_EMPTY` | (Optional) Allow anonymous users with no JWT while validating JWTs when provided | 0
+`JWT_AUTH_TYPE` | (Optional) Controls which module is used for processing incoming JWTs | token
+`JWT_TOKEN_AUTH_MODULE` | (Optional) Controls which module is used for validating JWTs | token_verification
 
 This can be tested using the [jwt.io] debugger. Use the following samople payload:
 
@@ -302,6 +311,28 @@ This can be tested using the [jwt.io] debugger. Use the following samople payloa
 }
 ```
 
+### Shared document editing using Etherpad
+
+You can collaboratively edit a document via [Etherpad]. In order to enable it, set the config options bellow and run
+Docker Compose with the additional config file `etherpad.yml`.
+
+Here are the required options:
+
+Variable | Description | Example
+--- | --- | ---
+`ETHERPAD_URL_BASE` | Set etherpad-lite URL | http://etherpad.meet.jitsi:9001
+
+### Transcription configuration
+
+If you want to enable the Transcribing function, these options are required:
+
+Variable | Description | Example
+--- | --- | ---
+`ENABLE_TRANSCRIPTIONS` | Enable Jigasi transcription in a conference | 1
+`GOOGLE_APPLICATION_CREDENTIALS` | Credentials for connect to Cloud Google API from Jigasi. Path located inside the container | /config/key.json
+
+For setting `GOOGLE_APPLICATION_CREDENTIALS` please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
+
 ### Advanced configuration
 
 These configuration options are already set and generally don't need to be changed.
@@ -319,6 +350,8 @@ Variable | Description | Default value
 `XMPP_MODULES` | Custom Prosody modules for XMPP_DOMAIN (comma separated) | mod_info,mod_alert
 `XMPP_MUC_MODULES` | Custom Prosody modules for MUC component (comma separated) | mod_info,mod_alert
 `XMPP_INTERNAL_MUC_MODULES` | Custom Prosody modules for internal MUC component (comma separated) | mod_info,mod_alert
+`GLOBAL_MODULES` | Custom prosodule modules to load in global configuration (comma separated) | mod_statistics,mod_alert
+`GLOBAL_CONFIG` | Custom configuration string with escaped newlines | foo = bar;\nkey = val;
 `JICOFO_COMPONENT_SECRET` | XMPP component password for Jicofo | s3cr37
 `JICOFO_AUTH_USER` | XMPP user for Jicofo client connections | focus
 `JICOFO_AUTH_PASSWORD` | XMPP password for Jicofo client connections | passw0rd
@@ -339,10 +372,14 @@ Variable | Description | Default value
 `JIGASI_SIP_KEEP_ALIVE_METHOD` | Keepalive method | OPTIONS
 `JIGASI_HEALTH_CHECK_SIP_URI` | Health-check extension. Jigasi will call it for healthcheck | keepalive
 `JIGASI_HEALTH_CHECK_INTERVAL` | Interval of healthcheck in milliseconds | 300000
+`JIGASI_TRANSCRIBER_RECORD_AUDIO` | Jigasi will recordord an audio when transcriber is on | true
+`JIGASI_TRANSCRIBER_SEND_TXT` | Jigasi will send transcribed text to the chat when transcriber is on | true
+`JIGASI_TRANSCRIBER_ADVERTISE_URL` | Jigasi post to the chat an url with transcription file | true
 `DISABLE_HTTPS` | Disable HTTPS, this can be useful if TLS connections are going to be handled outside of this setup | 1
 `ENABLE_HTTP_REDIRECT` | Redirects HTTP traffic to HTTPS | 1
+`LOG_LEVEL` | Controls which logs are output from prosody and associated modules | info
 
-### Running on a LAN environment
+### Running behind NAT or on a LAN environment
 
 If running in a LAN environment (as well as on the public Internet, via NAT) is a requirement,
 the ``DOCKER_HOST_ADDRESS`` should be set. This way, the Videobridge will advertise the IP address
@@ -373,4 +410,5 @@ option.
 [ICE]: https://en.wikipedia.org/wiki/Interactive_Connectivity_Establishment
 [STUN]: https://en.wikipedia.org/wiki/STUN
 [jwt.io]: https://jwt.io/#debugger-io
+[Etherpad]: https://github.com/ether/etherpad-lite
 

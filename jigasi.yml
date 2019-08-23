@@ -8,12 +8,14 @@ services:
             - '${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}:${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}/udp'
         volumes:
             - ${CONFIG}/jigasi:/config
+            - ${CONFIG}/transcripts:/tmp/transcripts
         environment:
             - ENABLE_AUTH
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
             - XMPP_DOMAIN
+            - PUBLIC_URL
             - JIGASI_SIP_URI
             - JIGASI_SIP_PASSWORD
             - JIGASI_SIP_SERVER
@@ -28,6 +30,11 @@ services:
             - JIGASI_HEALTH_CHECK_INTERVAL
             - JIGASI_SIP_KEEP_ALIVE_METHOD
             - JIGASI_ENABLE_SDES_SRTP
+            - ENABLE_TRANSCRIPTIONS
+            - JIGASI_TRANSCRIBER_ADVERTISE_URL
+            - JIGASI_TRANSCRIBER_RECORD_AUDIO
+            - JIGASI_TRANSCRIBER_SEND_TXT
+            - GOOGLE_APPLICATION_CREDENTIALS
             - TZ
         depends_on:
             - prosody

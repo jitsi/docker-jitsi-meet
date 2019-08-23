@@ -7,3 +7,6 @@ fi
 if [[ ! -f /config/logging.properties ]]; then
     cp /defaults/logging.properties /config
 fi
+
+mkdir -pm777 /tmp/transcripts
+chown jigasi:jitsi /tmp/transcripts
