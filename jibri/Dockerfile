@@ -1,12 +1,10 @@
 FROM jitsi/base-java
 
-ARG JITSI_RELEASE=unstable
 ARG CHROME_RELEASE=latest
 ARG CHROMEDRIVER_MAJOR_RELEASE=latest
 
 RUN \
-	echo "deb https://download.jitsi.org $JITSI_RELEASE/" > /etc/apt/sources.list.d/jitsi.list \
-	&& apt-dpkg-wrap apt-get update \
+	apt-dpkg-wrap apt-get update \
 	&& apt-dpkg-wrap apt-get install -y jibri jitsi-upload-integrations \
 	&& apt-cleanup
 
