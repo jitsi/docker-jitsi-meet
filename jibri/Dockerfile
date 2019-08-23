@@ -35,7 +35,7 @@ RUN \
 	&& chromedriver --version
 
 RUN \
-        [ "$JITSI_RELEASE" = "unstable" ] && \
+        [ "$JITSI_RELEASE" = "unstable" ] \
         && apt-dpkg-wrap apt-get update \
         && apt-dpkg-wrap apt-get install -y jitsi-upload-integrations \
         && apt-cleanup
