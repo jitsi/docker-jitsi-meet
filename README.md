@@ -53,7 +53,7 @@ A Jitsi Meet installation can be broken down into the following components:
 * A conference focus component
 * A video router (could be more than one)
 * A SIP gateway for audio calls
-* A BRoadcasting Infrastructure for recording or streaming a conference.
+* A broadcasting infrastructure for recording or streaming a conference.
 
 ![](resources/docker-jitsi-meet.png)
 
@@ -71,7 +71,7 @@ several container images are provided.
 * **jicofo**: [Jicofo], the XMPP focus component.
 * **jvb**: [Jitsi Videobridge], the video router.
 * **jigasi**: [Jigasi], the SIP (audio only) gateway.
-* **jibri**: [Jibri], the BRoadcasting Infrastructure.
+* **jibri**: [Jibri], the broadcasting infrastructure.
 * **etherpad**: [Etherpad], shared document editing addon.
 
 ### Design considerations
