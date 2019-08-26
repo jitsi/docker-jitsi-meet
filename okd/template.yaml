@@ -14,6 +14,9 @@ parameters:
   displayName: Timezone
   required: true
   value: Europe/Amsterdam
+- name: LOG_LEVEL
+  displayName: Log level
+  description: Controls which logs are output from prosody and associated modules
 
 
 #
@@ -51,6 +54,14 @@ parameters:
 - name: JWT_ACCEPTED_AUDIENCES
   displayName: Set asap_accepted_audiences as a comma separated list
   value: "my_server"
+- name: JWT_ASAP_KEYSERVER
+  displayName: Set asap_keyserver to a url where public keys can be found
+- name: JWT_ALLOW_EMPTY
+  displayName: Allow anonymous users with no JWT while validating JWTs when provided
+- name: JWT_AUTH_TYPE
+  displayName: Controls which module is used for processing incoming JWTs
+- name: JWT_TOKEN_AUTH_MODULE
+  displayName: Controls which module is used for validating JWTs
 
 - name: LDAP_URL
   displayName: LDAP url for connection
@@ -154,6 +165,10 @@ parameters:
   value: passw0rd
 
 
+- name: GLOBAL_CONFIG
+  displayName: Custom configuration string with escaped newlines
+- name: GLOBAL_MODULES
+  displayName: Custom Prosody modules to load in global configuration (comma separated)
 - name: XMPP_MODULES
   displayName: Custom Prosody modules for XMPP_DOMAIN (comma separated)
 - name: XMPP_MUC_MODULES
