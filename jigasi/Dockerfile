@@ -1,4 +1,5 @@
-FROM jitsi/base-java
+ARG JITSI_REPO=jitsi
+FROM ${JITSI_REPO}/base-java
 
 RUN \
 	apt-dpkg-wrap apt-get update && \

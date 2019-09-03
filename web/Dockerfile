@@ -1,4 +1,5 @@
-FROM jitsi/base
+ARG JITSI_REPO=jitsi
+FROM ${JITSI_REPO}/base
 
 RUN \
 	apt-dpkg-wrap apt-get update && \
