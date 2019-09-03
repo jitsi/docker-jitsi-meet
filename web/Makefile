@@ -1,4 +1,4 @@
 build:
-	docker build $(BUILD_ARGS) -t jitsi/web .
+	docker build $(BUILD_ARGS) -t $(JITSI_REPO)/web .
 
 .PHONY: build
