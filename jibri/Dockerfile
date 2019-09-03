@@ -1,4 +1,5 @@
-FROM jitsi/base-java
+ARG JITSI_REPO=jitsi
+FROM ${JITSI_REPO}/base-java
 
 ARG CHROME_RELEASE=latest
 ARG CHROMEDRIVER_MAJOR_RELEASE=latest
