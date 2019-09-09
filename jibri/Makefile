@@ -1,4 +1,4 @@
 build:
-	docker build $(BUILD_ARGS) -t jitsi/jibri .
+	docker build $(BUILD_ARGS) -t $(JITSI_REPO)/jibri .
 
 .PHONY: build
