@@ -1,0 +1,24 @@
+#!/usr/bin/with-contenv bash
+
+# make our folders
+mkdir -p \
+    /config/nginx/site-confs \
+    /run \
+    /var/lib/nginx/tmp/client_body \
+    /var/tmp/nginx
+
+# copy config files
+if [[ ! -f /config/nginx/nginx.conf ]]; then
+    cp /defaults/nginx.conf /config/nginx/nginx.conf
+fi
+
+if [[ ! -f /config/nginx/spot.conf ]]; then
+    cp /defaults/spot.conf /config/nginx/spot.conf
+fi
+
+if [[ ! -f /config/nginx/site-confs/default ]]; then
+    cp /defaults/default /config/nginx/site-confs/default
+fi
+
+tpl /defaults/config.js > /config/config.js
+cp /config/config.js /usr/share/spot-client/dist/config/config.js

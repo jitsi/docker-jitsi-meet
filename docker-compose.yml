@@ -86,6 +86,7 @@ services:
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
             - RESOLUTION_WIDTH_MIN
+            - SPOT_URL_BASE
             - START_AUDIO_ONLY
             - START_AUDIO_MUTED
             - START_WITH_AUDIO_MUTED

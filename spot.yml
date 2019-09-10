@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+    spot:
+        image: jitsi/spot
+        volumes:
+            - ${CONFIG}/spot:/config
+        environment:
+            - PUBLIC_URL
+            - SPOT_BG_IMAGE
+            - SPOT_GOOGLE_CALENDAR_ID
+            - SPOT_OUTLOOK_CALENDAR_ID
+            - XMPP_DOMAIN
+            - XMPP_MUC_DOMAIN
+        networks:
+            meet.jitsi:
+                aliases:
+                    - spot.meet.jitsi
