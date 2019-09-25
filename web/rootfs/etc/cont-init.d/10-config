@@ -87,7 +87,13 @@ if [[ ! -f /config/config.js ]]; then
 
     if [[ $JVB_ENABLE_STUN_TURN -eq 1 || "$JVB_ENABLE_STUN_TURN" == "true" ]]; then
         sed -i \
-             -e "s#// useStunTurn:.*#useStunTurn: true,#" \
+             -e "s#// useStunTurn:.*, //jvb#useStunTurn: true, //jvb#" \
+             /config/config.js
+    fi
+
+    if [[ $JVB_ENABLE_P2P_STUN_TURN -eq 1 || "$JVB_ENABLE_P2P_STUN_TURN" == "true" ]]; then
+        sed -i \
+             -e "s#// useStunTurn:.*, //p2p#useStunTurn: true, //p2p#" \
              /config/config.js
     fi
 fi
