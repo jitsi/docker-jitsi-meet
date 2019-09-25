@@ -17,6 +17,8 @@ services:
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
             - ENABLE_TRANSCRIPTIONS
+            - JVB_ENABLE_STUN_TURN
+            - JVB_ENABLE_P2P_STUN_TURN
             - DISABLE_HTTPS
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
