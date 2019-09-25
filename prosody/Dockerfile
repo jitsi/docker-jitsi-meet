@@ -34,6 +34,9 @@ RUN \
     && apt-dpkg-wrap apt-get -d install -y jitsi-meet-tokens \
     && dpkg -x /var/cache/apt/archives/jitsi-meet-tokens*.deb /tmp \
     && mv /tmp/usr/share/jitsi-meet/prosody-plugins /prosody-plugins \
+    && wget \
+      -O /usr/lib/prosody/modules/mod_turncredentials.lua \
+      https://hg.prosody.im/prosody-modules/raw-file/tip/mod_turncredentials/mod_turncredentials.lua \
     && apt-cleanup \
     && rm -rf /tmp/usr /var/cache/apt
 
