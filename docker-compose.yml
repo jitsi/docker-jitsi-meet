@@ -18,6 +18,7 @@ services:
             - ENABLE_HTTP_REDIRECT
             - ENABLE_TRANSCRIPTIONS
             - DISABLE_HTTPS
+            - DISABLE_P2P
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL

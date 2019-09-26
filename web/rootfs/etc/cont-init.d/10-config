@@ -84,6 +84,16 @@ if [[ ! -f /config/config.js ]]; then
              -e "s#// transcribingEnabled:.*#transcribingEnabled: true,#" \
              /config/config.js
     fi
+
+    if [[ $DISABLE_P2P -eq 1 || "$DISABLE_P2P" == "true" ]]; then
+        sed -i \
+             -e "s#enabled: .*, //p2p#enabled: false, //p2p#" \
+             /config/config.js
+    else
+        sed -i \
+             -e "s#enabled: .*, //p2p#enabled: true, //p2p#" \
+             /config/config.js
+    fi
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then
