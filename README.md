@@ -29,7 +29,10 @@ This repository contains the necessary tools to run a Jitsi Meet stack on [Docke
 In order to quickly run Jitsi Meet on a machine running Docker and Docker Compose,
 follow these steps:
 
+* Clone this repository to your own computer.
+  * `git clone https://github.com/jitsi/docker-jitsi-meet && cd docker-jitsi-meet`
 * Create a ``.env`` file by copying and adjusting ``env.example``.
+  * `cp env.example .env`
 * Run ``docker-compose up -d``.
 * Access the web UI at ``https://localhost:8443`` (or ``http://localhost:8000`` for HTTP, or
   a different port, in case you edited the compose file).
