@@ -246,10 +246,10 @@ Variable | Description | Default value
 `XMPP_MUC_DOMAIN` | XMPP domain for the MUC | muc.meet.jitsi
 `XMPP_INTERNAL_MUC_DOMAIN` | XMPP domain for the internal MUC | internal-muc.meet.jitsi
 `XMPP_GUEST_DOMAIN` | XMPP domain for unauthenticated users | guest.meet.jitsi
-`XMPP_MODULES` | Custom Prosody modules for XMPP_DOMAIN (comma separated) | mod_info,mod_alert
-`XMPP_MUC_MODULES` | Custom Prosody modules for MUC component (comma separated) | mod_info,mod_alert
-`XMPP_INTERNAL_MUC_MODULES` | Custom Prosody modules for internal MUC component (comma separated) | mod_info,mod_alert
-`GLOBAL_MODULES` | Custom prosodule modules to load in global configuration (comma separated) | mod_statistics,mod_alert
+`XMPP_MODULES` | Custom Prosody modules for XMPP_DOMAIN (comma separated) | info,alert
+`XMPP_MUC_MODULES` | Custom Prosody modules for MUC component (comma separated) | info,alert
+`XMPP_INTERNAL_MUC_MODULES` | Custom Prosody modules for internal MUC component (comma separated) | info,alert
+`GLOBAL_MODULES` | Custom prosodule modules to load in global configuration (comma separated) | statistics,alert
 `GLOBAL_CONFIG` | Custom configuration string with escaped newlines | foo = bar;\nkey = val;
 `JICOFO_COMPONENT_SECRET` | XMPP component password for Jicofo | s3cr37
 `JICOFO_AUTH_USER` | XMPP user for Jicofo client connections | focus
