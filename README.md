@@ -174,8 +174,8 @@ Variable | Description | Example
 `LDAP_USE_TLS` | Enable LDAP TLS | 1
 `LDAP_TLS_CIPHERS` | Set TLS ciphers list to allow | SECURE256:SECURE128
 `LDAP_TLS_CHECK_PEER` | Require and verify LDAP server certificate | 1
-`LDAP_TLS_CACERT_FILE` | Path to CA cert file. Used when server sertificate verify is enabled | /etc/ssl/certs/ca-certificates.crt
-`LDAP_TLS_CACERT_DIR` | Path to CA certs directory. Used when server sertificate verify is enabled. | /etc/ssl/certs
+`LDAP_TLS_CACERT_FILE` | Path to CA cert file. Used when server certificate verify is enabled | /etc/ssl/certs/ca-certificates.crt
+`LDAP_TLS_CACERT_DIR` | Path to CA certs directory. Used when server certificate verify is enabled. | /etc/ssl/certs
 
 #### Authentication using JWT tokens
 
