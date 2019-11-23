@@ -103,6 +103,7 @@ services:
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
+            - JICOFO_BRIDGE_SELECTION_STRATEGY
             - JVB_BREWERY_MUC
             - JIGASI_BREWERY_MUC
             - TZ
@@ -132,6 +133,8 @@ services:
             - JVB_TCP_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
+            - JVB_OCTO_REGION
+            - JVB_OCTO_BIND_PORT
             - JICOFO_AUTH_USER
             - TZ
         depends_on:

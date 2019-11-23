@@ -2,9 +2,14 @@
 
 JAVA_SYS_PROPS="-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/ -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=config -Djava.util.logging.config.file=/config/logging.properties"
 
-if [[ ! -z "$DOCKER_HOST_ADDRESS" ]]; then
-    LOCAL_ADDRESS=$(hostname -I | cut -d " " -f1)
-    JAVA_SYS_PROPS="$JAVA_SYS_PROPS -Dorg.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=$LOCAL_ADDRESS -Dorg.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=$DOCKER_HOST_ADDRESS"
+PUBLIC_ADDRESS="$(curl -4qs --connect-timeout 15 icanhazip.com)"
+
+if [[ ! -z "$PUBLIC_ADDRESS" ]]; then
+    LOCAL_ADDRESS="$(hostname -I | cut -d " " -f1)"
+    JAVA_SYS_PROPS="$JAVA_SYS_PROPS -Dorg.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=$LOCAL_ADDRESS -Dorg.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=$PUBLIC_ADDRESS"
+    if [[ ! -z "${JVB_OCTO_REGION}" ]];then
+        JAVA_SYS_PROPS="$JAVA_SYS_PROPS -Dorg.jitsi.videobridge.octo.BIND_ADDRESS=$LOCAL_ADDRESS -Dorg.jitsi.videobridge.octo.PUBLIC_ADDRESS=$PUBLIC_ADDRESS -Dorg.jitsi.videobridge.REGION=$JVB_OCTO_REGION"
+    fi
 fi
 
 DAEMON=/usr/share/jitsi-videobridge/jvb.sh
