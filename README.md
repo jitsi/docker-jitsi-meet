@@ -153,7 +153,7 @@ In order to do that, first execute a shell in the corresponding container:
 
 Once in the container, run the following command to create a user:
 
-``prosodyctl --config /config/prosody.cfg.lua register username@meet.jitsi``
+``prosodyctl --config /config/prosody.cfg.lua register username meet.jitsi passsword``
 
 The command then asks for a password interactively.
 
