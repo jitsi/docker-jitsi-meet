@@ -135,7 +135,8 @@ Variable | Description | Example
 
 ### JItsi BRoadcasting Infrastructure configuration
 
-Before running Jibri, you need to setup an ALSA loopback device on the host:
+Before running Jibri, you need to setup an ALSA loopback device on the host. This **will not**
+work on a non-Linux host.
 
 For CentOS 7, the module is already compiled with the kernel, so just run:
 
