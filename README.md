@@ -402,9 +402,7 @@ option.
 ## TODO
 
 * Support container replicas (where applicable).
-* Docker Swarm mode.
-* More services:
-  * TURN server.
+* TURN server.
 
 [Jitsi]: https://jitsi.org/
 [Jitsi Meet]: https://jitsi.org/jitsi-meet/
@@ -421,4 +419,4 @@ option.
 [STUN]: https://en.wikipedia.org/wiki/STUN
 [jwt.io]: https://jwt.io/#debugger-io
 [Etherpad]: https://github.com/ether/etherpad-lite
-
+[Jibri]: https://github.com/jitsi/jibri
