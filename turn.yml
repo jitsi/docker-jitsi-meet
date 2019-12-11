@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+    # coturn TURN server project
+    turn:
+        image: jitsi/turn
+        restart: always
+        ports:
+            - '${TURN_PORT}:${TURN_PORT}/tcp'
+            - '${TURN_PORT}:${TURN_PORT}/udp'
+            - '${TURN_RTP_MIN}-${TURN_RTP_MAX}:${TURN_RTP_MIN}-${TURN_RTP_MAX}/udp'
+            - '${TURN_ADMIN_PORT}:${TURN_ADMIN_PORT}/tcp'
+        environment:
+            - TURN_SECRET
+            - TURN_REALM
+            - TURN_ADMIN_USER
+            - TURN_ADMIN_SECRET
+            - TURN_ADMIN_PORT
+            - TURN_TYPE
+            - TURN_HOST
+            - TURN_PORT
+            - TURN_TRANSPORT
+            - TURN_RTP_MIN
+            - TURN_RTP_MAX
+        networks:
+            meet.jitsi:
+

@@ -39,6 +39,10 @@ RUN \
     && rm -rf /tmp/usr /var/cache/apt
 
 RUN \
+    curl -4so /prosody-plugins/mod_turncredentials.lua \
+    https://raw.githubusercontent.com/netaskd/mod_turncredentials/master/mod_turncredentials.lua
+
+RUN \
     sed -i s/hook/hook_global/g /prosody-plugins/mod_auth_token.lua \
     && patch -d /usr/lib/prosody/modules/muc -p0 < /prosody-plugins/muc_owner_allow_kick.patch
 

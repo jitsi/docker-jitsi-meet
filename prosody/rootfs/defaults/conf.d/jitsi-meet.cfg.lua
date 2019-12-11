@@ -2,6 +2,17 @@ admins = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
+{{ if or (.Env.TURN_ENABLE_P2P | default "0" | toBool) (.Env.TURN_ENABLE_JVB | default "0" | toBool) }}
+turncredentials_secret = "{{ .Env.TURN_SECRET | default "keepthissecret" }}";
+turncredentials = {
+  { type = "{{ .Env.TURN_TYPE | default "turns" }}",
+    host = "{{ .Env.TURN_HOST | default "8.8.8.8" }}",
+    port = {{ .Env.TURN_PORT | default "3478" }},
+    transport = "{{ .Env.TURN_TRANSPORT | default "tcp" }}"
+  }
+}
+{{ end }}
+
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}

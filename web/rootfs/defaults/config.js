@@ -227,7 +227,7 @@ var config = {
     // minParticipants: 2,
 
     // Use XEP-0215 to fetch STUN and TURN servers.
-    // useStunTurn: true,
+    // useStunTurn: true, //jvb
 
     // Enable IPv6 support.
     // useIPv6: true,
@@ -329,7 +329,7 @@ var config = {
         enabled: true,
 
         // Use XEP-0215 to fetch STUN and TURN servers.
-        // useStunTurn: true,
+        // useStunTurn: true, //p2p
 
         // The STUN servers that will be used in the peer to peer connections
         stunServers: [
