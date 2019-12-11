@@ -15,5 +15,4 @@ The installation manual is available [here](https://jitsi.github.io/handbook/doc
 ## TODO
 
 * Support container replicas (where applicable).
-* TURN server.
 

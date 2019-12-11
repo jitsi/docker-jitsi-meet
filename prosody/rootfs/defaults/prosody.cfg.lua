@@ -172,3 +172,18 @@ smacks_max_hibernated_sessions = 1;
 smacks_max_old_sessions = 1;
 
 Include "conf.d/*.cfg.lua"
+
+
+{{ if .Env.ENABLE_TURN | default "0" | toBool }}
+turncredentials_secret = "{{ .Env.TURN_SECRET | default "keepthissecret" }}";
+turncredentials_port = {{ .Env.TURN_PORT | default "3478" }};
+turncredentials_ttl = {{ .Env.TURN_TTL | default "86400" }};
+turncredentials = {
+{{ if .Env.TURN_HOST }}
+  { type = "{{ .Env.TURN_PROTO | default "turns" }}",
+    host = "{{ .Env.TURN_HOST }}",
+    port = {{ .Env.TURN_PORT | default "3478" }},
+    transport = "{{ .Env.TURN_TRANSPORT | default "tcp" }}"
+  }
+{{ end }}
+{{ end }}
