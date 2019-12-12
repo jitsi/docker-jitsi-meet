@@ -11,6 +11,7 @@ services:
             - '${TURN_RTP_MIN}-${TURN_RTP_MAX}:${TURN_RTP_MIN}-${TURN_RTP_MAX}/udp'
             - '${TURN_ADMIN_PORT}:${TURN_ADMIN_PORT}/tcp'
         environment:
+            - DOCKER_HOST_ADDRESS
             - TURN_SECRET
             - TURN_REALM
             - TURN_ADMIN_USER

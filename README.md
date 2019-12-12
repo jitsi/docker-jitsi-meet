@@ -349,25 +349,30 @@ Variable | Description | Example
 For setting `GOOGLE_APPLICATION_CREDENTIALS` please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
 
 ### TURN(S) server
-For enable turn server for P2P and/or JVB connections, please set variables below
+For enable turn server for P2P and JVB connections, please add to the variable `GLOBAL_MODULES` string `turncredentials` and set variables below
 
 Variable | Description | Default value
 --- | --- | ---
-`TURN_ENABLE_P2P` | Use TURN for P2P connections | 0
-`TURN_ENABLE_JVB` | Use TURN for JVB (bridge mode) connections | 0
+`TURN_ENABLE` | Use TURN for P2P and JVB (bridge mode) connections | 0
 `TURN_REALM` | Realm to be used for the users with long-term credentials mechanism or with TURN REST API | realm
 `TURN_SECRET` | Secret for connect to TURN server | keepthissecret
-`TURN_ADMIN_USER` | Username for admin panel | admin
-`TURN_ADMIN_SECRET` | Password for admin panel | changeme
-`TURN_ADMIN_PORT` | HTTP(s) port for acess to admin panel | 8443
 `TURN_TYPE` | Type of TURN(s) (turn/turns) | turns
-`TURN_HOST` | Annonce FQDN or IP address of turn server | 8.8.8.8
+`TURN_HOST` | Annonce FQDN/IP address of the turn server via XMPP (XEP-0215) | 192.168.1.1
+`TURN_PUBLIC_IP` | Public IP address for an instance of turn server | set dynamically
 `TURN_PORT` | TLS/TCP/UDP turn port for connection | 5349
 `TURN_TRANSPORT` | transport for turn connection (tcp/udp) | tcp
 `TURN_RTP_MIN` | RTP start port for turn/turns connections | 10000
 `TURN_RTP_MAX` | RTP end port for turn/turns connections | 11000
 
-And add to the variable `GLOBAL_MODULES` string `turncredentials`.
+
+For enable web-admin panel for turn, please set variables below
+
+Variable | Description | Default value
+--- | --- | ---
+`TURN_ADMIN_ENABLE` | Enable web-admin panel | 0
+`TURN_ADMIN_USER` | Username for admin panel | admin
+`TURN_ADMIN_SECRET` | Password for admin panel | changeme
+`TURN_ADMIN_PORT` | HTTP(s) port for acess to admin panel | 8443
 
 ### Advanced configuration
 
