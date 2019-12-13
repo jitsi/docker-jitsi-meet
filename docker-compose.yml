@@ -102,7 +102,6 @@ services:
             - TZ
             - TURN_ENABLE
             - TURN_SECRET
-            - TURN_TYPE
             - TURN_HOST
             - TURN_PORT
             - TURN_TRANSPORT

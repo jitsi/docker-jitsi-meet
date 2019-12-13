@@ -5,7 +5,7 @@ http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 {{ if .Env.TURN_ENABLE | default "0" | toBool }}
 turncredentials_secret = "{{ .Env.TURN_SECRET | default "keepthissecret" }}";
 turncredentials = {
-  { type = "{{ .Env.TURN_TYPE | default "turns" }}",
+  { type = "turns",
     host = "{{ .Env.TURN_HOST | default .Env.DOCKER_HOST_ADDRESS }}",
     port = {{ .Env.TURN_PORT | default "3478" }},
     transport = "{{ .Env.TURN_TRANSPORT | default "tcp" }}"

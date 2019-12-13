@@ -5,6 +5,8 @@ services:
     turn:
         image: jitsi/turn
         restart: always
+        volumes:
+            - ${CONFIG}/turn:/config
         ports:
             - '${TURN_PORT}:${TURN_PORT}/tcp'
             - '${TURN_PORT}:${TURN_PORT}/udp'
@@ -14,7 +16,6 @@ services:
             - DOCKER_HOST_ADDRESS
             - TURN_SECRET
             - TURN_REALM
-            - TURN_TYPE
             - TURN_HOST
             - TURN_PORT
             - TURN_TRANSPORT

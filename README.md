@@ -349,14 +349,13 @@ Variable | Description | Example
 For setting `GOOGLE_APPLICATION_CREDENTIALS` please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
 
 ### TURN(S) server
-For enable turn server for P2P and JVB connections, please add to the variable `GLOBAL_MODULES` string `turncredentials` and set variables below
+For enable turn server for P2P and JVB connections, please set variables below
 
 Variable | Description | Default value
 --- | --- | ---
 `TURN_ENABLE` | Use TURN for P2P and JVB (bridge mode) connections | 0
 `TURN_REALM` | Realm to be used for the users with long-term credentials mechanism or with TURN REST API | realm
 `TURN_SECRET` | Secret for connect to TURN server | keepthissecret
-`TURN_TYPE` | Type of TURN(s) (turn/turns) | turns
 `TURN_HOST` | Annonce FQDN/IP address of the turn server via XMPP (XEP-0215) | 192.168.1.1
 `TURN_PUBLIC_IP` | Public IP address for an instance of turn server | set dynamically
 `TURN_PORT` | TLS/TCP/UDP turn port for connection | 5349
