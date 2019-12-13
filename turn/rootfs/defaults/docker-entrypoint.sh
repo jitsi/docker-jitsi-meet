@@ -1,6 +1,4 @@
 #!/bin/ash
-# create config dir if not exists
-[ ! -d /config ] && mkdir /config
 
 # make certs if not exist
 if [[ ! -f /config/cert.crt || ! -f /config/cert.key  ]]; then

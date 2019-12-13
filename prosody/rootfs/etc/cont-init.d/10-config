@@ -26,6 +26,11 @@ if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
 fi
 
 cp -r /defaults/* /config
+if [[ "${TURN_ENABLE}" == "1" || "${TURN_ENABLE}" == "true" ]]; then
+     [ -z "${GLOBAL_MODULES}" ] && export GLOBAL_MODULES="turncredentials" \
+     || export GLOBAL_MODULES="${GLOBAL_MODULES},turncredentials"
+fi
+
 tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
 tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua
 
