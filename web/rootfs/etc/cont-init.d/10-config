@@ -18,7 +18,16 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
                 -d $LETSENCRYPT_DOMAIN \
                 --agree-tos \
                 --email $LETSENCRYPT_EMAIL
-            cp /defaults/letsencrypt-renew /etc/cron.monthly/
+        fi
+
+        # remove default certbot renewal
+        if [[ -f /etc/cron.d/certbot ]]; then
+            rm /etc/cron.d/certbot
+        fi
+
+        # setup certbot renewal script
+        if [[ ! -f /etc/cron.daily/letencrypt-renew ]]; then
+            cp /defaults/letsencrypt-renew /etc/cron.daily/
         fi
     else
         # use self-signed certs
