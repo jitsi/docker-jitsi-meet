@@ -36,3 +36,9 @@ chown -R jibri ${JIBRI_RECORDING_DIR}
 [ -z "${JIBRI_LOGS_DIR}" ] && export JIBRI_LOGS_DIR=/config/logs
 mkdir -p ${JIBRI_LOGS_DIR}
 chown -R jibri ${JIBRI_LOGS_DIR}
+
+# if https in container is disabled then it must be enabled on the external address,
+# give Chrome a chance to find the right site.
+[ ! -z "${DOCKER_HOST_ADDRESS}" ] \
+&& [ "${DISABLE_HTTPS}" -eq 1 ] \
+&& echo "${DOCKER_HOST_ADDRESS}  ${XMPP_DOMAIN}" >>/etc/hosts

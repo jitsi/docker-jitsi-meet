@@ -12,6 +12,8 @@ services:
         devices:
             - /dev/snd:/dev/snd
         environment:
+            - DISABLE_HTTPS
+            - DOCKER_HOST_ADDRESS
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
