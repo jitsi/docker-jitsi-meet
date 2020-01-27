@@ -123,6 +123,7 @@ services:
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
             - TZ
+            - JICOFO_RESERVATION_REST_BASE_URL
         depends_on:
             - prosody
         networks:
