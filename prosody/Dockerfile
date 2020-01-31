@@ -32,8 +32,8 @@ RUN \
 
 RUN \
     apt-dpkg-wrap apt-get update \
-    && apt-dpkg-wrap apt-get -d install -y jitsi-meet-tokens \
-    && dpkg -x /var/cache/apt/archives/jitsi-meet-tokens*.deb /tmp \
+    && apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody \
+    && dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp \
     && mv /tmp/usr/share/jitsi-meet/prosody-plugins /prosody-plugins \
     && apt-cleanup \
     && rm -rf /tmp/usr /var/cache/apt
