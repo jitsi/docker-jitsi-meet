@@ -8,6 +8,7 @@ http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
 {{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
+{{ $ENABLE_WEBSOCKETS := .Env.ENABLE_WEBSOCKETS | default "1" | toBool }}
 
 {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
@@ -44,6 +45,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     }
     modules_enabled = {
         "bosh";
+        {{ if $ENABLE_WEBSOCKETS }}
+        "websocket";
+        {{end}}
         "pubsub";
         "ping";
         {{ if .Env.XMPP_MODULES }}

@@ -388,6 +388,7 @@ Variable | Description | Default value
 `JIGASI_TRANSCRIBER_ADVERTISE_URL` | Jigasi post to the chat an url with transcription file | true
 `DISABLE_HTTPS` | Disable HTTPS, this can be useful if TLS connections are going to be handled outside of this setup | 1
 `ENABLE_HTTP_REDIRECT` | Redirects HTTP traffic to HTTPS | 1
+`ENABLE_WEBSOCKETS` | Enabled xmpp traffic over websockets | 1
 `LOG_LEVEL` | Controls which logs are output from prosody and associated modules | info
 
 ### Running behind NAT or on a LAN environment

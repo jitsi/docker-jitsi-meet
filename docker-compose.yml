@@ -17,6 +17,7 @@ services:
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
             - ENABLE_TRANSCRIPTIONS
+            - ENABLE_WEBSOCKETS
             - DISABLE_HTTPS
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
@@ -55,6 +56,7 @@ services:
             - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - ENABLE_WEBSOCKETS
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
             - LDAP_URL
