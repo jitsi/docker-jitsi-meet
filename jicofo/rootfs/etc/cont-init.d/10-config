@@ -8,3 +8,4 @@ if [[ ! -f /config/logging.properties ]]; then
     cp /defaults/logging.properties /config
 fi
 
+chown -R jicofo:jitsi /config
