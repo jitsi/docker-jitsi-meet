@@ -7,7 +7,8 @@ RUN \
 	apt-dpkg-wrap apt-get install -y -t stretch-backports certbot && \
 	apt-cleanup && \
 	rm -f /etc/nginx/conf.d/default.conf && \
-	rm -f /usr/share/jitsi-meet/interface_config.js
+	mkdir /defaults && \
+	mv /usr/share/jitsi-meet/interface_config.js /defaults/interface_config.js
 
 COPY rootfs/ /
 
