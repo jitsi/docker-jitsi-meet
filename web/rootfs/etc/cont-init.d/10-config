@@ -61,28 +61,18 @@ if [[ ! -f /config/nginx/site-confs/default ]]; then
     tpl /defaults/default > /config/nginx/site-confs/default
 fi
 
+
+if [[ $ENABLE_CDN -eq 1 || x$ENABLE_CDN == xtrue ]]; then
+    [ -z "$CDN_URL" ] && CDN_URL="https://web-cdn.jitsi.net/"
+    export BV=$(dpkg -s jitsi-meet-web | grep Version | awk '{print $2}'| cut -d'.' -f3 | cut -d'-' -f1)
+    echo "<base href=\"${CDN_URL}${BV}/\" />" > /usr/share/jitsi-meet/base.html
+fi
+
 if [[ ! -f /config/config.js ]]; then
+    [ -z "$XMPP_MUC_DOMAIN" ] && export XMPP_MUC_DOMAIN="conference.$XMPP_DOMAIN"
+    [ -z "$XMPP_RECORDER_DOMAIN" ] && export XMPP_RECORDER_DOMAIN="recorder.$XMPP_DOMAIN"
+
     tpl /defaults/config.js > /config/config.js
-
-    if [[ $ENABLE_RECORDING -eq 1 || x$ENABLE_RECORDING == xtrue ]]; then
-        sed -i \
-            -e "/\/\/ Recording.*/a hiddenDomain: '$XMPP_RECORDER_DOMAIN'," \
-            -e "s#// fileRecordingsEnabled:.*#fileRecordingsEnabled: true,#" \
-            -e "s#// liveStreamingEnabled:.*#liveStreamingEnabled: true,#" \
-        /config/config.js
-    fi
-
-    if [[ $ENABLE_AUTH -eq 1 ]]; then
-        if [[ $ENABLE_GUESTS -eq 1 ]]; then
-            sed -i \
-                -e "s#// anonymousdomain:.*#anonymousdomain: '${XMPP_GUEST_DOMAIN}',#" \
-                /config/config.js
-        fi
-
-        sed -i \
-            -e "s#// authdomain:.*#authdomain: '${XMPP_DOMAIN}',#" \
-            /config/config.js
-    fi
 
     if [[ ! -z "${ETHERPAD_URL_BASE}" && -z "$(grep -om1 'etherpad_base:' /config/config.js)" ]]; then
         sed -i \
