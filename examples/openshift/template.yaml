@@ -7,7 +7,7 @@ parameters:
 #
 # Basic configuration options
 #
-- name: HOSTNAME
+- name: DOMAIN
   required: true
 - name: TZ
   displayName: Timezone

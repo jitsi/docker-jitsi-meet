@@ -5,7 +5,7 @@ objects:
   metadata:
     name: web
   spec:
-    host: ${HOSTNAME}
+    host: ${DOMAIN}
     port:
       targetPort: http
     to:

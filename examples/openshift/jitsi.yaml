@@ -37,7 +37,7 @@ objects:
   metadata:
     name: web
   spec:
-    host: ${HOSTNAME}
+    host: ${DOMAIN}
     port:
       targetPort: http
     to:
@@ -362,23 +362,23 @@ objects:
     LDAP_URL: ${LDAP_URL}
     LDAP_USE_TLS: ${LDAP_USE_TLS}
     LDAP_VERSION: ${LDAP_VERSION}
-    LETSENCRYPT_DOMAIN: ${HOSTNAME}
+    LETSENCRYPT_DOMAIN: ${DOMAIN}
     LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
     TZ: ${TZ}
-    XMPP_AUTH_DOMAIN: auth.${HOSTNAME}
-    XMPP_DOMAIN: ${HOSTNAME}
-    XMPP_GUEST_DOMAIN: guest.${HOSTNAME}
-    XMPP_INTERNAL_MUC_DOMAIN: internal-muc.${HOSTNAME}
+    XMPP_AUTH_DOMAIN: auth.${DOMAIN}
+    XMPP_DOMAIN: ${DOMAIN}
+    XMPP_GUEST_DOMAIN: guest.${DOMAIN}
+    XMPP_INTERNAL_MUC_DOMAIN: internal-muc.${DOMAIN}
     XMPP_INTERNAL_MUC_MODULES: ${XMPP_INTERNAL_MUC_MODULES}
     XMPP_MODULES: ${XMPP_MODULES}
-    XMPP_MUC_DOMAIN: muc.${HOSTNAME}
+    XMPP_MUC_DOMAIN: muc.${DOMAIN}
     XMPP_MUC_MODULES: ${XMPP_MUC_MODULES}
   kind: ConfigMap
   metadata:
     name: jitsi-config
 parameters:
-- displayName: Hostname
-  name: HOSTNAME
+- displayName: DOMAIN
+  name: DOMAIN
   required: true
 - displayName: Timezone
   name: TZ
