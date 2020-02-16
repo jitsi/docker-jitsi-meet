@@ -85,6 +85,7 @@ parameters:
   required: true
 - name: JICOFO_AUTH_PASSWORD
   required: true
+- name: JICOFO_RESERVATION_REST_BASE_URL
 
 
 - name: GLOBAL_CONFIG
