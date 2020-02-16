@@ -44,5 +44,8 @@ RUN \
 
 COPY rootfs/ /
 
+RUN /fix-permissions.sh
+
 VOLUME /config
 
+USER 1001

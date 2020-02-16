@@ -140,6 +140,22 @@ parameters:
 
 
 #
+# Jibri configuration options (needed for recording)
+#
+- name: ENABLE_RECORDING
+- name: JIBRI_RECORDER_USER
+- name: JIBRI_RECORDER_PASSWORD
+- name: JIBRI_RECORDING_DIR
+- name: JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
+- name: JIBRI_XMPP_USER
+- name: JIBRI_XMPP_PASSWORD
+- name: JIBRI_BREWERY_MUC
+- name: JIBRI_PENDING_TIMEOUT
+- name: JIBRI_STRIP_DOMAIN_JID
+- name: JIBRI_LOGS_DIR
+
+
+#
 # Let's Encrypt configuration
 #
 - name: ENABLE_LETSENCRYPT
