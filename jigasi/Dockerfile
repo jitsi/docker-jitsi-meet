@@ -8,4 +8,4 @@ RUN \
 
 COPY rootfs/ /
 
-VOLUME /config
+VOLUME ["/config", "/tmp/transcripts"]
