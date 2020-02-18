@@ -13,4 +13,4 @@ COPY rootfs/ /
 
 EXPOSE 80 443
 
-VOLUME ["/config", "/etc/letsencrypt"]
+VOLUME ["/config", "/etc/letsencrypt", "/usr/share/jitsi-meet/transcripts"]
