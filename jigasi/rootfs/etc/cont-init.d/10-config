@@ -10,3 +10,32 @@ fi
 
 mkdir -pm777 /tmp/transcripts
 chown jigasi:jitsi /tmp/transcripts
+
+# Create Google Cloud Credentials
+if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || $ENABLE_TRANSCRIPTIONS == "true" ]] && [[ ! -f /config/key.json ]]; then
+    if [[ -z $GC_PROJECT_ID || -z $GC_PRIVATE_KEY_ID || -z $GC_PRIVATE_KEY || -z $GC_CLIENT_EMAIL || -z $GC_CLIENT_ID || -z $GC_CLIENT_CERT_URL ]]; then
+        echo 'Transcriptions: One or more environment variables are undefined'
+        exit 1
+    fi
+
+    jq -n \
+        --arg GC_PROJECT_ID "$GC_PROJECT_ID" \
+        --arg GC_PRIVATE_KEY_ID "$GC_PRIVATE_KEY_ID" \
+        --arg GC_PRIVATE_KEY "$GC_PRIVATE_KEY" \
+        --arg GC_CLIENT_EMAIL "$GC_CLIENT_EMAIL" \
+        --arg GC_CLIENT_ID "$GC_CLIENT_ID" \
+        --arg GC_CLIENT_CERT_URL "$GC_CLIENT_CERT_URL" \
+        '{
+            type: "service_account",
+            project_id: $GC_PROJECT_ID,
+            private_key_id: $GC_PRIVATE_KEY_ID,
+            private_key: $GC_PRIVATE_KEY,
+            client_email: $GC_CLIENT_EMAIL,
+            client_id: $GC_CLIENT_ID,
+            auth_uri: "https://accounts.google.com/o/oauth2/auth",
+            token_uri: "https://oauth2.googleapis.com/token",
+            auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+            client_x509_cert_url: $GC_CLIENT_CERT_URL
+        }' \
+        > /config/key.json
+fi
