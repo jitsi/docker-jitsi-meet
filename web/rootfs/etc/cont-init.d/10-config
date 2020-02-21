@@ -3,7 +3,6 @@
 # make our folders
 mkdir -p \
     /config/{nginx/site-confs,keys} \
-    /run \
     /var/lib/nginx/tmp/client_body \
     /var/tmp/nginx
 

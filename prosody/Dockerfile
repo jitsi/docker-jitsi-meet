@@ -1,6 +1,7 @@
 ARG JITSI_REPO=jitsi
 FROM ${JITSI_REPO}/base
 
+# Install
 RUN \
     apt-dpkg-wrap apt-get update \
     && apt-dpkg-wrap apt-get install -t stretch-backports -y \
@@ -44,6 +45,18 @@ RUN \
 
 COPY rootfs/ /
 
+# Apply config
+RUN echo "TLS_REQCERT allow" >> /etc/ldap/ldap.conf
+
+# Fix permissions
+RUN \
+  /fix-permissions.sh && \
+  touch /etc/saslauthd.conf && \
+  chmod g=u -R /prosody-plugins /etc/saslauthd.conf && \
+  chgrp -R root /etc/sasldb2 /run/saslauthd
+
 EXPOSE 5222 5269 5347 5280
 
 VOLUME ["/config", "/prosody-plugins-custom"]
+
+USER 1001
