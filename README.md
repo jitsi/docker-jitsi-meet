@@ -31,8 +31,9 @@ follow these steps:
 
 * Clone this repository to your own computer.
   * `git clone https://github.com/jitsi/docker-jitsi-meet && cd docker-jitsi-meet`
-* Create a ``.env`` file by copying and adjusting ``env.example``.
+* Create a ``.env`` file by copying and adjusting ``env.example``, and create required `CONFIG` directories
   * `cp env.example .env`
+  * `mkdir -p ~/.jitsi-meet-cfg/{web/letsencrypt,transcripts,prosody,jicofo,jvb}`
 * Run ``docker-compose up -d``.
 * Access the web UI at ``https://localhost:8443`` (or a different port, in case you edited the compose file).
  
