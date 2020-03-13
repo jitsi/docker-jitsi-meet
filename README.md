@@ -34,8 +34,10 @@ follow these steps:
 * Create a ``.env`` file by copying and adjusting ``env.example``.
   * `cp env.example .env`
 * Run ``docker-compose up -d``.
-* Access the web UI at ``https://localhost:8443`` (or ``http://localhost:8000`` for HTTP, or
-  a different port, in case you edited the compose file).
+* Access the web UI at ``https://localhost:8443`` (or a different port, in case you edited the compose file).
+ 
+Note that HTTP (not HTTPS) is also available (on port 8000, by default), but that's e.g. for a reverse proxy setup;
+direct access via HTTP instead HTTPS leads to WebRTC errors such as _Failed to access your microphone/camera: Cannot use microphone/camera for an unknown reason. Cannot read property 'getUserMedia' of undefined_ or _navigator.mediaDevices is undefined_.
 
 If you want to use jigasi too, first configure your env file with SIP credentials
 and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jigasi.yml up``
