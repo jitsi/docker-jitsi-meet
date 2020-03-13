@@ -69,6 +69,7 @@ services:
             - LDAP_TLS_CHECK_PEER
             - LDAP_TLS_CACERT_FILE
             - LDAP_TLS_CACERT_DIR
+            - LDAP_START_TLS
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN

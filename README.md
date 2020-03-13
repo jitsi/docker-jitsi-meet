@@ -290,6 +290,7 @@ Variable | Description | Example
 `LDAP_TLS_CHECK_PEER` | Require and verify LDAP server certificate | 1
 `LDAP_TLS_CACERT_FILE` | Path to CA cert file. Used when server certificate verify is enabled | /etc/ssl/certs/ca-certificates.crt
 `LDAP_TLS_CACERT_DIR` | Path to CA certs directory. Used when server certificate verify is enabled. | /etc/ssl/certs
+`LDAP_START_TLS` | Enable START_TLS, requires LDAPv3, URL must be ldap:// not ldaps:// | 0
 
 #### Authentication using JWT tokens
 
