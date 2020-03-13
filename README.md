@@ -166,7 +166,7 @@ echo "snd-aloop" >> /etc/modules
 lsmod | grep snd_aloop
 ```
 
-NOTE: if you are running on AWS you may need to reboot your machine to ue the generic kernel instead
+NOTE: if you are running on AWS you may need to reboot your machine to use the generic kernel instead
 of the "aws" kernel.
 
 If you want to enable Jibri these options are required:
