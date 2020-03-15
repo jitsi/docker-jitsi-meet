@@ -67,6 +67,27 @@ The diagram shows a typical deployment in a host running Docker. This project
 separates each of the components above into interlinked containers. To this end,
 several container images are provided.
 
+### External Ports
+
+The following external ports must be opened on a firweall:
+
+* 80/tcp for Web UI HTTP (really just to redirect, after uncommenting ENABLE_HTTP_REDIRECT=1 in .env)
+* 443/tcp for Web UI HTTPS
+* 4443/tcp for RTP media over TCP
+* 10000/udp for RTP media over UDP
+
+Also 20000-20050/udp for jigasi, in case you choose to deploy that to facilitate SIP acces.
+
+E.g. on a CentOS/Fedora server this would be done like this (without SIP access):
+
+```shell
+    $ sudo firewall-cmd --permanent --add-port=80/tcp
+    $ sudo firewall-cmd --permanent --add-port=443/tcp
+    $ sudo firewall-cmd --permanent --add-port=4443/tcp
+    $ sudo firewall-cmd --permanent --add-port=10000/udp
+    $ sudo firewall-cmd --reload
+```
+
 ### Images
 
 * **base**: Debian stable base image with the [S6 Overlay] for process control and the
