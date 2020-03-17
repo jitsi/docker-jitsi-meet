@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "jitsi-meet.web.fullname" . }}
+  labels:
+    {{- include "jitsi-meet.web.labels" . | nindent 4 }}
+data:
+  DISABLE_HTTPS: {{ ternary "0" "1" .Values.web.httpsEnabled | quote }}
+  ENABLE_HTTP_REDIRECT: {{ ternary "1" "0" .Values.web.httpRedirect | quote }}
+  JICOFO_AUTH_USER: '{{ .Values.jicofo.xmpp.user }}'
+  XMPP_BOSH_URL_BASE: 'http://{{ include "jitsi-meet.xmpp.server" . }}:{{ index .Values.prosody.service.ports "bosh-insecure" }}'
+  {{- range $key, $value := .Values.web.extraEnvs }}
+  {{- if not (kindIs "invalid" $value) }}
+  {{ $key }}: {{ tpl $value $ | quote }}
+  {{- end }}
+  {{- end }}

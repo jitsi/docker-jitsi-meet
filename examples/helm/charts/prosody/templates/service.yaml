@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "prosody.fullname" . }}
+  labels:
+    {{- include "prosody.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ index .Values.service.ports "bosh-insecure" }}
+      targetPort: bosh-insecure
+      protocol: TCP
+      name: bosh-insecure
+    - port: {{ index .Values.service.ports "xmpp-component" }}
+      targetPort: xmpp-component
+      protocol: TCP
+      name: xmpp-component
+    - port: {{ index .Values.service.ports "xmpp-c2s" }}
+      targetPort: xmpp-c2s
+      protocol: TCP
+      name: xmpp-c2
+  selector:
+    {{- include "prosody.selectorLabels" . | nindent 4 }}

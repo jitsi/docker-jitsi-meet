@@ -1,0 +1,98 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jitsi-meet.jvb.fullname" . }}
+  labels:
+    {{- include "jitsi-meet.jvb.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.jvb.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "jitsi-meet.jvb.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "jitsi-meet.jvb.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/jvb/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/jvb/xmpp-secret.yaml") . | sha256sum }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "jitsi-meet.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.jvb.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.jvb.securityContext | nindent 12 }}
+          image: "{{ .Values.jvb.image.repository }}:{{ default .Chart.AppVersion .Values.jvb.image.tag }}"
+          imagePullPolicy: {{ pluck "pullPolicy" .Values.jvb.image .Values.image | first }}
+          envFrom:
+          - secretRef:
+              name: {{ include "call-nested" (list . "prosody" "prosody.fullname") }}-jvb
+          - configMapRef:
+              name: {{ include "call-nested" (list . "prosody" "prosody.fullname") }}-common
+          - configMapRef:
+              name: {{ include "jitsi-meet.jvb.fullname" . }}
+          env:
+          {{- if or .Values.jvb.useNodeIP .Values.jvb.publicIP }}
+          - name: DOCKER_HOST_ADDRESS
+            {{- if .Values.jvb.publicIP }}
+            value: {{ .Values.jvb.publicIP }}
+            {{- else }}
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+            {{- end }}
+          {{- end }}
+          ports:
+            - name: rtp-udp
+              containerPort: {{ .Values.jvb.UDPPort }}
+              {{- if .Values.jvb.useHostPort }}
+              hostPort: {{ .Values.jvb.UDPPort }}
+              {{- end }}
+              protocol: UDP
+            - name: rtp-tcp
+              containerPort: {{ .Values.jvb.TCPPort }}
+              {{- if .Values.jvb.useHostPort }}
+              hostPort: {{ .Values.jvb.TCPPort }}
+              {{- end }}
+              protocol: TCP
+          {{- with .Values.jvb.livenessProbe }}
+          livenessProbe:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.jvb.readinessProbe }}
+          readinessProbe:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.jvb.resources | nindent 12 }}
+
+      {{- with .Values.jvb.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- if or .Values.jvb.useHostPort .Values.jvb.affinity }}
+      affinity:
+      {{- if .Values.jvb.affinity }}
+        {{- toYaml .Values.jvb.affinity | nindent 8 }}
+      {{- else }}
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app.kubernetes.io/component
+                operator: In
+                values:
+                - jvb
+            topologyKey: "kubernetes.io/hostname"
+      {{- end }}
+    {{- end }}
+    {{- with .Values.jvb.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

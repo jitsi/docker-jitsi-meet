@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "jitsi-meet.jicofo.fullname" . }}
+  labels:
+    {{- include "jitsi-meet.jicofo.labels" . | nindent 4 }}
+data:
+  JVB_BREWERY_MUC: '{{ .Values.jvb.breweryMuc }}'
+  XMPP_SERVER: '{{ include "jitsi-meet.xmpp.server" . }}'
+  {{- range $key, $value := .Values.jicofo.extraEnvs }}
+  {{- if not (kindIs "invalid" $value) }}
+  {{ $key }}: {{ tpl $value $ | quote }}
+  {{- end }}
+  {{- end }}

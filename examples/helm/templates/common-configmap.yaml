@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "call-nested" (list . "prosody" "prosody.fullname") }}-common
+  labels:
+    {{- include "jitsi-meet.labels" . | nindent 4 }}
+data:
+  ENABLE_AUTH: {{ ternary "1" "0" .Values.enableAuth | quote }}
+  ENABLE_GUESTS: {{ ternary "1" "0" .Values.enableGuests | quote }}
+  XMPP_DOMAIN: {{ include "jitsi-meet.xmpp.domain" . }}
+  XMPP_MUC_DOMAIN: {{ .Values.xmpp.muxDomain | default (printf "muc.%s" (include "jitsi-meet.xmpp.domain" .)) }}
+  XMPP_AUTH_DOMAIN: {{ .Values.xmpp.authDomain | default (printf "auth.%s" (include "jitsi-meet.xmpp.domain" .)) }}
+  XMPP_GUEST_DOMAIN: {{ .Values.xmpp.guestDomain | default (printf "guest.%s" (include "jitsi-meet.xmpp.domain" .)) }}
+  XMPP_RECORDER_DOMAIN: {{ .Values.xmpp.recorderDomain | default (printf "recorder.%s" (include "jitsi-meet.xmpp.domain" .)) }}
+  XMPP_INTERNAL_MUC_DOMAIN: {{ .Values.xmpp.internalMucDomain | default (printf "internal-muc.%s" (include "jitsi-meet.xmpp.domain" .)) }}
+  TZ: '{{ .Values.tz }}'
+  {{- range $key, $value := .Values.extraCommonEnvs }}
+  {{- if not (kindIs "invalid" $value) }}
+  {{ $key }}: {{ tpl $value $ | quote }}
+  {{- end }}
+  {{- end }}

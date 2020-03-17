@@ -1,0 +1,178 @@
+# Default values for jitsi-meet.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+enableAuth: false
+enableGuests: true
+
+tz: Europe/Amsterdam
+
+image:
+  pullPolicy: IfNotPresent
+
+web:
+  replicaCount: 1
+  image:
+    repository: jitsi/web
+
+  extraEnvs: {}
+  service:
+    type: ClusterIP
+    port: 80
+    externalIPs: []
+
+  ingress:
+    enabled: false
+    annotations: {}
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+    hosts:
+    - host: jitsi.local
+      paths: ['/']
+    tls: []
+    #  - secretName: jits-web-certificate
+    #    hosts:
+    #      - jitsi.local
+
+  # Useful for ingresses that don't support http-to-https redirect by themself, (namely: GKE),
+  httpRedirect: false
+
+  # When tls-termination by the ingress is not wanted, enable this and set web.service.type=Loadbalancer
+  httpsEnabled: false
+
+  livenessProbe:
+    httpGet:
+      path: /
+      port: http
+  readinessProbe:
+    httpGet:
+      path: /
+      port: http
+
+  podSecurityContext: {}
+    # fsGroup: 2000
+
+  securityContext: {}
+    # capabilities:
+    #   drop:
+    #   - ALL
+    # readOnlyRootFilesystem: true
+    # runAsNonRoot: true
+    # runAsUser: 1000
+
+  resources: {}
+    # We usually recommend not to specify default resources and to leave this as a conscious
+    # choice for the user. This also increases chances charts run on environments with little
+    # resources, such as Minikube. If you do want to specify resources, uncomment the following
+    # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+jicofo:
+  replicaCount: 1
+  image:
+    repository: jitsi/jicofo
+
+  xmpp:
+    user: focus
+    password:
+    componentSecret:
+
+  livenessProbe:
+    tcpSocket:
+      port: 8888
+  readinessProbe:
+    tcpSocket:
+      port: 8888
+
+  podSecurityContext: {}
+  securityContext: {}
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  extraEnvs: {}
+
+jvb:
+  replicaCount: 1
+  image:
+    repository: jitsi/jvb
+
+  xmpp:
+    user: jvb
+    password:
+
+  useHostPort: false
+  UDPPort: 10000
+  TCPPort: 4443
+  service:
+    enabled:
+    type: ClusterIP
+    externalIPs: []
+
+  breweryMuc: jvbbrewery
+
+  livenessProbe:
+    exec:
+      command:
+      - pgrep
+      - java
+  readinessProbe:
+    exec:
+      command:
+      - pgrep
+      - java
+
+  podSecurityContext: {}
+  securityContext: {}
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  extraEnvs: {}
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+xmpp:
+  domain:
+  authDomain:
+  mucDomain:
+  internalMucDomain:
+  guestDomain:
+
+extraCommonEnvs: {}
+
+prosody:
+  enabled: true
+  server:
+  extraEnvFrom:
+  - secretRef:
+      name: '{{ include "prosody.fullname" . }}-jicofo'
+  - secretRef:
+      name: '{{ include "prosody.fullname" . }}-jvb'
+  - configMapRef:
+      name: '{{ include "prosody.fullname" . }}-common'
+  image:
+    repository: jitsi/prosody
+    tag: 'stable-5390-3'

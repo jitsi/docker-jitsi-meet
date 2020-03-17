@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "jitsi-meet.web.fullname" . }}
+  labels:
+    {{- include "jitsi-meet.web.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.web.service.type }}
+  ports:
+    - port: {{ .Values.web.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  {{- with .Values.web.service.externalIPs }}
+  externalIPs:
+  {{ toYaml . | indent 2 | trim }}
+  {{- end }}
+  selector:
+    {{- include "jitsi-meet.web.selectorLabels" . | nindent 4 }}

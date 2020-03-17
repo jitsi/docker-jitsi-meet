@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jitsi-meet.jicofo.fullname" . }}
+  labels:
+    {{- include "jitsi-meet.jicofo.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.jicofo.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "jitsi-meet.jicofo.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "jitsi-meet.jicofo.selectorLabels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/jicofo/configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/jicofo/xmpp-secret.yaml") . | sha256sum }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "jitsi-meet.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.jicofo.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.jicofo.securityContext | nindent 12 }}
+          image: "{{ .Values.jicofo.image.repository }}:{{ default .Chart.AppVersion .Values.jicofo.image.tag }}"
+          imagePullPolicy: {{ pluck "pullPolicy" .Values.jicofo.image .Values.image | first }}
+          envFrom:
+          - secretRef:
+              name: {{ include "call-nested" (list . "prosody" "prosody.fullname") }}-jicofo
+          - configMapRef:
+              name: {{ include "call-nested" (list . "prosody" "prosody.fullname") }}-common
+          - configMapRef:
+              name: {{ include "jitsi-meet.jicofo.fullname" . }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          {{- with .Values.jicofo.livenessProbe }}
+          livenessProbe:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.jicofo.readinessProbe }}
+          readinessProbe:
+          {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.jicofo.resources | nindent 12 }}
+
+      {{- with .Values.jicofo.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.jicofo.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.jicofo.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
