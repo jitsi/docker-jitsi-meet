@@ -286,9 +286,9 @@ In order to do that, first execute a shell in the corresponding container:
 
 ``docker-compose exec prosody /bin/bash``
 
-Once in the container, run the following command to create a user:
+Once in the container, run the following command to create a user, replace `[username]` with what you want:
 
-``prosodyctl --config /config/prosody.cfg.lua register username meet.jitsi passsword``
+``prosodyctl --config /config/prosody.cfg.lua adduser [username]@meet.jitsi passsword``
 
 The command then asks for a password interactively.
 
