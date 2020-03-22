@@ -5,6 +5,12 @@ replicaCount: 1
 nameOverride: ""
 fullnameOverride: ""
 
+namespace: default
+
+nodePort:
+  udp: 30000
+  tcp: 30001
+
 service:
   type: ClusterIP
   port: 80

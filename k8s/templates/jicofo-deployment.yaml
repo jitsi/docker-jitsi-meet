@@ -16,7 +16,7 @@ spec:
       containers:
       - env:
         - name: XMPP_SERVER
-          value: prosody.default.svc.cluster.local
+          value: prosody.{{ .Values.namespace }}.svc.cluster.local
         - name: XMPP_DOMAIN
           value: meet.jitsi
         - name: XMPP_AUTH_DOMAIN

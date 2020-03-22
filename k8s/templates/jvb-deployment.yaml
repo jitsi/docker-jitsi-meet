@@ -26,9 +26,9 @@ spec:
         - name: XMPP_AUTH_DOMAIN
           value: auth.meet.jitsi
         - name: JVB_PORT
-          value: "30000"
+          value: "{{ .Values.nodePort.udp }}"
         - name: JVB_TCP_PORT
-          value: "30001"
+          value: "{{ .Values.nodePort.tcp }}"
         - name: JVB_AUTH_USER
           value: jvb
         - name: JVB_AUTH_PASSWORD
@@ -46,9 +46,9 @@ spec:
         image: 103425057857.dkr.ecr.us-west-2.amazonaws.com/jitsi/jvb
         name: jvb
         ports:
-        - containerPort: 30000
+        - containerPort: {{ .Values.nodePort.udp }}
           protocol: UDP
-        - containerPort: 30001
+        - containerPort: {{ .Values.nodePort.tcp }}
         resources: {}
       restartPolicy: Always
 status: {}
