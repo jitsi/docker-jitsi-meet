@@ -11,13 +11,21 @@ mkdir -p \
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
         if [[ ! -f /etc/letsencrypt/live/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
-            certbot certonly \
-                --noninteractive \
-                --standalone \
-                --preferred-challenges http \
-                -d $LETSENCRYPT_DOMAIN \
-                --agree-tos \
-                --email $LETSENCRYPT_EMAIL
+            if ! certbot certonly \
+                  --noninteractive \
+                  --standalone \
+                  --preferred-challenges http \
+                  -d $LETSENCRYPT_DOMAIN \
+                  --agree-tos \
+                  --email $LETSENCRYPT_EMAIL ; then
+
+                echo "Failed to obtain a certificate from the Let's Encrypt CA."
+                # this tries to get the user's attention and to spare the
+                # authority's rate limit:
+                sleep 15
+                echo "Exiting."
+                exit 1
+            fi
         fi
 
         # remove default certbot renewal
@@ -115,4 +123,3 @@ if [[ ! -f /config/interface_config.js ]]; then
     fi
 
 fi
-
