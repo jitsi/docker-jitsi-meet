@@ -1,0 +1,185 @@
+body.welcome-page {
+    background: inherit;
+    overflow: auto;
+}
+
+.welcome {
+    //background-image: $welcomePageBackground;
+    background: #419AF2;
+    display: flex;
+    flex-direction: column;
+    font-family: $welcomePageFontFamily;
+    justify-content: space-between;
+    min-height: 100vh;
+    position: relative;
+
+    .header {
+        background-image: $welcomePageHeaderBackground;
+        background-position: $welcomePageHeaderBackgroundPosition;
+        background-repeat: $welcomePageHeaderBackgroundRepeat;
+        background-size: $welcomePageHeaderBackgroundSize;
+        padding-bottom: $welcomePageHeaderPaddingBottom;
+        align-items: center;
+        display: flex;
+        flex-direction: column;
+        min-height: fit-content;
+        overflow: hidden;
+        position: relative;
+        text-align: center;
+
+        .header-text {
+            display: flex;
+            flex-direction: column;
+            margin-top: $watermarkHeight + $welcomePageHeaderTextMarginTop;
+            margin-bottom: $welcomePageHeaderTextMarginBottom;
+            max-width: calc(100% - 40px);
+            width: 650px;
+            z-index: $zindex2;
+        }
+
+        .header-text-title {
+            color: $welcomePageTitleColor;
+            font-size: $welcomePageHeaderTextTitleFontSize;
+            font-weight: $welcomePageHeaderTextTitleFontWeight;
+            line-height: $welcomePageHeaderTextTitleLineHeight;
+            margin-bottom: $welcomePageHeaderTextTitleMarginBottom;
+            opacity: $welcomePageHeaderTextTitleOpacity;
+        }
+
+        .header-text-description {
+            display: $welcomePageHeaderTextDescriptionDisplay;
+            color: $welcomePageDescriptionColor;
+            font-size: $welcomePageHeaderTextDescriptionFontSize;
+            font-weight: $welcomePageHeaderTextDescriptionFontWeight;
+            line-height: $welcomePageHeaderTextDescriptionLineHeight;
+            margin-bottom: $welcomePageHeaderTextDescriptionMarginBottom;
+            align-self: $welcomePageHeaderTextDescriptionAlignSelf;
+        }
+
+        #enter_room {
+            display: flex;
+            align-items: center;
+            max-width: calc(100% - 40px);
+            width: $welcomePageEnterRoomWidth;
+            z-index: $zindex2;
+            background-color: #fff;
+            padding: $welcomePageEnterRoomPadding;
+            border-radius: $welcomePageEnterRoomBorderRadius;
+
+            .enter-room-input-container {
+                width: 100%;
+                padding: $welcomePageEnterRoomInputContainerPadding;
+                text-align: left;
+                color: #253858;
+                height: fit-content;
+                border-width: $welcomePageEnterRoomInputContainerBorderWidth;
+                border-style: $welcomePageEnterRoomInputContainerBorderStyle;
+                border-image: $welcomePageEnterRoomInputContainerBorderImage;
+
+                .enter-room-title {
+                    display: $welcomePageEnterRoomTitleDisplay;
+                    font-size: 18px;
+                    font-weight: bold;
+                    padding-bottom: 5px;
+                }
+
+                .enter-room-input {
+                    border: none;
+                    display: inline-block;
+                    width: 100%;
+                    font-size: 14px;
+                }
+
+                ::placeholder {
+                    color: #253858;
+                }
+            }
+
+        }
+
+        .tab-container {
+            font-size: 16px;
+            position: relative;
+            text-align: left;
+            min-height: 354px;
+            width: 710px;
+            background: #75A7E7;
+            display: $welcomePageTabContainerDisplay;
+            flex-direction: column;
+
+            .tab-content{
+                display: $welcomePageTabContentDisplay;
+                margin: 5px 0px;
+                overflow: hidden;
+                flex-grow: 1;
+                position: relative;
+
+                > * {
+                    position: absolute;
+                }
+            }
+
+            .tab-buttons {
+                font-size: 18px;
+                color: #FFFFFF;
+                display: $welcomePageTabButtonsDisplay;
+                flex-grow: 0;
+                flex-direction: row;
+                min-height: 54px;
+                width: 100%;
+
+                .tab {
+                    display: $welcomePageTabDisplay;
+                    text-align: center;
+                    background: rgba(9,30,66,0.37);
+                    height: 55px;
+                    line-height: 54px;
+                    flex-grow: 1;
+                    cursor: pointer;
+
+                    &.selected, &:hover {
+                        background: rgba(9,30,66,0.71);
+                    }
+
+                    &:last-child {
+                        margin-left: 1px;
+                    }
+                }
+            }
+        }
+    }
+
+    .welcome-page-button {
+        width: $welcomePageButtonWidth;
+        min-width: $welcomePageButtonMinWidth;
+        height: $welcomePageButtonHeight;
+        font-size: $welcomePageButtonFontSize;
+        font-weight: $welcomePageButtonFontWeight;
+        background: #0074E0;
+        border-radius: $welcomePageButtonBorderRadius;
+        color: #FFFFFF;
+        text-align: center;
+        vertical-align: middle;
+        line-height: $welcomePageButtonLineHeight;
+        cursor: pointer;
+    }
+
+    .welcome-page-settings {
+        color: $welcomePageDescriptionColor;
+        position: absolute;
+        top: 32px;
+        right: 32px;
+        z-index: $zindex2;
+
+        * {
+            cursor: pointer;
+            font-size: 32px;
+        }
+    }
+
+    .welcome-watermark {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
