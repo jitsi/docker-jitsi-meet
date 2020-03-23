@@ -365,9 +365,14 @@ If you want to enable the Transcribing function, these options are required:
 Variable | Description | Example
 --- | --- | ---
 `ENABLE_TRANSCRIPTIONS` | Enable Jigasi transcription in a conference | 1
-`GOOGLE_APPLICATION_CREDENTIALS` | Credentials for connect to Cloud Google API from Jigasi. Path located inside the container | /config/key.json
+`GC_PROJECT_ID` | `project_id` from Google Cloud Credetials
+`GC_PRIVATE_KEY_ID` | `private_key_id` from Google Cloud Credetials
+`GC_PRIVATE_KEY` | `private_key` from Google Cloud Credetials
+`GC_CLIENT_EMAIL` | `client_email` from Google Cloud Credetials
+`GC_CLIENT_ID` | `client_id` from Google Cloud Credetials
+`GC_CLIENT_CERT_URL` | `client_x509_cert_url` from Google Cloud Credetials
 
-For setting `GOOGLE_APPLICATION_CREDENTIALS` please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
+For setting the Google Cloud Credentials please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
 
 ### Advanced configuration
 
