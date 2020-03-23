@@ -28,6 +28,8 @@ services:
             - JIBRI_LOGS_DIR
             - DISPLAY=:0
             - TZ
+        depends_on:
+            - jicofo
         networks:
             meet.jitsi:
 
