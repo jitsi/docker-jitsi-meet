@@ -425,7 +425,7 @@ Variable | Description | Default value
 If running in a LAN environment (as well as on the public Internet, via NAT) is a requirement,
 the ``DOCKER_HOST_ADDRESS`` should be set. This way, the Videobridge will advertise the IP address
 of the host running Docker instead of the internal IP address that Docker assigned it, thus making [ICE]
-succeed.
+succeed. If your users are coming in over the Internet (and not over LAN), this will likely be your public IP address. If this is not setup correctly, calls will crash when more than two users join a meeting.
 
 The public IP address is discovered via [STUN]. STUN servers can be specified with the ``JVB_STUN_SERVERS``
 option.
