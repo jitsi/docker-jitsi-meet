@@ -1,0 +1,4 @@
+server {
+	listen 9002 default_server;
+	include /config/nginx/spot.conf;
+}

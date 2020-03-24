@@ -22,6 +22,7 @@ services:
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
             - PUBLIC_URL
+            - SPOT_URL_BASE
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
