@@ -1,0 +1,42 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: jitsi
+    name: jigasi
+  spec:
+    replicas: 1
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: jitsi
+          name: jigasi
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: jitsi-config
+          - secretRef:
+              name: jitsi-secret
+          env:
+          - name: XMPP_SERVER
+            value: $(PROSODY_SERVICE_HOST)
+          image: jitsi/jigasi
+          imagePullPolicy: Always
+          name: jigasi
+          resources: {}
+          volumeMounts:
+          - mountPath: /tmp/transcripts
+            name: jigasi-transcripts
+        volumes:
+        - name: jigasi-transcripts
+          persistentVolumeClaim:
+            claimName: jigasi-transcripts-volume
+        restartPolicy: Always
+    triggers:
+    - type: ConfigChange
+  status: {}

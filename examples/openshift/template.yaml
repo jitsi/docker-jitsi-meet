@@ -1,0 +1,271 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: jitsi
+objects: (( merge ))
+parameters:
+#
+# Basic configuration options
+#
+- name: DOMAIN
+  required: true
+- name: TZ
+  displayName: Timezone
+  required: true
+- name: LOG_LEVEL
+
+
+#
+# HTTPS configuration
+#
+- name: DISABLE_HTTPS
+- name: ENABLE_HTTP_REDIRECT
+- name: ENABLE_HSTS
+
+
+#
+# Codecs
+#
+- name: ENABLE_CODEC_VP8
+- name: ENABLE_CODEC_VP9
+- name: ENABLE_CODEC_H264
+
+
+#
+# Authentication configuration
+#
+- name: ENABLE_AUTH
+- name: AUTH_TYPE
+- name: ENABLE_GUESTS
+- name: ENABLE_AUTO_OWNER
+
+- name: JWT_APP_ID
+- name: JWT_APP_SECRET
+- name: JWT_ACCEPTED_ISSUERS
+- name: JWT_ACCEPTED_AUDIENCES
+- name: JWT_ASAP_KEYSERVER
+- name: JWT_ALLOW_EMPTY
+- name: JWT_AUTH_TYPE
+- name: JWT_TOKEN_AUTH_MODULE
+
+- name: LDAP_URL
+- name: LDAP_BASE
+- name: LDAP_BINDDN
+- name: LDAP_BINDPW
+- name: LDAP_FILTER
+- name: LDAP_AUTH_METHOD
+- name: LDAP_VERSION
+- name: LDAP_USE_TLS
+- name: LDAP_TLS_CIPHERS
+- name: LDAP_TLS_CHECK_PEER
+- name: LDAP_TLS_CACERT_FILE
+- name: LDAP_TLS_CACERT_DIR
+- name: LDAP_START_TLS
+
+
+#
+# A comma separated list of APIs to enable when the JVB is started. The default is none.
+# See https://github.com/jitsi/jitsi-videobridge/blob/master/doc/rest.md for more information
+#
+- name: JVB_ENABLE_APIS
+  required: true
+
+
+#
+# Advanced configuration options
+#
+- name: JVB_PORT
+  required: true
+- name: JVB_TCP_HARVESTER_DISABLED
+  required: true
+- name: JVB_TCP_PORT
+  required: true
+- name: JVB_BREWERY_MUC
+  required: true
+- name: JVB_AUTH_USER
+  required: true
+- name: JVB_AUTH_PASSWORD
+  required: true
+- name: JVB_STUN_SERVERS
+
+
+- name: JICOFO_COMPONENT_SECRET
+  required: true
+- name: JICOFO_AUTH_USER
+  required: true
+- name: JICOFO_AUTH_PASSWORD
+  required: true
+- name: JICOFO_RESERVATION_ENABLED
+- name: JICOFO_RESERVATION_REST_BASE_URL
+- name: JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
+- name: JICOFO_CONF_INITIAL_PARTICIPANT_WAIT_TIMEOUT
+- name: JICOFO_CONF_SINGLE_PARTICIPANT_TIMEOUT
+- name: JICOFO_SHORT_ID
+
+
+- name: BRIDGE_AVG_PARTICIPANT_STRESS
+- name: BRIDGE_STRESS_THRESHOLD
+- name: MAX_BRIDGE_PARTICIPANTS
+- name: OCTO_BRIDGE_SELECTION_STRATEGY
+
+
+- name: GLOBAL_CONFIG
+- name: GLOBAL_MODULES
+- name: XMPP_CROSS_DOMAIN
+- name: XMPP_MODULES
+- name: XMPP_MUC_MODULES
+- name: XMPP_INTERNAL_MUC_MODULES
+- name: ENABLE_XMPP_WEBSOCKET
+
+
+#
+# Jigasi configuration options (needed for SIP gateway support)
+#
+- name: JIGASI_XMPP_USER
+  required: true
+- name: JIGASI_XMPP_PASSWORD
+  required: true
+- name: JIGASI_BREWERY_MUC
+  required: true
+- name: JIGASI_PORT_MIN
+  required: true
+- name: JIGASI_PORT_MAX
+  required: true
+- name: JIGASI_HEALTH_CHECK_SIP_URI
+- name: JIGASI_SIP_PASSWORD
+- name: JIGASI_SIP_SERVER
+- name: JIGASI_SIP_PORT
+- name: JIGASI_SIP_TRANSPORT
+- name: JIGASI_SIP_DEFAULT_ROOM
+- name: JIGASI_ENABLE_SDES_SRTP
+- name: JIGASI_SIP_KEEP_ALIVE_METHOD
+- name: JIGASI_HEALTH_CHECK_SIP_URI
+- name: JIGASI_HEALTH_CHECK_INTERVAL
+
+
+#
+# Transcription
+#
+- name: ENABLE_TRANSCRIPTIONS
+- name: JIGASI_TRANSCRIBER_RECORD_AUDIO
+- name: JIGASI_TRANSCRIBER_SEND_TXT
+- name: JIGASI_TRANSCRIBER_ADVERTISE_URL
+- name: GC_PROJECT_ID
+- name: GC_PRIVATE_KEY_ID
+- name: GC_PRIVATE_KEY
+- name: GC_CLIENT_EMAIL
+- name: GC_CLIENT_ID
+- name: GC_CLIENT_CERT_URL
+
+
+#
+# Jibri configuration options (needed for recording)
+#
+- name: ENABLE_RECORDING
+- name: JIBRI_RECORDER_USER
+  required: true
+- name: JIBRI_RECORDER_PASSWORD
+  required: true
+- name: JIBRI_RECORDING_DIR
+  required: true
+- name: JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
+  required: true
+- name: JIBRI_XMPP_USER
+  required: true
+- name: JIBRI_XMPP_PASSWORD
+  required: true
+- name: JIBRI_BREWERY_MUC
+  required: true
+- name: JIBRI_REQUEST_RETRIES
+- name: JIBRI_PENDING_TIMEOUT
+  required: true
+- name: JIBRI_STRIP_DOMAIN_JID
+  required: true
+- name: JIBRI_LOGS_DIR
+  required: true
+
+
+#
+# Let's Encrypt configuration
+#
+- name: ENABLE_LETSENCRYPT
+- name: LETSENCRYPT_EMAIL
+- name: LETSENCRYPT_USE_STAGING
+
+
+#
+# Etherpad
+#
+- name: ETHERPAD_TITLE
+- name: ETHERPAD_DEFAULT_PAD_TEXT
+- name: ETHERPAD_SKIN_NAME
+- name: ETHERPAD_SKIN_VARIANTS
+
+
+#
+# Web: config.js
+#
+- name: AMPLITUDE_ID
+- name: ANALYTICS_SCRIPT_URLS
+- name: ANALYTICS_WHITELISTED_EVENTS
+- name: BRIDGE_CHANNEL
+- name: CALLSTATS_CUSTOM_SCRIPT_URL
+- name: CALLSTATS_ID
+- name: CALLSTATS_SECRET
+- name: CHROME_EXTENSION_BANNER_JSON
+- name: CONFCODE_URL
+- name: CONFIG_EXTERNAL_CONNECT
+- name: DEPLOYMENTINFO_ENVIRONMENT
+- name: DEPLOYMENTINFO_ENVIRONMENT_TYPE
+- name: DEPLOYMENTINFO_USERREGION
+- name: DIALIN_NUMBERS_URL
+- name: DIALOUT_AUTH_URL
+- name: DIALOUT_CODES_URL
+- name: DROPBOX_APPKEY
+- name: DROPBOX_REDIRECT_URI
+- name: DYNAMIC_BRANDING_URL
+- name: ENABLE_AUDIO_PROCESSING
+- name: ENABLE_CALENDAR
+- name: ENABLE_FILE_RECORDING_SERVICE
+- name: ENABLE_FILE_RECORDING_SERVICE_SHARING
+- name: ENABLE_IPV6
+- name: ENABLE_LIPSYNC
+- name: ENABLE_LOBBY
+- name: ENABLE_NO_AUDIO_DETECTION
+- name: ENABLE_P2P
+- name: ENABLE_PREJOIN_PAGE
+- name: ENABLE_WELCOME_PAGE
+- name: ENABLE_CLOSE_PAGE
+- name: ENABLE_REMB
+- name: ENABLE_REQUIRE_DISPLAY_NAME
+- name: ENABLE_SIMULCAST
+- name: ENABLE_STATS_ID
+- name: ENABLE_STEREO
+- name: ENABLE_SUBDOMAINS
+- name: ENABLE_TALK_WHILE_MUTED
+- name: ENABLE_TCC
+- name: ETHERPAD_PUBLIC_URL
+- name: GOOGLE_API_APP_CLIENT_ID
+- name: MATOMO_ENDPOINT
+- name: GOOGLE_ANALYTICS_ID
+- name: MATOMO_SITE_ID
+- name: INVITE_SERVICE_URL
+- name: MICROSOFT_API_APP_CLIENT_ID
+- name: NGINX_RESOLVER
+- name: NGINX_WORKER_PROCESSES
+- name: NGINX_WORKER_CONNECTIONS
+- name: PEOPLE_SEARCH_URL
+- name: RESOLUTION
+- name: RESOLUTION_MIN
+- name: RESOLUTION_WIDTH
+- name: RESOLUTION_WIDTH_MIN
+- name: START_AUDIO_ONLY
+- name: START_AUDIO_MUTED
+- name: DISABLE_AUDIO_LEVELS
+- name: ENABLE_NOISY_MIC_DETECTION
+- name: START_BITRATE
+- name: DESKTOP_SHARING_FRAMERATE_MIN
+- name: DESKTOP_SHARING_FRAMERATE_MAX
+- name: START_VIDEO_MUTED
+- name: TESTING_CAP_SCREENSHARE_BITRATE
+- name: TESTING_OCTO_PROBABILITY

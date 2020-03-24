@@ -1,0 +1,15 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      app: jitsi
+    name: web
+  spec:
+    host: ${DOMAIN}
+    port:
+      targetPort: http
+    to:
+      kind: Service
+      name: web

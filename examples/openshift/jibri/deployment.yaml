@@ -1,0 +1,49 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: jitsi
+    name: jibri
+  spec:
+    replicas: 1
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: jitsi
+          name: jibri
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: jitsi-config
+          - secretRef:
+              name: jitsi-secret
+          env:
+          - name: DISPLAY
+            value: :0
+          - name: XMPP_SERVER
+            value: $(PROSODY_SERVICE_HOST)
+          image: jitsi/jibri
+          imagePullPolicy: Always
+          name: jibri
+          resources: {}
+          volumeMounts:
+          - mountPath: /dev/shm
+            name: dev-shm
+          - mountPath: /dev/snd
+            name: dev-snd
+        volumes:
+        - name: dev-shm
+          hostPath:
+            path: /dev/shm
+        - name: dev-snd
+          hostPath:
+            path: /dev/snd
+        restartPolicy: Always
+    triggers:
+    - type: ConfigChange
+  status: {}

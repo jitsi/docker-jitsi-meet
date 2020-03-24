@@ -1,0 +1,49 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: jitsi
+    name: prosody
+  spec:
+    replicas: 1
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: jitsi
+          name: prosody
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: jitsi-config
+          - secretRef:
+              name: jitsi-secret
+          image: jitsi/prosody
+          imagePullPolicy: Always
+          name: prosody
+          readinessProbe:
+            httpGet:
+              path: /http-bind
+              port: 5280
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            timeoutSeconds: 60
+          livenessProbe:
+            httpGet:
+              path: /http-bind
+              port: 5280
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          ports:
+          - containerPort: 5222
+          - containerPort: 5280
+          - containerPort: 5347
+          resources: {}
+        restartPolicy: Always
+    triggers:
+    - type: ConfigChange
+  status: {}

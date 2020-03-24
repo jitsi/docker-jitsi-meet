@@ -1,0 +1,50 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: jitsi
+    name: jicofo
+  spec:
+    replicas: 1
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: jitsi
+          name: jicofo
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: jitsi-config
+          - secretRef:
+              name: jitsi-secret
+          env:
+          - name: XMPP_SERVER
+            value: $(PROSODY_SERVICE_HOST)
+          readinessProbe:
+            httpGet:
+              path: /about/health
+              port: 8888
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            timeoutSeconds: 60
+          livenessProbe:
+            httpGet:
+              path: /about/health
+              port: 8888
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          ports:
+          - containerPort: 8888
+          image: jitsi/jicofo
+          imagePullPolicy: Always
+          name: jicofo
+          resources: {}
+        restartPolicy: Always
+    triggers:
+    - type: ConfigChange
+  status: {}

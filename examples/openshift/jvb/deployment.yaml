@@ -1,0 +1,56 @@
+objects:
+- <<: (( merge ))
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    labels:
+      app: jitsi
+    name: jvb
+  spec:
+    replicas: 1
+    strategy:
+      type: Rolling
+    template:
+      metadata:
+        labels:
+          app: jitsi
+          name: jvb
+      spec:
+        containers:
+        - envFrom:
+          - configMapRef:
+              name: jitsi-config
+          - secretRef:
+              name: jitsi-secret
+          env:
+          - name: DOCKER_HOST_ADDRESS
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: XMPP_SERVER
+            value: $(PROSODY_SERVICE_HOST)
+          - name: JVB_PORT
+            value: $(JVB_SERVICE_PORT_UDP)
+          - name: JVB_TCP_PORT
+            value: $(JVB_SERVICE_PORT_TCP)
+          readinessProbe:
+            httpGet:
+              path: /about/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 3
+            timeoutSeconds: 60
+          livenessProbe:
+            httpGet:
+              path: /about/health
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 3
+          image: jitsi/jvb
+          imagePullPolicy: Always
+          name: jvb
+          resources: {}
+        restartPolicy: Always
+    triggers:
+    - type: ConfigChange
+  status: {}
