@@ -288,9 +288,13 @@ In order to do that, first execute a shell in the corresponding container:
 
 Once in the container, run the following command to create a user:
 
-``prosodyctl --config /config/prosody.cfg.lua register username meet.jitsi passsword``
+``prosodyctl --config /config/prosody.cfg.lua adduser "$user@meet.jitsi"``
 
 The command then asks for a password interactively.
+
+You can also combine this into one command:
+
+``docker-compose exec prosody prosodyctl --config /config/prosody.cfg.lua adduser "$user@meet.jitsi"``
 
 #### Authentication using LDAP
 
@@ -329,7 +333,7 @@ Variable | Description | Example
 `JWT_AUTH_TYPE` | (Optional) Controls which module is used for processing incoming JWTs | token
 `JWT_TOKEN_AUTH_MODULE` | (Optional) Controls which module is used for validating JWTs | token_verification
 
-This can be tested using the [jwt.io] debugger. Use the following samople payload:
+This can be tested using the [jwt.io] debugger. Use the following sample payload:
 
 ```
 {
