@@ -155,6 +155,13 @@ log = {
 {{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG) }}
 {{ end }}
 
+-- Enable use of native prosody 0.11 support for epoll over select
+network_backend = "epoll";
+-- Set the TCP backlog to 511 since the kernel rounds it up to the next power of 2: 512.
+network_settings = {
+  tcp_backlog = 511;
+}
+
 component_interface = { "*" }
 
 data_path = "/config/data"
