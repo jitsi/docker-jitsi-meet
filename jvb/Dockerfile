@@ -3,7 +3,7 @@ FROM ${JITSI_REPO}/base-java
 
 RUN \
 	apt-dpkg-wrap apt-get update && \
-	apt-dpkg-wrap apt-get install -y jitsi-videobridge && \
+	apt-dpkg-wrap apt-get install -y jitsi-videobridge2 && \
 	apt-cleanup
 
 COPY rootfs/ /
