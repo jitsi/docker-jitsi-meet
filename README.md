@@ -439,7 +439,7 @@ The docker images can be built by running the `make` command in the main reposit
 
 If you are on the unstable branch, build the images with `FORCE_REBUILD=1 JITSI_RELEASE=unstable make`.
 
-Before deployment, make sure you remove the config file. You are now able to run `docker-compose up` as usual.
+You are now able to run `docker-compose up` as usual.
 
 ## TODO
 
