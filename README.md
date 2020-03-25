@@ -20,7 +20,8 @@ This repository contains the necessary tools to run a Jitsi Meet stack on [Docke
 * [Configurations](#configuration)
   - [Advanced configuration](#advanced-configuration)
   - [Running on a LAN environment](#running-on-a-lan-environment)
-* [Limitations](#limitations)
+* [Build Instructions](#build-instructions)
+* [ToDo](#todo)
 
 <hr />
 
@@ -429,6 +430,16 @@ succeed. If your users are coming in over the Internet (and not over LAN), this 
 
 The public IP address is discovered via [STUN]. STUN servers can be specified with the ``JVB_STUN_SERVERS``
 option.
+
+## Build Instructions
+
+Building your own images allows you to edit the configuration files of each image individually, providing more customization for your deployment.
+
+The docker images can be built by running the `make` command in the main repository folder. If you need to overwrite existing images from the remote source, use `FORCE_REBUILD=1 make`.
+
+If you are on the unstable branch, build the images with `FORCE_REBUILD=1 JITSI_RELEASE=unstable make`.
+
+You are now able to run `docker-compose up` as usual.
 
 ## TODO
 
