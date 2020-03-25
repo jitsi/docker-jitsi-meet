@@ -37,6 +37,7 @@ services:
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
             - ENABLE_RECORDING
+            - VIDEO_ASPECTRATIO
             - VIDEO_HEIGHT_IDEAL
             - VIDEO_HEIGHT_MAX
             - VIDEO_HEIGHT_MIN

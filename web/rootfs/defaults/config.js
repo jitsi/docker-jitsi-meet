@@ -106,12 +106,8 @@ var config = {
     // ratio of 16:9 with an ideal resolution of 720.
     constraints: {
         video: {
-            aspectRatio: 16 / 9,
-            height: {
-                ideal: 720,
-                max: 720,
-                min: 240
-            }
+            aspectRatio: 16/9,
+            height: { ideal: 720, max: 720, min: 240 }
         }
     },
 

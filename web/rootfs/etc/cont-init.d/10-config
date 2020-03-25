@@ -76,6 +76,8 @@ if [[ ! -f /config/config.js ]]; then
         -e "s#bosh:.*#bosh: '/http-bind',#" \
         -e "s#muc:.*#muc: '${XMPP_MUC_DOMAIN}',#" \
         -e "s#// focusUserJid:.*#focusUserJid: '${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}',#" \
+        -e "s#aspectRatio: 16 / 9,#aspectRatio: ${VIDEO_ASPECTRATIO},#" \
+        -e "s#ideal: 720, max: 720, min: 240#ideal: ${VIDEO_HEIGHT_IDEAL}, max: ${VIDEO_HEIGHT_MAX}, min: ${VIDEO_HEIGHT_MIN}#" \
         /config/config.js
 
     if [[ $ENABLE_RECORDING -eq 1 || x$ENABLE_RECORDING == xtrue ]]; then
@@ -83,9 +85,6 @@ if [[ ! -f /config/config.js ]]; then
             -e "/\/\/ Recording.*/a hiddenDomain: '$XMPP_RECORDER_DOMAIN'," \
             -e "s#// fileRecordingsEnabled:.*#fileRecordingsEnabled: true,#" \
             -e "s#// liveStreamingEnabled:.*#liveStreamingEnabled: true,#" \
-            -e "s#    ideal: 720,#    ideal: $VIDEO_HEIGHT_IDEAL,#" \
-            -e "s#    max: 720,#    ideal: $VIDEO_HEIGHT_MAX,#" \
-            -e "s#    min: 240,#    ideal: $VIDEO_HEIGHT_MIN,#" \
         /config/config.js
     fi
 
