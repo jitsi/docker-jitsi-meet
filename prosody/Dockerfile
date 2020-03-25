@@ -1,8 +1,13 @@
 ARG JITSI_REPO=jitsi
 FROM ${JITSI_REPO}/base
 
+ADD https://prosody.im/files/prosody-debian-packages.key /tmp/prosody.key
+
 RUN \
-    apt-dpkg-wrap apt-get update \
+    apt-key add /tmp/prosody.key \
+    && rm -f /tmp/prosody.key \
+    && echo "deb http://packages.prosody.im/debian stretch main" > /etc/apt/sources.list.d/prosody.list \
+    && apt-dpkg-wrap apt-get update \
     && apt-dpkg-wrap apt-get install -t stretch-backports -y \
       prosody \
       liblua5.2-dev \
@@ -12,6 +17,7 @@ RUN \
       libssl1.0-dev \
       lua-basexx \
       lua-ldap \
+      lua-sec \
       luarocks \
       git \
       gcc \
