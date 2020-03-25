@@ -85,7 +85,7 @@ if [[ ! -f /config/config.js ]]; then
             -e "s#// liveStreamingEnabled:.*#liveStreamingEnabled: true,#" \
             -e "s#    ideal: 720,#    ideal: $VIDEO_HEIGHT_IDEAL,#" \
             -e "s#    max: 720,#    ideal: $VIDEO_HEIGHT_MAX,#" \
-            -e "s#    min: 720,#    ideal: $VIDEO_HEIGHT_MIN,#" \
+            -e "s#    min: 240,#    ideal: $VIDEO_HEIGHT_MIN,#" \
         /config/config.js
     fi
 
