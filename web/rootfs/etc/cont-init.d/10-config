@@ -83,6 +83,9 @@ if [[ ! -f /config/config.js ]]; then
             -e "/\/\/ Recording.*/a hiddenDomain: '$XMPP_RECORDER_DOMAIN'," \
             -e "s#// fileRecordingsEnabled:.*#fileRecordingsEnabled: true,#" \
             -e "s#// liveStreamingEnabled:.*#liveStreamingEnabled: true,#" \
+            -e "s#    ideal: 720,#    ideal: $VIDEO_HEIGHT_IDEAL,#" \
+            -e "s#    max: 720,#    ideal: $VIDEO_HEIGHT_MAX,#" \
+            -e "s#    min: 720,#    ideal: $VIDEO_HEIGHT_MIN,#" \
         /config/config.js
     fi
 

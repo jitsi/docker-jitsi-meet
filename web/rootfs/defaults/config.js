@@ -104,16 +104,16 @@ var config = {
     // util#browser#usesNewGumFlow. The constraints are independency from
     // this config's resolution value. Defaults to requesting an ideal aspect
     // ratio of 16:9 with an ideal resolution of 720.
-    // constraints: {
-    //     video: {
-    //         aspectRatio: 16 / 9,
-    //         height: {
-    //             ideal: 720,
-    //             max: 720,
-    //             min: 240
-    //         }
-    //     }
-    // },
+    constraints: {
+        video: {
+            aspectRatio: 16 / 9,
+            height: {
+                ideal: 720,
+                max: 720,
+                min: 240
+            }
+        }
+    },
 
     // Enable / disable simulcast support.
     // disableSimulcast: false,
