@@ -12,7 +12,6 @@ services:
             - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
             # UI Customizations
-            - ${CONFIG}/web/title.html:/usr/share/jitsi-meet/title.html
             - ${CONFIG}/web/css/_welcome_page.scss:/usr/share/jitsi-meet/css/_welcome_page.scss
             # Image Customizations
             - ${CONFIG}/web/images/favicon.ico:/usr/share/jitsi-meet/favicon.ico
