@@ -110,8 +110,14 @@ if [[ ! -f /config/config.js ]]; then
     fi
 fi
 
+MissedAppName="${$CUSTOM_APP_NAME:-Missed.com}"
+
 if [[ ! -f /config/interface_config.js ]]; then
     cp /defaults/interface_config.js /config/interface_config.js
+
+    sed -i \
+        -e "s#Missed.com#$MissedAppName#g" \
+        /config/interface_config.js
 
     # It will remove parameter 'closedcaptions' from TOOLBAR_BUTTONS if ENABLE_TRANSCRIPTIONS is false,
     # because it enabled by default, but not supported out of the box.
@@ -122,3 +128,58 @@ if [[ ! -f /config/interface_config.js ]]; then
     fi
 
 fi
+
+# Custom by Rustam
+# make custom folders
+mkdir -p \
+    /config/{css,images,react/features/deep-linking/components,react/features/recording/components/Recording,react/features/welcome/components}
+
+if [[ ! -f /config/title.html ]]; then
+    cp /defaults/custom/title.html /config/title.html
+    sed -i \
+        -e "s#Missed.com#$MissedAppName#g" \
+        /config/title.html
+fi
+# Copy all custom images
+if [[ ! -f /config/images/favicon.ico ]]; then
+    cp /defaults/custom/images/favicon.ico /config/images/favicon.ico
+fi
+
+if [[ ! -f /config/images/logo.png ]]; then
+    cp /defaults/custom/images/logo.png /config/images/logo.png
+fi
+
+if [[ ! -f /config/images/logo_square.png ]]; then
+    cp /defaults/custom/images/logo_square.png /config/images/logo_square.png
+fi
+
+if [[ ! -f /config/images/logo-deep-linking.png ]]; then
+    cp /defaults/custom/images/logo-deep-linking.png /config/images/logo-deep-linking.png
+fi
+
+if [[ ! -f /config/images/watermark.png ]]; then
+    cp /defaults/custom/images/watermark.png /config/images/watermark.png
+fi
+
+# Copy all custom CSS
+if [[ ! -f /config/css/_welcome_page.scss ]]; then
+    cp /defaults/custom/css/_welcome_page.scss /config/css/_welcome_page.scss
+fi
+
+# Copy all custom JS
+if [[ ! -f /config/react/features/deep-linking/components/DeepLinkingMobilePage.web.js ]]; then
+    cp /defaults/custom/react/features/deep-linking/components/DeepLinkingMobilePage.web.js /config/react/features/deep-linking/components/DeepLinkingMobilePage.web.js
+fi
+
+if [[ ! -f /config/react/features/recording/components/Recording/styles.native.js ]]; then
+    cp /defaults/custom/react/features/recording/components/Recording/styles.native.js /config/react/features/recording/components/Recording/styles.native.js
+fi
+
+if [[ ! -f /config/react/features/recording/components/Recording/styles.web.js ]]; then
+    cp /defaults/custom/react/features/recording/components/Recording/styles.web.js /config/react/features/recording/components/Recording/styles.web.js
+fi
+
+if [[ ! -f /config/react/features/welcome/components/WelcomePage.web.js ]]; then
+    cp /defaults/custom/react/features/welcome/components/WelcomePage.web.js /config/react/features/welcome/components/WelcomePage.web.js
+fi
+

@@ -15,6 +15,16 @@ RUN \
 	apt-cleanup && \
 	rm -f /etc/nginx/conf.d/default.conf && \
 	rm -rf /tmp/pkg /var/cache/apt
+	# Customizations
+	rm -f /usr/share/jitsi-meet/title.html && \
+	rm -f /usr/share/jitsi-meet/favicon.png && \
+	rm -f /usr/share/jitsi-meet/images/favicon.png && \
+	rm -f /usr/share/jitsi-meet/images/watermark.png && \
+	rm -f /usr/share/jitsi-meet/css/_welcome_page.scss && \
+	rm -f /usr/share/jitsi-meet/react/features/deep-linking/components/DeepLinkingMobilePage.web.js && \
+	rm -f /usr/share/jitsi-meet/react/features/recording/components/Recording/styles.native.js && \
+	rm -f /usr/share/jitsi-meet/react/features/recording/components/Recording/styles.web.js && \
+	rm -f /usr/share/jitsi-meet/react/features/welcome/components/WelcomePage.web.js
 
 RUN \
 	chmod a+x /usr/local/bin/certbot-auto && \
