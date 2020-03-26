@@ -1,3 +1,19 @@
+## stable-4101-2
+
+Based on stable release 4101.
+
+* b15bb28 prosody: update to latest stable version
+* 75cb31b doc: add build instructions to README
+* 25dbde9 doc: fix typo
+* badc2d4 doc: add examples/README
+* f6f6ca6 Merge branch 'dev'
+* 52a1449 doc: clarify DOCKER_HOST_ADDRESS
+* f26c9e6 prosody: fix ldap config template
+* cd4a071 web: check for certbot's success and exit in case of a failure
+* dea8d6c doc: fix typo
+* 573c6fa doc: update diagrams
+* 29125fd examples: add minimal example to run jitsi behind traefik
+
 ## stable-4101-1
 
 Based on stable release 4101.
