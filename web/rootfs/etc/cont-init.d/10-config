@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
 MISSED_APP_NAME="${CUSTOM_APP_NAME:=Missed.com}"
-MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=#474747}"
+MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=474747}"
 MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
 MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
 
@@ -126,7 +126,7 @@ if [[ ! -f /config/interface_config.js ]]; then
 
     sed -i \
         -e "s#Missed.com#$MISSED_APP_NAME#g" \
-        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '$MISSED_APP_BG',#" \
+        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$MISSED_APP_BG',#" \
         -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$MISSED_WATERMARK_URL',#" \
         /config/interface_config.js
 
