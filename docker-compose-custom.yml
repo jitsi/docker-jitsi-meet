@@ -3,7 +3,7 @@ version: '3'
 services:
     # Frontend
     web:
-        image: jitsi/web
+        image: jitsi/web:custom
         ports:
             - '${HTTP_PORT}:80'
             - '${HTTPS_PORT}:443'
