@@ -117,6 +117,7 @@ jvb:
     password:
 
   useHostPort: false
+  enableTCP: false
   UDPPort: 10000
   TCPPort: 4443
   service:

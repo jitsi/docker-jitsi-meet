@@ -55,12 +55,14 @@ spec:
               hostPort: {{ .Values.jvb.UDPPort }}
               {{- end }}
               protocol: UDP
+          {{- if .Values.jvb.enableTCP }}
             - name: rtp-tcp
               containerPort: {{ .Values.jvb.TCPPort }}
               {{- if .Values.jvb.useHostPort }}
               hostPort: {{ .Values.jvb.TCPPort }}
               {{- end }}
               protocol: TCP
+          {{- end }}
           {{- with .Values.jvb.livenessProbe }}
           livenessProbe:
           {{- toYaml . | nindent 12 }}
