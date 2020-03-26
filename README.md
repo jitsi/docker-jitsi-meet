@@ -19,7 +19,7 @@ This repository contains the necessary tools to run a Jitsi Meet stack on [Docke
   - [Design considerations](#design-considerations)
 * [Configurations](#configuration)
   - [Advanced configuration](#advanced-configuration)
-  - [Running on a LAN environment](#running-on-a-lan-environment)
+  - [Running behind NAT or on a LAN environment](#running-behind-nat-or-on-a-lan-environment)
 * [Build Instructions](#build-instructions)
 * [ToDo](#todo)
 
