@@ -141,6 +141,10 @@ if [[ ! -f /config/title.html ]]; then
         /config/title.html
 fi
 # Copy all custom images
+if [[ ! -f /config/favicon.ico ]]; then
+    cp /defaults/custom/images/favicon.ico /config/favicon.ico
+fi
+
 if [[ ! -f /config/images/favicon.ico ]]; then
     cp /defaults/custom/images/favicon.ico /config/images/favicon.ico
 fi
