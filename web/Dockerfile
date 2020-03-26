@@ -17,8 +17,8 @@ RUN \
 	rm -rf /tmp/pkg /var/cache/apt
 	# Customizations
 	rm -f /usr/share/jitsi-meet/title.html && \
-	rm -f /usr/share/jitsi-meet/favicon.png && \
-	rm -f /usr/share/jitsi-meet/images/favicon.png && \
+	rm -f /usr/share/jitsi-meet/favicon.ico && \
+	rm -f /usr/share/jitsi-meet/images/favicon.ico && \
 	rm -f /usr/share/jitsi-meet/images/watermark.png && \
 	rm -f /usr/share/jitsi-meet/css/_welcome_page.scss && \
 	rm -f /usr/share/jitsi-meet/react/features/deep-linking/components/DeepLinkingMobilePage.web.js && \

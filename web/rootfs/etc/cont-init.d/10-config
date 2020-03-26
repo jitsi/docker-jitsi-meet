@@ -1,5 +1,10 @@
 #!/usr/bin/with-contenv bash
 
+MISSED_APP_NAME="${CUSTOM_APP_NAME:=Missed.com}"
+MISSED_APP_BG="${CUSTOM_APP_BACKGROUND:=#474747}"
+MISSED_WATERMARK_URL="${CUSTOM_WATERMARK_URL:=https://missed.com}"
+MISSED_ENABLE_WELCOME_PAGE="${CUSTOM_ENABLE_WELCOME_PAGE:=true}"
+
 # make our folders
 mkdir -p \
     /config/{nginx/site-confs,keys} \
@@ -108,15 +113,21 @@ if [[ ! -f /config/config.js ]]; then
              -e "s#// transcribingEnabled:.*#transcribingEnabled: true,#" \
              /config/config.js
     fi
-fi
 
-MissedAppName="${CUSTOM_APP_NAME:=Missed.com}"
+    if [[ $MISSED_ENABLE_WELCOME_PAGE -ne 1 || "$MISSED_ENABLE_WELCOME_PAGE" != "true" ]]; then
+        sed -i \
+            -e "s#enableWelcomePage:.*#enableWelcomePage: $MISSED_ENABLE_WELCOME_PAGE,#" \
+            /config/config.js
+    fi
+fi
 
 if [[ ! -f /config/interface_config.js ]]; then
     cp /defaults/interface_config.js /config/interface_config.js
 
     sed -i \
-        -e "s#Missed.com#$MissedAppName#g" \
+        -e "s#Missed.com#$MISSED_APP_NAME#g" \
+        -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '$MISSED_APP_BG',#" \
+        -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$MISSED_WATERMARK_URL',#" \
         /config/interface_config.js
 
     # It will remove parameter 'closedcaptions' from TOOLBAR_BUTTONS if ENABLE_TRANSCRIPTIONS is false,
@@ -137,7 +148,7 @@ mkdir -p \
 if [[ ! -f /config/title.html ]]; then
     cp /defaults/custom/title.html /config/title.html
     sed -i \
-        -e "s#Missed.com#$MissedAppName#g" \
+        -e "s#AppName#$MISSED_APP_NAME#g" \
         /config/title.html
 fi
 # Copy all custom images

@@ -15,8 +15,8 @@ services:
             - ${CONFIG}/web/title.html:/usr/share/jitsi-meet/title.html
             - ${CONFIG}/web/css/_welcome_page.scss:/usr/share/jitsi-meet/css/_welcome_page.scss
             # Image Customizations
-            - ${CONFIG}/web/images/favicon.ico:/usr/share/jitsi-meet/favicon.ico.png
-            - ${CONFIG}/web/images/favicon.ico:/usr/share/jitsi-meet/images/favicon.ico.png
+            - ${CONFIG}/web/images/favicon.ico:/usr/share/jitsi-meet/favicon.ico
+            - ${CONFIG}/web/images/favicon.ico:/usr/share/jitsi-meet/images/favicon.ico
             - ${CONFIG}/web/images/watermark.png:/usr/share/jitsi-meet/images/watermark.png
             - ${CONFIG}/web/images/logo.png:/usr/share/jitsi-meet/images/logo.png
             - ${CONFIG}/web/images/logo_square.png:/usr/share/jitsi-meet/images/logo_square.png
@@ -28,6 +28,9 @@ services:
 #            - ${CONFIG}/web/react/features/welcome/components/WelcomePage.web.js:/usr/share/jitsi-meet/react/features/recording/components/WelcomePage.web.js
         environment:
             - CUSTOM_APP_NAME
+            - CUSTOM_APP_BACKGROUND
+            - CUSTOM_WATERMARK_URL
+            - CUSTOM_ENABLE_WELCOME_PAGE
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
