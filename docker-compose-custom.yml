@@ -11,6 +11,21 @@ services:
             - ${CONFIG}/web:/config
             - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
+            # UI Customizations
+            - ${CONFIG}/web/title.html:/usr/share/jitsi-meet/title.html
+            - ${CONFIG}/web/css/_welcome_page.scss:/usr/share/jitsi-meet/css/_welcome_page.scss
+            # Image Customizations
+            - ${CONFIG}/web/images/favicon.ico:/usr/share/jitsi-meet/favicon.ico.png
+            - ${CONFIG}/web/images/favicon.ico:/usr/share/jitsi-meet/images/favicon.ico.png
+            - ${CONFIG}/web/images/watermark.png:/usr/share/jitsi-meet/images/watermark.png
+            - ${CONFIG}/web/images/logo.png:/usr/share/jitsi-meet/images/logo.png
+            - ${CONFIG}/web/images/logo_square.png:/usr/share/jitsi-meet/images/logo_square.png
+            - ${CONFIG}/web/images/logo-deep-linking.png:/usr/share/jitsi-meet/images/logo-deep-linking.png
+            # React Customizations
+#            - ${CONFIG}/web/react/features/deep-linking/components/DeepLinkingMobilePage.web.js:/usr/share/jitsi-meet/react/features/deep-linking/components/DeepLinkingMobilePage.web.js
+#            - ${CONFIG}/web/react/features/recording/components/Recording/styles.native.js:/usr/share/jitsi-meet/react/features/recording/components/Recording/styles.native.js
+#            - ${CONFIG}/web/react/features/recording/components/Recording/styles.web.js:/usr/share/jitsi-meet/react/features/recording/components/Recording/styles.web.js
+#            - ${CONFIG}/web/react/features/welcome/components/WelcomePage.web.js:/usr/share/jitsi-meet/react/features/recording/components/WelcomePage.web.js
         environment:
             - CUSTOM_APP_NAME
             - ENABLE_AUTH
