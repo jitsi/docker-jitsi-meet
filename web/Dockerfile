@@ -20,11 +20,7 @@ RUN \
 	rm -f /usr/share/jitsi-meet/favicon.ico && \
 	rm -f /usr/share/jitsi-meet/images/favicon.ico && \
 	rm -f /usr/share/jitsi-meet/images/watermark.png && \
-	rm -f /usr/share/jitsi-meet/css/_welcome_page.scss && \
-	rm -f /usr/share/jitsi-meet/react/features/deep-linking/components/DeepLinkingMobilePage.web.js && \
-	rm -f /usr/share/jitsi-meet/react/features/recording/components/Recording/styles.native.js && \
-	rm -f /usr/share/jitsi-meet/react/features/recording/components/Recording/styles.web.js && \
-	rm -f /usr/share/jitsi-meet/react/features/welcome/components/WelcomePage.web.js
+	rm -f /usr/share/jitsi-meet/images/logo-deep-linking.png &&
 
 RUN \
 	chmod a+x /usr/local/bin/certbot-auto && \

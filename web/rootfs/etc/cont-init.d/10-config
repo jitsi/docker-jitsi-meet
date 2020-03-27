@@ -141,60 +141,34 @@ if [[ ! -f /config/interface_config.js ]]; then
 fi
 
 # Custom by Rustam
-# make custom folders
-mkdir -p \
-    /config/{css,images,react/features/deep-linking/components,react/features/recording/components/Recording,react/features/welcome/components}
-
-if [[ ! -f /config/title.html ]]; then
-    cp /defaults/custom/title.html /config/title.html
+if [[ ! -f /usr/share/jitsi-meet/title.html ]]; then
+    cp /defaults/custom/title.html /usr/share/jitsi-meet/title.html
     sed -i \
         -e "s#AppName#$MISSED_APP_NAME#g" \
-        /config/title.html
+        /usr/share/jitsi-meet/title.html
 fi
 # Copy all custom images
-if [[ ! -f /config/favicon.ico ]]; then
-    cp /defaults/custom/images/favicon.ico /config/favicon.ico
+if [[ ! -f /usr/share/jitsi-meet/favicon.ico ]]; then
+    cp /defaults/custom/images/favicon.ico /usr/share/jitsi-meet/favicon.ico
 fi
 
-if [[ ! -f /config/images/favicon.ico ]]; then
-    cp /defaults/custom/images/favicon.ico /config/images/favicon.ico
+if [[ ! -f /usr/share/jitsi-meet/images/favicon.ico ]]; then
+    cp /defaults/custom/images/favicon.ico /usr/share/jitsi-meet/images/favicon.ico
 fi
 
-if [[ ! -f /config/images/logo.png ]]; then
-    cp /defaults/custom/images/logo.png /config/images/logo.png
+if [[ ! -f /usr/share/jitsi-meet/images/logo.png ]]; then
+    cp /defaults/custom/images/logo.png /usr/share/jitsi-meet/images/logo.png
 fi
 
-if [[ ! -f /config/images/logo_square.png ]]; then
-    cp /defaults/custom/images/logo_square.png /config/images/logo_square.png
+if [[ ! -f /usr/share/jitsi-meet/images/logo_square.png ]]; then
+    cp /defaults/custom/images/logo_square.png /usr/share/jitsi-meet/images/logo_square.png
 fi
 
-if [[ ! -f /config/images/logo-deep-linking.png ]]; then
-    cp /defaults/custom/images/logo-deep-linking.png /config/images/logo-deep-linking.png
+if [[ ! -f /usr/share/jitsi-meet/images/logo-deep-linking.png ]]; then
+    cp /defaults/custom/images/logo-deep-linking.png /usr/share/jitsi-meet/images/logo-deep-linking.png
 fi
 
-if [[ ! -f /config/images/watermark.png ]]; then
-    cp /defaults/custom/images/watermark.png /config/images/watermark.png
-fi
-
-# Copy all custom CSS
-if [[ ! -f /config/css/_welcome_page.scss ]]; then
-    cp /defaults/custom/css/_welcome_page.scss /config/css/_welcome_page.scss
-fi
-
-# Copy all custom JS
-if [[ ! -f /config/react/features/deep-linking/components/DeepLinkingMobilePage.web.js ]]; then
-    cp /defaults/custom/react/features/deep-linking/components/DeepLinkingMobilePage.web.js /config/react/features/deep-linking/components/DeepLinkingMobilePage.web.js
-fi
-
-if [[ ! -f /config/react/features/recording/components/Recording/styles.native.js ]]; then
-    cp /defaults/custom/react/features/recording/components/Recording/styles.native.js /config/react/features/recording/components/Recording/styles.native.js
-fi
-
-if [[ ! -f /config/react/features/recording/components/Recording/styles.web.js ]]; then
-    cp /defaults/custom/react/features/recording/components/Recording/styles.web.js /config/react/features/recording/components/Recording/styles.web.js
-fi
-
-if [[ ! -f /config/react/features/welcome/components/WelcomePage.web.js ]]; then
-    cp /defaults/custom/react/features/welcome/components/WelcomePage.web.js /config/react/features/welcome/components/WelcomePage.web.js
+if [[ ! -f /usr/share/jitsi-meet/images/watermark.png ]]; then
+    cp /defaults/custom/images/watermark.png /usr/share/jitsi-meet/images/watermark.png
 fi
 
