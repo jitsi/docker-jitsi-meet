@@ -41,13 +41,15 @@ services:
                 aliases:
                     - ${XMPP_DOMAIN}
         labels:
-            # traefik: change that to your external network
-            - "traefik.docker.network=web"
-            - "traefik.enable=true"
-            - "traefik.backend=jc_backend"
-            # traefik: change that to your actual fqdn 
-            - "traefik.basic.frontend.rule=Host:your.host.name"
-            - "traefik.basic.port=80"
+            traefik.http.middlewares.redirect.redirectscheme.scheme: https
+            traefik.http.routers.app-http.entrypoints: web
+            traefik.http.routers.app-http.middlewares: redirect
+            traefik.http.routers.app-http.rule: 'Host(`your.host.name`)'
+            traefik.http.routers.app.entrypoints: websecure
+            traefik.http.routers.app.rule: 'Host(`your.host.name`)'
+            traefik.http.routers.app.tls: 'true'
+            traefik.http.routers.app.tls.certresolver: le
+            traefik.http.services.app.loadbalancer.server.port: 80
 
     # XMPP server
     prosody:
