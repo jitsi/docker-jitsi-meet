@@ -291,7 +291,7 @@ Once in the container, run the following command to create a user:
 
 ``prosodyctl --config /config/prosody.cfg.lua register TheDesiredUsername meet.jitsi TheDesiredPassword``
 
-Note that the commend produces no output.
+Note that the command produces no output.
 
 #### Authentication using LDAP
 
