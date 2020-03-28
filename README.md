@@ -100,7 +100,7 @@ E.g. on a CentOS/Fedora server this would be done like this (without SIP access)
 * **jvb**: [Jitsi Videobridge], the video router.
 * **jigasi**: [Jigasi], the SIP (audio only) gateway.
 * **etherpad**: [Etherpad], shared document editing addon.
-* **jibri**: [Jibri], the brooadcasting infrastructure.
+* **jibri**: [Jibri], the broadcasting infrastructure.
 
 ### Design considerations
 
