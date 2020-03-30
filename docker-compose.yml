@@ -122,6 +122,7 @@ services:
             - JICOFO_RESERVATION_REST_BASE_URL
             - JVB_BREWERY_MUC
             - JIGASI_BREWERY_MUC
+            - JIGASI_SIP_URI
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
             - TZ
