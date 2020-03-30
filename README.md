@@ -216,7 +216,7 @@ Variable | Description | Example
 For using multiple Jibri instances, you have to select different loopback interfces for each instance manually.
 
 <details>
-  <summary>Set interface you can in file `/home/jibri/.asoundrc` inside a docker container.</summary>
+  <summary>Set interface in file `/home/jibri/.asoundrc` inside a docker container.</summary>
 
   Default the first instance has:
 
@@ -330,7 +330,7 @@ Variable | Description | Example
 `JWT_AUTH_TYPE` | (Optional) Controls which module is used for processing incoming JWTs | token
 `JWT_TOKEN_AUTH_MODULE` | (Optional) Controls which module is used for validating JWTs | token_verification
 
-This can be tested using the [jwt.io] debugger. Use the following samople payload:
+This can be tested using the [jwt.io] debugger. Use the following sample payload:
 
 ```
 {
@@ -350,7 +350,7 @@ This can be tested using the [jwt.io] debugger. Use the following samople payloa
 
 ### Shared document editing using Etherpad
 
-You can collaboratively edit a document via [Etherpad]. In order to enable it, set the config options bellow and run
+You can collaboratively edit a document via [Etherpad]. In order to enable it, set the config options below and run
 Docker Compose with the additional config file `etherpad.yml`.
 
 Here are the required options:
@@ -373,7 +373,7 @@ Variable | Description | Example
 `GC_CLIENT_ID` | `client_id` from Google Cloud Credetials
 `GC_CLIENT_CERT_URL` | `client_x509_cert_url` from Google Cloud Credetials
 
-For setting the Google Cloud Credentials please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
+For setting the Google Cloud Credentials please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" paragraph 1 to 5.
 
 ### Advanced configuration
 
@@ -414,11 +414,11 @@ Variable | Description | Default value
 `JIGASI_SIP_KEEP_ALIVE_METHOD` | Keepalive method | OPTIONS
 `JIGASI_HEALTH_CHECK_SIP_URI` | Health-check extension. Jigasi will call it for healthcheck | keepalive
 `JIGASI_HEALTH_CHECK_INTERVAL` | Interval of healthcheck in milliseconds | 300000
-`JIGASI_TRANSCRIBER_RECORD_AUDIO` | Jigasi will recordord an audio when transcriber is on | true
+`JIGASI_TRANSCRIBER_RECORD_AUDIO` | Jigasi will record audio when transcriber is on | true
 `JIGASI_TRANSCRIBER_SEND_TXT` | Jigasi will send transcribed text to the chat when transcriber is on | true
-`JIGASI_TRANSCRIBER_ADVERTISE_URL` | Jigasi post to the chat an url with transcription file | true
-`DISABLE_HTTPS` | Disable HTTPS, this can be useful if TLS connections are going to be handled outside of this setup | 1
-`ENABLE_HTTP_REDIRECT` | Redirects HTTP traffic to HTTPS | 1
+`JIGASI_TRANSCRIBER_ADVERTISE_URL` | Jigasi will post an url to the chat with transcription file | true
+`DISABLE_HTTPS` | Handle TLS connections outside of this setup | 1
+`ENABLE_HTTP_REDIRECT` | Redirect HTTP traffic to HTTPS (necessary for Let's Encrypt) | 1
 `LOG_LEVEL` | Controls which logs are output from prosody and associated modules | info
 
 ### Running behind NAT or on a LAN environment
