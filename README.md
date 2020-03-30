@@ -373,7 +373,7 @@ Variable | Description | Example
 `GC_CLIENT_ID` | `client_id` from Google Cloud Credetials
 `GC_CLIENT_CERT_URL` | `client_x509_cert_url` from Google Cloud Credetials
 
-For setting the Google Cloud Credentials please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
+For setting the Google Cloud Credentials please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" paragraph 1 to 5.
 
 ### Advanced configuration
 
