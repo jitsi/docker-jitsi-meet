@@ -12,6 +12,7 @@ services:
         environment:
             - ENABLE_AUTH
             - XMPP_AUTH_DOMAIN
+            - XMPP_MUC_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
             - XMPP_DOMAIN
@@ -21,6 +22,7 @@ services:
             - JIGASI_SIP_SERVER
             - JIGASI_SIP_PORT
             - JIGASI_SIP_TRANSPORT
+            - JIGASI_DEFAULT_ROOM_NAME
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JIGASI_BREWERY_MUC
