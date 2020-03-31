@@ -97,6 +97,8 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
     }
+    muc_room_locking = false
+    muc_room_default_public_jids = true
 
 Component "focus.{{ .Env.XMPP_DOMAIN }}"
     component_secret = "{{ .Env.JICOFO_COMPONENT_SECRET }}"
