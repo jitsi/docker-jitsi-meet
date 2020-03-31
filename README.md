@@ -70,7 +70,7 @@ several container images are provided.
 
 ### External Ports
 
-The following external ports must be opened on a firweall:
+The following external ports must be opened on a firewall:
 
 * 80/tcp for Web UI HTTP (really just to redirect, after uncommenting ENABLE_HTTP_REDIRECT=1 in .env)
 * 443/tcp for Web UI HTTPS
