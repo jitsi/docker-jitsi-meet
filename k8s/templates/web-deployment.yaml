@@ -19,16 +19,18 @@ spec:
       labels:
         service: web
     spec:
+      {{- with .Values.web.affinity }}
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: service
-                operator: In
-                values:
-                - web
-            topologyKey: "kubernetes.io/hostname"
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.web.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.web.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - env:
         - name: JICOFO_AUTH_USER
@@ -49,4 +51,6 @@ spec:
         ports:
         - containerPort: 80
         - containerPort: 443
+        resources:
+          {{- toYaml .Values.web.resources | nindent 12 }}
       restartPolicy: Always

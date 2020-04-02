@@ -19,16 +19,18 @@ spec:
       labels:
         service: jvb
     spec:
+      {{- with .Values.jvb.affinity }}
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: service
-                operator: In
-                values:
-                - jvb
-            topologyKey: "kubernetes.io/hostname"
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.jvb.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.jvb.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - env:
         - name: XMPP_SERVER
@@ -66,4 +68,6 @@ spec:
         - containerPort: 30000
           protocol: UDP
         - containerPort: 30001
+        resources:
+          {{- toYaml .Values.jvb.resources | nindent 12 }}
       restartPolicy: Always

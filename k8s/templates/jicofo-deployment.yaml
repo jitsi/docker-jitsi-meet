@@ -19,16 +19,18 @@ spec:
       labels:
         service: jicofo
     spec:
+      {{- with .Values.jicofo.affinity }}
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: service
-                operator: In
-                values:
-                - jicofo
-            topologyKey: "kubernetes.io/hostname"
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.jicofo.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.jicofo.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - env:
         - name: XMPP_SERVER
@@ -52,4 +54,6 @@ spec:
         image: jitsi/jicofo
         imagePullPolicy: Always
         name: jicofo
+        resources:
+          {{- toYaml .Values.jicofo.resources | nindent 12 }}
       restartPolicy: Always

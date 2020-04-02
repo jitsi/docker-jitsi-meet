@@ -16,18 +16,18 @@ spec:
       labels:
         service: prosody
     spec:
+      {{- with .Values.prosody.affinity }}
       affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: service
-                operator: In
-                values:
-                - jicofo
-                - jvb
-                - web
-            topologyKey: "kubernetes.io/hostname"
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
+      {{- with .Values.prosody.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.prosody.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
       - env:
         - name: XMPP_DOMAIN
@@ -59,4 +59,6 @@ spec:
         - containerPort: 5222
         - containerPort: 5280
         - containerPort: 5347
+        resources:
+          {{- toYaml .Values.prosody.resources | nindent 12 }}
       restartPolicy: Always
