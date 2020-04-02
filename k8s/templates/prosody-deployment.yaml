@@ -5,6 +5,9 @@ metadata:
     service: prosody
   name: prosody
 spec:
+  selector:
+    matchLabels:
+      service: prosody
   replicas: 1
   strategy:
     type: Recreate

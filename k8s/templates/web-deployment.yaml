@@ -5,6 +5,9 @@ metadata:
     service: web
   name: web
 spec:
+  selector:
+    matchLabels:
+      service: web
   replicas: 1
   strategy:
     type: Recreate

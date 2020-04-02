@@ -5,6 +5,9 @@ metadata:
     service: jicofo
   name: jicofo
 spec:
+  selector:
+    matchLabels:
+      service: jicofo
   replicas: 1
   strategy:
     type: Recreate

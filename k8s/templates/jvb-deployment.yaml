@@ -5,6 +5,9 @@ metadata:
     service: jvb
   name: jvb
 spec:
+  selector:
+    matchLabels:
+      service: jvb
   replicas: 1
   strategy:
     type: Recreate
