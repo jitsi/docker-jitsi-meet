@@ -41,6 +41,7 @@ spec:
         - name: TZ
           value: Europe/Paris
         image: jitsi/prosody
+        imagePullPolicy: Always
         name: prosody
         ports:
         - containerPort: 5222

@@ -46,7 +46,8 @@ spec:
           value: focus
         - name: TZ
           value: Europe/Paris
-        image: 103425057857.dkr.ecr.us-west-2.amazonaws.com/jitsi/jvb
+        image: jitsi/jvb
+        imagePullPolicy: Always
         name: jvb
         ports:
         - containerPort: 30000
