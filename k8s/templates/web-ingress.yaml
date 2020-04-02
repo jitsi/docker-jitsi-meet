@@ -3,6 +3,12 @@ apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: webingress
+  {{- if .Values.ingress.annotations }}
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{   $key }}: {{ $value | quote }}
+    {{- end }}
+  {{- end }}
 spec:
 {{- if .Values.ingress.tls }}
   tls:
