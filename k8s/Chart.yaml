@@ -1,11 +1,12 @@
 apiVersion: v1
 name: jitsi-meet
 version: 1.0.0
-appVersion: 0.0.1
+appVersion: 0.0.2
 description: jitsi deployment
 sources:
   - https://github.com/jitsi/docker-jitsi-meet
-maintainers: 
+maintainers:
   - name: Aaron van Meerten
     email: aaron@jitsi.org
-
+  - name: Chase Sillevis
+    email: chase@sillevis.net
