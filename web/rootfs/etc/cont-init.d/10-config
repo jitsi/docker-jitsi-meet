@@ -11,14 +11,31 @@ mkdir -p \
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
         if [[ ! -f /etc/letsencrypt/live/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
-            certbot certonly \
-                --noninteractive \
-                --standalone \
-                --preferred-challenges http \
-                -d $LETSENCRYPT_DOMAIN \
-                --agree-tos \
-                --email $LETSENCRYPT_EMAIL
-            cp /defaults/letsencrypt-renew /etc/cron.monthly/
+            if ! certbot certonly \
+                  --noninteractive \
+                  --standalone \
+                  --preferred-challenges http \
+                  -d $LETSENCRYPT_DOMAIN \
+                  --agree-tos \
+                  --email $LETSENCRYPT_EMAIL ; then
+
+                echo "Failed to obtain a certificate from the Let's Encrypt CA."
+                # this tries to get the user's attention and to spare the
+                # authority's rate limit:
+                sleep 15
+                echo "Exiting."
+                exit 1
+            fi
+        fi
+
+        # remove default certbot renewal
+        if [[ -f /etc/cron.d/certbot ]]; then
+            rm /etc/cron.d/certbot
+        fi
+
+        # setup certbot renewal script
+        if [[ ! -f /etc/cron.daily/letencrypt-renew ]]; then
+            cp /defaults/letsencrypt-renew /etc/cron.daily/
         fi
     else
         # use self-signed certs
@@ -56,10 +73,18 @@ if [[ ! -f /config/config.js ]]; then
     cp /defaults/config.js /config/config.js
     sed -i \
         -e "s#jitsi-meet.example.com#$XMPP_DOMAIN#g" \
-        -e "s#bosh:.*#bosh: '/http-bind',#" \
+        -e "s#bosh:.*#bosh: '${PUBLIC_URL}/http-bind',#" \
         -e "s#muc:.*#muc: '${XMPP_MUC_DOMAIN}',#" \
         -e "s#// focusUserJid:.*#focusUserJid: '${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}',#" \
         /config/config.js
+
+    if [[ $ENABLE_RECORDING -eq 1 || x$ENABLE_RECORDING == xtrue ]]; then
+        sed -i \
+            -e "/\/\/ Recording.*/a hiddenDomain: '$XMPP_RECORDER_DOMAIN'," \
+            -e "s#// fileRecordingsEnabled:.*#fileRecordingsEnabled: true,#" \
+            -e "s#// liveStreamingEnabled:.*#liveStreamingEnabled: true,#" \
+        /config/config.js
+    fi
 
     if [[ $ENABLE_AUTH -eq 1 ]]; then
         if [[ $ENABLE_GUESTS -eq 1 ]]; then
@@ -72,9 +97,29 @@ if [[ ! -f /config/config.js ]]; then
             -e "s#// authdomain:.*#authdomain: '${XMPP_DOMAIN}',#" \
             /config/config.js
     fi
+
+    if [[ ! -z "${ETHERPAD_URL_BASE}" && -z "$(grep -om1 'etherpad_base:' /config/config.js)" ]]; then
+        sed -i \
+            -e "/enableWelcomePage/a\    etherpad_base: '${PUBLIC_URL}/etherpad/p/'," \
+            /config/config.js
+    fi
+
+    if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || "$ENABLE_TRANSCRIPTIONS" == "true" ]]; then
+        sed -i \
+             -e "s#// transcribingEnabled:.*#transcribingEnabled: true,#" \
+             /config/config.js
+    fi
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then
     cp /defaults/interface_config.js /config/interface_config.js
-fi
 
+    # It will remove parameter 'closedcaptions' from TOOLBAR_BUTTONS if ENABLE_TRANSCRIPTIONS is false,
+    # because it enabled by default, but not supported out of the box.
+    if [[ $ENABLE_TRANSCRIPTIONS -ne 1 || "$ENABLE_TRANSCRIPTIONS" != "true" ]]; then
+        sed -i \
+            -e "s#'closedcaptions', ##" \
+            /config/interface_config.js
+    fi
+
+fi

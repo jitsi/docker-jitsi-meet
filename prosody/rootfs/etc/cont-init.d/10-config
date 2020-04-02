@@ -1,18 +1,49 @@
 #!/usr/bin/with-contenv bash
 
+if [[ ! -f /config/saslauthd.conf ]]; then
+  cp /defaults/saslauthd.conf /config/
+fi
+
+if [[ ! -f /etc/saslauthd.conf ]]; then
+  tpl /config/saslauthd.conf > /etc/saslauthd.conf
+  mkdir -pm777 /var/run/saslauthd
+  adduser prosody sasl
+  echo >> /etc/ldap/ldap.conf "TLS_REQCERT allow"
+fi
+
 PROSODY_CFG="/config/prosody.cfg.lua"
 
 if [[ ! -d /config/data ]]; then
-    mkdir -p /config/data
-    chmod 777 /config/data
+    mkdir -pm 750 /config/data
+fi
+
+if [[ "$(stat -c %U /config)" != "prosody" ]]; then
+    chown -R prosody /config
+fi
+
+if [[ "$(stat -c %U /prosody-plugins)" != "prosody" ]]; then
+    chown -R prosody /prosody-plugins
+fi
+
+if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
+    chown -R prosody /prosody-plugins-custom
 fi
 
 if [[ ! -f $PROSODY_CFG ]]; then
     cp -r /defaults/* /config
+    tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
     tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua
 
     prosodyctl --config $PROSODY_CFG register $JICOFO_AUTH_USER $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
     prosodyctl --config $PROSODY_CFG register $JVB_AUTH_USER $XMPP_AUTH_DOMAIN $JVB_AUTH_PASSWORD
+
+    if [[ ! -z $JIBRI_XMPP_USER ]] && [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
+        prosodyctl --config $PROSODY_CFG register $JIBRI_XMPP_USER $XMPP_AUTH_DOMAIN $JIBRI_XMPP_PASSWORD
+    fi
+
+    if [[ ! -z $JIBRI_RECORDER_USER ]] && [[ ! -z $JIBRI_RECORDER_PASSWORD ]]; then
+        prosodyctl --config $PROSODY_CFG register $JIBRI_RECORDER_USER $XMPP_RECORDER_DOMAIN $JIBRI_RECORDER_PASSWORD
+    fi
 
     if [[ ! -z $JIGASI_XMPP_USER ]] && [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
         prosodyctl --config $PROSODY_CFG register $JIGASI_XMPP_USER $XMPP_AUTH_DOMAIN $JIGASI_XMPP_PASSWORD
@@ -32,5 +63,5 @@ if [[ ! -f /config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
 fi
 
 # certs will be created in /config/data
-mv /config/data/*.{crt,key} /config/certs/
+mv /config/data/*.{crt,key} /config/certs/ || true
 rm -f /config/data/*.cnf

@@ -1,0 +1,2 @@
+#!/usr/bin/with-contenv bash
+exec s6-setuidgid root saslauthd -a ldap -O /etc/saslauthd.conf -c -m /var/run/saslauthd -n 5 -d
