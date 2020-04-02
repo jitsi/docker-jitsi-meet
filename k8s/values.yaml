@@ -41,6 +41,11 @@ web:
 jvb:
   replicaCount: 2
   affinity: ""
+  env: |
+    - name: DOCKER_HOST_ADDRESS
+      valueFrom:  # overwrite with a loadbalancer that can handle UDP and TCP traffic
+        fieldRef:
+          fieldPath: status.hostIP
   nodeSelector: {}
   tolerations: []
   resources: {}

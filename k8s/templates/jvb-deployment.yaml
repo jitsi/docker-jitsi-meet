@@ -35,10 +35,6 @@ spec:
       - env:
         - name: XMPP_SERVER
           value: prosody
-        - name: DOCKER_HOST_ADDRESS
-          valueFrom:
-            fieldRef:
-              fieldPath: status.hostIP
         - name: XMPP_DOMAIN
           value: meet.jitsi
         - name: XMPP_AUTH_DOMAIN
@@ -61,6 +57,9 @@ spec:
           value: focus
         - name: TZ
           value: Europe/Paris
+      {{- with .Values.jvb.env }}
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
         image: jitsi/jvb
         imagePullPolicy: Always
         name: jvb
