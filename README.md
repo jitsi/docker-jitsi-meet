@@ -35,6 +35,7 @@ follow these steps:
 * Create a ``.env`` file by copying and adjusting ``env.example``, and create required `CONFIG` directories
   * `cp env.example .env`
   * `mkdir -p ~/.jitsi-meet-cfg/{web/letsencrypt,transcripts,prosody,jicofo,jvb}`
+* Build with ``make clean && make``.
 * Run ``docker-compose up -d``.
 * Access the web UI at [``https://localhost:8443``](https://localhost:8443) (or a different port, in case you edited the compose file).
 
