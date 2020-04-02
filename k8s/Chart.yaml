@@ -1,7 +1,7 @@
 apiVersion: v1
 name: jitsi-meet
 version: 1.0.0
-appVersion: 0.0.4
+appVersion: 0.0.5
 description: jitsi deployment
 sources:
   - https://github.com/jitsi/docker-jitsi-meet
