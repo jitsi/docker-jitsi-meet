@@ -8,14 +8,27 @@ spec:
   selector:
     matchLabels:
       service: jicofo
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 50%
   template:
     metadata:
       labels:
         service: jicofo
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: service
+                operator: In
+                values:
+                - jicofo
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - env:
         - name: XMPP_SERVER
@@ -39,6 +52,4 @@ spec:
         image: jitsi/jicofo
         imagePullPolicy: Always
         name: jicofo
-        resources: {}
       restartPolicy: Always
-status: {}

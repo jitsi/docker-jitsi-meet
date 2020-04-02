@@ -8,14 +8,27 @@ spec:
   selector:
     matchLabels:
       service: web
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 50%
   template:
     metadata:
       labels:
         service: web
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: service
+                operator: In
+                values:
+                - web
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - env:
         - name: JICOFO_AUTH_USER
@@ -36,5 +49,4 @@ spec:
         ports:
         - containerPort: 80
         - containerPort: 443
-        resources: {}
-status: {}
+      restartPolicy: Always

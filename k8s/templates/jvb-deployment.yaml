@@ -8,14 +8,27 @@ spec:
   selector:
     matchLabels:
       service: jvb
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 50%
   template:
     metadata:
       labels:
         service: jvb
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: service
+                operator: In
+                values:
+                - jvb
+            topologyKey: "kubernetes.io/hostname"
       containers:
       - env:
         - name: XMPP_SERVER
@@ -53,6 +66,4 @@ spec:
         - containerPort: 30000
           protocol: UDP
         - containerPort: 30001
-        resources: {}
       restartPolicy: Always
-status: {}
