@@ -165,6 +165,10 @@ services:
             - prosody
         networks:
             meet.jitsi:
+        labels:
+            traefik.udp.routers.jvb.entrypoints: video
+            traefik.udp.routers.jvb.service: jvb
+            traefik.udp.services.jvb.loadbalancer.server.port: 10000
 
 # Custom network so all services can communicate using a FQDN
 networks:
