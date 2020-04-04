@@ -37,6 +37,7 @@ services:
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
             - ENABLE_RECORDING
+        restart: always
         networks:
             meet.jitsi:
                 aliases:
@@ -100,6 +101,7 @@ services:
             - JWT_TOKEN_AUTH_MODULE
             - LOG_LEVEL
             - TZ
+        restart: always
         networks:
             meet.jitsi:
                 aliases:
@@ -128,6 +130,7 @@ services:
             - TZ
         depends_on:
             - prosody
+        restart: always
         networks:
             meet.jitsi:
 
@@ -155,6 +158,7 @@ services:
             - TZ
         depends_on:
             - prosody
+        restart: always
         networks:
             meet.jitsi:
 
