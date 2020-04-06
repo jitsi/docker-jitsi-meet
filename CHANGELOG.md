@@ -1,5 +1,16 @@
 ## stable-4384
 
+**Important security note:** Previous releases included default passwords for
+system accounts, and users who didn't change them are at risk of getting
+the authentication system circumvented by an attacker using a system account
+with the default password. Please update and use the provided script
+(instructions on the README) to generate a strong password for each system
+account.
+
+Thanks joernchen for the security report.
+
+<hr/>
+
 Based on stable release 4384.
 
 * 1ffd472 security: add script to generate strong passwords
@@ -21,15 +32,6 @@ Based on stable release 4384.
 * 655cf6b web,prosody,jvb: prepare for new stable release
 * ebb4536 doc: update CHANGELOG
 * 06c3a83 doc: fix references to running behind NAT in the README
-
-**Important security note: ** Previous releases included default passwords for
-system accounts, and users who didn't change them are at risk of getting
-the authentication system circumvented by an attacker using a system account
-with the default password. Please update and use the provided script
-(instructions on the README) to generate a strong password for each system
-account.
-
-Thanks joernchen for the security report.
 
 ## stable-4101-2
 
