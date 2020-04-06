@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    service: jicofo
-  name: jicofo
+    service: jibri
+  name: jibri
 spec:
   selector:
     matchLabels:
-      service: jicofo
-  replicas: {{ .Values.jicofo.replicaCount }}
+      service: jibri
+  replicas: {{ .Values.jibri.replicaCount }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -17,46 +17,49 @@ spec:
   template:
     metadata:
       labels:
-        service: jicofo
+        service: jibri
     spec:
-      {{- with .Values.jicofo.affinity }}
+      {{- with .Values.jibri.affinity }}
       affinity:
         {{- tpl . $ | nindent 8 }}
       {{- end }}
-      {{- with .Values.jicofo.nodeSelector }}
+      {{- with .Values.jibri.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.jicofo.tolerations }}
+      {{- with .Values.jibri.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       containers:
       - env:
+        - name: ENABLE_RECORDING
+          value: "1"
         - name: XMPP_SERVER
           value: prosody.{{ .Release.Namespace }}.svc.cluster.local
         - name: XMPP_DOMAIN
           value: meet.jitsi
         - name: XMPP_AUTH_DOMAIN
           value: auth.meet.jitsi
-        - name: JICOFO_COMPONENT_SECRET
-          value: some-secure-s3cret
-        - name: JICOFO_AUTH_USER
+        - name: JIBRI_RECORDER_USER
           value: focus
-        - name: JICOFO_AUTH_PASSWORD
+        - name: JIBRI_RECORDER_PASSWORD
           value: some-secure-passw0rd
-        - name: JVB_BREWERY_MUC
-          value: jvbbrewery
+        - name: JIBRI_XMPP_USER
+          value: focus
+        - name: JIBRI_XMPP_PASSWORD
+          value: some-secure-passw0rd
+        - name: JIBRI_BREWERY_MUC
+          value: jibbrewery
+        - name: JIBRI_RECORDING_DIR
+          value: /data
         - name: XMPP_INTERNAL_MUC_DOMAIN
           value: internal-muc.meet.jitsi
         - name: TZ
           value: Europe/Paris
-      {{- with .Values.jicofo.env }}
-        {{- tpl . $ | nindent 8 }}
-      {{- end }}
-        image: jitsi/jicofo
+        image: jitsi/jibri
         imagePullPolicy: Always
-        name: jicofo
+        name: jibri
         resources:
-          {{- toYaml .Values.jicofo.resources | nindent 12 }}
+          {{- toYaml .Values.jibri.resources | nindent 12 }}
       restartPolicy: Always

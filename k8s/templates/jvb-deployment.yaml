@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       service: jvb
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.jvb.replicaCount }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -34,7 +34,7 @@ spec:
       containers:
       - env:
         - name: XMPP_SERVER
-          value: prosody
+          value: prosody.{{ .Release.Namespace }}.svc.cluster.local
         - name: XMPP_DOMAIN
           value: meet.jitsi
         - name: XMPP_AUTH_DOMAIN
@@ -43,16 +43,20 @@ spec:
           value: "30000"
         - name: JVB_TCP_PORT
           value: "30001"
+        - name: JVB_COMPONENT_SECRET
+          value: some-secure-s3cret
         - name: JVB_AUTH_USER
           value: jvb
         - name: JVB_AUTH_PASSWORD
-          value: passw0rd
+          value: some-secure-passw0rd
         - name: JVB_BREWERY_MUC
           value: jvbbrewery
         - name: XMPP_INTERNAL_MUC_DOMAIN
           value: internal-muc.meet.jitsi
         - name: JVB_STUN_SERVERS
           value: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+        - name: JVB_TCP_HARVESTER_DISABLED
+          value: "false"
         - name: JICOFO_AUTH_USER
           value: focus
         - name: TZ

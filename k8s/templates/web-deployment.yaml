@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       service: web
-  replicas: {{ .Values.replicaCount }}
+  replicas: {{ .Values.web.replicaCount }}
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -40,11 +40,14 @@ spec:
         - name: XMPP_AUTH_DOMAIN
           value: auth.meet.jitsi
         - name: XMPP_BOSH_URL_BASE
-          value: http://prosody:5280
+          value: http://prosody.{{ .Release.Namespace }}.svc.cluster.local:5280
         - name: XMPP_MUC_DOMAIN
           value: muc.meet.jitsi
         - name: TZ
           value: Europe/Paris
+      {{- with .Values.web.env }}
+        {{- tpl . $ | nindent 8 }}
+      {{- end }}
         image: jitsi/web
         imagePullPolicy: Always
         name: web
