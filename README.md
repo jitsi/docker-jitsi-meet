@@ -59,7 +59,7 @@ This setup used to have default passwords for intetrnal accounts used across com
 secure by default these have been removed and the respective containers won't start without having a password set.
 
 Strong passwordds may be generated as follows: `./gen-passwords.sh`
-This will modify your `.env` file (a backup is saved in `.env.backup`) andd set strong passwords for each of the
+This will modify your `.env` file (a backup is saved in `.env.backup`) and set strong passwords for each of the
 require options. Passwords are  generated using `openssl rand -hex 16` .
 
 DO NOT reuse any of the passwords.
