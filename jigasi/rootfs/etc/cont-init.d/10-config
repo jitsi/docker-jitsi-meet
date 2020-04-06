@@ -1,5 +1,10 @@
 #!/usr/bin/with-contenv bash
 
+if [[ -z $JIGASI_XMPP_PASSWORD ]]; then
+    echo 'FATAL ERROR: Jigasi auth password must be set'
+    exit 1
+fi
+
 if [[ ! -f /config/sip-communicator.properties ]]; then
     tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
 fi
