@@ -34,7 +34,7 @@ follow these steps:
   * `git clone https://github.com/jitsi/docker-jitsi-meet && cd docker-jitsi-meet`
 * Create a ``.env`` file by copying and adjusting ``env.example``
   * `cp env.example .env`
-  * Set strong passwords in the security section options, they ccan be generated with `openssl rand -hex 16`
+  * Set strong passwords in the security section options: `./gen-passwords.sh`
 * Create required `CONFIG` directories
   * `mkdir -p ~/.jitsi-meet-cfg/{web/letsencrypt,transcripts,prosody,jicofo,jvb,jigasi,jibri}`
 * Run ``docker-compose up -d``.
@@ -58,7 +58,9 @@ or to use jigasi too: ``docker-compose -f docker-compose.yml -f jigasi.yml -f ji
 This setup used to have default passwords for intetrnal accounts used across components. In order to make the default setup
 secure by default these have been removed and the respective containers won't start without having a password set.
 
-Strong passwordds may be generated as follows: `openssl rand -hex 16`
+Strong passwordds may be generated as follows: `./gen-passwords.sh`
+This will modify your `.env` file (a backup is saved in `.env.backup`) andd set strong passwords for each of the
+require options. Passwords are  generated using `openssl rand -hex 16` .
 
 DO NOT reuse any of the passwords.
 
