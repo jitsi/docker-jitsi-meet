@@ -145,6 +145,16 @@ Variable | Description | Example
 **NOTE**: The mobile apps won't work with self-signed certificates (the default)
 see below for instructions on how to obtain a proper certificate with Let's Encrypt.
 
+**Let's Encrypt rate limit warning**: Let's Encrypt has a limit to how many times you can submit a request
+for a new certificate on your domain name. At the time of writing, the current limit is five new (duplicate) 
+certificates for the same domain name every seven days. Because of this, it is recommended that you disable the 
+Let's Encrypt enviroment variables from `.env` if you plan on deleting the `.jitsi-meet-cfg` folder. Otherwise, you 
+might want to consider moving the `.jitsi-meet-cfg` folder to a different location so you have a safe place to find
+the certificate that already Let's Encrypt issued.
+
+For more information on Let's Encrypt's rate limits, visit:
+https://letsencrypt.org/docs/rate-limits/
+
 ### Let's Encrypt configuration
 
 If you plan on exposing this container setup to the outside traffic directly and
@@ -158,6 +168,8 @@ Variable | Description | Example
 `LETSENCRYPT_EMAIL` | E-Mail for receiving important account notifications (mandatory) | alice@atlanta.net
 
 In addition, you will need to set `HTTP_PORT` to 80 and `HTTPS_PORT` to 443.
+
+**Note**: you can only request duplicate certificates up to five times for the same domain name every seven days. 
 
 ### SIP gateway configuration
 
