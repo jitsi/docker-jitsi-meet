@@ -125,7 +125,9 @@ if [[ ! -f /config/interface_config.js ]]; then
     cp /defaults/interface_config.js /config/interface_config.js
 
     sed -i \
-        -e "s#Missed.com#$MISSED_APP_NAME#g" \
+        -e "s#APP_NAME:.*#APP_NAME: '\#$MISSED_APP_NAME',#" \
+        -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '\#$MISSED_APP_NAME',#" \
+        -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '\#$MISSED_APP_NAME',#" \
         -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$MISSED_APP_BG',#" \
         -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$MISSED_WATERMARK_URL',#" \
         /config/interface_config.js
