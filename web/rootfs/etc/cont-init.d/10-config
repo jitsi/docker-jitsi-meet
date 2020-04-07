@@ -125,11 +125,24 @@ if [[ ! -f /config/interface_config.js ]]; then
     cp /defaults/interface_config.js /config/interface_config.js
 
     sed -i \
+        -e "s#DEFAULT_REMOTE_DISPLAY_NAME:.*#DEFAULT_REMOTE_DISPLAY_NAME: 'Participant',#" \
         -e "s#APP_NAME:.*#APP_NAME: '\#$MISSED_APP_NAME',#" \
         -e "s#NATIVE_APP_NAME:.*#NATIVE_APP_NAME: '\#$MISSED_APP_NAME',#" \
         -e "s#PROVIDER_NAME:.*#PROVIDER_NAME: '\#$MISSED_APP_NAME',#" \
         -e "s#DEFAULT_BACKGROUND:.*#DEFAULT_BACKGROUND: '\#$MISSED_APP_BG',#" \
         -e "s#JITSI_WATERMARK_LINK:.*#JITSI_WATERMARK_LINK: '$MISSED_WATERMARK_URL',#" \
+        /config/interface_config.js
+
+    # Disabling toolbar icons
+    sed -i \
+        -e "s#'info', ##" \
+        -e "s#'sharedvideo', ##" \
+        -e "s#'invite', ##" \
+        -e "s#'videobackgroundblur', ##" \
+        -e "s#'download', ##" \
+        -e "s#'help', ##" \
+        -e "s#'download', ##" \
+        -e "s#'mute-everyone' ##" \
         /config/interface_config.js
 
     # It will remove parameter 'closedcaptions' from TOOLBAR_BUTTONS if ENABLE_TRANSCRIPTIONS is false,
