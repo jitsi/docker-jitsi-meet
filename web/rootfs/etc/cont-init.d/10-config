@@ -142,7 +142,7 @@ if [[ ! -f /config/interface_config.js ]]; then
         -e "s#'download', ##" \
         -e "s#'help', ##" \
         -e "s#'download', ##" \
-        -e "s#'mute-everyone' ##" \
+        -e "s#'mute-everyone'##" \
         /config/interface_config.js
 
     # It will remove parameter 'closedcaptions' from TOOLBAR_BUTTONS if ENABLE_TRANSCRIPTIONS is false,
