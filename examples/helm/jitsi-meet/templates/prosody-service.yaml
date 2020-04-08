@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "jitsi-meet.fullname" . }}-prosody
+  labels:
+    {{- include "jitsi-meet.labels" . | nindent 4 }}
+spec:
+  ports:
+  - name: "5222"
+    port: 5222
+    targetPort: 5222
+  - name: "5280"
+    port: 5280
+    targetPort: 5280
+  - name: "5347"
+    port: 5347
+    targetPort: 5347
+  selector:
+    app: {{ include "jitsi-meet.fullname" . }}-prosody

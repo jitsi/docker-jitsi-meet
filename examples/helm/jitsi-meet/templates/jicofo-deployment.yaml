@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jitsi-meet.fullname" . }}-jicofo
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "jitsi-meet.fullname" . }}-jicofo
+  template:
+    metadata:
+      labels:
+        app: {{ include "jitsi-meet.fullname" . }}-jicofo
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "jitsi-meet.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "jitsi-meet.fullname" . }}-jicofo
+          image: {{ .Values.jicofo.image.repository }}
+          imagePullPolicy: {{ .Values.jicofo.image.pullPolicy }}
+          env:
+          - name: XMPP_SERVER
+            value: {{ include "jitsi-meet.fullname" . }}-prosody  
+{{- with .Values.jicofo.envs }}
+{{ tpl . $ | indent 10 }}
+{{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

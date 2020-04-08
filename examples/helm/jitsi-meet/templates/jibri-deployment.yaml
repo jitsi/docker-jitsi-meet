@@ -1,0 +1,74 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jitsi-meet.fullname" . }}-jibri
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "jitsi-meet.fullname" . }}-jibri
+  template:
+    metadata:
+      labels:
+        app: {{ include "jitsi-meet.fullname" . }}-jibri
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "jitsi-meet.serviceAccountName" . }}
+      securityContext:
+        fsGroup: 999
+      volumes:
+        - name: dev-snd
+          hostPath:
+            path: /dev/snd
+            type: Directory  
+      containers:
+        - name: {{ include "jitsi-meet.fullname" . }}-jibri
+          image: {{ .Values.jibri.image.repository }}
+          imagePullPolicy: {{ .Values.jibri.image.pullPolicy }}
+          resources:
+            limits:
+              memory: "4Gi"
+              cpu: "1"
+          volumeMounts:
+            - mountPath: /dev/snd
+              name: dev-snd
+          securityContext:
+            privileged: true
+            capabilities:
+              add:
+                - SYS_ADMIN
+          lifecycle:
+            postStart:
+              exec:
+                command: 
+                  - "sh"
+                  - "-c"
+                  - >
+                    mkdir -p "{{ .Values.jibri.gcsfuse.directory }}";
+                    gcsfuse -o nonempty -o allow_other -file-mode=777 -dir-mode=777 "{{ .Values.jibri.gcsfuse.bucket }}" "{{ .Values.jibri.gcsfuse.directory }}";  
+            preStop:
+              exec:
+                command: ["fusermount", "-u", "{{ .Values.jibri.gcsfuse.directory }}"]
+          env:
+          - name: XMPP_SERVER
+            value: "{{ include "jitsi-meet.fullname" . }}-prosody"
+          - name: XMPP_BOSH_URL_BASE
+            value: "http://{{ .Chart.Name }}-prosody:5280"
+{{- with .Values.jibri.envs }}
+{{ tpl . $ | indent 10 }}
+{{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

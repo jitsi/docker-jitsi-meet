@@ -19,10 +19,10 @@ RUN \
 	|| true
 
 RUN \
-        [ "${CHROME_RELEASE}" != "latest" ] \
-        && curl -4so /tmp/google-chrome-stable_${CHROME_RELEASE}_amd64.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}_amd64.deb \
+	[ "${CHROME_RELEASE}" != "latest" ] \
+	&& curl -4so /tmp/google-chrome-stable_${CHROME_RELEASE}_amd64.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}_amd64.deb \
 	&& apt-dpkg-wrap apt-get update \
-        && apt-dpkg-wrap apt-get install -y /tmp/google-chrome-stable_${CHROME_RELEASE}_amd64.deb \
+	&& apt-dpkg-wrap apt-get install -y /tmp/google-chrome-stable_${CHROME_RELEASE}_amd64.deb \
 	&& apt-cleanup \
 	|| true
 
@@ -36,11 +36,19 @@ RUN \
 	&& chromedriver --version
 
 RUN \
-        [ "$JITSI_RELEASE" = "unstable" ] \
-        && apt-dpkg-wrap apt-get update \
-        && apt-dpkg-wrap apt-get install -y jitsi-upload-integrations \
-        && apt-cleanup \
-        || true
+	[ "$JITSI_RELEASE" = "unstable" ] \
+	&& apt-dpkg-wrap apt-get update \
+	&& apt-dpkg-wrap apt-get install -y jitsi-upload-integrations \
+	&& apt-cleanup \
+	|| true
+
+RUN \ 
+	export GCSFUSE_REPO=gcsfuse-stretch \
+	&& echo "deb http://packages.cloud.google.com/apt $GCSFUSE_REPO main" | tee /etc/apt/sources.list.d/gcsfuse.list \
+	&& curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
+	&& apt-dpkg-wrap apt-get update \
+	&& apt-dpkg-wrap apt-get install -y gcsfuse \
+	&& apt-cleanup
 
 COPY rootfs/ /
 

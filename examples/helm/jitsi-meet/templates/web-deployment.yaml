@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jitsi-meet.fullname" . }}-web
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "jitsi-meet.fullname" . }}-web
+  template:
+    metadata:
+      labels:
+        app: {{ include "jitsi-meet.fullname" . }}-web
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "jitsi-meet.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      volumes:
+        - name: web-ssl-secret
+          secret:
+            secretName: web-ssl-secret
+      containers:
+        - name: {{ include "jitsi-meet.fullname" . }}-web
+          image: {{ .Values.web.image.repository }}
+          imagePullPolicy: {{ .Values.web.image.pullPolicy }}
+          ports:
+          - containerPort: 80
+          - containerPort: 443
+          volumeMounts:
+          - mountPath: "/config/keys"
+            name: web-ssl-secret
+          env:
+          - name: XMPP_SERVER
+            value: {{ include "jitsi-meet.fullname" . }}-prosody
+          - name: XMPP_BOSH_URL_BASE
+            value: "http://{{ include "jitsi-meet.fullname" . }}-prosody:5280"
+{{- with .Values.web.envs }}
+{{ tpl . $ | indent 10 }}
+{{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

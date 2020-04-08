@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    {{- include "jitsi-meet.labels" . | nindent 4 }}
+  name: {{ include "jitsi-meet.fullname" . }}-web
+spec:
+  type: {{ .Values.web.service.type }}
+  ports:
+  - name: "http"
+    port: {{ .Values.web.service.http.port }}
+    targetPort: {{ .Values.web.service.http.port }}
+  - name: "https"
+    port: {{ .Values.web.service.https.port }}
+    targetPort: {{ .Values.web.service.https.port }}
+  selector:
+    app: {{ include "jitsi-meet.fullname" . }}-web

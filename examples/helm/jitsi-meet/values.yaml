@@ -1,0 +1,281 @@
+# Default values for jitsi-meet.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+jicofo:
+  image:
+    repository: jitsi/jicofo
+    pullPolicy: Always
+  secret: CHANGEME
+  password: CHANGEME
+  envs: |
+    - name: XMPP_DOMAIN
+      value: meet.jitsi
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.meet.jitsi
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.meet.jitsi
+    - name: JICOFO_COMPONENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: jitsi-config
+          key: JICOFO_COMPONENT_SECRET
+    - name: JICOFO_AUTH_USER
+      value: focus
+    - name: JICOFO_AUTH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: jitsi-config
+          key: JICOFO_AUTH_PASSWORD
+    - name: TZ
+      value: America/Los_Angeles
+    - name: JVB_BREWERY_MUC
+      value: jvbbrewery
+    - name: ENABLE_AUTH
+      value: '0'
+    - name: JIBRI_PENDING_TIMEOUT
+      value: '90'
+    - name: JIBRI_BREWERY_MUC
+      value: jibribrewery
+
+prosody:
+  image:
+    repository: jitsi/prosody
+    pullPolicy: Always
+  jwt:
+    id: CHANGEME
+    secret: CHANGEME
+  envs: |
+    - name: XMPP_DOMAIN
+      value: meet.jitsi
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.meet.jitsi
+    - name: XMPP_MUC_DOMAIN
+      value: muc.meet.jitsi
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.meet.jitsi
+    - name: JICOFO_COMPONENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: jitsi-config
+          key: JICOFO_COMPONENT_SECRET
+    - name: JVB_AUTH_USER
+      value: jvb
+    - name: JVB_AUTH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: jitsi-config
+          key: JVB_AUTH_PASSWORD
+    - name: JICOFO_AUTH_USER
+      value: focus
+    - name: JICOFO_AUTH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: jitsi-config
+          key: JICOFO_AUTH_PASSWORD
+    - name: TZ
+      value: America/Los_Angeles
+    - name: JVB_TCP_HARVESTER_DISABLED
+      value: "true"
+    - name: XMPP_RECORDER_DOMAIN
+      value: record.meet.jitsi
+    - name: ENABLE_AUTH
+      value: '0'
+    - name: AUTH_TYPE
+      value: jwt
+    - name: JIBRI_XMPP_USER
+      value: jibri
+    - name: JIBRI_XMPP_PASSWORD
+      value: CHANGEME
+    - name: JIBRI_RECORDER_USER
+      value: recorder
+    - name: JIBRI_RECORDER_PASSWORD
+      value: CHANGEME
+
+web: 
+  image:
+    repository: jitsi/web
+    pullPolicy: Always
+  service:
+    type: NodePort
+    http:
+      port: 80
+    https:
+      port: 443
+  envs: |
+    - name: JICOFO_AUTH_USER
+      value: focus
+    - name: XMPP_DOMAIN
+      value: meet.jitsi
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.meet.jitsi
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.meet.jitsi
+    - name: XMPP_MUC_DOMAIN
+      value: muc.meet.jitsi
+    - name: TZ
+      value: America/Los_Angeles
+    - name: JVB_TCP_HARVESTER_DISABLED
+      value: "true"
+    - name: XMPP_RECORDER_DOMAIN
+      value: record.meet.jitsi
+    - name: ENABLE_RECORDING
+      value: '1'
+    - name: ENABLE_AUTH
+      value: '0'
+    - name: JIBRI_XMPP_USER
+      value: jibri
+    - name: JIBRI_XMPP_PASSWORD
+      value: CHANGEME
+    - name: JIBRI_RECORDER_USER
+      value: recorder
+    - name: JIBRI_RECORDER_PASSWORD
+      value: CHANGEME
+    - name: JIBRI_PENDING_TIMEOUT
+      value: '90'
+    - name: JIBRI_BREWERY_MUC
+      value: jibribrewery
+    - name: DISABLE_HTTPS
+      value: '0'
+
+jvb:
+  image:
+    repository: jitsi/jvb
+    pullPolicy: Always
+  dockerHostAddress: "127.0.0.1"
+  password: OWI5ODM4M2U3YWY2YjYyMDk3ODliN2E5
+  envs: |
+    - name: XMPP_DOMAIN
+      value: meet.jitsi
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.meet.jitsi
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.meet.jitsi
+    - name: JICOFO_AUTH_USER
+      value: focus
+    - name: JVB_TCP_HARVESTER_DISABLED
+      value: "true"
+    - name: JVB_AUTH_USER
+      value: jvb
+    - name: JVB_PORT
+      value: "30000"
+    - name: JVB_AUTH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: jitsi-config
+          key: JVB_AUTH_PASSWORD
+    - name: JICOFO_AUTH_PASSWORD
+      valueFrom:
+        secretKeyRef:
+          name: jitsi-config
+          key: JICOFO_AUTH_PASSWORD
+    - name: JVB_BREWERY_MUC
+      value: jvbbrewery
+    - name: TZ
+      value: America/Los_Angeles
+    - name: JVB_STUN_SERVERS
+      value: meet-jit-si-turnrelay.jitsi.net:443
+
+jibri: 
+  image:
+    repository: gcr.io/secure-portal-271718/jitsi/jibri
+    pullPolicy: Always
+  gcsfuse:
+    bucket: meet.jitsi
+    directory: /config/recordings
+  envs: |
+    - name: XMPP_DOMAIN
+      value: meet.jitsi
+    - name: XMPP_AUTH_DOMAIN
+      value: auth.meet.jitsi
+    - name: XMPP_INTERNAL_MUC_DOMAIN
+      value: internal-muc.meet.jitsi
+    - name: XMPP_MUC_DOMAIN
+      value: muc.meet.jitsi
+    - name: TZ
+      value: America/Los_Angeles
+    - name: XMPP_RECORDER_DOMAIN
+      value: record.meet.jitsi
+    - name: DISPLAY
+      value: ':0'
+    - name: JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
+      value: /config/finalize.sh
+    - name: JIBRI_BREWERY_MUC
+      value: jibribrewery
+    - name: JIBRI_XMPP_USER
+      value: jibri
+    - name: JIBRI_XMPP_PASSWORD
+      value: CHANGEME
+    - name: JIBRI_RECORDER_USER
+      value: recorder
+    - name: JIBRI_RECORDER_PASSWORD
+      value: CHANGEME
+    - name: JIBRI_STRIP_DOMAIN_JID
+      value: muc
+    - name: JIBRI_LOGS_DIR
+      value: /config/logs
+    - name: JIBRI_RECORDING_DIR
+      value: /config/recordings
+
+
+# base64 encoded certificate .crt and .key
+ssl:
+  cert: 
+  key:
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+ingress:
+  enabled: false
+  annotations:
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths: /
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

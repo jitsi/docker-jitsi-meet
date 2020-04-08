@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "jitsi-meet.fullname" . }}-jvb
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "jitsi-meet.fullname" . }}-jvb
+  template:
+    metadata:
+      labels:
+        app: {{ include "jitsi-meet.fullname" . }}-jvb
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "jitsi-meet.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ include "jitsi-meet.fullname" . }}-jvb
+          image: {{ .Values.jvb.image.repository }}
+          imagePullPolicy: {{ .Values.jvb.image.pullPolicy }}
+          ports:
+          - containerPort: 30000
+            protocol: UDP
+          - containerPort: 30001
+          env:
+          - name: XMPP_SERVER
+            value: {{ include "jitsi-meet.fullname" . }}-prosody
+          - name: DOCKER_HOST_ADDRESS
+            value: {{ .Values.jvb.dockerHostAddress }}
+{{- with .Values.jvb.envs }}
+{{ tpl . $ | indent 10 }}
+{{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
