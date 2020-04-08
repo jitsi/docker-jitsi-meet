@@ -38,6 +38,7 @@ services:
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
             - ENABLE_RECORDING
+            - STUN_SERVERS
         networks:
             meet.jitsi:
                 aliases:

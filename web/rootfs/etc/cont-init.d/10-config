@@ -109,6 +109,29 @@ if [[ ! -f /config/config.js ]]; then
              -e "s#// transcribingEnabled:.*#transcribingEnabled: true,#" \
              /config/config.js
     fi
+
+    if [[ ! -z "${STUN_SERVERS}" ]]; then
+        # Delete existing servers
+        sed -i \
+            -e "/'stun:/d" \
+            /config/config.js
+
+        # Build JS string with list of new servers
+        stun_array=(${STUN_SERVERS//,/ })
+        stun_js_string=""
+        for server in "${stun_array[@]}"; do
+            if [[ -n "$stun_js_string" ]]; then
+                stun_js_string="${stun_js_string}, "
+            fi
+            stun_js_string="${stun_js_string}{ urls: 'stun:${server}' }"
+        done
+
+        # Insert new server list
+        sed -i \
+            -e '/stunServers/a\' \
+            -e "$stun_js_string" \
+            /config/config.js
+    fi
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then

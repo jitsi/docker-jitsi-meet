@@ -433,6 +433,7 @@ Variable | Description | Default value
 `JIGASI_TRANSCRIBER_ADVERTISE_URL` | Jigasi will post an URL to the chat with transcription file | true
 `DISABLE_HTTPS` | Handle TLS connections outside of this setup | 1
 `ENABLE_HTTP_REDIRECT` | Redirect HTTP traffic to HTTPS (necessary for Let's Encrypt) | 1
+`STUN_SERVERS` | STUN servers used by web clients for P2P connections | meet-jit-si-turnrelay.jitsi.net:443
 `LOG_LEVEL` | Controls which logs are output from prosody and associated modules | info
 
 ### Running behind NAT or on a LAN environment
