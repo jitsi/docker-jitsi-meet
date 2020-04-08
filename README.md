@@ -427,6 +427,7 @@ Variable | Description | Default value
 `JIGASI_SIP_KEEP_ALIVE_METHOD` | Keepalive method | OPTIONS
 `JIGASI_HEALTH_CHECK_SIP_URI` | Health-check extension. Jigasi will call it for health check | keepalive
 `JIGASI_HEALTH_CHECK_INTERVAL` | Interval of health check in milliseconds | 300000
+`JIGASI_SKIP_REINVITE_ON_FOCUS_CHANGE` | Don't issue a re-invite on focus change (required for FreeSWITCH compatibility for inbound calls) | false
 `JIGASI_TRANSCRIBER_RECORD_AUDIO` | Jigasi will record audio when transcriber is on | true
 `JIGASI_TRANSCRIBER_SEND_TXT` | Jigasi will send a transcribed text to the chat when transcriber is on | true
 `JIGASI_TRANSCRIBER_ADVERTISE_URL` | Jigasi will post an URL to the chat with transcription file | true
