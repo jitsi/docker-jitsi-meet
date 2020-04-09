@@ -6,7 +6,7 @@ ARG CHROMEDRIVER_MAJOR_RELEASE=latest
 
 RUN \
 	apt-dpkg-wrap apt-get update \
-	&& apt-dpkg-wrap apt-get install -y jibri \
+	&& apt-dpkg-wrap apt-get install -y jibri openssl libnss3-tools \
 	&& apt-cleanup
 
 RUN \

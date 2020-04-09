@@ -43,8 +43,11 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             echo "using keys found in /config/keys"
         else
             echo "generating self-signed keys in /config/keys, you can replace these with your own keys if required"
-            SUBJECT="/C=US/ST=TX/L=Austin/O=jitsi.org/OU=Jitsi Server/CN=*"
-            openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
+            openssl req -newkey rsa:2048 -new -x509 -days 9131 -nodes -sha256 \
+                -subj "/CN=meet.jitsi" \
+                -reqexts SAN -extensions SAN \
+                -config <(cat /etc/ssl/openssl.cnf ; printf "\n[SAN]\nsubjectAltName=DNS:meet.jitsi") \
+                -out /config/keys/cert.crt -keyout /config/keys/cert.key
         fi
     fi
     if [[ ! -f /config/nginx/dhparams.pem ]]; then
