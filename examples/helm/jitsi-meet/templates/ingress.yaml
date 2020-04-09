@@ -8,7 +8,7 @@ apiVersion: extensions/v1beta1
 {{- end }}
 kind: Ingress
 metadata:
-  name: ingress
+  name: {{ $fullName }}
   labels:
     {{- include "jitsi-meet.labels" . | nindent 4 }}
   {{- with .Values.ingress.annotations }}
