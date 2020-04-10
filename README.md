@@ -49,7 +49,7 @@ and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -
 If you want to enable document sharing via [Etherpad], configure it and run Docker Compose as
 follows: ``docker-compose -f docker-compose.yml -f etherpad.yml up``
 
-If you want to use jibri too, first configure a host as described in Jitsi Broadcasting Infrastructure configuration section
+If you want to use jibri too, first configure a host as described in JItsi BRoadcasting Infrastructure configuration section
 and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jibri.yml up -d``
 or to use jigasi too: ``docker-compose -f docker-compose.yml -f jigasi.yml -f jibri.yml up -d``
 
