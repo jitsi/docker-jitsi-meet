@@ -5,6 +5,18 @@ if [[ -z $JIBRI_RECORDER_PASSWORD || -z $JIBRI_XMPP_PASSWORD ]]; then
     exit 1
 fi
 
+OLD_JIBRI_RECORDER_PASSWORD=passw0rd
+if [[ "$JIBRI_RECORDER_PASSWORD" == "$OLD_JIBRI_RECORDER_PASSWORD" ]]; then
+    echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
+    exit 1
+fi
+
+OLD_JIBRI_XMPP_PASSWORD=passw0rd
+if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
+    echo 'FATAL ERROR: Jibri auth password must be changed, check the README'
+    exit 1
+fi
+
 # DISPLAY is necessary for start
 [ -z "${DISPLAY}" ] \
 && ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )

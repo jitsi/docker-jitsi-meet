@@ -1,4 +1,4 @@
-## stable-4384
+## stable-4384(-1)
 
 **Important security note:** Previous releases included default passwords for
 system accounts, and users who didn't change them are at risk of getting
@@ -13,6 +13,7 @@ Thanks joernchen for the security report.
 
 Based on stable release 4384.
 
+* 768b6c4 security: fail to start if using the old default password
 * 1ffd472 security: add script to generate strong passwords
 * a015710 security: don't provide default passwords
 * aaec22d jigasi: fix typo in config

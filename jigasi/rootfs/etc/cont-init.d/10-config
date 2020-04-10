@@ -5,6 +5,12 @@ if [[ -z $JIGASI_XMPP_PASSWORD ]]; then
     exit 1
 fi
 
+OLD_JIGASI_XMPP_PASSWORD=passw0rd
+if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
+    echo 'FATAL ERROR: Jigasi auth password must be changed, check the README'
+    exit 1
+fi
+
 if [[ ! -f /config/sip-communicator.properties ]]; then
     tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
 fi
