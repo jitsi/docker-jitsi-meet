@@ -3,6 +3,7 @@ version: '3'
 services:
     jibri:
         image: jitsi/jibri
+        restart: ${RESTART_POLICY}
         volumes:
             - ${CONFIG}/jibri:/config
             - /dev/shm:/dev/shm
