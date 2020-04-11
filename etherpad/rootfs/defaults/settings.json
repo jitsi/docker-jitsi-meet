@@ -234,7 +234,7 @@
   /*
    * Privacy: disable IP logging
    */
-  "disableIPlogging" : false,
+  "disableIPlogging" : "${ETHERPAD_DISABLE_IP_LOGGING:false}",
 
   /*
    * Time (in seconds) to automatically reconnect pad when a "Force reconnect"
@@ -362,7 +362,7 @@
    *
    * Valid values: DEBUG, INFO, WARN, ERROR
    */
-  "loglevel": "INFO",
+  "loglevel": "${ETHERPAD_LOG_LEVEL:INFO}",
 
   /*
    * Logging configuration. See log4js documentation for further information:

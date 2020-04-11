@@ -61,6 +61,7 @@ services:
             - ENABLE_TALK_WHILE_MUTED
             - ENABLE_TCC
             - ENABLE_TRANSCRIPTIONS
+            - ENABLE_WEB_ACCESS_LOGS
             - ETHERPAD_PUBLIC_URL
             - ETHERPAD_URL_BASE
             - GOOGLE_ANALYTICS_ID
@@ -153,7 +154,7 @@ services:
             - JWT_ALLOW_EMPTY
             - JWT_AUTH_TYPE
             - JWT_TOKEN_AUTH_MODULE
-            - LOG_LEVEL
+            - PROSODY_LOG_LEVEL
             - PUBLIC_URL
             - TZ
         networks:
@@ -184,6 +185,7 @@ services:
             - JIGASI_SIP_URI
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
+            - JICOFO_LOG_LEVEL
             - TZ
         depends_on:
             - prosody
@@ -215,6 +217,7 @@ services:
             - JVB_ENABLE_APIS
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
+            - JVB_LOG_LEVEL
             - PUBLIC_URL
             - TZ
         depends_on:

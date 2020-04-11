@@ -1,4 +1,4 @@
-{{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
+{{ $LOG_LEVEL := .Env.PROSODY_LOG_LEVEL | default "info" }}
 
 -- Prosody Example Configuration File
 --

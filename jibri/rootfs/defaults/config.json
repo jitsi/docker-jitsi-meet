@@ -26,7 +26,7 @@
             "control_muc": {
                 "domain": "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}",
                 "room_name": "{{ .Env.JIBRI_BREWERY_MUC }}",
-		// MUST be unic for every instanse
+                // MUST be unic for every instanse
                 "nickname": "jibri-instanse-{{ .Env.JIBRI_INSTANCE_ID }}"
             },
             // All participants in a call join a muc so they can exchange

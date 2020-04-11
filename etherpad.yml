@@ -5,6 +5,9 @@ services:
     etherpad:
         image: jitsi/etherpad:latest
         restart: ${RESTART_POLICY}
+        environment:
+            - ETHERPAD_DISABLE_IP_LOGGING
+            - ETHERPAD_LOG_LEVEL
         networks:
             meet.jitsi:
                 aliases:

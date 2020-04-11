@@ -22,7 +22,7 @@ if [[ ! -f /config/sip-communicator.properties ]]; then
 fi
 
 if [[ ! -f /config/logging.properties ]]; then
-    cp /defaults/logging.properties /config
+    tpl /defaults/logging.properties > /config/logging.properties
 fi
 
 chown -R jicofo:jitsi /config
