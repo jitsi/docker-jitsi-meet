@@ -6,7 +6,8 @@ ADD https://prosody.im/files/prosody-debian-packages.key /tmp/prosody.key
 RUN \
     apt-key add /tmp/prosody.key \
     && rm -f /tmp/prosody.key \
-    && echo "deb http://packages.prosody.im/debian stretch main" > /etc/apt/sources.list.d/prosody.list \
+    && echo "deb http://packages.prosody.im/debian buster main" > /etc/apt/sources.list.d/prosody.list \
+    && echo "deb https://deb.debian.org/debian stretch main" > /etc/apt/sources.list.d/stretch.list \
     && apt-dpkg-wrap apt-get update \
     && apt-dpkg-wrap apt-get install -y prosody \
     && apt-dpkg-wrap apt-get install -t buster-backports -y \
@@ -23,7 +24,7 @@ RUN \
       gcc \
       patch \
     && luarocks install cyrussasl 1.1.0-1 \
-    && luarocks install lua-cjson 2.1.0-1 \
+    && luarocks install lua-cjson 2.1.0.6-1 \
     && luarocks install luajwtjitsi 1.3-7 \
     && luarocks install net-url 0.9-1 \
     && apt-dpkg-wrap apt-get remove -t buster-backports -y \
