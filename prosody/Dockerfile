@@ -9,7 +9,7 @@ RUN \
     && echo "deb http://packages.prosody.im/debian stretch main" > /etc/apt/sources.list.d/prosody.list \
     && apt-dpkg-wrap apt-get update \
     && apt-dpkg-wrap apt-get install -y prosody \
-    && apt-dpkg-wrap apt-get install -t stretch-backports -y \
+    && apt-dpkg-wrap apt-get install -t buster-backports -y \
       liblua5.2-dev \
       sasl2-bin \
       libsasl2-modules-ldap \
@@ -26,7 +26,7 @@ RUN \
     && luarocks install lua-cjson 2.1.0-1 \
     && luarocks install luajwtjitsi 1.3-7 \
     && luarocks install net-url 0.9-1 \
-    && apt-dpkg-wrap apt-get remove -t stretch-backports -y \
+    && apt-dpkg-wrap apt-get remove -t buster-backports -y \
       git \
       gcc \
       luarocks \

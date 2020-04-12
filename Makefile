@@ -33,7 +33,7 @@ clean:
 	docker network prune
 
 prepare:
-	docker pull debian:stretch-slim
+	docker pull debian:buster-slim
 	docker pull etherpad/etherpad
 	FORCE_REBUILD=1 $(MAKE)
 
