@@ -171,7 +171,7 @@ Variable | Description | Example
 `JIGASI_SIP_PORT` | SIP server port | 5060
 `JIGASI_SIP_TRANSPORT` | SIP transport | UDP
 
-### JItsi BRoadcasting Infrastructure configuration
+### JItsi BRoadcasting Infrastructure (Jibri) configuration
 
 Before running Jibri, you need to set up an ALSA loopback device on the host. This **will not**
 work on a non-Linux host.
