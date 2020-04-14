@@ -47,9 +47,6 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
         fi
     fi
-    if [[ ! -f /config/nginx/dhparams.pem ]]; then
-        openssl dhparam -out /config/nginx/dhparams.pem 2048
-    fi
 fi
 
 # copy config files
