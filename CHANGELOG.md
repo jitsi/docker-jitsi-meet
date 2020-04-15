@@ -1,3 +1,24 @@
+## stable-4416
+
+Based on stable release 4416.
+
+* b039b29 web: use certbot-auto
+* b95c95d web: improve nginx configuration
+* 2dd6b99 k8s: specify namespace for secret
+* 7aa2d81 ldap: avoid unnecessary copy
+* e1b47db exampless: update Traefik v2 example with UDP
+* 0940605 doc: fix typos and minor grammar issues in README
+* 1c4b11c doc: correct minor mistake
+* c06867b doc: added steps for updating kernel manually in AWS installation
+* dc46215 web: remove DHE suites support
+* 367621f prosody: remove no longer needed patch
+* 34e6601 doc: clarify acronym
+* 2c95ab7 web: revert using PUBLIC_URL for BOSH URL
+* 7fd7e2b Add docker-compose.override.yml to .gitignore (#438)
+* 67a941b misc: update gen-passwords.sh shell code
+* 4e2cec6 misc: add configurable service restart policy
+* 729f9d2 doc: fix typo in env.example
+
 ## stable-4384(-1)
 
 **Important security note:** Previous releases included default passwords for
