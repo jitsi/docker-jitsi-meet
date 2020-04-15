@@ -16,12 +16,16 @@ services:
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
+            - ENABLE_LETSENCRYPT_CLOUDFLARE
             - ENABLE_HTTP_REDIRECT
             - ENABLE_TRANSCRIPTIONS
             - DISABLE_HTTPS
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
+            - LETSENCRYPT_CLOUDFLARE_EMAIL
+            - LETSENCRYPT_CLOUDFLARE_APIKEY
+            - LETSENCRYPT_CLOUDFLARE_PROPAGATION
             - PUBLIC_URL
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN

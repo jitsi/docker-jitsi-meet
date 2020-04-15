@@ -156,6 +156,12 @@ Variable | Description | Example
 `ENABLE_LETSENCRYPT` | Enable Let's Encrypt certificate generation | 1
 `LETSENCRYPT_DOMAIN` | Domain for which to generate the certificate | meet.example.com
 `LETSENCRYPT_EMAIL` | E-Mail for receiving important account notifications (mandatory) | alice@atlanta.net
+`ENABLE_LETSENCRYPT_CLOUDFLARE` | Enable Let's Encrypt Cloudflare DNS Api | 1
+`LETSENCRYPT_CLOUDFLARE_EMAIL` | Cloudflare E-Mail Adress | alice@atlanta.net
+`LETSENCRYPT_CLOUDFLARE_APIKEY` | Cloudflare global API key | 0123456789abcdef0123456789abcdef01234567
+`LETSENCRYPT_CLOUDFLARE_PROPAGATION` | Time to wait for DNS propagation completion | 60
+
+Cloudflare API Token can be obtained from https://dash.cloudflare.com/profile/api-tokens 
 
 In addition, you will need to set `HTTP_PORT` to 80 and `HTTPS_PORT` to 443.
 
