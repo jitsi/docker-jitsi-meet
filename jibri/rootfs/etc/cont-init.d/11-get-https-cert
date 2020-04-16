@@ -1,6 +1,12 @@
 #!/usr/bin/with-contenv bash
 
-while ! openssl s_client -showcerts -connect meet.jitsi:443 < /dev/null | openssl x509 -outform PEM > /usr/local/share/ca-certificates/meet.crt; do sleep 1; done
+while [ ! -f /usr/local/share/ca-certificates/meet.crt ]
+do
+  sleep 1
+  if CERTS=$(openssl s_client -showcerts -connect meet.jitsi:443 < /dev/null); then
+    echo "$CERTS" | openssl x509 -outform PEM > /usr/local/share/ca-certificates/meet.crt
+  fi
+done
 update-ca-certificates
 # the screenshot is just to launch chrome and exit, to make it create ~/.pki
 su jibri -s /bin/sh -c '/usr/bin/google-chrome --headless --screenshot=/tmp/s.png https://meet.jitsi/ && certutil -d sql:/home/jibri/.pki/nssdb -A -t TC -n meet -i /usr/local/share/ca-certificates/meet.crt'
