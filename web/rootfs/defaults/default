@@ -10,7 +10,7 @@ server {
 
 {{ if not (.Env.DISABLE_HTTPS | default "0" | toBool) }}
 server {
-	listen 443 ssl;
+	listen 443 ssl http2;
 
 	include /config/nginx/ssl.conf;
 	include /config/nginx/meet.conf;
