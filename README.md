@@ -428,6 +428,7 @@ Variable | Description | Default value
 `JVB_PORT` | UDP port for media used by Jitsi Videobridge | 10000
 `JVB_TCP_HARVESTER_DISABLED` | Disable the additional harvester which allows video over TCP (rather than just UDP) | true
 `JVB_TCP_PORT` | TCP port for media used by Jitsi Videobridge when the TCP Harvester is enabled | 4443
+`JVB_TCP_MAPPED_PORT` | TCP port advertised by Jitsi Videobridge | 4443
 `JVB_BREWERY_MUC` | MUC name for the JVB pool | jvbbrewery
 `JVB_ENABLE_APIS` | Comma separated list of JVB APIs to enable | none
 `JIGASI_XMPP_USER` | XMPP user for Jigasi MUC client connections | jigasi
