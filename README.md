@@ -424,7 +424,7 @@ Variable | Description | Default value
 `JICOFO_AUTH_PASSWORD` | XMPP password for Jicofo client connections | passw0rd
 `JVB_AUTH_USER` | XMPP user for JVB MUC client connections | jvb
 `JVB_AUTH_PASSWORD` | XMPP password for JVB MUC client connections | passw0rd
-`JVB_STUN_SERVERS` | STUN servers used to discover the server's public IP | stun.l.google.com:19302, stun1.l.google.com:19302, stun2.l.google.com:19302
+`JVB_STUN_SERVERS` | STUN servers used to discover the server's public IP | none
 `JVB_PORT` | UDP port for media used by Jitsi Videobridge | 10000
 `JVB_TCP_HARVESTER_DISABLED` | Disable the additional harvester which allows video over TCP (rather than just UDP) | true
 `JVB_TCP_PORT` | TCP port for media used by Jitsi Videobridge when the TCP Harvester is enabled | 4443
@@ -451,10 +451,10 @@ Variable | Description | Default value
 If running in a LAN environment (as well as on the public Internet, via NAT) is a requirement,
 the ``DOCKER_HOST_ADDRESS`` should be set. This way, the Videobridge will advertise the IP address
 of the host running Docker instead of the internal IP address that Docker assigned it, thus making [ICE]
-succeed. If your users are coming in over the Internet (and not over LAN), this will likely be your public IP address. If this is not set up correctly, calls will crash when more than two users join a meeting.
+succeed. If your users are coming in over the Internet (and not over LAN), this will likely be your public IP address. If this is not set up correctly, calls will fail when more than two users join a meeting.
 
 The public IP address is discovered via [STUN]. STUN servers can be specified with the ``JVB_STUN_SERVERS``
-option.
+option. For the STUN server provided by Jitsi use ```meet-jit-si-turnrelay.jitsi.net:443```.
 
 ## Build Instructions
 
