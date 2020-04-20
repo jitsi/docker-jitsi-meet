@@ -52,7 +52,8 @@ services:
             - '5347'
             - '5280'
         volumes:
-            - ${CONFIG}/prosody:/config
+            - ${CONFIG}/prosody/config:/config
+            - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom
         environment:
             - AUTH_TYPE
             - ENABLE_AUTH
