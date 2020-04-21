@@ -141,7 +141,7 @@ services:
         restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
-            - '${JVB_TCP_PORT}:${JVB_TCP_PORT}'
+            - '${JVB_TCP_MAPPED_PORT}:${JVB_TCP_PORT}'
         volumes:
             - ${CONFIG}/jvb:/config
         environment:
