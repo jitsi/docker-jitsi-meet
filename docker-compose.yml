@@ -38,6 +38,8 @@ services:
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
             - ENABLE_RECORDING
+            - CONFIG_JSON
+            - INTERFACE_CONFIG_JSON
         networks:
             meet.jitsi:
                 aliases:

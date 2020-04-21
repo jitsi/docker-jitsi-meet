@@ -446,6 +446,8 @@ Variable | Description | Default value
 `DISABLE_HTTPS` | Handle TLS connections outside of this setup | 1
 `ENABLE_HTTP_REDIRECT` | Redirect HTTP traffic to HTTPS (necessary for Let's Encrypt) | 1
 `LOG_LEVEL` | Controls which logs are output from prosody and associated modules | info
+`CONFIG_JSON` | Override config properties. Value must be a valid JSON. Will be merged with [defaults](https://github.com/jitsi/jitsi-meet/blob/master/config.js) | none
+`INTERFACE_CONFIG_JSON` | Override interfaceConfig properties. Value must be a valid JSON. Will be merged with [defaults](https://github.com/jitsi/jitsi-meet/blob/master/interface_config.js) | none
 
 ### Running behind NAT or on a LAN environment
 
