@@ -55,6 +55,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     }
 
     c2s_require_encryption = false
+    {{ if .Env.PROSODY_VIRTUALHOST_CONFIG }}
+    {{ join "\n" (splitList "\\n" .Env.PROSODY_VIRTUALHOST_CONFIG) | indent 4 }}
+    {{ end }}
 
 {{ if and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) }}
 VirtualHost "{{ .Env.XMPP_GUEST_DOMAIN }}"
@@ -99,6 +102,9 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     }
     muc_room_locking = false
     muc_room_default_public_jids = true
+    {{ if .Env.PROSODY_MUC_CONFIG }}
+    {{ join "\n" (splitList "\\n" .Env.PROSODY_MUC_CONFIG) | indent 4 }}
+    {{ end }}
 
 Component "focus.{{ .Env.XMPP_DOMAIN }}"
     component_secret = "{{ .Env.JICOFO_COMPONENT_SECRET }}"
