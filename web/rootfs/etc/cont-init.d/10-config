@@ -68,6 +68,10 @@ if [[ ! -f /config/nginx/site-confs/default ]]; then
     tpl /defaults/default > /config/nginx/site-confs/default
 fi
 
+if [[ ! -f /config/custom.js ]]; then
+    cp /defaults/custom.js /config/custom.js
+fi
+
 if [[ ! -f /config/config.js ]]; then
     cp /defaults/config.js /config/config.js
     sed -i \
@@ -112,7 +116,7 @@ if [[ ! -f /config/config.js ]]; then
     if [[ ! -z "${CONFIG_JSON}" ]]; then
         echo ""
         echo "var customConfig = ${CONFIG_JSON};" >> /config/config.js
-        echo "config = Object.assign({}, config, customConfig);" >> /config/config.js
+        echo "config = deepmerge(config, customConfig);" >> /config/config.js
     fi
 fi
 
@@ -130,6 +134,6 @@ if [[ ! -f /config/interface_config.js ]]; then
     if [[ ! -z "${INTERFACE_CONFIG_JSON}" ]]; then
         echo ""
         echo "var customInterfaceConfig = ${INTERFACE_CONFIG_JSON};" >> /config/interface_config.js
-        echo "interfaceConfig = Object.assign({}, interfaceConfig, customInterfaceConfig);" >> /config/interface_config.js
+        echo "interfaceConfig = deepmerge(interfaceConfig, customInterfaceConfig);" >> /config/interface_config.js
     fi
 fi
