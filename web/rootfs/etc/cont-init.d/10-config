@@ -133,6 +133,6 @@ if [[ ! -f /config/interface_config.js ]]; then
         echo ""
         echo "// base64 encoded INTERFACE_CONFIG_JSON"
         echo "var customInterfaceConfig = JSON.parse('${INTERFACE_CONFIG_JSON//"'"/"\'"}');" >> /config/interface_config.js
-        echo "interfaceConfig = deepmerge(config, customInterfaceConfig, { arrayMerge: function (destinationArray, sourceArray, options) { return sourceArray }});" >> /config/interface_config.js
+        echo "interfaceConfig = deepmerge(interfaceConfig, customInterfaceConfig, { arrayMerge: function (destinationArray, sourceArray, options) { return sourceArray }});" >> /config/interface_config.js
     fi
 fi
