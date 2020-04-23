@@ -26,7 +26,12 @@ fi
 && ( echo -e "\e[31mERROR: Please load snd-aloop module on the docker host.\e[39m"; kill 1; exit 1 )
 
 # get host's audio group id
-host_audio_group="$(stat -c %g /dev/snd/pcmC0D0p)"
+host_audio_group="$(stat -c %g /dev/snd/pcmC0D0p 2>/dev/null)"
+
+# audio group is not found. Has it been run without jibri.yml?
+[ -z "${host_audio_group}" ] \
+&& ( echo -e "\e[31mERROR: Binding /dev/snd is not found. Please check that you run docker-compose with -f jibri.yml.\e[39m"; kill 1; exit 1 )
+
 # try to create group with this id. If group with the id already exists, just skip
 groupadd -g ${host_audio_group} jibri-audio >/dev/null 2>&1
 # include user to the group by id
