@@ -43,7 +43,7 @@ modules_enabled = {
 	-- Not essential, but recommended
 		"private"; -- Private XML storage (for room bookmarks, etc.)
 		"vcard"; -- Allow users to set vCards
-	
+
 	-- These are commented by default as they have a performance impact
 		--"privacy"; -- Support privacy lists
 		--"compression"; -- Stream compression (Debian: requires lua-zlib module to work)
@@ -59,7 +59,7 @@ modules_enabled = {
 	-- Admin interfaces
 		"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
 		--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
-	
+
 	-- HTTP modules
 		--"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
 		--"http_files"; -- Serve static files from a directory over HTTP
@@ -165,5 +165,10 @@ network_settings = {
 component_interface = { "*" }
 
 data_path = "/config/data"
+
+smacks_max_unacked_stanzas = 5;
+smacks_hibernation_time = 60;
+smacks_max_hibernated_sessions = 1;
+smacks_max_old_sessions = 1;
 
 Include "conf.d/*.cfg.lua"

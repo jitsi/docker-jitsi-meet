@@ -15,6 +15,7 @@ services:
         environment:
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
+            - ENABLE_XMPP_WEBSOCKET
             - DISABLE_HTTPS
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
@@ -110,6 +111,7 @@ services:
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LOBBY
+            - ENABLE_XMPP_WEBSOCKET
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
             - LDAP_URL
@@ -154,6 +156,7 @@ services:
             - JWT_AUTH_TYPE
             - JWT_TOKEN_AUTH_MODULE
             - LOG_LEVEL
+            - PUBLIC_URL
             - TZ
         networks:
             meet.jitsi:
