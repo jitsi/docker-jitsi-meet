@@ -15,6 +15,7 @@ services:
         environment:
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
+            - ENABLE_XMPP_WEBSOCKET
             - DISABLE_HTTPS
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
@@ -30,7 +31,6 @@ services:
             - CALLSTATS_SECRET
             - CHROME_EXTENSION_BANNER_JSON
             - CONFCODE_URL
-            - CONFIG_BOSH_HOST
             - CONFIG_EXTERNAL_CONNECT
             - DEPLOYMENTINFO_ENVIRONMENT
             - DEPLOYMENTINFO_ENVIRONMENT_TYPE
@@ -61,7 +61,6 @@ services:
             - ENABLE_TALK_WHILE_MUTED
             - ENABLE_TCC
             - ENABLE_TRANSCRIPTIONS
-            - ENABLE_WEBSOCKETS
             - ETHERPAD_PUBLIC_URL
             - ETHERPAD_URL_BASE
             - GOOGLE_ANALYTICS_ID
@@ -110,6 +109,7 @@ services:
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LOBBY
+            - ENABLE_XMPP_WEBSOCKET
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
             - LDAP_URL
@@ -154,6 +154,7 @@ services:
             - JWT_AUTH_TYPE
             - JWT_TOKEN_AUTH_MODULE
             - LOG_LEVEL
+            - PUBLIC_URL
             - TZ
         networks:
             meet.jitsi:

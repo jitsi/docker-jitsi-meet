@@ -1,10 +1,10 @@
-{{ $CONFIG_BOSH_HOST := .Env.CONFIG_BOSH_HOST | default "" -}}
 {{ $CONFIG_EXTERNAL_CONNECT := .Env.CONFIG_EXTERNAL_CONNECT | default "false" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "false" | toBool -}}
 {{ $ENABLE_GUESTS := .Env.ENABLE_GUESTS | default "false" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "false" | toBool -}}
-{{ $ENABLE_WEBSOCKETS := .Env.ENABLE_WEBSOCKETS | default "false" | toBool -}}
+{{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "false" | toBool -}}
 {{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" }}
+{{ $PUBLIC_URL_DOMAIN := .Env.PUBLIC_URL | default "https://localhost:8443" | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN -}}
@@ -36,15 +36,15 @@ config.hosts.anonymousdomain = '{{ .Env.XMPP_GUEST_DOMAIN }}';
 config.hosts.authdomain = '{{ $XMPP_DOMAIN }}';
 {{ end -}}
 
-config.bosh = '{{ if $CONFIG_BOSH_HOST }}https://{{ $CONFIG_BOSH_HOST }}{{ end }}/http-bind';
-{{ if $ENABLE_WEBSOCKETS -}}
-config.websocket = 'wss://{{ if $CONFIG_BOSH_HOST }}{{ $CONFIG_BOSH_HOST }}{{end}}/xmpp-websocket';
+config.bosh = '/http-bind';
+{{ if $ENABLE_XMPP_WEBSOCKET -}}
+config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
 {{ end -}}
 
 {{ if $CONFIG_EXTERNAL_CONNECT -}}
 {{ if $ENABLE_SUBDOMAINS -}}
-config.externalConnectUrl = '//{{ if .Env.CONFIG_BOSH_HOST }}{{ .Env.CONFIG_BOSH_HOST }}{{ end }}/<!--# echo var="subdir" default="" -->http-pre-bind';
+config.externalConnectUrl = '/<!--# echo var="subdir" default="" -->http-pre-bind';
 {{ else -}}
-config.externalConnectUrl = '//{{ if .Env.CONFIG_BOSH_HOST }}{{ .Env.CONFIG_BOSH_HOST }}{{ end }}/http-pre-bind';
+config.externalConnectUrl = '/http-pre-bind';
 {{ end -}}
 {{ end -}}
