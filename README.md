@@ -75,6 +75,9 @@ The following external ports must be opened on a firweall:
 * 443/tcp for Web UI HTTPS
 * 4443/tcp for RTP media over TCP
 * 10000/udp for RTP media over UDP
+* 5349/tcp for TURN data over TCP
+* 5349/udp for TURN data over UDP
+* 16000-17000/udp for TURN RTP media over UDP
 
 Also 20000-20050/udp for jigasi, in case you choose to deploy that to facilitate SIP acces.
 
@@ -85,6 +88,9 @@ E.g. on a CentOS/Fedora server this would be done like this (without SIP access)
     $ sudo firewall-cmd --permanent --add-port=443/tcp
     $ sudo firewall-cmd --permanent --add-port=4443/tcp
     $ sudo firewall-cmd --permanent --add-port=10000/udp
+    $ sudo firewall-cmd --permanent --add-port=5349/tcp
+    $ sudo firewall-cmd --permanent --add-port=5349/udp
+    $ sudo firewall-cmd --permanent --add-port=16000-17000/udp
     $ sudo firewall-cmd --reload
 ```
 
