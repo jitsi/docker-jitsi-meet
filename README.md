@@ -360,8 +360,8 @@ Variable | Description | Default value
 `TURN_PUBLIC_IP` | Public IP address for an instance of turn server | set dynamically
 `TURN_PORT` | TLS/TCP/UDP turn port for connection | 5349
 `TURN_TRANSPORT` | transport for turn connection (tcp/udp) | tcp
-`TURN_RTP_MIN` | RTP start port for turn/turns connections | 10000
-`TURN_RTP_MAX` | RTP end port for turn/turns connections | 11000
+`TURN_RTP_MIN` | RTP start port for turn/turns connections | 16000
+`TURN_RTP_MAX` | RTP end port for turn/turns connections | 17000
 
 
 For enable web-admin panel for turn, please set variables below
