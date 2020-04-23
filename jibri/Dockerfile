@@ -1,8 +1,10 @@
 ARG JITSI_REPO=jitsi
 FROM ${JITSI_REPO}/base-java
 
-ARG CHROME_RELEASE=latest
-ARG CHROMEDRIVER_MAJOR_RELEASE=latest
+#ARG CHROME_RELEASE=latest
+#ARG CHROMEDRIVER_MAJOR_RELEASE=latest
+ARG CHROME_RELEASE=78.0.3904.97
+ARG CHROMEDRIVER_MAJOR_RELEASE=78
 
 RUN \
 	apt-dpkg-wrap apt-get update \
@@ -20,9 +22,9 @@ RUN \
 
 RUN \
         [ "${CHROME_RELEASE}" != "latest" ] \
-        && curl -4so /tmp/google-chrome-stable_${CHROME_RELEASE}_amd64.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}_amd64.deb \
+        && curl -4so /tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb \
 	&& apt-dpkg-wrap apt-get update \
-        && apt-dpkg-wrap apt-get install -y /tmp/google-chrome-stable_${CHROME_RELEASE}_amd64.deb \
+        && apt-dpkg-wrap apt-get install -y /tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb \
 	&& apt-cleanup \
 	|| true
 
