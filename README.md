@@ -47,6 +47,9 @@ If you want to use jibri too, first configure host as described in JItsi BRoadca
 and then run Docker Compose as follows: ``docker-compose -f docker-compose.yml -f jibri.yml up -d``
 or to use jigasi too: ``docker-compose -f docker-compose.yml -f jigasi.yml -f jibri.yml up -d``
 
+If you want to enable TURN server, configure it and run Docker Compose as
+follows: ``docker-compose -f docker-compose.yml -f turn.yml up``
+
 ## Architecture
 
 A Jitsi Meet installation can be broken down into the following components:
@@ -64,6 +67,33 @@ The diagram shows a typical deployment in a host running Docker. This project
 separates each of the components above into interlinked containers. To this end,
 several container images are provided.
 
+### External Ports
+
+The following external ports must be opened on a firweall:
+
+* 80/tcp for Web UI HTTP (really just to redirect, after uncommenting ENABLE_HTTP_REDIRECT=1 in .env)
+* 443/tcp for Web UI HTTPS
+* 4443/tcp for RTP media over TCP
+* 10000/udp for RTP media over UDP
+* 5349/tcp for TURN data over TCP
+* 5349/udp for TURN data over UDP
+* 16000-17000/udp for TURN RTP media over UDP
+
+Also 20000-20050/udp for jigasi, in case you choose to deploy that to facilitate SIP acces.
+
+E.g. on a CentOS/Fedora server this would be done like this (without SIP access):
+
+```shell
+    $ sudo firewall-cmd --permanent --add-port=80/tcp
+    $ sudo firewall-cmd --permanent --add-port=443/tcp
+    $ sudo firewall-cmd --permanent --add-port=4443/tcp
+    $ sudo firewall-cmd --permanent --add-port=10000/udp
+    $ sudo firewall-cmd --permanent --add-port=5349/tcp
+    $ sudo firewall-cmd --permanent --add-port=5349/udp
+    $ sudo firewall-cmd --permanent --add-port=16000-17000/udp
+    $ sudo firewall-cmd --reload
+```
+
 ### Images
 
 * **base**: Debian stable base image with the [S6 Overlay] for process control and the
@@ -76,6 +106,7 @@ several container images are provided.
 * **jigasi**: [Jigasi], the SIP (audio only) gateway.
 * **etherpad**: [Etherpad], shared document editing addon.
 * **jibri**: [Jibri], the brooadcasting infrastructure.
+* **turn**: [Coturn], the TURN server.
 
 ### Design considerations
 
@@ -349,6 +380,31 @@ Variable | Description | Example
 
 For setting the Google Cloud Credentials please read https://cloud.google.com/text-to-speech/docs/quickstart-protocol section "Before you begin" from 1 to 5 paragraph.
 
+### TURN(S) server
+For enable turn server for P2P and JVB connections, please set variables below
+
+Variable | Description | Default value
+--- | --- | ---
+`TURN_ENABLE` | Use TURN for P2P and JVB (bridge mode) connections | 0
+`TURN_REALM` | Realm to be used for the users with long-term credentials mechanism or with TURN REST API | realm
+`TURN_SECRET` | Secret for connect to TURN server | keepthissecret
+`TURN_HOST` | Annonce FQDN/IP address of the turn server via XMPP (XEP-0215) | 192.168.1.1
+`TURN_PUBLIC_IP` | Public IP address for an instance of turn server | set dynamically
+`TURN_PORT` | TLS/TCP/UDP turn port for connection | 5349
+`TURN_TRANSPORT` | transport for turn connection (tcp/udp) | tcp
+`TURN_RTP_MIN` | RTP start port for turn/turns connections | 16000
+`TURN_RTP_MAX` | RTP end port for turn/turns connections | 17000
+
+
+For enable web-admin panel for turn, please set variables below
+
+Variable | Description | Default value
+--- | --- | ---
+`TURN_ADMIN_ENABLE` | Enable web-admin panel | 0
+`TURN_ADMIN_USER` | Username for admin panel | admin
+`TURN_ADMIN_SECRET` | Password for admin panel | changeme
+`TURN_ADMIN_PORT` | HTTP(s) port for acess to admin panel | 8443
+
 ### Advanced configuration
 
 These configuration options are already set and generally don't need to be changed.
@@ -408,7 +464,6 @@ option.
 ## TODO
 
 * Support container replicas (where applicable).
-* TURN server.
 
 [Jitsi]: https://jitsi.org/
 [Jitsi Meet]: https://jitsi.org/jitsi-meet/
@@ -426,3 +481,4 @@ option.
 [jwt.io]: https://jwt.io/#debugger-io
 [Etherpad]: https://github.com/ether/etherpad-lite
 [Jibri]: https://github.com/jitsi/jibri
+[Coturn]: https://github.com/coturn/coturn
