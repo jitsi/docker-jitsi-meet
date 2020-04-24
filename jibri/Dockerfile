@@ -42,6 +42,13 @@ RUN \
         && apt-cleanup \
         || true
 
+#recoding fix https://github.com/jitsi/docker-jitsi-meet/issues/240
+RUN mv /usr/bin/google-chrome /usr/bin/google-chrome-orig && \
+    echo '#!/bin/bash' > /usr/bin/google-chrome && \
+    echo '/usr/bin/google-chrome-orig --ignore-certificate-errors --disable-dev-shm-usage $@' >> /usr/bin/google-chrome && \
+    chmod +x /usr/bin/google-chrome
+
+
 COPY rootfs/ /
 
 VOLUME /config
