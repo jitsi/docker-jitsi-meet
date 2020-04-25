@@ -37,7 +37,7 @@ follow these steps:
   * Set strong passwords in the security section options: `./gen-passwords.sh`
 * Create required `CONFIG` directories
   * `mkdir -p ~/.jitsi-meet-cfg/{web/letsencrypt,transcripts,prosody,jicofo,jvb,jigasi,jibri}`
-* Run ``docker-compose up -d``.
+* Run ``docker-compose up -d``
 * Access the web UI at [``https://localhost:8443``](https://localhost:8443) (or a different port, in case you edited the compose file).
 
 Note that HTTP (not HTTPS) is also available (on port 8000, by default), but that's e.g. for a reverse proxy setup;
@@ -55,12 +55,12 @@ or to use jigasi too: ``docker-compose -f docker-compose.yml -f jigasi.yml -f ji
 
 ### Security note
 
-This setup used to have default passwords for intetrnal accounts used across components. In order to make the default setup
+This setup used to have default passwords for internal accounts used across components. In order to make the default setup
 secure by default these have been removed and the respective containers won't start without having a password set.
 
-Strong passwordds may be generated as follows: `./gen-passwords.sh`
-This will modify your `.env` file (a backup is saved in `.env.backup`) and set strong passwords for each of the
-require options. Passwords are  generated using `openssl rand -hex 16` .
+Strong passwords may be generated as follows: `./gen-passwords.sh`
+This will modify your `.env` file (a backup is saved in `.env.bak`) and set strong passwords for each of the
+required options. Passwords are generated using `openssl rand -hex 16` .
 
 DO NOT reuse any of the passwords.
 
@@ -142,8 +142,8 @@ Variable | Description | Example
 `DOCKER_HOST_ADDRESS` | IP address of the Docker host, needed for LAN environments | 192.168.1.1
 `PUBLIC_URL` | Public URL for the web service | https://meet.example.com
 
-**NOTE**: The mobile apps won't work with self-signed certificates (the default)
-see below for instructions on how to obtain a proper certificate with Let's Encrypt.
+**NOTE**: The mobile apps won't work with self-signed certificates (the default).
+See below for instructions on how to obtain a proper certificate with Let's Encrypt.
 
 ### Let's Encrypt configuration
 
@@ -171,7 +171,7 @@ Variable | Description | Example
 `JIGASI_SIP_PORT` | SIP server port | 5060
 `JIGASI_SIP_TRANSPORT` | SIP transport | UDP
 
-### JItsi BRoadcasting Infrastructure configuration
+### JItsi BRoadcasting Infrastructure (Jibri) configuration
 
 Before running Jibri, you need to set up an ALSA loopback device on the host. This **will not**
 work on a non-Linux host.
@@ -202,8 +202,19 @@ echo "snd-aloop" >> /etc/modules
 lsmod | grep snd_aloop
 ```
 
-NOTE: if you are running on AWS you may need to reboot your machine to use the generic kernel instead
-of the "aws" kernel.
+NOTE: If you are running on AWS you may need to reboot your machine to use the generic kernel instead
+of the "aws" kernel. If after reboot, your machine is still using the "aws" kernel, you'll need to manually update the grub file. So just run:
+```
+# open the grub file in editor
+nano /etc/default/grub
+# Modify the value of GRUB_DEFAULT from "0" to "1>2"
+# Save and exit from file
+
+# Update grub
+update-grub
+# Reboot the machine
+reboot now
+```
 
 If you want to enable Jibri these options are required:
 
@@ -245,7 +256,7 @@ For using multiple Jibri instances, you have to select different loopback interf
   ...
   ```
 
-  For setup the second instance, run container with changed `/home/jibri/.asoundrc`:
+  To setup the second instance, run container with changed `/home/jibri/.asoundrc`:
 
   ```
   ...
@@ -417,6 +428,7 @@ Variable | Description | Default value
 `JVB_PORT` | UDP port for media used by Jitsi Videobridge | 10000
 `JVB_TCP_HARVESTER_DISABLED` | Disable the additional harvester which allows video over TCP (rather than just UDP) | true
 `JVB_TCP_PORT` | TCP port for media used by Jitsi Videobridge when the TCP Harvester is enabled | 4443
+`JVB_TCP_MAPPED_PORT` | TCP port advertised by Jitsi Videobridge | 4443
 `JVB_BREWERY_MUC` | MUC name for the JVB pool | jvbbrewery
 `JVB_ENABLE_APIS` | Comma separated list of JVB APIs to enable | none
 `JIGASI_XMPP_USER` | XMPP user for Jigasi MUC client connections | jigasi

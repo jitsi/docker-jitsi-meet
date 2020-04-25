@@ -1,6 +1,6 @@
 # Basic configuration to use with the traefik reverse proxy
 
-Note: Tested with traefik 2.1.3
+Note: Tested with traefik 2.2.0
 
 - When running behind traefik, it's a better practice to remove the port-binds for the web service.
 - The provided example uses an external network with the name "web". This is the network which moste likely was created while setting up traefik.

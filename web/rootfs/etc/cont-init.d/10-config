@@ -11,7 +11,9 @@ mkdir -p \
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
         if [[ ! -f /etc/letsencrypt/live/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
-            if ! certbot certonly \
+            if ! certbot-auto \
+                  certonly \
+                  --no-self-upgrade \
                   --noninteractive \
                   --standalone \
                   --preferred-challenges http \
@@ -47,9 +49,6 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
         fi
     fi
-    if [[ ! -f /config/nginx/dhparams.pem ]]; then
-        openssl dhparam -out /config/nginx/dhparams.pem 2048
-    fi
 fi
 
 # copy config files
@@ -73,7 +72,7 @@ if [[ ! -f /config/config.js ]]; then
     cp /defaults/config.js /config/config.js
     sed -i \
         -e "s#jitsi-meet.example.com#$XMPP_DOMAIN#g" \
-        -e "s#bosh:.*#bosh: '${PUBLIC_URL}/http-bind',#" \
+        -e "s#bosh:.*#bosh: '/http-bind',#" \
         -e "s#muc:.*#muc: '${XMPP_MUC_DOMAIN}',#" \
         -e "s#// focusUserJid:.*#focusUserJid: '${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}',#" \
         /config/config.js

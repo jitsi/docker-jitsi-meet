@@ -144,7 +144,7 @@ services:
         image: jitsi/jvb
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
-            - '${JVB_TCP_PORT}:${JVB_TCP_PORT}'
+            - '${JVB_TCP_MAPPED_PORT}:${JVB_TCP_PORT}'
         volumes:
             - ${CONFIG}/jvb:/config
         environment:
@@ -165,6 +165,10 @@ services:
             - prosody
         networks:
             meet.jitsi:
+        labels:
+            traefik.udp.routers.jvb.entrypoints: video
+            traefik.udp.routers.jvb.service: jvb
+            traefik.udp.services.jvb.loadbalancer.server.port: 10000
 
 # Custom network so all services can communicate using a FQDN
 networks:

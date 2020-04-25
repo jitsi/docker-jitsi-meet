@@ -8,13 +8,13 @@ Create a namespace to deploy jitsi to:
 
 Add the secret with secret values (replace `...` with some random strings):
 
-`kubectl create secret generic jitsi-config --from-literal=JICOFO_COMPONENT_SECRET=... --from-literal=JICOFO_AUTH_PASSWORD=... --from-literal=JVB_AUTH_PASSWORD=... `
+`kubectl create secret generic jitsi-config -n jitsi --from-literal=JICOFO_COMPONENT_SECRET=... --from-literal=JICOFO_AUTH_PASSWORD=... --from-literal=JVB_AUTH_PASSWORD=... `
 
 Deploy the service to listen for JVB UDP traffic on all cluster nodes port 30300:
 
 `kubectl create -f jvb-service.yaml`
 
-Now we can deploy the rest of the application:
+Now we can deploy the rest of the application. First modify the `DOCKER_HOST_ADDRESS` env value in deployment.yaml to point to one of nodes in your cluster (or load-balancer for all nodes if you have one), and then deploy it:
 
 `kubectl create -f deployment.yaml`
 
