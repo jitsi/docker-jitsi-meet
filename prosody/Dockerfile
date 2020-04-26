@@ -7,7 +7,6 @@ RUN \
     apt-key add /tmp/prosody.key \
     && rm -f /tmp/prosody.key \
     && echo "deb http://packages.prosody.im/debian buster main" > /etc/apt/sources.list.d/prosody.list \
-    && echo "deb https://deb.debian.org/debian stretch main" > /etc/apt/sources.list.d/stretch.list \
     && apt-dpkg-wrap apt-get update \
     && apt-dpkg-wrap apt-get install -y prosody \
     && apt-dpkg-wrap apt-get install -t buster-backports -y \
@@ -15,7 +14,7 @@ RUN \
       sasl2-bin \
       libsasl2-modules-ldap \
       libsasl2-dev \
-      libssl1.0-dev \
+      libssl-dev \
       lua-basexx \
       lua-ldap \
       lua-sec \
@@ -23,6 +22,9 @@ RUN \
       git \
       gcc \
       patch \
+      cmake \
+      make \
+    && luarocks install https://luarocks.org/manifests/snoopotic/luacrypto-git-1.rockspec \
     && luarocks install cyrussasl 1.1.0-1 \
     && luarocks install lua-cjson 2.1.0.6-1 \
     && luarocks install luajwtjitsi 1.3-7 \
@@ -32,8 +34,10 @@ RUN \
       gcc \
       luarocks \
       libsasl2-dev \
-      libssl1.0-dev \
+      libssl-dev \
       liblua5.2-dev \
+      cmake \
+      make \
     && apt-cleanup \
     && rm -rf /etc/prosody /var/cache/apt
 
