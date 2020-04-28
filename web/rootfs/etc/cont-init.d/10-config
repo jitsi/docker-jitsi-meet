@@ -87,7 +87,7 @@ if [[ ! -f /config/config.js ]]; then
 
     if [[ $DISABLE_P2P -eq 1 || "$DISABLE_P2P" == "true" ]]; then
         sed -i \
-             -e "s#enabled: .*, //p2p#enabled: false, //p2p#" \
+             -E "s/p2p: {\n(( )+\\/\\/.*\n)+( )+enabled: .*, /p2p: {\n        enabled: false,/gm" \
              /config/config.js
     else
         sed -i \
