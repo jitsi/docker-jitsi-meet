@@ -8,8 +8,8 @@ services:
         ports:
             - '${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}:${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}/udp'
         volumes:
-            - ${CONFIG}/jigasi:/config
-            - ${CONFIG}/transcripts:/tmp/transcripts
+            - ${CONFIG}/jigasi:/config:Z
+            - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
             - ENABLE_AUTH
             - XMPP_AUTH_DOMAIN
