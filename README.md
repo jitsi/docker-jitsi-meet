@@ -30,8 +30,8 @@ This repository contains the necessary tools to run a Jitsi Meet stack on [Docke
 In order to quickly run Jitsi Meet on a machine running Docker and Docker Compose,
 follow these steps:
 
-* Clone this repository to your computer.
-  * `git clone https://github.com/jitsi/docker-jitsi-meet && cd docker-jitsi-meet`
+* Download and extract the [latest release]
+  * Alternatively, to test the latest changes clone the repository: `git clone https://github.com/jitsi/docker-jitsi-meet && cd docker-jitsi-meet`
 * Create a ``.env`` file by copying and adjusting ``env.example``
   * `cp env.example .env`
   * Set strong passwords in the security section options: `./gen-passwords.sh`
@@ -488,3 +488,4 @@ You are now able to run `docker-compose up` as usual.
 [jwt.io]: https://jwt.io/#debugger-io
 [Etherpad]: https://github.com/ether/etherpad-lite
 [Jibri]: https://github.com/jitsi/jibri
+[latest release]: https://github.com/jitsi/docker-jitsi-meet/releases/latest
