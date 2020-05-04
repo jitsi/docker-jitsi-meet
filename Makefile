@@ -34,7 +34,6 @@ clean:
 
 prepare:
 	docker pull debian:stretch-slim
-	docker pull etherpad/etherpad
 	FORCE_REBUILD=1 $(MAKE)
 
 .PHONY: all build tag push clean prepare
