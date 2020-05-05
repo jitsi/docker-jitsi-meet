@@ -150,7 +150,6 @@ if [[ ! -f /config/interface_config.js ]]; then
     # Performance gain
     sed -i \
         -e "s#DISABLE_VIDEO_BACKGROUND:.*#DISABLE_VIDEO_BACKGROUND: true,#" \
-        -e "s#DISABLE_FOCUS_INDICATOR:.*#DISABLE_FOCUS_INDICATOR: true,#" \
         -e "s#DISABLE_DOMINANT_SPEAKER_INDICATOR:.*#DISABLE_DOMINANT_SPEAKER_INDICATOR: true,#" \
         -e "s#DISABLE_JOIN_LEAVE_NOTIFICATIONS:.*#DISABLE_JOIN_LEAVE_NOTIFICATIONS: true,#" \
         /config/interface_config.js
