@@ -3,12 +3,13 @@ version: '3'
 services:
     # SIP gateway (audio)
     jigasi:
-        image: jitsi/jigasi
+        image: jitsi/jigasi:latest
+        restart: ${RESTART_POLICY}
         ports:
             - '${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}:${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}/udp'
         volumes:
-            - ${CONFIG}/jigasi:/config
-            - ${CONFIG}/transcripts:/tmp/transcripts
+            - ${CONFIG}/jigasi:/config:Z
+            - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
             - ENABLE_AUTH
             - XMPP_AUTH_DOMAIN
@@ -34,7 +35,12 @@ services:
             - JIGASI_TRANSCRIBER_ADVERTISE_URL
             - JIGASI_TRANSCRIBER_RECORD_AUDIO
             - JIGASI_TRANSCRIBER_SEND_TXT
-            - GOOGLE_APPLICATION_CREDENTIALS
+            - GC_PROJECT_ID
+            - GC_PRIVATE_KEY_ID
+            - GC_PRIVATE_KEY
+            - GC_CLIENT_EMAIL
+            - GC_CLIENT_ID
+            - GC_CLIENT_CERT_URL
             - TZ
         depends_on:
             - prosody

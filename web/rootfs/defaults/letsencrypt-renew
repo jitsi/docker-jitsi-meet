@@ -4,7 +4,7 @@
 s6-svc -d /var/run/s6/services/nginx
 
 # renew cert
-certbot -n renew >> /config/le-renew.log
+certbot-auto --no-self-upgrade -n renew >> /config/le-renew.log
 
 # start nginx
 s6-svc -u /var/run/s6/services/nginx

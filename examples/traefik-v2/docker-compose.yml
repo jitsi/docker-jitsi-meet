@@ -3,15 +3,11 @@ version: '3'
 services:
     # Frontend
     web:
-        image: jitsi/web:latest
-        restart: ${RESTART_POLICY}
-        ports:
-            - '${HTTP_PORT}:80'
-            - '${HTTPS_PORT}:443'
+        image: jitsi/web
         volumes:
-            - ${CONFIG}/web:/config:Z
-            - ${CONFIG}/web/letsencrypt:/etc/letsencrypt:Z
-            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
+            - ${CONFIG}/web:/config
+            - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
+            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
         environment:
             - ENABLE_AUTH
             - ENABLE_GUESTS
@@ -38,23 +34,32 @@ services:
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
             - ENABLE_RECORDING
-            - TURN_ENABLE
         networks:
+            # traefik: change the following line to your external docker network 
+            web:
             meet.jitsi:
                 aliases:
                     - ${XMPP_DOMAIN}
+        labels:
+            traefik.http.middlewares.redirect.redirectscheme.scheme: https
+            traefik.http.routers.app-http.entrypoints: web
+            traefik.http.routers.app-http.middlewares: redirect
+            traefik.http.routers.app-http.rule: 'Host(`your.host.name`)'
+            traefik.http.routers.app.entrypoints: websecure
+            traefik.http.routers.app.rule: 'Host(`your.host.name`)'
+            traefik.http.routers.app.tls: 'true'
+            traefik.http.routers.app.tls.certresolver: le
+            traefik.http.services.app.loadbalancer.server.port: 80
 
     # XMPP server
     prosody:
-        image: jitsi/prosody:latest
-        restart: ${RESTART_POLICY}
+        image: jitsi/prosody
         expose:
             - '5222'
             - '5347'
             - '5280'
         volumes:
-            - ${CONFIG}/prosody/config:/config:Z
-            - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
+            - ${CONFIG}/prosody:/config
         environment:
             - AUTH_TYPE
             - ENABLE_AUTH
@@ -104,11 +109,6 @@ services:
             - JWT_TOKEN_AUTH_MODULE
             - LOG_LEVEL
             - TZ
-            - TURN_ENABLE
-            - TURN_SECRET
-            - TURN_HOST
-            - TURN_PORT
-            - TURN_TRANSPORT
         networks:
             meet.jitsi:
                 aliases:
@@ -116,10 +116,9 @@ services:
 
     # Focus component
     jicofo:
-        image: jitsi/jicofo:latest
-        restart: ${RESTART_POLICY}
+        image: jitsi/jicofo
         volumes:
-            - ${CONFIG}/jicofo:/config:Z
+            - ${CONFIG}/jicofo:/config
         environment:
             - ENABLE_AUTH
             - XMPP_DOMAIN
@@ -132,7 +131,6 @@ services:
             - JICOFO_RESERVATION_REST_BASE_URL
             - JVB_BREWERY_MUC
             - JIGASI_BREWERY_MUC
-            - JIGASI_SIP_URI
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
             - TZ
@@ -143,13 +141,12 @@ services:
 
     # Video bridge
     jvb:
-        image: jitsi/jvb:latest
-        restart: ${RESTART_POLICY}
+        image: jitsi/jvb
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
             - '${JVB_TCP_MAPPED_PORT}:${JVB_TCP_PORT}'
         volumes:
-            - ${CONFIG}/jvb:/config:Z
+            - ${CONFIG}/jvb:/config
         environment:
             - DOCKER_HOST_ADDRESS
             - XMPP_AUTH_DOMAIN
@@ -168,7 +165,14 @@ services:
             - prosody
         networks:
             meet.jitsi:
+        labels:
+            traefik.udp.routers.jvb.entrypoints: video
+            traefik.udp.routers.jvb.service: jvb
+            traefik.udp.services.jvb.loadbalancer.server.port: 10000
 
 # Custom network so all services can communicate using a FQDN
 networks:
     meet.jitsi:
+    # traefik: change the following line to your external docker network 
+    web:
+        external: true

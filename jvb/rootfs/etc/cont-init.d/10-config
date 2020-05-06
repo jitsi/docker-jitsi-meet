@@ -1,5 +1,16 @@
 #!/usr/bin/with-contenv bash
 
+if [[ -z $JVB_AUTH_PASSWORD ]]; then
+    echo 'FATAL ERROR: JVB auth password must be set'
+    exit 1
+fi
+
+OLD_JVB_AUTH_PASSWORD=passw0rd
+if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
+    echo 'FATAL ERROR: JVB auth password must be changed, check the README'
+    exit 1
+fi
+
 if [[ ! -f /config/sip-communicator.properties ]]; then
     tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
 fi

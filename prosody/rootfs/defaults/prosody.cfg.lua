@@ -126,7 +126,7 @@ s2s_secure_auth = false
 -- server please see http://prosody.im/doc/modules/mod_auth_internal_hashed
 -- for information about using the hashed backend.
 
-authentication = "internal_plain"
+authentication = "internal_hashed"
 
 -- Select the storage backend to use. By default Prosody uses flat files
 -- in its configured data directory, but it also supports more backends
@@ -154,6 +154,13 @@ log = {
 {{ if .Env.GLOBAL_CONFIG }}
 {{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG) }}
 {{ end }}
+
+-- Enable use of native prosody 0.11 support for epoll over select
+network_backend = "epoll";
+-- Set the TCP backlog to 511 since the kernel rounds it up to the next power of 2: 512.
+network_settings = {
+  tcp_backlog = 511;
+}
 
 component_interface = { "*" }
 

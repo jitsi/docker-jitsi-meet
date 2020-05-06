@@ -11,14 +11,33 @@ mkdir -p \
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
         if [[ ! -f /etc/letsencrypt/live/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
-            certbot certonly \
-                --noninteractive \
-                --standalone \
-                --preferred-challenges http \
-                -d $LETSENCRYPT_DOMAIN \
-                --agree-tos \
-                --email $LETSENCRYPT_EMAIL
-            cp /defaults/letsencrypt-renew /etc/cron.monthly/
+            if ! certbot-auto \
+                  certonly \
+                  --no-self-upgrade \
+                  --noninteractive \
+                  --standalone \
+                  --preferred-challenges http \
+                  -d $LETSENCRYPT_DOMAIN \
+                  --agree-tos \
+                  --email $LETSENCRYPT_EMAIL ; then
+
+                echo "Failed to obtain a certificate from the Let's Encrypt CA."
+                # this tries to get the user's attention and to spare the
+                # authority's rate limit:
+                sleep 15
+                echo "Exiting."
+                exit 1
+            fi
+        fi
+
+        # remove default certbot renewal
+        if [[ -f /etc/cron.d/certbot ]]; then
+            rm /etc/cron.d/certbot
+        fi
+
+        # setup certbot renewal script
+        if [[ ! -f /etc/cron.daily/letencrypt-renew ]]; then
+            cp /defaults/letsencrypt-renew /etc/cron.daily/
         fi
     else
         # use self-signed certs
@@ -29,9 +48,6 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             SUBJECT="/C=US/ST=TX/L=Austin/O=jitsi.org/OU=Jitsi Server/CN=*"
             openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
         fi
-    fi
-    if [[ ! -f /config/nginx/dhparams.pem ]]; then
-        openssl dhparam -out /config/nginx/dhparams.pem 2048
     fi
 fi
 
@@ -83,7 +99,7 @@ if [[ ! -f /config/config.js ]]; then
 
     if [[ ! -z "${ETHERPAD_URL_BASE}" && -z "$(grep -om1 'etherpad_base:' /config/config.js)" ]]; then
         sed -i \
-            -e "/enableWelcomePage/a\    etherpad_base: '/etherpad/p/'," \
+            -e "/enableWelcomePage/a\    etherpad_base: '${PUBLIC_URL}/etherpad/p/'," \
             /config/config.js
     fi
 
@@ -113,4 +129,3 @@ if [[ ! -f /config/interface_config.js ]]; then
     fi
 
 fi
-

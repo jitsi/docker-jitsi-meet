@@ -2,9 +2,10 @@ version: '3'
 
 services:
     jibri:
-        image: jitsi/jibri
+        image: jitsi/jibri:latest
+        restart: ${RESTART_POLICY}
         volumes:
-            - ${CONFIG}/jibri:/config
+            - ${CONFIG}/jibri:/config:Z
             - /dev/shm:/dev/shm
         cap_add:
             - SYS_ADMIN
@@ -28,6 +29,8 @@ services:
             - JIBRI_LOGS_DIR
             - DISPLAY=:0
             - TZ
+        depends_on:
+            - jicofo
         networks:
             meet.jitsi:
 
