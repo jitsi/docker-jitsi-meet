@@ -12,7 +12,9 @@ server {
 	{{ end }}
 
 	{{ if .Env.ENABLE_HTTP_REDIRECT | default "0" | toBool }}
-	return 301 https://$host$request_uri;
+	location / {
+		return 301 https://$host$request_uri;
+	}
 	{{ else }}
 	include /config/nginx/meet.conf;
 	{{ end }}
