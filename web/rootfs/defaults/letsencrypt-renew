@@ -8,5 +8,5 @@ certbot-auto renew \
   --webroot-path /var/www/letsencrypt \
   >> /config/le-renew.log
 
-# start nginx
+# reload nginx
 s6-svc -h /var/run/s6/services/nginx
