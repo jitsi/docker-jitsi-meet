@@ -115,6 +115,7 @@ services:
         volumes:
             - ${CONFIG}/jicofo:/config:Z
         environment:
+            - AUTH_TYPE
             - ENABLE_AUTH
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
