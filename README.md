@@ -34,7 +34,8 @@ follow these steps:
   * Alternatively, to test the latest changes clone the repository: `git clone https://github.com/jitsi/docker-jitsi-meet && cd docker-jitsi-meet`
 * Create a ``.env`` file by copying and adjusting ``env.example``
   * `cp env.example .env`
-  * Set strong passwords in the security section options: `./gen-passwords.sh`
+* Set strong passwords in the security section options of ``.env`` file by running the following bash script
+  * `./gen-passwords.sh`
 * Create required `CONFIG` directories
   * `mkdir -p ~/.jitsi-meet-cfg/{web/letsencrypt,transcripts,prosody,jicofo,jvb,jigasi,jibri}`
 * Run ``docker-compose up -d``
