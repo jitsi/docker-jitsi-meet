@@ -1,6 +1,16 @@
 server {
 	listen 80 default_server;
 
+	{{ if .Env.ENABLE_LETSENCRYPT | default "0" | toBool }}
+	location ^~ /.well-known/acme-challenge/ {
+		default_type "text/plain";
+		root /var/www/letsencrypt;
+	}
+	location = /.well-known/acme-challenge/ {
+		return 404;
+	}
+	{{ end }}
+
 	{{ if .Env.ENABLE_HTTP_REDIRECT | default "0" | toBool }}
 	return 301 https://$host$request_uri;
 	{{ else }}
