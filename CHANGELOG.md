@@ -1,3 +1,17 @@
+## stable-4548-1
+
+Based on stable release 4548-1.
+
+* abf2f73 jicofo: fix setting incorrect auth URL scheme for JWT
+* 3472ab0 jicofo: add ability to configure health checks
+* ec3622b jibri: install jitsi-upload-integrations by default
+* 0e7bc91 etherpad: pin image version
+* 4fa50b9 jwt: do not load token_verification module with disabled authentication
+* b0d76a2 jibri: add jq dep for upload integrations
+* 53b58fd jvb: add jq, curl deps for graceful_shutdown.sh
+* 2d063ad doc: update installation instructions
+* e73df5f misc: working on latest
+
 ## stable-4548
 
 Based on stable release 4548.
