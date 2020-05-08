@@ -12,11 +12,11 @@ if [ -f $envFile ]; then
   source $envFile
 
   if [ -d "$CONFIG" ]; then
-    if [ ! -d "$CONFIG/prosody-plugins-custom" ]; then
-      mkdir "$CONFIG/prosody-plugins-custom"
+    if [ ! -d "$CONFIG/prosody/prosody-plugins-custom" ]; then
+      mkdir "$CONFIG/prosody/prosody-plugins-custom"
     fi
-    if [ ! -f "$CONFIG/prosody-plugins-custom/mod_token_moderation.lua" ]; then
-      cp custom/prosody-plugins-custom/mod_token_moderation.lua "$CONFIG/prosody-plugins-custom/"
+    if [ ! -f "$CONFIG/prosody/prosody-plugins-custom/mod_token_moderation.lua" ]; then
+      cp custom/prosody-plugins-custom/mod_token_moderation.lua "$CONFIG/prosody/prosody-plugins-custom/"
     fi
   fi
 
