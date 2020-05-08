@@ -8,7 +8,7 @@ ARG CHROMEDRIVER_MAJOR_RELEASE=78
 
 RUN \
 	apt-dpkg-wrap apt-get update \
-	&& apt-dpkg-wrap apt-get install -y jibri \
+	&& apt-dpkg-wrap apt-get install -y jibri libgl1-mesa-dri \
 	&& apt-cleanup
 
 RUN \
