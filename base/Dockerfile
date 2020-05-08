@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:stretch-slim
 
 ARG JITSI_RELEASE=stable
 
