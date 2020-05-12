@@ -3,8 +3,6 @@ FROM ${JITSI_REPO}/base
 
 ADD https://dl.eff.org/certbot-auto /usr/local/bin/
 
-COPY rootfs/ /
-
 RUN \
 	apt-dpkg-wrap apt-get update && \
 	apt-dpkg-wrap apt-get install -y cron nginx-extras jitsi-meet-web && \
@@ -19,6 +17,8 @@ RUN \
 RUN \
 	chmod a+x /usr/local/bin/certbot-auto && \
 	certbot-auto --noninteractive --install-only
+
+COPY rootfs/ /
 
 EXPOSE 80 443
 
