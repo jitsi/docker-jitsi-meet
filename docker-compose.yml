@@ -60,6 +60,8 @@ services:
             - ENABLE_GUESTS
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
+            - PROSODY_VIRTUALHOST_CONFIG
+            - PROSODY_MUC_CONFIG
             - LDAP_URL
             - LDAP_BASE
             - LDAP_BINDDN
