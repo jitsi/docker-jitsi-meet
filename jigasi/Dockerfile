@@ -1,5 +1,6 @@
 ARG JITSI_REPO=jitsi
-FROM ${JITSI_REPO}/base-java
+ARG JITSI_BUILD=latest
+FROM ${JITSI_REPO}/base-java:${JITSI_BUILD}
 
 ENV GOOGLE_APPLICATION_CREDENTIALS /config/key.json
 

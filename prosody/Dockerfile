@@ -1,5 +1,6 @@
 ARG JITSI_REPO=jitsi
-FROM ${JITSI_REPO}/base
+ARG JITSI_BUILD=latest
+FROM ${JITSI_REPO}/base:${JITSI_BUILD}
 
 ADD https://prosody.im/files/prosody-debian-packages.key /tmp/prosody.key
 
