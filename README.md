@@ -318,6 +318,14 @@ Once in the container, run the following command to create a user:
 
 Note that the command produces no output.
 
+To delete a user, run the following command in the container:
+
+``prosodyctl --config /config/prosody.cfg.lua unregister TheDesiredUsername meet.jitsi``
+
+To list all users, run the following command outside the container:
+
+``(. .env && sudo find $CONFIG/prosody/config/data/meet%2ejitsi/accounts -name "*.dat" -exec basename "{}" .dat ";")``
+
 #### Authentication using LDAP
 
 You can use LDAP to authenticate users. To enable it you have to enable authentication with `ENABLE_AUTH` and
