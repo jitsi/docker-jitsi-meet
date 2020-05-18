@@ -322,9 +322,9 @@ To delete a user, run the following command in the container:
 
 ``prosodyctl --config /config/prosody.cfg.lua unregister TheDesiredUsername meet.jitsi``
 
-To list all users, run the following command outside the container:
+To list all users, run the following command in the container:
 
-``(. .env && sudo find $CONFIG/prosody/config/data/meet%2ejitsi/accounts -name "*.dat" -exec basename "{}" .dat ";")``
+``find /config/data/meet%2ejitsi/accounts -name "*.dat" -exec basename "{}" .dat ";"``
 
 #### Authentication using LDAP
 
