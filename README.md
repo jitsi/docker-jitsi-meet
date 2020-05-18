@@ -324,7 +324,7 @@ To delete a user, run the following command in the container:
 
 To list all users, run the following command in the container:
 
-``find /config/data/meet%2ejitsi/accounts -name "*.dat" -exec basename "{}" .dat ";"``
+``find /config/data/meet%2ejitsi/accounts -type f -exec basename {} .dat \;``
 
 #### Authentication using LDAP
 
