@@ -37,7 +37,7 @@ follow these steps:
 * Set strong passwords in the security section options of ``.env`` file by running the following bash script
   * `./gen-passwords.sh`
 * Create required `CONFIG` directories
-  * `mkdir -p ~/.jitsi-meet-cfg/{web/letsencrypt,transcripts,prosody,jicofo,jvb,jigasi,jibri}`
+  * `mkdir -p ~/.jitsi-meet-cfg/{web/letsencrypt,transcripts,prosody/config,prosody/prosody-plugins-custom,jicofo,jvb,jigasi,jibri}`
 * Run ``docker-compose up -d``
 * Access the web UI at [``https://localhost:8443``](https://localhost:8443) (or a different port, in case you edited the compose file).
 
