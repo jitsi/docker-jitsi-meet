@@ -5,7 +5,7 @@ services:
         image: jitsi/jibri
         restart: ${RESTART_POLICY}
         volumes:
-            - ${CONFIG}/jibri:/config
+            - ${CONFIG}/jibri:/config:Z
             - /dev/shm:/dev/shm
         cap_add:
             - SYS_ADMIN
