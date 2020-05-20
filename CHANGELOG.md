@@ -1,3 +1,36 @@
+## stable-4548-1
+
+Based on stable release 4548-1.
+
+* abf2f73 jicofo: fix setting incorrect auth URL scheme for JWT
+* 3472ab0 jicofo: add ability to configure health checks
+* ec3622b jibri: install jitsi-upload-integrations by default
+* 0e7bc91 etherpad: pin image version
+* 4fa50b9 jwt: do not load token_verification module with disabled authentication
+* b0d76a2 jibri: add jq dep for upload integrations
+* 53b58fd jvb: add jq, curl deps for graceful_shutdown.sh
+* 2d063ad doc: update installation instructions
+* e73df5f misc: working on latest
+
+## stable-4548
+
+Based on stable release 4548.
+
+* a79fc0c misc: add release script
+* 0f0adc8 compose: add image tag to compose files
+* 0177765 misc: fix config volumes to work with SELinux
+* eae3f5c jibri: chrome/driver 78 as a stopgap
+* 78df6a4 doc: delete unnecessary dot
+* 4426ed8 jibri: fix case when /dev/snd is not bound (https://github.com/jitsi/docker-jitsi-meet/issues/240#issuecomment-610422404)
+* 125775a web: fix WASM MIME type
+* e70975e web: enable GZIP compression for more file types
+* 774aba5 misc: set ddefault timezone to UTC
+* 3c3fc19 prosody: enable speaker stats and conferene duration modules
+* f911df2 jvb: set JVB_TCP_MAPPED_PORT default value
+* 1205170 jvb: allow `TCP_HARVESTER_MAPPED_PORT` to be configured
+* f7796a1 prosody: add volume  /prosody-plugins-custom to docker-compose
+* d44230e prosody: use hashed xmpp auth
+
 ## stable-4416
 
 Based on stable release 4416.
