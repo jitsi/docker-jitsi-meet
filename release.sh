@@ -51,7 +51,7 @@ sed -i "" -e "s/latest/${VERSION}/" *.yml
 #
 
 git commit -a -m "release: ${VERSION}" -m "${CHANGES}"
-git tag -a "${VERSION}" -m "${CHANGES}"
+git tag -a "${VERSION}" -m "release" -m "${CHANGES}"
 
 # Tag Docker images and push them to DockerHub
 #
