@@ -1,3 +1,18 @@
+## stable-4627
+
+Based on stable release 4627.
+
+* fdf5030 prosody: update configuration
+* afafe23 prosody: shrink container size
+* 8e7ea34 base: fix setting timezone
+* 58441ae doc: update README
+* 3c12526 etherpad: update to version 1.8.4
+* 0038e71 jibri: install extra dependency
+* 0615ed6 doc: add missing volumes to quick start
+* 2781865 doc: clarify usage of gen-passwords.sh
+* a8d0b6c build: add PHONY target for "release"
+* d4a35a6 misc: working on latest
+
 ## stable-4548-1
 
 Based on stable release 4548-1.
