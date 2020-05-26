@@ -14,6 +14,7 @@ RUN \
       sasl2-bin \
       libsasl2-modules-ldap \
       libsasl2-dev \
+      libsssl1.0.2 \
       libssl1.0-dev \
       lua-basexx \
       lua-ldap \
@@ -33,8 +34,9 @@ RUN \
       libsasl2-dev \
       libssl1.0-dev \
       liblua5.2-dev \
+    && apt-dpkg-wrap apt-get autoremove --purge -y \
     && apt-cleanup \
-    && rm -rf /etc/prosody /var/cache/apt
+    && rm -rf /etc/prosody
 
 RUN \
     apt-dpkg-wrap apt-get update \
