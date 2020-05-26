@@ -1,4 +1,8 @@
-admins = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
+admins = {
+    "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
+    "{{ .Env.JVB_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}"
+}
+
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
@@ -83,18 +87,20 @@ VirtualHost "{{ .Env.XMPP_RECORDER_DOMAIN }}"
 {{ end }}
 
 Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
+    storage = "memory"
     modules_enabled = {
         "ping";
         {{ if .Env.XMPP_INTERNAL_MUC_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
         {{ end }}
     }
-    storage = "memory"
-    muc_room_cache_size = 1000
+    muc_room_locking = false
+    muc_room_default_public_jids = true
 
 Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
+        "muc_meeting_id";
         {{ if .Env.XMPP_MUC_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end }}
@@ -102,6 +108,7 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
     }
+    muc_room_cache_size = 1000
     muc_room_locking = false
     muc_room_default_public_jids = true
 
