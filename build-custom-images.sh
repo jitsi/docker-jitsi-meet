@@ -19,7 +19,7 @@ if [ -f $envFile ]; then
     mkdir trs-jitsi-meet
   fi
   cd trs-jitsi-meet
-  if [ -d .git ]; then
+  if [ ! -d .git ]; then
     git clone github-trs-jitsi-meet:TheRealStart/jitsi-meet.git .
   else
     git fetch
@@ -30,7 +30,7 @@ if [ -f $envFile ]; then
   make
   make source-package
   cd ..
-  tar -xzf trs-jitsi-meet/jitsi-meet.tar.bz2
+  tar xf trs-jitsi-meet/jitsi-meet.tar.bz2
   docker build --tag jitsi/web:custom .
   cd ..
 
@@ -40,7 +40,7 @@ if [ -f $envFile ]; then
     mkdir trs-jicofo
   fi
   cd trs-jicofo
-  if [ -d .git ]; then
+  if [ ! -d .git ]; then
     git clone github-trs-jicofo:TheRealStart/jicofo.git .
   else
     git fetch
