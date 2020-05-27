@@ -22,6 +22,17 @@ RUN \
 	rm -f /usr/share/jitsi-meet/images/watermark.png && \
 	rm -f /usr/share/jitsi-meet/images/logo-deep-linking.png
 
+COPY jitsi-meet/ /usr/share/jitsi-meet/
+
+RUN \
+	rm -f /usr/share/jitsi-meet/interface_config.js && \
+	rm -f /usr/share/jitsi-meet/config.js && \
+	rm -f /usr/share/jitsi-meet/title.html && \
+	rm -f /usr/share/jitsi-meet/favicon.ico && \
+	rm -f /usr/share/jitsi-meet/images/favicon.ico && \
+	rm -f /usr/share/jitsi-meet/images/watermark.png && \
+	rm -f /usr/share/jitsi-meet/images/logo-deep-linking.png
+
 RUN \
 	chmod a+x /usr/local/bin/certbot-auto && \
 	certbot-auto --noninteractive --install-only

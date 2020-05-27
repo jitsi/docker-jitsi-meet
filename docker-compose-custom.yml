@@ -121,7 +121,7 @@ services:
 
     # Focus component
     jicofo:
-        image: jitsi/jicofo:stable-4548-1
+        image: jitsi/jicofo:custom
         restart: ${RESTART_POLICY}
         volumes:
             - ${CONFIG}/jicofo:/config:Z

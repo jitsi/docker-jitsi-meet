@@ -4,6 +4,10 @@ services:
     jibri:
         image: jitsi/jibri:stable-4548-1
         restart: ${RESTART_POLICY}
+        ports:
+          - 2222:2222
+        expose:
+          - '2222'
         volumes:
             - ${CONFIG}/jibri:/config:Z
             - /dev/shm:/dev/shm
