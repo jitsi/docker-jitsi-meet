@@ -1,3 +1,11 @@
+## stable-4627-1
+
+Based on stable release 4627-1.
+
+* 1381b08 prosody: fix installing dependdencies
+* 2900c11 misc: add extra line to tag message
+* c57a84b misc: working on latest
+
 ## stable-4627
 
 Based on stable release 4627.
