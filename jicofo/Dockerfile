@@ -7,7 +7,7 @@ RUN \
 	apt-cleanup
 
 COPY rootfs/ /
-COPY trs-jicofo/jicofo-1.1-SNAPSHOT/ /usr/share/jicofo/
+COPY jicofo-1.1-SNAPSHOT/ /usr/share/jicofo/
 
 VOLUME /config
 
