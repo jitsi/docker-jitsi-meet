@@ -4,10 +4,11 @@ services:
     # Frontend
     web:
         image: jitsi/web
+        restart: ${RESTART_POLICY}
         volumes:
-            - ${CONFIG}/web:/config
-            - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
-            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
+            - ${CONFIG}/web:/config:Z
+            - ${CONFIG}/web/letsencrypt:/etc/letsencrypt:Z
+            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
             - ENABLE_AUTH
             - ENABLE_GUESTS
@@ -52,12 +53,14 @@ services:
     # XMPP server
     prosody:
         image: jitsi/prosody
+        restart: ${RESTART_POLICY}
         expose:
             - '5222'
             - '5347'
             - '5280'
         volumes:
-            - ${CONFIG}/prosody:/config
+            - ${CONFIG}/prosody/config:/config:Z
+            - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
         environment:
             - AUTH_TYPE
             - ENABLE_AUTH
@@ -115,9 +118,11 @@ services:
     # Focus component
     jicofo:
         image: jitsi/jicofo
+        restart: ${RESTART_POLICY}
         volumes:
-            - ${CONFIG}/jicofo:/config
+            - ${CONFIG}/jicofo:/config:Z
         environment:
+            - AUTH_TYPE
             - ENABLE_AUTH
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
@@ -130,6 +135,7 @@ services:
             - JVB_BREWERY_MUC
             - JIGASI_BREWERY_MUC
             - JIBRI_BREWERY_MUC
+            - JIGASI_SIP_URI
             - JIBRI_PENDING_TIMEOUT
             - TZ
         depends_on:
@@ -140,11 +146,12 @@ services:
     # Video bridge
     jvb:
         image: jitsi/jvb
+        restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
-            - '${JVB_TCP_PORT}:${JVB_TCP_PORT}'
+            - '${JVB_TCP_MAPPED_PORT}:${JVB_TCP_PORT}'
         volumes:
-            - ${CONFIG}/jvb:/config
+            - ${CONFIG}/jvb:/config:Z
         environment:
             - DOCKER_HOST_ADDRESS
             - XMPP_AUTH_DOMAIN
