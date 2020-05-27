@@ -84,7 +84,7 @@ https_ports = { }
 modules_disabled = {
 	-- "offline"; -- Store offline messages
 	-- "c2s"; -- Handle client connections
-	-- "s2s"; -- Handle server-to-server connections
+	"s2s"; -- Handle server-to-server connections
 };
 
 -- Disable account creation by default, for security
