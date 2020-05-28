@@ -33,7 +33,8 @@ if [ -f $envFile ]; then
     git pull
   fi
   npm install
-  make
+  make deploy
+  make clean
   make source-package
   cd ..
   tar xf trs-jitsi-meet/jitsi-meet.tar.bz2
