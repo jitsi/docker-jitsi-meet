@@ -8,6 +8,7 @@ envFile=".env"
 # 2. Need to install nvm, npm
 # 3. Need to install maven
 # 4. Need to install zip
+# 5. Need to install g++ or build-essentials
 
 if [ -f $envFile ]; then
   set -a
@@ -25,6 +26,7 @@ if [ -f $envFile ]; then
   cd trs-jitsi-meet
   if [ ! -d .git ]; then
     git clone github-trs-jitsi-meet:TheRealStart/jitsi-meet.git .
+    git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
   else
     git fetch
     git checkout "$CUSTOM_TRS_JITSI_MEET_BRANCH"
@@ -46,6 +48,7 @@ if [ -f $envFile ]; then
   cd trs-jicofo
   if [ ! -d .git ]; then
     git clone github-trs-jicofo:TheRealStart/jicofo.git .
+    git checkout "$CUSTOM_TRS_JICOFO_BRANCH"
   else
     git fetch
     git checkout "$CUSTOM_TRS_JICOFO_BRANCH"

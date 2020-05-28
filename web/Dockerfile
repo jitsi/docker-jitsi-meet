@@ -25,7 +25,7 @@ RUN \
 COPY jitsi-meet/ /usr/share/jitsi-meet/
 
 RUN \
-	rm -f /usr/share/jitsi-meet/interface_config.js && \
+	mv /usr/share/jitsi-meet/interface_config.js /defaults && \
 	rm -f /usr/share/jitsi-meet/config.js && \
 	rm -f /usr/share/jitsi-meet/title.html && \
 	rm -f /usr/share/jitsi-meet/favicon.ico && \
