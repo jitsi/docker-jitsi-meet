@@ -68,52 +68,11 @@ if [[ ! -f /config/nginx/site-confs/default ]]; then
     tpl /defaults/default > /config/nginx/site-confs/default
 fi
 
-if [[ ! -f /config/config.js ]]; then
-    cp /defaults/config.js /config/config.js
-    sed -i \
-        -e "s#jitsi-meet.example.com#$XMPP_DOMAIN#g" \
-        -e "s#bosh:.*#bosh: '/http-bind',#" \
-        -e "s#muc:.*#muc: '${XMPP_MUC_DOMAIN}',#" \
-        -e "s#// focusUserJid:.*#focusUserJid: '${JICOFO_AUTH_USER}@${XMPP_AUTH_DOMAIN}',#" \
-        /config/config.js
-
-    if [[ $ENABLE_RECORDING -eq 1 || x$ENABLE_RECORDING == xtrue ]]; then
-        sed -i \
-            -e "/\/\/ Recording.*/a hiddenDomain: '$XMPP_RECORDER_DOMAIN'," \
-            -e "s#// fileRecordingsEnabled:.*#fileRecordingsEnabled: true,#" \
-            -e "s#// liveStreamingEnabled:.*#liveStreamingEnabled: true,#" \
-        /config/config.js
-    fi
-
-    if [[ $ENABLE_AUTH -eq 1 ]]; then
-        if [[ $ENABLE_GUESTS -eq 1 ]]; then
-            sed -i \
-                -e "s#// anonymousdomain:.*#anonymousdomain: '${XMPP_GUEST_DOMAIN}',#" \
-                /config/config.js
-        fi
-
-        sed -i \
-            -e "s#// authdomain:.*#authdomain: '${XMPP_DOMAIN}',#" \
-            /config/config.js
-    fi
-
-    if [[ -z "$(grep -om1 'etherpad_base:' /config/config.js)" ]]; then
-        if [[ ! -z "${ETHERPAD_PUBLIC_URL}" ]]; then
-            sed -i \
-                -e "/enableWelcomePage/a\    etherpad_base: '${ETHERPAD_PUBLIC_URL}/p/'," \
-                /config/config.js
-        elif [[ ! -z "${ETHERPAD_URL_BASE}" ]]; then
-            sed -i \
-                -e "/enableWelcomePage/a\    etherpad_base: '${PUBLIC_URL}/etherpad/p/'," \
-                /config/config.js
-        fi
-    fi
-
-    if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || "$ENABLE_TRANSCRIPTIONS" == "true" ]]; then
-        sed -i \
-             -e "s#// transcribingEnabled:.*#transcribingEnabled: true,#" \
-             /config/config.js
-    fi
+cp /defaults/config.js /config/config.js
+tpl /defaults/system-config.js >> /config/config.js
+tpl /defaults/settings-config.js >> /config/config.js
+if [[ -f /config/custom-config.js ]]; then
+    cat /config/custom-config.js >> /config/config.js
 fi
 
 if [[ ! -f /config/interface_config.js ]]; then
@@ -126,5 +85,4 @@ if [[ ! -f /config/interface_config.js ]]; then
             -e "s#'closedcaptions', ##" \
             /config/interface_config.js
     fi
-
 fi
