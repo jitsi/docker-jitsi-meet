@@ -2,8 +2,12 @@
 
 envFile=".env"
 
-# To use multiple deploy keys for diff repos we used alias names for github repos.
+# To be able to run this script, following instruction shall be done.
+# 1. To use multiple deploy keys for diff repos we used alias names for github repos.
 # https://stackoverflow.com/questions/10041082/how-to-add-deploy-key-for-2-repo-with-1-user-on-github
+# 2. Need to install nvm, npm
+# 3. Need to install maven
+# 4. Need to install zip
 
 if [ -f $envFile ]; then
   set -a
@@ -49,7 +53,7 @@ if [ -f $envFile ]; then
   fi
   mvn package -DskipTests -Dassembly.skipAssembly=false
   cd ..
-  unzip trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
+  unzip -o trs-jicofo/target/jicofo-1.1-SNAPSHOT-archive.zip
   # compiled files are located under folder: trs-jicofo/jicofo-1.1-SNAPSHOT
   echo "Building custom jicofo"
   docker build --tag jitsi/jicofo:custom .
