@@ -9,6 +9,8 @@ envFile=".env"
 # 3. Need to install maven
 # 4. Need to install zip
 # 5. Need to install g++ or build-essentials
+# NOTE: webpack -p may cause memory limit exceeded exception, to avoid this use following command:
+# export NODE_OPTIONS=--max_old_space_size=4096
 
 if [ -f $envFile ]; then
   set -a
