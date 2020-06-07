@@ -1,0 +1,6 @@
+FAILED_REMOVE_DIR="Failed to remove the folder {0}"
+PULL_IMAGES_LOG="Pulling {0}M images-job: {1}"
+PULL_IMAGES_MSG="Pulling the {0} {1} images at total size {2}M. See progress in Docker GUI Images"
+FAILED_PULL_IMAGES="Error loading docker-image-job <{0}>"
+INITIALIZE_CONTAINER="Initializing jitsi Docker Container"
+SUDO_MODE="Switching in sudo mode. You may need to provide root password at initial call.."

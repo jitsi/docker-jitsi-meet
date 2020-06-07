@@ -1,0 +1,34 @@
+#!/bin/sh
+# ** (c) 2020 TosoBoso - post-install for Jitsi-Meet in Docker container
+# ** get lang, variables from lib and add functions, more variables
+SCRIPT_DIR=$(dirname "$0")
+. "$SCRIPT_DIR"/lib
+. "$SCRIPT_DIR"/common
+LOG_IF_BETA "running postinst.."
+LOG_IF_BETA "run DSM_LANG_TO_LIB.."
+DSM_LANG_TO_LIB
+if [ "$SYNOPKG_PKG_STATUS" = UPGRADE ]; then
+	# restore log
+	[ -f /tmp/"${PKG_SHORT}"-package.log ] && cp /tmp/"${PKG_SHORT}"-package.log "$TARGET_PATH"/log/package.log
+	LOG_IF_BETA "postinst completed.."
+	exit 0
+fi
+
+# prepare the etc-config directories softlinked to /etc/jitsi
+LOG_IF_BETA "run INIT_ETC.."
+INIT_ETC
+LOG_IF_BETA "run DO_SOFTLINKS.."
+# add shortcut / softlinks for Jitsi-Meet etc-jitsi and UI
+DO_SOFTLINKS
+LOG_IF_BETA "run SET_ENV_CFG_USR_SECRETS.."
+SET_ENV_CFG_USR_SECRETS
+
+MSG=$(MESSAGE_LANG "$INITIALIZE_CONTAINER")
+NOTIFY_MESSAGE "$MSG"
+LOG_IF_BETA "run COMPOSE_CONTAINER.."
+COMPOSE_CONTAINER
+LOG_IF_BETA "run CREATE_USERS.."
+CREATE_USERS
+LOG_IF_BETA "postinst completed.."
+
+exit 0

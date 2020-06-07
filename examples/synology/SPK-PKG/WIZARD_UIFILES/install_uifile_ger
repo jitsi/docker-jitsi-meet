@@ -1,0 +1,93 @@
+[{
+	"step_title": "Jitsi-Meet für Synology via Docker Basis Konfiguration",
+	"items": 
+	[{
+		"type": "textfield",
+		"desc": "Fülle Jitsi Meet Domain, Ports und Prefix. Nutze Reverse Proxy und Verknüpfe 443 mit z.B. 8080 / 8443.",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_MEET_DOMAIN_NAME",
+			"desc": "Öffentliche Domain-URL (mit Synology Zertifikat)",
+			"defaultValue": "meet.mydomain.tld",
+			"validator":{"allowBlank":false}
+		},{
+			"key": "PKGWIZ_HTTP_PORT_PREFIX",
+			"desc": "Prefix fuer die tcp http(s) Ports 80/443",
+			"defaultValue": "8000",
+			"validator":{"allowBlank":false,"regex":{"expr":"/^[1-9]\\d{0,4}$/"}}
+		},{
+			"key": "PKGWIZ_JVB_PORT",
+			"desc": "Video-Bridge udp Port (Freigabe am NAT-Router)",
+			"defaultValue": "10000",
+			"validator":{"allowBlank":false,"regex":{"expr":"/^[1-9]\\d{0,4}$/"}}
+		},{
+			"key": "PKGWIZ_JVB_TCP_PORT",
+			"desc": "Video-Bridge tcp Ersatz Port (optional Freigeben)",
+			"defaultValue": "4443",
+			"validator":{"allowBlank":false,"regex":{"expr":"/^[1-9]\\d{0,4}$/"}}
+		}]
+		},{
+		"type": "textfield",
+		"desc": "Normalerweise koennen nur Moderatoren Raeme oeffnen. Ergaenze weitere Nutzer spaeter via jitsi-cli.",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_MOD_USR",
+			"desc": "Jitsi erster Moderator (localer AUTH Modus)",
+			"defaultValue": "",
+			"validator":{"allowBlank":false}
+		}]
+		},{
+		"type": "password",
+		"desc": "",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_MOD_PASSWD",
+			"desc": "` ` `Moderator Passwort",
+			"defaultValue": "",
+			"validator":{"allowBlank":false}
+		}]
+	}]
+},{
+	"step_title": "Jitsi-Meet für Synology via Docker Erweiterte Konfiguration",
+	"items": 
+	[{		
+		"type": "textfield",
+		"desc": "",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_TIMEZONE",
+			"desc": "Zeitzone im Container (Europe/Berlin,CET,EST)",
+			"defaultValue": "CET",
+			"validator":{"allowBlank":false}
+		}]
+		},{
+		"type": "multiselect",
+		"desc": "Funktionen, die typischerweise aktiviert sind. AUTH deaktiviert: Jeder kann Raeume oeffnen.",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_ENABLE_AUTH",
+			"desc": "Aktiviere Authetifizierung / AUtH: nur registrierte Nutzer koennen Raeume oeffnen",
+			"defaultValue": true
+		},{
+			"key": "PKGWIZ_ENABLE_GUESTS",
+			"desc": "Gaeste durfen an Jitsi Meetings teilnehmen (statt nur registrierte Nutzer)",
+			"defaultValue": true
+		},{
+			"key": "PKGWIZ_ENABLE_HTTPS",
+			"desc": "Aktiviere https im Container (selbst-signiert falls nicht im Syno-Cert-Sync Modus)",
+			"defaultValue": false
+		},{
+			"key": "PKGWIZ_SYNO_CERT_SYNC",
+			"desc": "Beim Start Synchronisiere das Meet-Domain Zertifikat der Synology in den Container",
+			"defaultValue": false
+		},{
+			"key": "PKGWIZ_PUBIP_TO_DOCKER_HOST_ADDRESS",
+			"desc": "Beim Start Synchronisiere oeffentliche IP in DOCKER_HOST_ADDRESS (Noetig hinter NAT)",
+			"defaultValue": false
+		},{
+			"key": "PKGWIZ_X_REALIP_TO_NGINX",
+			"desc": "Modifiziere web nginx-log zur Anzeige real-ip vom reverse-proxy statt der docker ip",
+			"defaultValue": yes
+		}]
+	}]
+}]

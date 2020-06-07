@@ -1,0 +1,93 @@
+[{
+	"step_title": "Jitsi-Meet for Synology via Docker Core Settings",
+	"items": 
+	[{
+		"type": "textfield",
+		"desc": "Provide Jitsi meet domain, ports and prefix. Use reverse proxy to link 443 to e.g. 8080 / 8443.",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_MEET_DOMAIN_NAME",
+			"desc": "Public URL Domain (with certificate on Synology)",
+			"defaultValue": "meet.mydomain.tld",
+			"validator":{"allowBlank":false}
+		},{
+			"key": "PKGWIZ_HTTP_PORT_PREFIX",
+			"desc": "Prefix added to tcp http(s) ports 80/443",
+			"defaultValue": "8000",
+			"validator":{"allowBlank":false,"regex":{"expr":"/^[1-9]\\d{0,4}$/"}}
+		},{
+			"key": "PKGWIZ_JVB_PORT",
+			"desc": "Video-Bridge udp port (expose on NAT-router)",
+			"defaultValue": "10000",
+			"validator":{"allowBlank":false,"regex":{"expr":"/^[1-9]\\d{0,4}$/"}}
+		},{
+			"key": "PKGWIZ_JVB_TCP_PORT",
+			"desc": "Video-Bridge tcp fallback port (expose optionally)",
+			"defaultValue": "4443",
+			"validator":{"allowBlank":false,"regex":{"expr":"/^[1-9]\\d{0,4}$/"}}
+		}]
+		},{
+		"type": "textfield",
+		"desc": "Usually only moderators are entitled to open rooms. More users can be added later via jitsi-cli.",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_MOD_USR",
+			"desc": "Jitsi 1st Moderator User (in local AUTH mode)",
+			"defaultValue": "",
+			"validator":{"allowBlank":false}
+		}]
+		},{
+		"type": "password",
+		"desc": "",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_MOD_PASSWD",
+			"desc": "` ` `Moderator Password",
+			"defaultValue": "",
+			"validator":{"allowBlank":false}
+		}]
+	}]
+},{
+	"step_title": "Jitsi-Meet for Synology Advanced Settings",
+	"items": 
+	[{		
+		"type": "textfield",
+		"desc": "",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_TIMEZONE",
+			"desc": "Timezone in container (Europe/Berlin,CET,EST)",
+			"defaultValue": "CET",
+			"validator":{"allowBlank":false}
+		}]
+		},{
+		"type": "multiselect",
+		"desc": "Select on features which by default are enabled. AUTH disabled: anyone can use or open rooms.",
+		"subitems": 
+		[{
+			"key": "PKGWIZ_ENABLE_AUTH",
+			"desc": "Enable Authentication / AUtH, so only registered moderator users can open rooms",
+			"defaultValue": true
+		},{
+			"key": "PKGWIZ_ENABLE_GUESTS",
+			"desc": "Allow guests to join meetings once room is opened (disabled: registered users only)",
+			"defaultValue": true
+		},{
+			"key": "PKGWIZ_ENABLE_HTTPS",
+			"desc": "Enable https in container (self-signed if no Syno-Cert-Sync mode is used)",
+			"defaultValue": false
+		},{
+			"key": "PKGWIZ_SYNO_CERT_SYNC",
+			"desc": "At start check and sync meet domain certificate on Synology into Jitsi-Container",
+			"defaultValue": false
+		},{
+			"key": "PKGWIZ_PUBIP_TO_DOCKER_HOST_ADDRESS",
+			"desc": "At start check and sync public IP as DOCKER_HOST_ADDRESS (needed when run behind NAT)",
+			"defaultValue": false
+		},{
+			"key": "PKGWIZ_X_REALIP_TO_NGINX",
+			"desc": "Modify web nginx-log showing real-ip passed from reverse-proxy instead of dockers ip",
+			"defaultValue": yes
+		}]
+	}]
+}]

@@ -1,0 +1,161 @@
+#!/bin/sh
+# ** (c) 2020 TosoBoso - start-stop and other cli for Jitsi-Meet in Docker container
+# ** get lang, variables from lib and add functions, more variables, adjust script-dir when called by softlink
+SCRIPT_DIR=$(dirname "$0")
+[ -f "$SCRIPT_DIR"/lib  ] || SCRIPT_DIR=/var/packages/Jitsi-Meet/scripts
+. "$SCRIPT_DIR"/lib
+. "$SCRIPT_DIR"/common
+LOGIN=$(whoami)
+if [ "$LOGIN" != "root" ]
+then
+	MSG=$(MESSAGE_LANG "$SUDO_MODE")
+	echo "$MSG"
+	SUDO="sudo"
+else
+	SUDO=""
+fi
+# source cfg file, make it readable if not root
+[ "$SUDO" = "" ] || sudo chmod 644 "$ETC_PATH"/.cfg
+. "$ETC_PATH"/.cfg
+[ "$SUDO" = "" ] || sudo chmod 640 "$ETC_PATH"/.cfg
+
+MYSCRIPT=$(basename "$0")
+case $1 in
+    start)
+        echo "Starting $CONTAINERS..."
+		# initial start
+		[ -f /etc/jitsi/web/nginx ] || START_CONTAINER
+		UPDATE_PUBLIC_IP
+		UPDATE_CERT
+		NGINX_X_REAL_IP
+		START_CONTAINER
+		[ -f /etc/jitsi/prosody/.usr-created ] || CREATE_USERS
+       ;;
+    stop)
+        echo "Stopping $CONTAINERS..."
+		STOP_CONTAINER
+        ;;
+    status)
+		for CONT in $CONTAINERS; do
+			$SUDO "$DOCKER_BIN" inspect "$CONT" | grep -q "\"Status\": \"running\"," || exit 1
+		done
+		# as jitsi-cli act more verbose with longer compose response time 
+		if [ "$MYSCRIPT" = "jitsi-cli" ] ; then
+	        echo "Running - fetching details..."
+			STATUS_CONTAINER
+		fi
+		exit 0
+        ;;
+    log)
+		case "$2" in
+			web)
+				SERVICE=jitsi-web
+				;;
+			prosody)
+				SERVICE=jitsi-prosody
+				;;
+			jicofo)
+				SERVICE=jitsi-jicofo
+				;;
+			jvb)
+				SERVICE=jitsi-jvb
+				;;
+			pkg)
+				if [ -t 1 ] ; then $SUDO chmod 666 "$LOG_FILE" ; fi
+				MSG=$(tail -50 < "$LOG_FILE")
+				if [ -t 1 ] ; then $SUDO chmod 666 "$LOG_FILE" ; fi
+				echo "$MSG"
+				exit 0
+				;;
+			rooms)
+				echo "log from containers for rooms opened and joined will be implemented later.."
+				exit 0
+				;;
+			*)
+				echo "Need type of log: pkg, rooms, web, prosody, jicofo, jvb"
+				exit 1
+				;;
+		esac
+		CONTAINER_LOGS "$SERVICE"
+        ;;
+    reset)
+		REMOVE_CONTAINER
+		COMPOSE_CONTAINER
+		# in ajax gui mode do not run start sequence as it would time-out
+		if [ ! -t 1 ] ; then
+			echo "Now run ** $MYSCRIPT start **"
+		else
+			START_CONTAINER
+			UPDATE_PUBLIC_IP
+			UPDATE_CERT
+			NGINX_X_REAL_IP
+			START_CONTAINER
+			CREATE_USERS
+		fi
+        ;;
+    refresh)
+		REMOVE_CONTAINER
+		REMOVE_IMAGES
+		COMPOSE_CONTAINER
+		# in ajax gui mode do not run start sequence as it would time-out
+		if [ ! -t 1 ] ; then
+			echo "Now run $MYSCRIPT start"
+		else
+			START_CONTAINER
+			UPDATE_PUBLIC_IP
+			UPDATE_CERT
+			NGINX_X_REAL_IP
+			START_CONTAINER
+			CREATE_USERS
+		fi
+        ;;
+    cmd-line)
+		case "$2" in
+			web)
+				SERVICE=web
+				;;
+			prosody)
+				SERVICE=prosody
+				;;
+			jicofo)
+				SERVICE=jicofo
+				;;
+			jvb)
+				SERVICE=jvb
+				;;
+			*)
+				echo "Need service for cmd-line: web, prosody, jicofo, jvb"
+				exit 1
+				;;
+		esac
+		# command defaults to bash to get into container
+		if [ -n "$3" ] ; then
+			CMD="$3"
+		else
+			CMD="bash"
+		fi
+		EXEC_IN_CONTAINER "$SERVICE" "$CMD"
+		;;
+    add-usr)
+		if [ $# -lt 3 ] ; then
+			echo "Please provide user to add and password as parameters.."
+			exit 1
+		fi
+		echo "adding user $2 via prosodyctl in prosody container.."
+		EXEC_IN_CONTAINER prosody "prosodyctl --config /config/prosody.cfg.lua register $2 meet.jitsi $3"
+		STORE_USER "$2" "$3"
+		;;
+    del-usr)
+		if [ $# -lt 2 ] ; then
+			echo "Please provide user to delete as parameters.."
+			exit 1
+		fi
+		echo "deleting user $2 via prosodyctl in prosody container.."
+		EXEC_IN_CONTAINER prosody "prosodyctl --config /config/prosody.cfg.lua deluser ${2}@meet.jitsi"
+		REMOVE_USER "$2"
+		;;
+    *)
+		echo "usage $MYSCRIPT start | stop | status | log | reset | refresh | add-usr | del-usr | cmd-line"
+        exit 1
+        ;;
+esac

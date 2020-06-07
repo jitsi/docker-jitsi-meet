@@ -1,0 +1,13 @@
+# Synology Package configuration populated during install via PKGWIZ variabes
+# language to be used can be (csy dan, enu fre ger hun ita jpn krn nld nor plk ptg rus spn sve trk)
+SYNOPKG_DSM_LANGUAGE=enu
+# the meet domain name wil be used for menu icon url and set to .env
+SYNOPKG_MEET_DOMAIN_NAME=meet.mydomain.tld
+# sync certificate from synology lets-encrypt archive to jitsi
+SYNOPKG_SYNO_CERT_SYNC=0
+# the private ip of the docker host 
+SYNOPKG_PRIVIP_DOCKER_HOST=""
+# sync public ip gathered with ipinfor.org into container via .env
+SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=0
+# modify jitsi-web nging.conf to show x-real-ip, only works if run from reverse proxy
+SYNOPKG_X_REALIP_TO_NGINX=0

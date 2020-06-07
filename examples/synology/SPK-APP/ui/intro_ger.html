@@ -1,0 +1,39 @@
+<div style='padding:5px 10px;'>
+<big>
+<h1>Jitsi Meet mit Docker fuer Synology</h1>
+<p>
+<a href="https://jitsi.org/" target="_blank">Jitsi</a> ist eine Sammlung von Open Source Projekten, die das einfache und sichere Betreiben von Video-Konferenzenz Loesungen ermoeglicht.
+<a href="https://jitsi.org/jitsi-meet/" target="_blank">Jitsi Meet</a> ist ein komplett verschluesseltes, 100%-iges Open Source Video Konfernez System, zur taeglichen freien Nutzung, ohne dass Accounts, oder Lizenzen noetig sind.
+This package is based on a <a href="https://github.com/jitsi/docker-jitsi-meet" target="_blank">repository</a> that contains the necessary tools to run a Jitsi Meet stack on <a href="https://www.docker.com/" target="_blank">Docker</a> 
+using <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a> wrapped in scripts and UI.<br>
+<b>Weitere Details:</b> Waehle Bereich <input type="radio" name="section" id = "qst" value="qst" onclick="showQuickStSection()" checked/>&nbsp;Quick Start&nbsp;
+	<input type="radio" name="section" id = "arc" value="arc" onclick="showArchSection()" />&nbsp;Architecture&nbsp;
+	<input type="radio" name="section" id = "faq" value="faq" onclick="showFaqSection()" />&nbsp;FAQ&nbsp;
+	<input type="radio" name="section" id = "chg" value="chg" onclick="showChgSection()" />&nbsp;Change-Log & Roadmap&nbsp;
+<section id="frmQst">
+<h2>Quick Start</h2>
+Basics had been set during install. Post changing configuration run jitsi-cli reset to apply it. Run jitsi-cli refresh weekly for new releases.
+Using a NAT router ensure to set DOCKER_HOST_ADDRESS to external ip route streaming port 10000(udp). Use Synology Reverse-Proxy to route https-443 to container http-8080.
+<center><a href="https://github.com/jitsi/docker-jitsi-meet#jitsi-meet-on-docker"  target="_blank"><img src="images/jitsi-docker.png" alt="Jitsi Architecture"></a></center>
+</section>
+<section id="frmArc" style="display:none">
+<h2>Architecture</h2>
+A Jitsi Meet installation can be broken down into the following components:
+<li>a web interface (for landing) & a XMPP server (for user authentication)
+<li>a conference focus component & a video router (could be more than one)
+<li>a SIP gateway for audio calls & a Broadcasting Infrastructure for recording or streaming a conference.
+<center><a href="https://github.com/jitsi/docker-jitsi-meet#architecture"  target="_blank"><img src="images/docker-jitsi-meet.png" alt="Jitsi Architecture"></a></center>
+</section>
+<section id="frmFaq" style="display:none">
+<h2>Frequently Asked Questions</h2>
+</section>
+<section id="frmChg" style="display:none">
+<h2>Change-Log & Roadmap</h2>
+[2020-05-22 v.0.5 [Modify nginx to show real-ip from reverse proxy instead of docker ips]<br>
+[2020-05-21 v.0.4 [Sync public IP, sync Synology Let's Encrypt certificate  to Jitsi]<br>
+[2020-05-16 v.0.3 [Initial stable build with UI to run cfg and jitsi-cli via browser]<br>
+[2020-05-09 v.0.2 [Moderator user at install and via jitsi-cli added each container refresh]<br>
+[2020-05-01 v.0.1 [initial build using jitsi-docker-meet repository extending cmds by jitsi-cli]<br>
+Roadmap: optional features like etherpad, list connect, room usage from logs 
+</section>
+</p></big></div>

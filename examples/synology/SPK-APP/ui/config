@@ -1,0 +1,18 @@
+{
+   ".url": 
+   {
+      "SYNO.SDS._ThirdParty.App.JitsiAdmin":
+      {
+         "type": "legacy",
+         "title": "Jitsi-Admin",
+         "desc": "UI for Jitsi administration",
+         "icon": "images/Jitsi-Meet_{0}.png",
+         "allUsers": false, 
+         "allowMultiInstance": false,
+         "grantPrivilege": "local",
+         "width": 700,
+         "height": 700,
+         "url": "webman/3rdparty/Jitsi-Meet/index.cgi"
+      }
+   }
+}

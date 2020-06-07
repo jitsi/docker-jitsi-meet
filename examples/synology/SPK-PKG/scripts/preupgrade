@@ -1,0 +1,11 @@
+#!/bin/sh
+# ** (c) 2020 TosoBoso - pre-upgrade for Jitsi-Meet in Docker container
+# ** get lang, variables from lib and add functions plus more variables
+MYDIR=$(dirname "$0")
+. "$MYDIR"/lib
+. "$MYDIR"/common
+LOG_IF_BETA "running preupgrade.."
+# save log
+[ -f "$TARGET_PATH"/log/package.log ] && cp "$TARGET_PATH"/log/package.log /tmp/"${PKG_SHORT}"-package.log
+
+exit 0

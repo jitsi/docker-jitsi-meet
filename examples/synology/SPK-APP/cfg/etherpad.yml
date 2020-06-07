@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+    # Etherpad: real-time collaborative document editing
+    etherpad:
+        image: jitsi/etherpad
+        restart: ${RESTART_POLICY}
+        networks:
+            meet.jitsi:
+                aliases:
+                    - etherpad.meet.jitsi

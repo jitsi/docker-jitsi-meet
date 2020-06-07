@@ -1,0 +1,6 @@
+[2020-05-23 v.0.5 [Modify nginx to show real-ip from reverse proxy instead of docker ips]
+[2020-05-21 v.0.4 [Sync public IP, sync Synology Let's Encrypt certificate  to Jitsi]
+[2020-05-16 v.0.3 [Initial stable build with UI to run cfg and jitsi-cli via browser]
+[2020-05-09 v.0.2 [Moderator user at install and via jitsi-cli added each container refresh]
+[2020-05-01 v.0.1 [initial build using jitsi-docker-meet repository extending cmds by jitsi-cli]
+Roadmap: optional features like etherpad, Mozilla STUN instead Google, room usage from logs 

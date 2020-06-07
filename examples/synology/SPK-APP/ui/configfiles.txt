@@ -1,0 +1,9 @@
+#######################################
+# Configfile for 'Jitsi-Meet Admin' 
+# format:
+# <full path to file>,<name to display>
+#######################################
+/etc/jitsi/.env,Docker-Evironment
+/etc/jitsi/docker-compose.yml,Docker-Compose
+/etc/jitsi/.cfg,Package-Config
+

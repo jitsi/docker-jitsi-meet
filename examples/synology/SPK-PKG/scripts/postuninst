@@ -1,0 +1,19 @@
+#!/bin/sh
+# ** (c) 2020 TosoBoso - post-uninstall for Jitsi-Meet in Docker container
+# ** get lang, variables from lib and add functions plus more variables
+SCRIPT_DIR=$(dirname "$0")
+. "$SCRIPT_DIR"/lib
+. "$SCRIPT_DIR"/common
+LOG_IF_BETA "running postuninst.."
+# removing docker container and images
+LOG_IF_BETA "run REMOVE_CONTAINER & IMAGES.."
+REMOVE_CONTAINER
+REMOVE_IMAGES
+# removing jitsis etc path and softlinks to scripts and gui
+rm -R "$ETC_PATH"
+[ -h /etc/jitsi ] && rm /etc/jitsi
+[ -f /etc/jitsi ] && rm -R /etc/jitsi
+rm /usr/local/bin/jitsi-*
+rm /usr/syno/synoman/webman/3rdparty/"$PKG_NAME"
+
+exit 0

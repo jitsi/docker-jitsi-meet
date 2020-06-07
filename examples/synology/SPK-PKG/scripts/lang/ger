@@ -1,0 +1,6 @@
+FAILED_REMOVE_DIR="Ordner {0} konnte nicht entfernt werden"
+PULL_IMAGES_LOG="Lade {0}M images-job: {1}"
+PULL_IMAGES_MSG="Lade die {0} {1} Abbilder mit Gesamtgroesse {2}M. Siehe Fortschritt in Docker GUI Abbilder"
+FAILED_PULL_IMAGES="Fehler beim Laden des Docker-Image-Jobs <{0}>"
+INITIALIZE_CONTAINER="Initialisierung der jitsi Docker Container"
+SUDO_MODE="Wechseln in sudo mode. Das root Passwort wird initial benoetigt.."

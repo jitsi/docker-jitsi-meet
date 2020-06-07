@@ -1,0 +1,23 @@
+#!/bin/sh
+# ** (c) 2020 TosoBoso - library for Jitsi-Meet in Docker container
+# shellcheck disable=SC2034
+RELEASE="Stable"
+PKG_NAME="Jitsi-Meet"
+PKG_SHORT="jitsi"
+# name, tag and size on docker images to be loaded via synology gui helper
+IMAGES="jitsi/web jitsi/prosody jitsi/jicofo jitsi/jvb"
+IMGS_TAG=(latest latest latest latest)
+IMGS_SIZE=(184 86 119 118)
+CONTAINERS="jitsi-web jitsi-prosody jitsi-jicofo jitsi-jvb"
+IPINFO_URL="ipinfo.io/ip"
+# load language file (csy dan, enu fre ger hun ita jpn krn nld nor plk ptg rus spn sve trk)
+SCRIPT_DIR=$(dirname "$0")
+# when called via softlink in non gui mode set script-dir and dsm laguage updated earlier by postinst
+[ -f "$SCRIPT_DIR"/lib  ] || SCRIPT_DIR=/var/packages/"$PKG_NAME"/scripts
+[ -n "$SYNOPKG_DSM_LANGUAGE" ] || SYNOPKG_DSM_LANGUAGE=enu
+LANG_FILE="$SCRIPT_DIR"/lang/"$SYNOPKG_DSM_LANGUAGE"
+if [ -f "${LANG_FILE}" ]; then
+    . "${LANG_FILE}"
+else
+    . "$SCRIPT_DIR"/lang/enu
+fi

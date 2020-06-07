@@ -1,0 +1,48 @@
+version: '3'
+
+services:
+    # SIP gateway (audio)
+    jigasi:
+        image: jitsi/jigasi
+        restart: ${RESTART_POLICY}
+        ports:
+            - '${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}:${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}/udp'
+        volumes:
+            - ${CONFIG}/jigasi:/config
+            - ${CONFIG}/transcripts:/tmp/transcripts
+        environment:
+            - ENABLE_AUTH
+            - XMPP_AUTH_DOMAIN
+            - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_SERVER
+            - XMPP_DOMAIN
+            - PUBLIC_URL
+            - JIGASI_SIP_URI
+            - JIGASI_SIP_PASSWORD
+            - JIGASI_SIP_SERVER
+            - JIGASI_SIP_PORT
+            - JIGASI_SIP_TRANSPORT
+            - JIGASI_XMPP_USER
+            - JIGASI_XMPP_PASSWORD
+            - JIGASI_BREWERY_MUC
+            - JIGASI_PORT_MIN
+            - JIGASI_PORT_MAX
+            - JIGASI_HEALTH_CHECK_SIP_URI
+            - JIGASI_HEALTH_CHECK_INTERVAL
+            - JIGASI_SIP_KEEP_ALIVE_METHOD
+            - JIGASI_ENABLE_SDES_SRTP
+            - ENABLE_TRANSCRIPTIONS
+            - JIGASI_TRANSCRIBER_ADVERTISE_URL
+            - JIGASI_TRANSCRIBER_RECORD_AUDIO
+            - JIGASI_TRANSCRIBER_SEND_TXT
+            - GC_PROJECT_ID
+            - GC_PRIVATE_KEY_ID
+            - GC_PRIVATE_KEY
+            - GC_CLIENT_EMAIL
+            - GC_CLIENT_ID
+            - GC_CLIENT_CERT_URL
+            - TZ
+        depends_on:
+            - prosody
+        networks:
+            meet.jitsi:

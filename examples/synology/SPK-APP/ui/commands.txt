@@ -1,0 +1,7 @@
+#######################################
+# Commands for 'Jitsi-Meet Admin' 
+# format:
+# <full path to file>,<name to display>
+#######################################
+/usr/local/bin/jitsi-cli,jitsi-cli
+
