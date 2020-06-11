@@ -8,4 +8,4 @@ services:
         networks:
             meet.jitsi:
                 aliases:
-                    - etherpad.meet.jitsi
+                    - ${ETHERPAD_HOST}
