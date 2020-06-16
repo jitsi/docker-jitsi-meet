@@ -97,10 +97,16 @@ if [[ ! -f /config/config.js ]]; then
             /config/config.js
     fi
 
-    if [[ ! -z "${ETHERPAD_URL_BASE}" && -z "$(grep -om1 'etherpad_base:' /config/config.js)" ]]; then
-        sed -i \
-            -e "/enableWelcomePage/a\    etherpad_base: '${PUBLIC_URL}/etherpad/p/'," \
-            /config/config.js
+    if [[ -z "$(grep -om1 'etherpad_base:' /config/config.js)" ]]; then
+        if [[ ! -z "${ETHERPAD_PUBLIC_URL}" ]]; then
+            sed -i \
+                -e "/enableWelcomePage/a\    etherpad_base: '${ETHERPAD_PUBLIC_URL}/p/'," \
+                /config/config.js
+        elif [[ ! -z "${ETHERPAD_URL_BASE}" ]]; then
+            sed -i \
+                -e "/enableWelcomePage/a\    etherpad_base: '${PUBLIC_URL}/etherpad/p/'," \
+                /config/config.js
+        fi
     fi
 
     if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || "$ENABLE_TRANSCRIPTIONS" == "true" ]]; then
