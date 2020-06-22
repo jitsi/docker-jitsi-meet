@@ -172,7 +172,7 @@ services:
     #     depends_on:
     #         - prosody
     #     networks:
-    #         meet.jitsi:
+    #         meet.jitsi: 
 
 # Custom network so all services can communicate using a FQDN
 networks:
