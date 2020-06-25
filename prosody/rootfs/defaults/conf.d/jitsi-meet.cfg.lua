@@ -107,6 +107,7 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") }}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
+	"jibripass";
     }
     muc_room_cache_size = 1000
     muc_room_locking = false
