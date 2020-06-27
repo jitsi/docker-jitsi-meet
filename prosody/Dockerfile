@@ -47,6 +47,13 @@ RUN \
     && apt-cleanup \
     && rm -rf /tmp/pkg /var/cache/apt
 
+# This could perhaps be the other mod_turncredentials? https://github.com/jitsi/jitsi-meet/issues/6210#issuecomment-616248858
+# https://github.com/jitsi/jitsi-meet/blob/master/resources/prosody-plugins/mod_turncredentials.lua
+RUN \
+    curl -4so /prosody-plugins/mod_turncredentials.lua \
+    https://raw.githubusercontent.com/netaskd/mod_turncredentials/master/mod_turncredentials.lua
+
+
 RUN patch -d /usr/lib/prosody/modules/muc -p0 < /prosody-plugins/muc_owner_allow_kick.patch
 
 COPY rootfs/ /
