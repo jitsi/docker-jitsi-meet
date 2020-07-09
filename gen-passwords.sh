@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# Generate a new 512-bit random key
 function generatePassword() {
-    openssl rand -hex 16
+    openssl rand -base64 64 | tr '+/' ':.' |tr -d '=\n'
 }
 
 JICOFO_COMPONENT_SECRET=$(generatePassword)
