@@ -1,3 +1,20 @@
+## stable-4857
+
+Based on stable release 4857.
+
+* a81ad73 prosody: add support for lobby
+* baed605 web: fix removing closed captions button if transcription is enabled
+* edecacd etherpad: add ability to use a external server
+* a7563d4 jvb: use JVB_TCP_PORT for exposing the port
+* b235ea1 prosody: disable s2s module
+* 1d428a8 prosody: use a 2-stage build
+* 613c26c misc: working on latest
+* 4d72ee3 release: stable-4627-1
+* 22b7063 examples: update Traefik v1 example
+* 1381b08 prosody: fix installing dependdencies
+* 2900c11 misc: add extra line to tag message
+* c57a84b misc: working on latest
+
 ## stable-4627-1
 
 Based on stable release 4627-1.
