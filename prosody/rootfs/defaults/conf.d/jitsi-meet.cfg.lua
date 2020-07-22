@@ -100,7 +100,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{end}}
     }
 
-    {{ if and $ENABLE_LOBBY (not $ENABLE_GUEST_DOMAIN) }}
+    {{ if $ENABLE_LOBBY }}
     main_muc = "{{ .Env.XMPP_MUC_DOMAIN }}"
     lobby_muc = "lobby.{{ .Env.XMPP_DOMAIN }}"
     {{ if .Env.XMPP_RECORDER_DOMAIN }}
