@@ -59,6 +59,7 @@ services:
             - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - ENABLE_LOBBY
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
             - LDAP_URL
