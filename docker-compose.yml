@@ -215,11 +215,6 @@ services:
             - JVB_ENABLE_APIS
             - PUBLIC_URL
             - JVB_JVM_MAX_MEM
-            - PUBLIC_URL
-            - JVB_JVM_MAX_MEM
-            - PUBLIC_URL
-            - JVB_JVM_MAX_MEM
-            - PUBLIC_URL
             - TZ
         depends_on:
             - prosody
