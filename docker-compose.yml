@@ -122,6 +122,7 @@ services:
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_MUC_DOMAIN
             - XMPP_SERVER
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
