@@ -60,6 +60,7 @@ services:
             - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - ENABLE_LOBBY
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
             - LDAP_URL
@@ -127,6 +128,7 @@ services:
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_MUC_DOMAIN
             - XMPP_SERVER
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
