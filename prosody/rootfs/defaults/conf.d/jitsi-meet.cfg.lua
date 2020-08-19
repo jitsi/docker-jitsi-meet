@@ -68,6 +68,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     {{ if and $ENABLE_LOBBY (not $ENABLE_GUEST_DOMAIN) }}
     main_muc = "{{ .Env.XMPP_MUC_DOMAIN }}"
     lobby_muc = "lobby.{{ .Env.XMPP_DOMAIN }}"
+    muc_lobby_whitelist = "recorder.{{ .Env.XMPP_DOMAIN }}"
     {{ end }}
 
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
@@ -87,6 +88,7 @@ VirtualHost "{{ .Env.XMPP_GUEST_DOMAIN }}"
 
     main_muc = "{{ .Env.XMPP_MUC_DOMAIN }}"
     lobby_muc = "lobby.{{ .Env.XMPP_DOMAIN }}"
+    muc_lobby_whitelist = "recorder.{{ .Env.XMPP_DOMAIN }}"
     {{ end }}
 
 {{ end }}
