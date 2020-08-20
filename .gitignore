@@ -1,4 +1,5 @@
 *.swp
 .env
 .env.bak
+/.secrets
 docker-compose.override.yml

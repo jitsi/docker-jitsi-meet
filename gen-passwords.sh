@@ -1,21 +1,41 @@
 #!/bin/bash
 
+# Security
+#
+# Set these to strong passwords to avoid intruders from impersonating a service account
+# The service(s) won't start unless these are specified
+# Running ./gen-passwords.sh will update .env with strong passwords
+# You may skip the Jigasi and Jibri passwords if you are not using those
+# DO NOT reuse passwords
+#
+
 function generatePassword() {
     openssl rand -hex 16
 }
 
-JICOFO_COMPONENT_SECRET=$(generatePassword)
-JICOFO_AUTH_PASSWORD=$(generatePassword)
-JVB_AUTH_PASSWORD=$(generatePassword)
-JIGASI_XMPP_PASSWORD=$(generatePassword)
-JIBRI_RECORDER_PASSWORD=$(generatePassword)
-JIBRI_XMPP_PASSWORD=$(generatePassword)
+GENERATED_ENV_VARIABLES=(
+    # XMPP component password for Jicofo
+    JICOFO_COMPONENT_SECRET
 
-sed -i.bak \
-    -e "s#JICOFO_COMPONENT_SECRET=.*#JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}#g" \
-    -e "s#JICOFO_AUTH_PASSWORD=.*#JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}#g" \
-    -e "s#JVB_AUTH_PASSWORD=.*#JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}#g" \
-    -e "s#JIGASI_XMPP_PASSWORD=.*#JIGASI_XMPP_PASSWORD=${JIGASI_XMPP_PASSWORD}#g" \
-    -e "s#JIBRI_RECORDER_PASSWORD=.*#JIBRI_RECORDER_PASSWORD=${JIBRI_RECORDER_PASSWORD}#g" \
-    -e "s#JIBRI_XMPP_PASSWORD=.*#JIBRI_XMPP_PASSWORD=${JIBRI_XMPP_PASSWORD}#g" \
-    "$(dirname "$0")/.env"
+    # XMPP password for Jicofo client connections
+    JICOFO_AUTH_PASSWORD
+
+    # XMPP password for JVB client connections
+    JVB_AUTH_PASSWORD
+
+    # XMPP password for Jigasi MUC client connections
+    JIGASI_XMPP_PASSWORD
+
+    # XMPP recorder password for Jibri client connections
+    JIBRI_RECORDER_PASSWORD
+
+    # XMPP password for Jibri client connections
+    JIBRI_XMPP_PASSWORD
+)
+
+for ENV_VARIABLE in "${GENERATED_ENV_VARIABLES[@]}"; do
+    if [[ -e ".secrets/${ENV_VARIABLE}.env" ]]; then
+	mv ".secrets/${ENV_VARIABLE}.env" ".secrets/${ENV_VARIABLE}.env.bak"
+    fi
+    echo "${ENV_VARIABLE}=$(generatePassword)" > ".secrets/${ENV_VARIABLE}.env"
+done
