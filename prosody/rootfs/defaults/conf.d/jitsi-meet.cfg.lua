@@ -7,11 +7,13 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
+{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
 {{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
+{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "0" | toBool }}
 
 {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
@@ -52,6 +54,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         "ping";
         "speakerstats";
         "conference_duration";
+        {{ if and $ENABLE_LOBBY (not $ENABLE_GUEST_DOMAIN) }}
+        "muc_lobby_rooms";
+        {{ end }}
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
         {{ end }}
@@ -60,15 +65,30 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{end}}
     }
 
+    {{ if and $ENABLE_LOBBY (not $ENABLE_GUEST_DOMAIN) }}
+    main_muc = "{{ .Env.XMPP_MUC_DOMAIN }}"
+    lobby_muc = "lobby.{{ .Env.XMPP_DOMAIN }}"
+    {{ end }}
+
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ .Env.XMPP_DOMAIN }}"
 
     c2s_require_encryption = false
 
-{{ if and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) }}
+{{ if $ENABLE_GUEST_DOMAIN }}
 VirtualHost "{{ .Env.XMPP_GUEST_DOMAIN }}"
     authentication = "anonymous"
     c2s_require_encryption = false
+
+    {{ if $ENABLE_LOBBY }}
+    modules_enabled = {
+        "muc_lobby_rooms";
+    }
+
+    main_muc = "{{ .Env.XMPP_MUC_DOMAIN }}"
+    lobby_muc = "lobby.{{ .Env.XMPP_DOMAIN }}"
+    {{ end }}
+
 {{ end }}
 
 VirtualHost "{{ .Env.XMPP_AUTH_DOMAIN }}"
@@ -120,3 +140,11 @@ Component "speakerstats.{{ .Env.XMPP_DOMAIN }}" "speakerstats_component"
 
 Component "conferenceduration.{{ .Env.XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+
+{{ if $ENABLE_LOBBY }}
+Component "lobby.{{ .Env.XMPP_DOMAIN }}" "muc"
+    storage = "memory"
+    restrict_room_creation = true
+    muc_room_locking = false
+    muc_room_default_public_jids = true
+{{ end }}

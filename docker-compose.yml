@@ -30,6 +30,7 @@ services:
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
             - ETHERPAD_URL_BASE
+            - ETHERPAD_PUBLIC_URL
             - TZ
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
@@ -58,6 +59,7 @@ services:
             - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - ENABLE_LOBBY
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
             - LDAP_URL
@@ -120,6 +122,7 @@ services:
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_MUC_DOMAIN
             - XMPP_SERVER
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
@@ -142,7 +145,7 @@ services:
         restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
-            - '${JVB_TCP_MAPPED_PORT}:${JVB_TCP_PORT}'
+            - '${JVB_TCP_PORT}:${JVB_TCP_PORT}'
         volumes:
             - ${CONFIG}/jvb:/config:Z
         environment:
