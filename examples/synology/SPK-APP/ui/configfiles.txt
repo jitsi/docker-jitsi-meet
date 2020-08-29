@@ -6,4 +6,6 @@
 /etc/jitsi/.env,Docker-Evironment
 /etc/jitsi/docker-compose.yml,Docker-Compose
 /etc/jitsi/.cfg,Package-Config
+/etc/jitsi/.imp,Imprint-Footer
+/etc/jitsi/.mod,Config-Mod-Script
 

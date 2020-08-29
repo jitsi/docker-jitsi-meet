@@ -1,11 +1,26 @@
 #!/bin/sh
 # ** (c) 2020 TosoBoso - pre-upgrade for Jitsi-Meet in Docker container
-# ** get lang, variables from lib and add functions plus more variables
-MYDIR=$(dirname "$0")
-. "$MYDIR"/lib
-. "$MYDIR"/common
-LOG_IF_BETA "running preupgrade.."
+# ** get lang, variables from lib and add functions, more variables
+SCRIPT_DIR=$(dirname "$0")
+. "$SCRIPT_DIR"/lib
+. "$SCRIPT_DIR"/common
 # save log
-[ -f "$TARGET_PATH"/log/package.log ] && cp "$TARGET_PATH"/log/package.log /tmp/"${PKG_SHORT}"-package.log
+if [ -f "$TARGET_PATH"/log/package.log ] ; then
+	cp "$TARGET_PATH"/log/package.log /tmp/"${PKG_SHORT}"-package.log
+	rm "$TARGET_PATH"/log/package.log
+	LOG_FILE=/tmp/"${PKG_SHORT}"-package.log
+fi
+LOG_IF_BETA "running preupgrade.."
+# update pkg-variables: add imprint, remove welcome-landing now in mod-script
+if [ -f "$ETC_PATH"/.cfg ] && ! grep -q SYNOPKG_ADD_IMPRINT "$ETC_PATH"/.cfg ; then
+	echo -e "\n# add imprint shown via DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT" >> "$ETC_PATH"/.cfg
+	echo "SYNOPKG_ADD_IMPRINT=0" >> "$ETC_PATH"/.cfg
+fi
+if [ -f "$ETC_PATH"/.cfg ] && grep -q SYNOPKG_DISABLE_WELCOME "$ETC_PATH"/.cfg ; then
+	sed -i -e "s~# disable welcome.*~~g" "$ETC_PATH"/.cfg
+	sed -i -e "s~SYNOPKG_DISABLE_WELCOME.*~~g" "$ETC_PATH"/.cfg
+fi
+
+LOG_IF_BETA "completed preupgrade.."
 
 exit 0

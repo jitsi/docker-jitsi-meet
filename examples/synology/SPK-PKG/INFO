@@ -1,5 +1,5 @@
 package="Jitsi-Meet"
-version="0.5"
+version="0.7"
 description="JitsiMeet: more secure, flexible and free video conferencing based on WebRTC deployed on Synology via Docker. It extends the official docker-jitsi-meet packages by GUI for maintaining settings and local authentication without the need for ssh-cmdline."
 description_enu="JitsiMeet: more secure, flexible and free video conferencing based on WebRTC deployed on Synology via Docker. It extends the official docker-jitsi-meet packages by GUI for maintaining settings and local authentication without the need for ssh-cmdline."
 description_ger="JitsiMeet: sicheres, flexibles und freies Video-Konferenz-System, basierend auf WebRTC, bereitgestellt auf Synology via Docker. Es erweitert das offizielle docker-jitsi-meet Paket mit einer GUI fuer Konfiguration und lokale Authentifizierung, ohne die ssh-Kommandozeile zu benoetigen."

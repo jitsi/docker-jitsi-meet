@@ -103,14 +103,19 @@ Ext.onReady(function() {
 	}
 
     function onRunBtnClick(item){
+    	var bgmode = '';
      	textd.hide();
      	texta.show();
     	texta.setReadOnly(true);
-	   	texta.setValue('Waiting for reply of jitsi-cli '+cmdTxt.value+' (empty could be ajax time-out)..');
+	   	texta.setValue('Waiting for reply of jitsi-cli '+cmdTxt.value+' (none could be ajax time-out)..');
+	   	// when refresh is requested swith to bgmode
+	   	if( cmdTxt.value == 'refresh' ) {
+	   		bgmode = 'bg';
+	   	}
 		conn.request({
 			//url: 'runcmd.cgi?'+Ext.urlEncode({cmd: 'jitsi-cli'})+'&'+Ext.urlEncode({action: cmdTxt.value}),
 			url: 'runcmd.cgi',
-			params: Ext.urlEncode({cmd: 'jitsi-cli', action: cmdTxt.value}),
+			params: Ext.urlEncode({cmd: 'jitsi-cli', mode: bgmode, action: cmdTxt.value}),
 			success: function(responseObject) {
 				texta.setValue(responseObject.responseText);
 			}

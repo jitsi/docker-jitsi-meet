@@ -15,6 +15,7 @@ $debug .= " QueryStr: $ENV{'QUERY_STRING'}" if $isDebug && $ENV{'QUERY_STRING'};
 # *** specific cgi section:
 my %cmdVal; # key-value array to capture commands
 my $cmd = param('cmd'); # the command incl. path to run
+my $mode = param('mode'); # run in gackground mode?
 my $action = param('action'); # action are the paramters
 
 if (open(IN,"$uiDir/commands.txt")) { 
@@ -31,28 +32,35 @@ if (open(IN,"$uiDir/commands.txt")) {
 }
 
 if ($cmdVal{$cmd}) { # cmd was found so run it
-	my $return;
-	if (open (IN,$cmdVal{$cmd}." " .$action." >/tmp/cmd.out 2>&1 |")) {
-		$return=<IN>;
-    	chop($return) if $return;
-		print "$return\n";
-	    close(IN);
-		if (open(IN,'/tmp/cmd.out')) { 
-			while(<IN>) {
-				chomp();
-				#$_=~ s/[^[:print:]]+//g; # remove non-printable chars and colour codes if not run with --no-ansi
-				s/[^[:print:]]+//g; # remove non-printable chars and colour codes from docker-compose
-				s/\[32m//g; # remove non-printable chars
-				s/\[0m\[[0-9]B//g; # remove non-printable chars
-				s/\[[0-9]A\[2K/\n/g; # remove non-printable chars
-				print "$_\n" if $_ ne '';
+
+	if ( $mode && $mode eq 'bg' ) {
+		system("/bin/sh " . $cmdVal{$cmd}." " . $action . " bgmode >/tmp/jitsi-cmd.out 2>&1 &");				
+		print "Started in background mode $cmdVal{$cmd} $action bgmode. \nSee /tmp/jitsi-cmd.out and notifications for success.\n";
+    }
+    else {
+		my $return;
+		if (open (IN,$cmdVal{$cmd}." " . $action . " >/tmp/jitsi-cmd.out 2>&1 |")) {
+			$return=<IN>;
+	    	chop($return) if $return;
+			print "$return\n";
+		    close(IN);
+			if (open(IN,'/tmp/jitsi-cmd.out')) { 
+				while(<IN>) {
+					chomp();
+					#$_=~ s/[^[:print:]]+//g; # remove non-printable chars and colour codes if not run with --no-ansi
+					s/[^[:print:]]+//g; # remove non-printable chars and colour codes from docker-compose
+					s/\[32m//g; # remove non-printable chars
+					s/\[0m\[[0-9]B//g; # remove non-printable chars
+					s/\[[0-9]A\[2K/\n/g; # remove non-printable chars
+					print "$_\n" if $_ ne '';
+				}
+				close(IN);
 			}
-			close(IN);
+			unlink('/tmp/jitsi-cmd.out');
 		}
-		unlink('/tmp/cmd.out');
-	}
-	else {
-		print "failed to run $cmdVal{$cmd} $action \n";
+		else {
+			print "failed to run $cmdVal{$cmd} $action \n";
+		}
 	}
 }
 else {

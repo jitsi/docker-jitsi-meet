@@ -11,7 +11,7 @@ DOCKER_HOST_PRIVATE="$(ip address show docker0 | grep inet | awk '{print $2}' | 
 DOCKER_BIN=/usr/local/bin/docker
 DOCKER_COMP=/usr/local/bin/docker-compose
 LOG_FILE="$TARGET_PATH"/log/package.log
-if [ ! -e "${TARGET_PATH}" ]; then LOG_FILE=$(pwd)/package.log ; fi
+if [ ! -e "$TARGET_PATH" ]; then LOG_FILE=/tmp/"${PKG_SHORT}"-package.log ; fi
 COMPOSE_FILE="$ETC_SHORT"/docker-compose.yml
 
 # *** sub-routines common tooling ***
@@ -90,6 +90,59 @@ DSM_LANG_TO_LIB() {
 	[ -f "$SCRIPT_DIR"/lib  ] || SCRIPT_DIR=/var/packages/"$PKG_NAME"/scripts
 	sed -i -e "s~SYNOPKG_DSM_LANGUAGE=.*~SYNOPKG_DSM_LANGUAGE=${SYNOPKG_DSM_LANGUAGE}~" "$SCRIPT_DIR"/lib 
 }
+CHECK_DOWNLOAD_SOURCE()
+{
+	local URL
+	URL="$1"
+	if curl -Is "$URL" | head -n 1 | grep -q OK
+	then
+		return 0
+	else
+		return 1
+	fi
+}
+# get tag and date of docker image default web
+GET_DOCKER_TAGS()
+{
+	local IMG
+	local RET
+	if [ -n "$1" ] ; then
+		IMG="$1"
+	else
+		IMG="web"
+	fi
+	RET=$(curl --silent "$DREPO_URL/$IMG/tags" | jq '."results"[]["name"]')
+	echo "$RET"
+}
+GET_DOCKER_UPDATE()
+{
+	local IMG
+	local RET
+	if [ -n "$1" ] ; then
+		IMG="$1"
+	else
+		IMG="web"
+	fi
+	# usig jq unitlity parse from jase the last_updated and cut off the time suffix and quotes
+	RET=$(curl --silent "$DREPO_URL/$IMG/" | jq '.["last_updated"]' | tail -1 | cut -f1 -d"T" | sed 's~"~~')
+	echo "$RET"
+}
+# ** verify downloads available for building container, aka yml, env, docker hub otherwise exit
+PKG_PRE_CHECK()
+{
+	if ! CHECK_DOWNLOAD_SOURCE "$GREPO_URL/env.example"
+	then
+		MSG=$(MESSAGE_LANG "$FAILED_REPO" "$GREPO_URL")
+		GUI_MESSAGE "$MSG "
+		exit 1
+	fi
+	if ! CHECK_DOWNLOAD_SOURCE "$DHUB_URL"
+	then
+		MSG=$(MESSAGE_LANG "$FAILED_DHUB" "$DHUB_URL")
+		GUI_MESSAGE "$MSG "
+		exit 1
+	fi	
+}
 INIT_ETC() {
 	mkdir -p "$ETC_PATH"
 	chmod 755 "$ETC_ROOT"
@@ -98,14 +151,20 @@ INIT_ETC() {
 	chmod 640 "$ETC_PATH"/*.yml
 	mv "$ETC_PATH"/env.example "$ETC_PATH"/.env
 	mv "$ETC_PATH"/cfg.example "$ETC_PATH"/.cfg
+	mv "$ETC_PATH"/imp.example "$ETC_PATH"/.imp
+	mv "$ETC_PATH"/mod.example "$ETC_PATH"/.mod
 	mv "$ETC_PATH"/usr.example "$ETC_PATH"/.usr
 	chmod 640 "$ETC_PATH"/.env
 	chmod 644 "$ETC_PATH"/.cfg
+	chmod 644 "$ETC_PATH"/.imp
+	chmod 750 "$ETC_PATH"/.mod
 	chmod 640 "$ETC_PATH"/.usr
 	ln -sf "$ETC_PATH" "$ETC_SHORT"
 	# remove nested softlink
 	[ -h "$ETC_SHORT/Jitsi-Meet" ] && rm "$ETC_SHORT"/Jitsi-Meet
-	mkdir -p "$ETC_SHORT"/{web/letsencrypt,transcripts,prosody,jicofo,jvb,jigasi,jibri}
+	for SDIR in $ETC_SUB_DIRS ; do
+		$SUDO mkdir -p "$ETC_SHORT"/"$SDIR"
+	done
 }
 DO_SOFTLINKS() {
 	REAL_SCRIPT=$(realpath "$SCRIPT_PATH")
@@ -113,16 +172,22 @@ DO_SOFTLINKS() {
 	REAL_UI=$(realpath /var/packages/"$PKG_NAME"/target/ui)
 	ln -sf "$REAL_UI" "$UI_PATH"
 }
-
+# modify the .cfg and .usr file with secrets, initial user and other settings from package-wizard
 SET_ENV_CFG_USR_SECRETS() {
 	# set package wizard values for test modus from cmd-line
 	if [ -z "$PKGWIZ_MEET_DOMAIN_NAME" ] ; then
 		PKGWIZ_MEET_DOMAIN_NAME="meet.domain.tld"
 		PKGWIZ_HTTP_PORT_PREFIX=8000
-		PKGWIZ_TIMEZONE=CET
 		PKGWIZ_JVB_PORT=10000
 		PKGWIZ_JVB_TCP_PORT=4443
+		PKGWIZ_TIMEZONE=CET
 		PKGWIZ_ENABLE_AUTH=true
+		PKGWIZ_ENABLE_GUESTS=true
+		PKGWIZ_ADD_IMPRINT=false
+		PKGWIZ_ENABLE_HTTPS=false
+		PKGWIZ_SYNO_CERT_SYNC=false
+		PKGWIZ_PUBIP_TO_DOCKER_HOST_ADDRESS=false
+		PKGWIZ_X_REALIP_TO_NGINX=false
 		SYNOPKG_DSM_LANGUAGE=enu
 		PKGWIZ_MOD_USR=demo_moderator
 		PKGWIZ_MOD_PASSWD=secret
@@ -142,6 +207,8 @@ SET_ENV_CFG_USR_SECRETS() {
 	local DISABLE_HTTPS=0
 	[ "$PKGWIZ_ENABLE_HTTPS" = false ] && DISABLE_HTTPS=1
 
+	local SYNOPKG_ADD_IMPRINT=0
+	[ "$PKGWIZ_ADD_IMPRINT" = true ] && SYNOPKG_ADD_IMPRINT=1
 	local SYNOPKG_SYNO_CERT_SYNC=0
 	[ "$PKGWIZ_SYNO_CERT_SYNC" = true ] && SYNOPKG_SYNO_CERT_SYNC=1
 	local SYNOPKG_PRIVIP_DOCKER_HOST=$DOCKER_HOST_PRIVATE
@@ -150,6 +217,7 @@ SET_ENV_CFG_USR_SECRETS() {
 	local PUBLIC_IP=$(curl -s "$IPINFO_URL")
 	local SYNOPKG_X_REALIP_TO_NGINX=0
 	[ "$PKGWIZ_X_REALIP_TO_NGINX" = true ] && SYNOPKG_X_REALIP_TO_NGINX=1
+	local SYNOPKG_DOCKER_UPDATE=$(GET_DOCKER_UPDATE)
 
 	local JICOFO_COMPONENT_SECRET=$(GEN_PASSWORD)
 	local JICOFO_AUTH_PASSWORD=$(GEN_PASSWORD)
@@ -182,20 +250,46 @@ SET_ENV_CFG_USR_SECRETS() {
 	sed -i \
 	    -e "s~SYNOPKG_DSM_LANGUAGE=.*~SYNOPKG_DSM_LANGUAGE=\"${SYNOPKG_DSM_LANGUAGE}\"~" \
 	    -e "s~SYNOPKG_MEET_DOMAIN_NAME=.*~SYNOPKG_MEET_DOMAIN_NAME=\"${SYNOPKG_MEET_DOMAIN_NAME}\"~" \
+	    -e "s~SYNOPKG_ADD_IMPRINT=.*~SYNOPKG_ADD_IMPRINT=${SYNOPKG_ADD_IMPRINT}~" \
 	    -e "s~SYNOPKG_SYNO_CERT_SYNC=.*~SYNOPKG_SYNO_CERT_SYNC=${SYNOPKG_SYNO_CERT_SYNC}~" \
 	    -e "s~SYNOPKG_PRIVIP_DOCKER_HOST=.*~SYNOPKG_PRIVIP_DOCKER_HOST=${SYNOPKG_PRIVIP_DOCKER_HOST}~" \
 	    -e "s~SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=.*~SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=${SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS}~" \
 	    -e "s~SYNOPKG_X_REALIP_TO_NGINX=.*~SYNOPKG_X_REALIP_TO_NGINX=${SYNOPKG_X_REALIP_TO_NGINX}~" \
+	    -e "s~SYNOPKG_DOCKER_UPDATE.*~SYNOPKG_DOCKER_UPDATE=${SYNOPKG_DOCKER_UPDATE}~" \
 	    "$ETC_PATH"/.cfg
 	# update usr via sed to populate 1st moderator user, pwd from Package-Wizard during install
 	sed -i -e "s~refresh~refresh\nUSR_${PKGWIZ_MOD_USR}=\"${PKGWIZ_MOD_PASSWD}\"~" "$ETC_PATH"/.usr
 }
-# in ui/config set the webmeet-domain url for menu-icon
-SET_MEET_DOM_TO_UI_CFG() {
-	local MEET_DOM=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_MEET_DOMAIN_NAME)
-	if [ -n "$MEET_DOM" ] ; then
-		sed -i -e "s~meet.domain.tld~${MEET_DOM}~" /var/packages/"$PKG_NAME"/target/ui/config
-	fi
+# refresh environment and compose files post loaded from repository
+REFRESH_ENV() {
+	# source cfg file, before refresh, make it readable if not root
+	$SUDO chmod 644 "$ETC_PATH"/.env
+	. "$ETC_PATH"/.env
+	$SUDO rm "$ETC_PATH"/.env
+	$SUDO cp "$TARGET_PATH"/cfg/env.example "$ETC_PATH"/.env
+	$SUDO chmod 640 "$ETC_PATH"/.env
+	$SUDO rm "$ETC_PATH"/*.yml
+	$SUDO cp "$TARGET_PATH"/cfg/*.yml "$ETC_PATH"
+	$SUDO chmod 640 "$ETC_PATH"/*.yml
+	$SUDO sed -i \
+	    -e "s~JICOFO_COMPONENT_SECRET=.*~JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}~" \
+	    -e "s~JICOFO_AUTH_PASSWORD=.*~JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}~" \
+	    -e "s~JVB_AUTH_PASSWORD=.*~JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}~" \
+	    -e "s~JIGASI_XMPP_PASSWORD=.*~JIGASI_XMPP_PASSWORD=${JIGASI_XMPP_PASSWORD}~" \
+	    -e "s~JIBRI_RECORDER_PASSWORD=.*~JIBRI_RECORDER_PASSWORD=${JIBRI_RECORDER_PASSWORD}~" \
+	    -e "s~JIBRI_XMPP_PASSWORD=.*~JIBRI_XMPP_PASSWORD=${JIBRI_XMPP_PASSWORD}~" \
+	    -e "s~CONFIG=.*~CONFIG=${CONFIG}~" \
+	    -e "s~HTTP_PORT=.*~HTTP_PORT=${HTTP_PORT}~" \
+	    -e "s~HTTPS_PORT=.*~HTTPS_PORT=${HTTPS_PORT}~" \
+	    -e "s~TZ=.*~TZ=${TZ}~g" \
+	    -e "s~#PUBLIC_URL=.*~PUBLIC_URL=${PUBLIC_URL}~" \
+	    -e "s~#DOCKER_HOST_ADDRESS=.*~DOCKER_HOST_ADDRESS=${DOCKER_HOST_ADDRESS}~" \
+	    -e "s~JVB_PORT=.*~JVB_PORT=${JVB_PORT}~" \
+	    -e "s~JVB_TCP_PORT=.*~JVB_TCP_PORT=${JVB_TCP_PORT}~" \
+	    -e "s~#ENABLE_AUTH=.*~ENABLE_AUTH=${ENABLE_AUTH}~" \
+	    -e "s~#ENABLE_GUESTS=.*~ENABLE_GUESTS=${ENABLE_GUESTS}~" \
+	    -e "s~#DISABLE_HTTPS=.*~DISABLE_HTTPS=${DISABLE_HTTPS}~" \
+	    "$ETC_PATH"/.env
 }
 # ** show progress in docker gui /var/packages/Docker/target/tool/helper JOB: image_name image_tag image_path image_download_size_mb
 # ** ensure SYNOPKG_PKG_PROGRESS_PATH is set to /tmp/install_progress_$PKG_NAME when testing not wrapped into synology install GUI mode
@@ -210,8 +304,8 @@ LOAD_IMAGES_GUI() {
 		export SYNOPKG_PKG_PROGRESS_PATH
 	fi
 	# build string for images to load of name, tag, path, size to pass to helper tool
-	for IMG in $IMAGES; do
-		LOAD_JOB="$LOAD_JOB $IMG ${IMGS_TAG[$IDX]} "/tmp/$PKG_NAME-${IDX}.tar.xz" ${IMGS_SIZE[$IDX]}"
+	for IMG in $IMGS_SHORT; do
+		LOAD_JOB="$LOAD_JOB jitsi/${IMG} ${IMGS_TAG[$IDX]} "/tmp/$PKG_NAME-${IDX}.tar.xz" ${IMGS_SIZE[$IDX]}"
 		let IDX=1+$IDX
 		let SIZE_TOT=${IMGS_SIZE[$IDX]}+$SIZE_TOT
 	done
@@ -227,14 +321,59 @@ LOAD_IMAGES_GUI() {
 	if ! /var/packages/Docker/target/tool/helper $LOAD_JOB ; then
 		MSG=$(MESSAGE_LANG "$FAILED_PULL_IMAGES" "$LOAD_JOB")
 		LOG_MESSAGE "$MSG"
-		MSG=$(MESSAGE_LANG "$FAILED_PULL_IMAGES" "$IMAGES")
-		GUI_MESSAGE "$MSG"
 		return 1
 	else
 		return 0
 	fi
 }
-
+# load the cfg aka yml and env files from repository 
+LOAD_REPO_CFG() {
+	if ! CHECK_DOWNLOAD_SOURCE "$GREPO_URL/env.example"
+	then
+		MSG=$(MESSAGE_LANG "$FAILED_REPO" "$GREPO_URL")
+		echo "$MSG"
+		LOG_MESSAGE "$MSG"
+		exit 1
+	fi
+	local GET_FILE
+	# remove old files in target dir
+	if [ -f "$TARGET_PATH"/cfg/env.example ] ; then
+		rm "$TARGET_PATH"/cfg/env.example
+	fi
+	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] ; then
+		rm "$TARGET_PATH"/cfg/*.yml
+	fi
+	for GET_FILE in $ETC_REPO_FILES ; do
+		LOG_IF_BETA "wget -q --no-check-certificate -P $TARGET_PATH/cfg  $GREPO_URL/$GET_FILE"
+		wget -q --no-check-certificate "$GREPO_URL"/"$GET_FILE" -P "$TARGET_PATH"/cfg
+		if [ ! -f "$TARGET_PATH"/cfg/"$GET_FILE" ] ; then
+			echo "could not load from repo $GREPO_URL/$GET_FILE"
+		fi
+	done
+	local CONT_SHORT=""
+	# add container and host-name to compose files
+	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] && ! grep -q "hostname"  "$TARGET_PATH"/cfg/docker-compose.yml ; then
+		for CONT_SHORT in $IMGS_SHORT; do
+			LOG_IF_BETA "adding to docker-compose.yml hostname for $CONT_SHORT.."
+			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        hostname: jitsi-${CONT_SHORT}~" "$TARGET_PATH"/cfg/docker-compose.yml
+		done
+	fi
+	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] && ! grep -q "container_name"  "$TARGET_PATH"/cfg/docker-compose.yml ; then
+		for CONT_SHORT in $IMGS_SHORT; do
+			LOG_IF_BETA "adding to docker-compose.yml container_name for $CONT_SHORT.."
+			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        container_name: jitsi_${CONT_SHORT}~" "$TARGET_PATH"/cfg/docker-compose.yml
+		done
+	fi
+	for CONT_SHORT in $IMG_XTRA_SHORT; do
+		LOG_IF_BETA "adding to ${CONT_SHORT}.yml hostname / container_name.."
+		if [ -f "$TARGET_PATH"/cfg/${CONT_SHORT}.yml ] && ! grep -q "hostname"  "$TARGET_PATH"/cfg/${CONT_SHORT}.yml ; then
+			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        hostname: jitsi-${CONT_SHORT}~" "$TARGET_PATH"/cfg/etherpad.yml
+		fi
+		if [ -f "$TARGET_PATH"/cfg/${CONT_SHORT}.yml ] && ! grep -q "container_name"  "$TARGET_PATH"/cfg/${CONT_SHORT}.yml ; then
+			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        container_name: jitsi_${CONT_SHORT}~" "$TARGET_PATH"/cfg/${CONT_SHORT}.yml
+		fi
+	done
+}
 COMPOSE_CONTAINER() {
 	local COMP_PARAM
 	# when we have console ansi and colors are ok otherwise disable it
@@ -243,7 +382,7 @@ COMPOSE_CONTAINER() {
 	else
 		COMP_PARAM="--no-ansi up --no-start"
 	fi
-	echo "Composing and starting container $CONTAINERS"
+	echo "Composing and starting container $CONTAINERS from $DOCKER_UPDATE"
 	# $COMP_PARAM is not wrapped in quotes by purpose, as call would fail so disable spellcheck
 	# shellcheck disable=SC2086
 	if $SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" -p "$PKG_SHORT" --project-directory "$ETC_SHORT" $COMP_PARAM >/tmp/compose."$PKG_SHORT" 2>&1 ; then
@@ -309,12 +448,18 @@ CONTAINER_LOGS() {
 }
 REMOVE_CONTAINER() {
 	echo "Removing container $CONTAINERS"
+	local SDIR
 	# stop container and remove etc-cfg files to kick off new initialisation
 	$SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" stop >/dev/null 2>&1
 	$SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" down >/dev/null 2>&1
 	# reset the etc subdirectories
-	$SUDO test -e "$ETC_SHORT"/web && $SUDO rm -R "$ETC_SHORT"/{web,transcripts,prosody,jicofo,jvb,jigasi,jibri}
-	$SUDO mkdir -p "$ETC_SHORT"/{web/letsencrypt,transcripts,prosody,jicofo,jvb,jigasi,jibri}
+	for SDIR in $ETC_SUB_DIRS ; do
+		if [ -e "$ETC_SHORT/$SDIR" ] ; then $SUDO rm -R "$ETC_SHORT"/"$SDIR" ; fi
+	done
+	$SUDO test -e "$ETC_SHORT"/web && echo "failed to remove old config"
+	for SDIR in $ETC_SUB_DIRS ; do
+		$SUDO mkdir -p "$ETC_SHORT"/"$SDIR"
+	done
 }
 REMOVE_IMAGES() {
 	echo "Removing images of $PKG_SHORT"
@@ -329,9 +474,10 @@ REMOVE_IMAGES() {
 # get public ip via ipinfo.io and rest container if it changed we use synos get_key_value to capture env / cfg
 UPDATE_PUBLIC_IP() {
 	local DO_UPDATE=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS)
+	[ -z "$DO_UPDATE" ] && DO_UPDATE=0
 	local PUBLIC_IP=$(curl -s "$IPINFO_URL")
 	# shellcheck disable=SC2086
-	if [ $DO_UPDATE ] ; then
+	if [ $DO_UPDATE -eq 1 ] ; then
 		if [ -z "$PUBLIC_IP" ] ; then
 			MSG="Error using $IPINFO_URL to get public ip"
 			#MSG=$(MESSAGE_LANG "$FAIL_IPINFO" "$IPINFO_URL")
@@ -340,14 +486,19 @@ UPDATE_PUBLIC_IP() {
 		else
 			local CUR_DOCKER_IP=$($SUDO /bin/get_key_value "$ETC_PATH"/.env DOCKER_HOST_ADDRESS)
 			if [ -z "$CUR_DOCKER_IP" ] || [ "$CUR_DOCKER_IP" != "$PUBLIC_IP" ] ; then
-				sed -i -e "s~DOCKER_HOST_ADDRESS=.*~DOCKER_HOST_ADDRESS=${PUBLIC_IP}~g" "$ETC_PATH"/.env
+				sed -i -e "s~DOCKER_HOST_ADDRESS=.*~DOCKER_HOST_ADDRESS=${PUBLIC_IP}~" "$ETC_PATH"/.env
 				MSG="Updating public ip $PUBLIC_IP to DOCKER_HOST_ADDRESS and resetting.."
 				#MSG=$(MESSAGE_LANG "$RESET_PUBIP" "$IPINFO_URL")
 				echo "$MSG"
 				LOG_MESSAGE "$MSG"
-				REMOVE_CONTAINER
-				COMPOSE_CONTAINER
-				CREATE_USERS
+				# reset unless we are starting post reset so web subdir does not exist
+				if [ -e "$ETC_PATH"/web/nginx ] ; then
+					MSG="Updating public ip $PUBLIC_IP to DOCKER_HOST_ADDRESS and resetting.."
+					#MSG=$(MESSAGE_LANG "$RESET_PUBIP" "$IPINFO_URL")
+					echo "$MSG"
+					REMOVE_CONTAINER
+					COMPOSE_CONTAINER
+				fi
 			fi
 		fi
 	fi
@@ -355,11 +506,12 @@ UPDATE_PUBLIC_IP() {
 # update lest's encrypt certs from archive into jitsi containers; only works if le used on synology
 UPDATE_CERT() {
 	local DO_UPDATE=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_SYNO_CERT_SYNC)
+	[ -z "$DO_UPDATE" ] && DO_UPDATE=0
 	local MEET_DOM=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_MEET_DOMAIN_NAME)
 	local CERT_PATH=$(MEET_LE_CERT_PATH "$MEET_DOM")
-	LOG_IF_BETA "Cert-Path: $CERT_PATH"
+	[ -n "$CERT_PATH" ] && LOG_IF_BETA "Cert-Path: $CERT_PATH"
 	# shellcheck disable=SC2086
-	if [ $DO_UPDATE ] && [ -n "$CERT_PATH" ] && [ -f "$ETC_PATH"/web/keys/cert.key ] ; then
+	if [ $DO_UPDATE -eq 1 ] && [ -n "$CERT_PATH" ] && [ -f "$ETC_PATH"/web/keys/cert.key ] ; then
 		if ! $SUDO diff -s "$CERT_PATH"/privkey.pem "$ETC_PATH"/web/keys/cert.key | grep -q "identical" ; then
 			MSG="updating certificates from synology to jitsi web and restarting"
 			#MSG=$(MESSAGE_LANG "$RESET_CERT")
@@ -367,19 +519,53 @@ UPDATE_CERT() {
 			LOG_MESSAGE "$MSG"
 			$SUDO cp "$CERT_PATH"/privkey.pem "$ETC_PATH"/web/keys/cert.key
 			$SUDO cp "$CERT_PATH"/cert.pem "$ETC_PATH"/web/keys/cert.crt
-			STOP_CONTAINER
+			# stop to force restart if still running
+			$SUDO "$DOCKER_BIN" inspect "jitsi_web" | grep -q "\"Status\": \"running\"," && STOP_CONTAINER
 		fi
 	fi
 }
 # ensure nginx-conf is updated with custom log to show real ip from reverse proxy instead of private docker host
 NGINX_X_REAL_IP() {
 	local DO_UPDATE=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_X_REALIP_TO_NGINX)
+	[ -z "$DO_UPDATE" ] && DO_UPDATE=0
 	# shellcheck disable=SC2086
-	if [ $DO_UPDATE ] && [ -e "$ETC_PATH"/web/nginx/nginx.conf ] && ! $SUDO grep -q "custom_combined" "$ETC_PATH"/web/nginx/nginx.conf ; then
+	if [ $DO_UPDATE -eq 1 ] && [ -f "$ETC_PATH"/web/nginx/nginx.conf ] && ! $SUDO grep -q "custom_combined" "$ETC_PATH"/web/nginx/nginx.conf ; then
 		echo "updating nginx to show x-real-ip passed from reverse-proxy in access log.."
 		local CUST_FORM="\$http_x_real_ip - \$remote_user [\$time_local] \"\$request\" \$status \$body_bytes_sent \"\$http_referer\" \"\$http_user_agent\""
 		$SUDO sed -i -e "s~access_log.*~log_format custom_combined \'${CUST_FORM}\';\n\taccess_log /dev/stdout custom_combined;~" "$ETC_PATH"/web/nginx/nginx.conf
-		STOP_CONTAINER
+	fi
+}
+# secial setting to the jitsi cfg like disable welcome and other stun server
+SPECIAL_SETTINGS () {
+	local ADD_IMP=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ADD_IMPRINT)
+	[ -z "$ADD_IMP" ] && ADD_IMP=0
+	# shellcheck disable=SC2086
+	if [ $ADD_IMP -eq 1 ] && [ -f "$ETC_PATH"/.imp ] ; then
+		MSG="adding imprint to jitsi_web"
+		#MSG=$(MESSAGE_LANG "$ADD_IMP")
+		echo "$MSG"
+		LOG_MESSAGE "$MSG"
+		# copy imprint to /usr/share/jitsi-meet/static your welcomePageAdditionalContent.html from .imp
+		$SUDO cp "$ETC_PATH"/.imp "$ETC_PATH"/welcomePageAdditionalContent.html
+		$SUDO chmod 644 "$ETC_PATH"/welcomePageAdditionalContent.html
+		$SUDO docker cp -a "$ETC_PATH"/welcomePageAdditionalContent.html jitsi_web:/usr/share/jitsi-meet/static
+		$SUDO rm "$ETC_PATH"/welcomePageAdditionalContent.html
+		# allow interface_config.js being created
+		if [ ! -f "$ETC_PATH"/web/interface_config.js ] ; then
+			LOG_IF_BETA "waiting for /etc/jitsi/web/interface_config.js to exist sleep 1s.."
+			sleep 1
+		fi
+		if [ -f "$ETC_PATH"/web/interface_config.js ] ; then
+			$SUDO sed -i -e "s~DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT.*~DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: true,~" "$ETC_PATH"/web/interface_config.js
+		else
+			echo "timing issue: /etc/jitsi/web/interface_config.js does not yet exist"
+		fi
+	fi
+	if [ -f "$ETC_PATH"/.mod ] ; then
+		MSG="running cfg-mod-script"
+		#MSG=$(MESSAGE_LANG "$RUN_MODSCRIPT")
+		echo "$MSG"
+		$SUDO "$ETC_PATH"/.mod
 	fi
 }
 # strip name and value of all users from .usr file and set it in .. container

@@ -4,31 +4,51 @@
 SCRIPT_DIR=$(dirname "$0")
 . "$SCRIPT_DIR"/lib
 . "$SCRIPT_DIR"/common
+# restore log
+if [ -f /tmp/"${PKG_SHORT}"-package.log ] ; then
+	cp /tmp/"${PKG_SHORT}"-package.log "$TARGET_PATH"/log/package.log
+	rm /tmp/"${PKG_SHORT}"-package.log
+	LOG_FILE="$TARGET_PATH"/log/package.log
+fi
 LOG_IF_BETA "running postinst.."
 LOG_IF_BETA "run DSM_LANG_TO_LIB.."
 DSM_LANG_TO_LIB
-if [ "$SYNOPKG_PKG_STATUS" = UPGRADE ]; then
-	# restore log
-	[ -f /tmp/"${PKG_SHORT}"-package.log ] && cp /tmp/"${PKG_SHORT}"-package.log "$TARGET_PATH"/log/package.log
-	LOG_IF_BETA "postinst completed.."
-	exit 0
+
+if [ "$SYNOPKG_PKG_STATUS" != UPGRADE ]; then
+	# load cfg files from github repo
+	LOAD_REPO_CFG
+	# prepare the etc-config directories softlinked to /etc/jitsi
+	LOG_IF_BETA "run INIT_ETC.."
+	INIT_ETC
+	LOG_IF_BETA "run DO_SOFTLINKS.."
+	# add shortcut / softlinks for Jitsi-Meet etc-jitsi and UI
+	DO_SOFTLINKS
+	LOG_IF_BETA "run SET_ENV_CFG_USR_SECRETS.."
+	SET_ENV_CFG_USR_SECRETS
+	
+	MSG=$(MESSAGE_LANG "$INITIALIZE_CONTAINER")
+	NOTIFY_MESSAGE "$MSG"
+	LOG_IF_BETA "run COMPOSE_CONTAINER.."
+	COMPOSE_CONTAINER
+else
+	# update new compose and cfg files
+	cp "$TARGET_PATH"/cfg/docker-compose.yml "$ETC_PATH"
+	chmod 640 "$ETC_PATH"/docker-compose.yml
+	if [ ! -f "$ETC_PATH"/.imp ] ; then
+		cp "$TARGET_PATH"/cfg/imp.example "$ETC_PATH"/.imp
+		chmod 640 "$ETC_PATH"/.imp
+	fi
+	if [ ! -f "$ETC_PATH"/.mod ] ; then
+		cp "$TARGET_PATH"/cfg/mod.example "$ETC_PATH"/.mod
+		chmod 750 "$ETC_PATH"/.mod
+	fi
+	# since we added etherpad container we have to do a reset and compose new
+	LOG_IF_BETA "running REMOVE_CONTAINER.."
+	REMOVE_CONTAINER
+	LOG_IF_BETA "running COMPOSE_CONTAINER.."
+	COMPOSE_CONTAINER
+
 fi
-
-# prepare the etc-config directories softlinked to /etc/jitsi
-LOG_IF_BETA "run INIT_ETC.."
-INIT_ETC
-LOG_IF_BETA "run DO_SOFTLINKS.."
-# add shortcut / softlinks for Jitsi-Meet etc-jitsi and UI
-DO_SOFTLINKS
-LOG_IF_BETA "run SET_ENV_CFG_USR_SECRETS.."
-SET_ENV_CFG_USR_SECRETS
-
-MSG=$(MESSAGE_LANG "$INITIALIZE_CONTAINER")
-NOTIFY_MESSAGE "$MSG"
-LOG_IF_BETA "run COMPOSE_CONTAINER.."
-COMPOSE_CONTAINER
-LOG_IF_BETA "run CREATE_USERS.."
-CREATE_USERS
-LOG_IF_BETA "postinst completed.."
+LOG_IF_BETA "completed postinst.."
 
 exit 0

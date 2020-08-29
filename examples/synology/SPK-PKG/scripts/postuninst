@@ -5,15 +5,17 @@ SCRIPT_DIR=$(dirname "$0")
 . "$SCRIPT_DIR"/lib
 . "$SCRIPT_DIR"/common
 LOG_IF_BETA "running postuninst.."
-# removing docker container and images
-LOG_IF_BETA "run REMOVE_CONTAINER & IMAGES.."
-REMOVE_CONTAINER
-REMOVE_IMAGES
-# removing jitsis etc path and softlinks to scripts and gui
-rm -R "$ETC_PATH"
-[ -h /etc/jitsi ] && rm /etc/jitsi
-[ -f /etc/jitsi ] && rm -R /etc/jitsi
-rm /usr/local/bin/jitsi-*
-rm /usr/syno/synoman/webman/3rdparty/"$PKG_NAME"
-
+if [ "$SYNOPKG_PKG_STATUS" != UPGRADE ]; then
+	# removing docker container and images
+	LOG_IF_BETA "run REMOVE_CONTAINER & IMAGES.."
+	REMOVE_CONTAINER
+	REMOVE_IMAGES
+	# removing jitsis etc path and softlinks to scripts and gui
+	rm -R "$ETC_PATH"
+	[ -h /etc/jitsi ] && rm /etc/jitsi
+	[ -e /etc/jitsi ] && rm -R /etc/jitsi
+	rm /usr/local/bin/jitsi-*
+	rm /usr/syno/synoman/webman/3rdparty/"$PKG_NAME"
+fi
+LOG_IF_BETA "completed postuninst.."
 exit 0

@@ -3,6 +3,8 @@
 SYNOPKG_DSM_LANGUAGE=enu
 # the meet domain name wil be used for menu icon url and set to .env
 SYNOPKG_MEET_DOMAIN_NAME=meet.mydomain.tld
+# add imprint shown via DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT
+SYNOPKG_ADD_IMPRINT=0
 # sync certificate from synology lets-encrypt archive to jitsi
 SYNOPKG_SYNO_CERT_SYNC=0
 # the private ip of the docker host 
@@ -11,3 +13,6 @@ SYNOPKG_PRIVIP_DOCKER_HOST=""
 SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=0
 # modify jitsi-web nging.conf to show x-real-ip, only works if run from reverse proxy
 SYNOPKG_X_REALIP_TO_NGINX=0
+# capture last docker update
+SYNOPKG_DOCKER_UPDATE=""
+

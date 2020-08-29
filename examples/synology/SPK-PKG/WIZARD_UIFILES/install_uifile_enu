@@ -73,6 +73,10 @@
 			"desc": "Allow guests to join meetings once room is opened (disabled: registered users only)",
 			"defaultValue": true
 		},{
+			"key": "PKGWIZ_ADD_IMPRINT",
+			"desc": "Add Imprint in web-toolbar, imprint html-snippet can be modified via UI cfg",
+			"defaultValue": false
+		},{
 			"key": "PKGWIZ_ENABLE_HTTPS",
 			"desc": "Enable https in container (self-signed if no Syno-Cert-Sync mode is used)",
 			"defaultValue": false
@@ -83,11 +87,11 @@
 		},{
 			"key": "PKGWIZ_PUBIP_TO_DOCKER_HOST_ADDRESS",
 			"desc": "At start check and sync public IP as DOCKER_HOST_ADDRESS (needed when run behind NAT)",
-			"defaultValue": false
+			"defaultValue": true
 		},{
 			"key": "PKGWIZ_X_REALIP_TO_NGINX",
 			"desc": "Modify web nginx-log showing real-ip passed from reverse-proxy instead of dockers ip",
-			"defaultValue": yes
+			"defaultValue": true
 		}]
 	}]
 }]

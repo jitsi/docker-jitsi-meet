@@ -1,0 +1,33 @@
+#!/bin/sh
+# script for modding jistsi configuration samples to uncomment below 
+
+# privacy: disable gravatar as third-party request
+#sed -i -e "s~// disableThirdPartyRequests.*~disableThirdPartyRequests: true,~" /etc/jitsi/web/config.js
+#echo "disable gravatar.."
+# privacy: disable video-background function as it uses storage.googleapis.com
+#sed -i -e "s~DISABLE_VIDEO_BACKGROUND.*~DISABLE_VIDEO_BACKGROUND: true,~" /etc/jitsi/web/interface_config.js
+#echo "disable video-background option.."
+
+# privacy: enable do-not store room
+#sed -i -e "s~// doNotStoreRoom.*~doNotStoreRoom: true,~" /etc/jitsi/web/config.js
+#echo "enable do-not store room.."
+
+# privacy: disable welcome page: guest will be redirected to random room which they cannot open
+#sed -i -e "s~enableWelcomePage.*~enableWelcomePage: false,~" /etc/jitsi/web/config.js
+#echo "disable welcome page.."
+
+# security: add more headers to /etc/jitsi/web/nginx/ssl.conf as per advise at securityheaders.com
+# ok: Strict-Transport-Security, X-Content-Type-Options, X-XSS-Protection, add X-Frame-Options, Content-Security-Policy
+# for Referrer-Policy use same-origin instead of stricter no-referrer
+# for Content-Security-Policy do not use default-src 'self' and script-src 'self' aka same origine as it breaks functionality
+#if ! grep -q "X-Frame-Options" /etc/jitsi/web/nginx/ssl.conf ; then
+#	echo "add security headers (strict, no foreign iframe) to jitsi-web nginx.."
+#	sed -i -e "s~# headers~# headers\nadd_header Content-Security-Policy \"img-src 'self'; media-src 'self'; font-src 'self'; form-action 'self';\";~" /etc/jitsi/web/nginx/ssl.conf
+#	sed -i -e "s~# headers~# headers\nadd_header Referrer-Policy same-origin;~" /etc/jitsi/web/nginx/ssl.conf 
+#	sed -i -e "s~# headers~# headers\nadd_header X-Frame-Options "SAMEORIGIN" always;~" /etc/jitsi/web/nginx/ssl.conf
+#fi
+#Content-Security-Policy: default-src 'self';
+# to modify welcome-page adjust /usr/share/jitsi-meet/static in jitsi-meet container, e.g. adding html, watermark
+# echo "adding modified html and watermark logo.."
+#docker cp -a /etc/jitsi/*.html jitsi-web:/usr/share/jitsi-meet/static/
+#docker cp -a /etc/jitsi/watermark.png jitsi-web:/usr/share/jitsi-meet/images/

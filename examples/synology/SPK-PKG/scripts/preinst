@@ -1,14 +1,17 @@
 #!/bin/sh
 # ** (c) 2020 TosoBoso - pre-install for Jitsi-Meet in Docker container
-[ "$SYNOPKG_PKG_STATUS" = UPGRADE ] && exit 0
-# ** get lang, variables from lib and add functions plus more variables
-MYDIR=$(dirname "$0")
-. "$MYDIR"/lib
-. "$MYDIR"/common
+# ** get lang, variables from lib and add functions, more variables
+SCRIPT_DIR=$(dirname "$0")
+. "$SCRIPT_DIR"/lib
+. "$SCRIPT_DIR"/common
 LOG_IF_BETA "running preinst.."
 # TODO: put more logic here e.g. if ports are blocked or previous install failed flagged in package log or cfg
 # load the docker images
-LOG_IF_BETA "run LOAD_IMAGES_GUI.."
-LOAD_IMAGES_GUI
-
+if [ "$SYNOPKG_PKG_STATUS" != UPGRADE ]; then
+	LOG_IF_BETA "run PKG_PRE_CHECK.."
+	PKG_PRE_CHECK
+	LOG_IF_BETA "run LOAD_IMAGES_GUI.."
+	LOAD_IMAGES_GUI
+fi
+LOG_IF_BETA "completed preinst.."
 exit 0

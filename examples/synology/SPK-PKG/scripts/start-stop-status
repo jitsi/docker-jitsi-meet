@@ -23,21 +23,31 @@ MYSCRIPT=$(basename "$0")
 case $1 in
     start)
         echo "Starting $CONTAINERS..."
-		# initial start
-		[ -f /etc/jitsi/web/nginx ] || START_CONTAINER
 		UPDATE_PUBLIC_IP
+		# initial start after reset: start to get cfg, run real-ip, special settings restart
+		if [ ! -e /etc/jitsi/web/nginx ] ; then
+			START_CONTAINER
+			NGINX_X_REAL_IP
+			SPECIAL_SETTINGS
+			STOP_CONTAINER
+		fi
 		UPDATE_CERT
-		NGINX_X_REAL_IP
 		START_CONTAINER
 		[ -f /etc/jitsi/prosody/.usr-created ] || CREATE_USERS
+		# list nginx-error-log last entry
+		WEB_ERR=$(EXEC_IN_CONTAINER web "tail -1 /var/log/nginx/error.log")
+		[ -z "$WEB_ERR" ] || echo "Jitsi-Web last error: $WEB_ERR"
        ;;
     stop)
         echo "Stopping $CONTAINERS..."
 		STOP_CONTAINER
         ;;
     status)
-		for CONT in $CONTAINERS; do
-			$SUDO "$DOCKER_BIN" inspect "$CONT" | grep -q "\"Status\": \"running\"," || exit 1
+		for CONT in $IMGS_SHORT; do
+			if ! $SUDO "$DOCKER_BIN" inspect "jitsi_$CONT" | grep -q "\"Status\": \"running\"," ; then
+				echo "$CONT stopped"
+				exit 1
+			fi
 		done
 		# as jitsi-cli act more verbose with longer compose response time 
 		if [ "$MYSCRIPT" = "jitsi-cli" ] ; then
@@ -64,6 +74,7 @@ case $1 in
 				if [ -t 1 ] ; then $SUDO chmod 666 "$LOG_FILE" ; fi
 				MSG=$(tail -50 < "$LOG_FILE")
 				if [ -t 1 ] ; then $SUDO chmod 666 "$LOG_FILE" ; fi
+				echo "last 50 lines of $LOG_FILE:"
 				echo "$MSG"
 				exit 0
 				;;
@@ -79,34 +90,86 @@ case $1 in
 		CONTAINER_LOGS "$SERVICE"
         ;;
     reset)
+		LOG_IF_BETA "running REMOVE_CONTAINER.."
 		REMOVE_CONTAINER
+		LOG_IF_BETA "running COMPOSE_CONTAINER.."
 		COMPOSE_CONTAINER
 		# in ajax gui mode do not run start sequence as it would time-out
-		if [ ! -t 1 ] ; then
+		if [ ! -t 1 ] && [ "$2" != "bgmode" ] ; then
 			echo "Now run ** $MYSCRIPT start **"
 		else
-			START_CONTAINER
+			LOG_IF_BETA "running UPDATE_PUBLIC_IP.."
 			UPDATE_PUBLIC_IP
-			UPDATE_CERT
+			LOG_IF_BETA "running START_CONTAINER.."
+			START_CONTAINER
+			LOG_IF_BETA "running SPECIAL_SETTINGS.."
+			SPECIAL_SETTINGS
+			LOG_IF_BETA "running NGINX_X_REAL_IP, UPDATE_CERT.."
 			NGINX_X_REAL_IP
+			UPDATE_CERT
 			START_CONTAINER
 			CREATE_USERS
+			WEB_ERR=$(EXEC_IN_CONTAINER web "tail -1 /var/log/nginx/error.log")
+			[ -z "$WEB_ERR" ] || echo "Jitsi-Web last error: $WEB_ERR"
+			MSG=$(MESSAGE_LANG "$RESET_IMAGES")
+			LOG_MESSAGE "$MSG"
+			if [ "$2" = "bgmode" ] ; then
+				NOTIFY_MESSAGE "$MSG"
+			fi
+			LOG_IF_BETA "done.."
 		fi
         ;;
     refresh)
-		REMOVE_CONTAINER
-		REMOVE_IMAGES
-		COMPOSE_CONTAINER
-		# in ajax gui mode do not run start sequence as it would time-out
-		if [ ! -t 1 ] ; then
-			echo "Now run $MYSCRIPT start"
+		if [ -z "$2" ]; then
+			MODE=img
+			echo "defaulting refresh mode to: img (docker-image); also available: cfg (docker-yml and env) or all"
 		else
-			START_CONTAINER
-			UPDATE_PUBLIC_IP
-			UPDATE_CERT
-			NGINX_X_REAL_IP
-			START_CONTAINER
-			CREATE_USERS
+			if [ "$2" != "img" ] && [ "$2" != "cfg" ] && [ "$2" != "all" ] ; then
+				echo "need mode for refresh: img or cfg or all"
+				exit 1
+			fi
+			MODE="$2"
+		fi
+		if [ "$MODE" != "img" ] ; then
+			LOG_IF_BETA "running LOAD_REPO_CFG.."
+			LOAD_REPO_CFG
+			LOG_IF_BETA "running REFRESH_ENV.."
+			REFRESH_ENV
+		fi
+		if [ "$MODE" != "cfg" ] ; then
+			LOG_IF_BETA "running GET_DOCKER_UPDATE.."
+			DOCKER_UPDATE=$(GET_DOCKER_UPDATE)
+			SYNOPKG_DOCKER_UPDATE=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_DOCKER_UPDATE)
+			# set docker_update or exit if up to date
+			if [ "$DOCKER_UPDATE" = "$SYNOPKG_DOCKER_UPDATE" ] ; then
+				echo "Docker Images are up to date: $DOCKER_UPDATE"
+				exit 0
+			else
+				$SUDO sed -i -e "s~SYNOPKG_DOCKER_UPDATE=.*~SYNOPKG_DOCKER_UPDATE=${DOCKER_UPDATE}~" "$ETC_PATH"/.cfg
+			fi
+			LOG_IF_BETA "running REMOVE_CONTAINER/IMAGES,COMPOSE_CONTAINER and restart.."
+			REMOVE_CONTAINER
+			REMOVE_IMAGES
+			COMPOSE_CONTAINER
+			# in ajax gui mode do not run start sequence as it would time-out
+			if [ ! -t 1 ] && [ "$2" != "bgmode" ] ; then
+				echo "Now run ** $MYSCRIPT start **"
+			else
+				UPDATE_PUBLIC_IP
+				START_CONTAINER
+				SPECIAL_SETTINGS
+				NGINX_X_REAL_IP
+				UPDATE_CERT
+				START_CONTAINER
+				CREATE_USERS
+				WEB_ERR=$(EXEC_IN_CONTAINER web "tail -1 /var/log/nginx/error.log")
+				[ -z "$WEB_ERR" ] || echo "Jitsi-Web last error: $WEB_ERR"
+				MSG=$(MESSAGE_LANG "$REFRESHED_IMAGES" "$IMAGES")
+				LOG_MESSAGE "$MSG"
+				if [ "$2" = "bgmode" ] ; then
+					NOTIFY_MESSAGE "$MSG"
+				fi
+			fi
 		fi
         ;;
     cmd-line)
@@ -123,8 +186,11 @@ case $1 in
 			jvb)
 				SERVICE=jvb
 				;;
+			etherpad)
+				SERVICE=etherpad
+				;;
 			*)
-				echo "Need service for cmd-line: web, prosody, jicofo, jvb"
+				echo "Need service for cmd-line: web, prosody, jicofo, jvb, etherpad"
 				exit 1
 				;;
 		esac
