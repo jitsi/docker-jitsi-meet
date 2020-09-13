@@ -1,3 +1,4 @@
+[2020-09-12 v.0.8 [Health check cmd-line and UI, added Etherpad, Jibri, Jigasi orchestration]
 [2020-08-22 v.0.7 [Yml files from repo, imprint in jitsi-web, modding-script after refresh]
 [2020-06-12 v.0.6 [Minor fixes, option to disable welcome page, refresh as ui bg job]
 [2020-05-23 v.0.5 [Modify nginx to show real-ip from reverse proxy instead of docker ips]
@@ -5,3 +6,4 @@
 [2020-05-16 v.0.3 [Initial stable build with UI to run cfg and jitsi-cli via browser]
 [2020-05-09 v.0.2 [Moderator user at install and via jitsi-cli added each container refresh]
 [2020-05-01 v.0.1 [initial build using jitsi-docker-meet repository extending cmds by jitsi-cli]
+Roadmap: warning on used ports before container start, room usage logs, Jibri audi dependency

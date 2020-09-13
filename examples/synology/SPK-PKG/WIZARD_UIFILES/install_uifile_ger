@@ -3,12 +3,17 @@
 	"items": 
 	[{
 		"type": "textfield",
-		"desc": "Fülle Jitsi Meet Domain, Ports und Prefix. Nutze Reverse Proxy und Verknüpfe 443 mit z.B. 8080 / 8443.",
+		"desc": "Fülle Jitsi Meet Domain, Zeitzone, Ports und Prefix. Nutze Reverse Proxy und Verknüpfe 443 mit z.B. 8080 / 8443.",
 		"subitems": 
 		[{
 			"key": "PKGWIZ_MEET_DOMAIN_NAME",
 			"desc": "Öffentliche Domain-URL (mit Synology Zertifikat)",
 			"defaultValue": "meet.mydomain.tld",
+			"validator":{"allowBlank":false}
+		},{
+			"key": "PKGWIZ_TIMEZONE",
+			"desc": "Timezone in container (Europe/Berlin,CET,EST)",
+			"defaultValue": "CET",
 			"validator":{"allowBlank":false}
 		},{
 			"key": "PKGWIZ_HTTP_PORT_PREFIX",
@@ -51,16 +56,6 @@
 	"step_title": "Jitsi-Meet für Synology via Docker Erweiterte Konfiguration",
 	"items": 
 	[{		
-		"type": "textfield",
-		"desc": "",
-		"subitems": 
-		[{
-			"key": "PKGWIZ_TIMEZONE",
-			"desc": "Zeitzone im Container (Europe/Berlin,CET,EST)",
-			"defaultValue": "CET",
-			"validator":{"allowBlank":false}
-		}]
-		},{
 		"type": "multiselect",
 		"desc": "Funktionen, die typischerweise aktiviert sind. AUTH deaktiviert: Jeder kann Raeume oeffnen.",
 		"subitems": 
@@ -72,6 +67,18 @@
 			"key": "PKGWIZ_ENABLE_GUESTS",
 			"desc": "Gaeste durfen an Jitsi Meetings teilnehmen (statt nur registrierte Nutzer)",
 			"defaultValue": true
+		},{
+			"key": "PKGWIZ_ETHERPAD",
+			"desc": "Aktiviere Etherpad fuer gemeinsames Dokument zum Teilen im Meeting",
+			"defaultValue": false
+		},{
+			"key": "PKGWIZ_JIBRI",
+			"desc": "Aktiviere Jibri fuer Aufnahmen von Meetings (experimentell: audio /dev/snd Abhaengigkeit)",
+			"defaultValue": false
+		},{
+			"key": "PKGWIZ_JIGASI",
+			"desc": "Aktiviere Jigasi für Telefon Einwahl via SIP",
+			"defaultValue": false
 		},{
 			"key": "PKGWIZ_ADD_IMPRINT",
 			"desc": "Ergaenze Imprint in web-toolbar, modifiziere das Impressum html-Snippet via UI cfg",

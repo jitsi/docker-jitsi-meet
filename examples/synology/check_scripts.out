@@ -1,0 +1,10 @@
+2020.09.11-15:21:03 Starting shellcheck for /var/services/homes/adm1n/repo/docker-jitsi-meet/examples/synology/SPK-PKG/scripts..
+** check common..
+** check lib..
+** check postinst..
+** check postuninst..
+** check postupgrade..
+** check preinst..
+** check preuninst..
+** check preupgrade..
+** check start-stop-status..

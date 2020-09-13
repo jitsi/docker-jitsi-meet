@@ -1,19 +1,4 @@
-function estimateHeight() {
-	var myWidth = 0, myHeight = 0;
-	if( typeof( window.innerWidth ) == 'number' ) {
-		//Non-IE
-		myHeight = window.innerHeight;
-	} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
-		//IE 6+ in 'standards compliant mode'
-		myHeight = document.documentElement.clientHeight;
-	} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
-		//IE 4 compatible
-		myHeight = document.body.clientHeight;
-	}
-	return myHeight;
-}
-
-// show and hide functions for section in intro html
+// basic js code: show and hide functions for sections in intro html
 function showQuickStSection() {
 	document.getElementById('frmQst').style.display = "block";
 	document.getElementById('frmArc').style.display = "none";
@@ -38,8 +23,26 @@ function showChgSection() {
 	document.getElementById('frmFaq').style.display = "none";
 	document.getElementById('frmChg').style.display = "block";
 }
+
+// ext-3 js code section
+function estimateHeight() {
+	var myWidth = 0, myHeight = 0;
+	if( typeof( window.innerWidth ) == 'number' ) {
+		//Non-IE
+		myHeight = window.innerHeight;
+	} else if( document.documentElement && ( document.documentElement.clientWidth || document.documentElement.clientHeight ) ) {
+		//IE 6+ in 'standards compliant mode'
+		myHeight = document.documentElement.clientHeight;
+	} else if( document.body && ( document.body.clientWidth || document.body.clientHeight ) ) {
+		//IE 4 compatible
+		myHeight = document.body.clientHeight;
+	}
+	return myHeight;
+}
 	
 Ext.onReady(function() {
+
+	var conn = new Ext.data.Connection();
 
     function onIntroBtnClick(item){
     	textd.show();
@@ -108,7 +111,7 @@ Ext.onReady(function() {
      	texta.show();
     	texta.setReadOnly(true);
 	   	texta.setValue('Waiting for reply of jitsi-cli '+cmdTxt.value+' (none could be ajax time-out)..');
-	   	// when refresh is requested swith to bgmode
+	   	// when refresh is requested switch to bgmode
 	   	if( cmdTxt.value == 'refresh' ) {
 	   		bgmode = 'bg';
 	   	}
@@ -120,11 +123,13 @@ Ext.onReady(function() {
 				texta.setValue(responseObject.responseText);
 			}
 		});
+		// clear cmdText at health init load event
+	   	if( cmdTxt.value == 'health init' ) {
+			cmdTxt.setValue('');
+	   	}
 		repairBtn.disable();
 		saveBtn.disable();
 	}
-	
-	var conn = new Ext.data.Connection();
 
     function onFileCmbClick(item){
     	textd.hide();
@@ -167,7 +172,7 @@ Ext.onReady(function() {
 
 	var fileCmb = new Ext.form.ComboBox ({
 		store: [==:names:==],
-	    width: 130,
+	    width: 170,
 		name: 'file',
 		shadow: true,
 		editable: false,
@@ -218,6 +223,7 @@ Ext.onReady(function() {
 	var runBtn = new Ext.Toolbar.Button({
 		handler: onRunBtnClick,
 		name: 'run',
+		id: 'runbtn',
 		text: 'Run',
 		icon: 'images/run.png',
 		cls: 'x-btn-text-icon',
@@ -257,5 +263,8 @@ Ext.onReady(function() {
 	});
 
 	fileCmb.addListener('select',onFileCmbClick);
-
+	
+	// init actions when UI is loaded: click runBtn with health init
+	cmdTxt.setValue('health init');
+	Ext.get('runbtn').dom.click();
 });

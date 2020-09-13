@@ -9,13 +9,14 @@ DREPO_URL="https://registry.hub.docker.com/v2/repositories/jitsi"
 GREPO_URL="https://raw.githubusercontent.com/jitsi/docker-jitsi-meet/master"
 ETC_REPO_FILES="env.example docker-compose.yml jibri.yml jigasi.yml etherpad.yml"
 # name, tag and size on docker images to be loaded via synology gui helper
-IMGS_SHORT="web prosody jicofo jvb"
-IMGS_TAG=(latest latest latest latest)
-IMGS_SIZE=(185 41 137 122)
+IMGS_BASE_SHORT="web prosody jicofo jvb"
+IMGS_BASE_TAG=(latest latest latest latest)
+IMGS_BASE_SIZE=(185 41 137 122)
 IMGS_XTRA_SHORT="etherpad jibri jigasi"
-JETP_SIZE=83
+IMGS_XTRA_TAG=(latest latest latest)
+IMGS_XTRA_SIZE=(83 395 154)
 # etc-sub-dirs to re re-created each init and monuted to containers; this can cahnge with future releases
-ETC_SUB_DIRS="web/letsencrypt transcripts prosody/config prosody/prosody-plugins-custom jicofo jvb jigasi jibri"
+ETC_SUB_DIRS="web web/letsencrypt transcripts prosody prosody/config prosody/prosody-plugins-custom jicofo jvb jigasi jibri"
 IPINFO_URL="ipinfo.io/ip"
 # load language file (csy dan, enu fre ger hun ita jpn krn nld nor plk ptg rus spn sve trk)
 SCRIPT_DIR=$(dirname "$0")

@@ -8,6 +8,7 @@ SCRIPT_DIR=$(dirname "$0")
 if [ -f "$TARGET_PATH"/log/package.log ] ; then
 	cp "$TARGET_PATH"/log/package.log /tmp/"${PKG_SHORT}"-package.log
 	rm "$TARGET_PATH"/log/package.log
+	# shellcheck disable=SC2034
 	LOG_FILE=/tmp/"${PKG_SHORT}"-package.log
 fi
 LOG_IF_BETA "running preupgrade.."

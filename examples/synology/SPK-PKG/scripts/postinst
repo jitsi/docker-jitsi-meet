@@ -8,15 +8,18 @@ SCRIPT_DIR=$(dirname "$0")
 if [ -f /tmp/"${PKG_SHORT}"-package.log ] ; then
 	cp /tmp/"${PKG_SHORT}"-package.log "$TARGET_PATH"/log/package.log
 	rm /tmp/"${PKG_SHORT}"-package.log
+	# shellcheck disable=SC2034
 	LOG_FILE="$TARGET_PATH"/log/package.log
 fi
 LOG_IF_BETA "running postinst.."
 LOG_IF_BETA "run DSM_LANG_TO_LIB.."
 DSM_LANG_TO_LIB
 
+LOG_IF_BETA "run LOAD_REPO_CFG.."
+# load cfg files from github repo and adjust by refresh
+LOAD_REPO_CFG
+
 if [ "$SYNOPKG_PKG_STATUS" != UPGRADE ]; then
-	# load cfg files from github repo
-	LOAD_REPO_CFG
 	# prepare the etc-config directories softlinked to /etc/jitsi
 	LOG_IF_BETA "run INIT_ETC.."
 	INIT_ETC
@@ -31,9 +34,9 @@ if [ "$SYNOPKG_PKG_STATUS" != UPGRADE ]; then
 	LOG_IF_BETA "run COMPOSE_CONTAINER.."
 	COMPOSE_CONTAINER
 else
-	# update new compose and cfg files
-	cp "$TARGET_PATH"/cfg/docker-compose.yml "$ETC_PATH"
-	chmod 640 "$ETC_PATH"/docker-compose.yml
+	# adjust env downloaded with old values and copy over new env, yml
+	REFRESH_ENV
+	# copy over new files which did not exit in old versions
 	if [ ! -f "$ETC_PATH"/.imp ] ; then
 		cp "$TARGET_PATH"/cfg/imp.example "$ETC_PATH"/.imp
 		chmod 640 "$ETC_PATH"/.imp
@@ -42,12 +45,6 @@ else
 		cp "$TARGET_PATH"/cfg/mod.example "$ETC_PATH"/.mod
 		chmod 750 "$ETC_PATH"/.mod
 	fi
-	# since we added etherpad container we have to do a reset and compose new
-	LOG_IF_BETA "running REMOVE_CONTAINER.."
-	REMOVE_CONTAINER
-	LOG_IF_BETA "running COMPOSE_CONTAINER.."
-	COMPOSE_CONTAINER
-
 fi
 LOG_IF_BETA "completed postinst.."
 

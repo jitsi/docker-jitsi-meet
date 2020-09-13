@@ -4,36 +4,51 @@
 <p>
 <a href="https://jitsi.org/" target="_blank">Jitsi</a> ist eine Sammlung von Open Source Projekten, die das einfache und sichere Betreiben von Video-Konferenzenz Loesungen ermoeglicht.
 <a href="https://jitsi.org/jitsi-meet/" target="_blank">Jitsi Meet</a> ist ein komplett verschluesseltes, 100%-iges Open Source Video Konfernez System, zur taeglichen freien Nutzung, ohne dass Accounts, oder Lizenzen noetig sind.
-This package is based on a <a href="https://github.com/jitsi/docker-jitsi-meet" target="_blank">repository</a> that contains the necessary tools to run a Jitsi Meet stack on <a href="https://www.docker.com/" target="_blank">Docker</a> 
-using <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a> wrapped in scripts and UI.<br>
+Das Paket basiert auf einem <a href="https://github.com/jitsi/docker-jitsi-meet" target="_blank">Repository</a>, mit allen noetigen Tools, um den Jitsi-Meet Stack auf <a href="https://www.docker.com/" target="_blank">Docker</a> 
+durch <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a> zu Betreiben verpackt in Scripts und UI.<br>
 <b>Weitere Details:</b> Waehle Bereich <input type="radio" name="section" id = "qst" value="qst" onclick="showQuickStSection()" checked/>&nbsp;Quick Start&nbsp;
 	<input type="radio" name="section" id = "arc" value="arc" onclick="showArchSection()" />&nbsp;Architecture&nbsp;
 	<input type="radio" name="section" id = "faq" value="faq" onclick="showFaqSection()" />&nbsp;FAQ&nbsp;
 	<input type="radio" name="section" id = "chg" value="chg" onclick="showChgSection()" />&nbsp;Change-Log & Roadmap&nbsp;
 <section id="frmQst">
 <h2>Quick Start</h2>
-Basics had been set during install. Post changing configuration run jitsi-cli reset to apply it. Run jitsi-cli refresh weekly for new releases.
-Using a NAT router ensure to set DOCKER_HOST_ADDRESS to external ip route streaming port 10000(udp). Use Synology Reverse-Proxy to route https-443 to container http-8080.
+Die Basis ist bereits gesetzt. Weitere Anpassungen verlangen jitsi-cli reset zum Anwenden. Woechentliches Jitsi-cli refresh laedt neue Releases.
+Bei NAT Router mit dynamischer IP setzt jitsi-cli start die DOCKER_HOST_ADDRESS jeden Morgen auf die oeffentliche IP. Nutze Reverse-Proxy zum Routen https-443 auf Container http-8080.
 <center><a href="https://github.com/jitsi/docker-jitsi-meet#jitsi-meet-on-docker"  target="_blank"><img src="images/jitsi-docker.png" alt="Jitsi Architecture"></a></center>
 </section>
 <section id="frmArc" style="display:none">
 <h2>Architecture</h2>
-A Jitsi Meet installation can be broken down into the following components:
-<li>a web interface (for landing) & a XMPP server (for user authentication)
-<li>a conference focus component & a video router (could be more than one)
-<li>a SIP gateway for audio calls & a Broadcasting Infrastructure for recording or streaming a conference.
+Eine Jitsi-Meet Installation besteht aus folgende Komponenten:
+<li>ein Web Interface (Lande-Seite) & einen XMPP Server (fuer Autentifizierung)
+<li>eine Konferenz Fokus Komponente & ein Video Router (oder mehrere)
+<li>ein SIP Gateway fuer Audio Calls & eine Broadcasting Infrastruktur fuer Aufnahmen Konferenz Streaming.
 <center><a href="https://github.com/jitsi/docker-jitsi-meet#architecture"  target="_blank"><img src="images/docker-jitsi-meet.png" alt="Jitsi Architecture"></a></center>
 </section>
 <section id="frmFaq" style="display:none">
 <h2>Frequently Asked Questions</h2>
+<B><I>Ich habe Probleme mit SSL und Lest-Encrypt; Ich habe es nach Anleitung im Docker Envrionment Aktiviert</I></B>
+<br>Das integrierte Lets-Encrypt Feature von Jitsi funktioniert auf Synology nicht, da Diese den port 80 / 443 bedient. Es ist aber auch nicht noetig. Statt dessen nutzt man den Synology Reverse Proxy in Systesteuerung, Anwendungsportal: Mapping  http(s) auf localhost:8080 (oder konfigurierter Port). Man kann aber auch ein Synology verwaltetes Lets-Encrypt Zertifikat in die Container syncen (Power-User Feature via 'SYNOPKG_SYNO_CERT_SYNC=1').
+<br><B><I>I habe alle Features aktiviert und der Jibri Container startet nicht</I></B>
+<br>Wie bei der Installation hingeweisen ist Jibri experimentell und startet aktuell nicht, solange kein ALSO audio loopback auf dem Host installiert ist (siehe <a href="https://github.com/jitsi/docker-jitsi-meet/issues/721" target="_blank">Issue 721</a>).
+<br><B><I>Der Jitsi Video Stream bricht nach einigen Sekunden ab. Es hatte bereits funktioniert</I></B>
+<br>Fuehre jitsicli health aus. Vermutlich hat sich die dynamische oeffenltiche IP geandert und ist nicht in Jitsi aktualisiert. Um das zu erreichen Starte das Paket jeden Morgen.
+<br><B><I>Wie kann ich sicherstellen, dass niemand Aussenstehender Jitsi fuer Konferenzen missbraucht?</I></B>
+<br>Dieses Jitsi Paket nutzt Authetifizierung als Default, daher auch die Moderator und Passwort Abfrage bei Installation. Benutehr koennen hinzugefuegt werden ueber jitsi-cli add-usr, was bei jedem Reset / Refresh Aktualisiert wird.
+<br><B><I>Wie kann ich Jitsi Anpassen, z.B. mit Impressum und Datenschutz?</I></B>
+<br>Hier kommt die Imprint-Fusszeile ins Spiel und das Config-Mod Skript. Siehe Vorlagen, besonders das Mod-Skript hat interesannte Datenschutz Feature vorbereitet.
+<br><B><I>Ich kann Das Konfigurations-File nicht Aktualisieren, der Spwichern-Knopf is deaktiviert</I></B>
+<br>Die JavaScript Klasse erkennt zuweilen kein 'inline-edit'. Das Hinzufuegen eines Leerzeichens am ende der Zeitle aktiviert den Speichern-Knopf.
 </section>
 <section id="frmChg" style="display:none">
 <h2>Change-Log & Roadmap</h2>
-[2020-05-22 v.0.5 [Modify nginx to show real-ip from reverse proxy instead of docker ips]<br>
+[2020-09-12 v.0.8 [Health check cmd-line and UI, added Etherpad, Jibri, Jigasi orchestration]<br>
+[2020-08-22 v.0.7 [Yml files from repo, imprint in jitsi-web, modding-script after refresh]<br>
+[2020-06-12 v.0.6 [Minor fixes, option to disable welcome page, refresh as ui bg job]<br>
+[2020-05-23 v.0.5 [Modify nginx to show real-ip from reverse proxy instead of docker ips]<br>
 [2020-05-21 v.0.4 [Sync public IP, sync Synology Let's Encrypt certificate  to Jitsi]<br>
 [2020-05-16 v.0.3 [Initial stable build with UI to run cfg and jitsi-cli via browser]<br>
 [2020-05-09 v.0.2 [Moderator user at install and via jitsi-cli added each container refresh]<br>
 [2020-05-01 v.0.1 [initial build using jitsi-docker-meet repository extending cmds by jitsi-cli]<br>
-Roadmap: optional features like etherpad, list connect, room usage from logs 
+Roadmap: warning on used ports before container start, room usage logs, Jibri audi dependency<br>
 </section>
 </p></big></div>

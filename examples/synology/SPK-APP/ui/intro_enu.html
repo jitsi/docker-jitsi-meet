@@ -4,7 +4,7 @@
 <p>
 <a href="https://jitsi.org/" target="_blank">Jitsi</a> is a set of Open Source projects that allows you to easily build and deploy secure video conferencing solutions.
 <a href="https://jitsi.org/jitsi-meet/" target="_blank">Jitsi Meet</a> is a fully encrypted, 100% Open Source video conferencing solution that you can use all day, every day, for free with no account needed.
-This package is based on a <a href="https://github.com/jitsi/docker-jitsi-meet" target="_blank">repository</a> that contains the necessary tools to run a Jitsi Meet stack on <a href="https://www.docker.com/" target="_blank">Docker</a> 
+This package is based on a <a href="https://github.com/jitsi/docker-jitsi-meet" target="_blank">repository</a> that contains the necessary tools to run a Jitsi-Meet stack on <a href="https://www.docker.com/" target="_blank">Docker</a> 
 using <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose</a> wrapped in scripts and UI.<br>
 <b>Further Details:</b> Select section <input type="radio" name="section" id = "qst" value="qst" onclick="showQuickStSection()" checked/>&nbsp;Quick Start&nbsp;
 	<input type="radio" name="section" id = "arc" value="arc" onclick="showArchSection()" />&nbsp;Architecture&nbsp;
@@ -12,13 +12,13 @@ using <a href="https://docs.docker.com/compose/" target="_blank">Docker Compose<
 	<input type="radio" name="section" id = "chg" value="chg" onclick="showChgSection()" />&nbsp;Change-Log & Roadmap&nbsp;
 <section id="frmQst">
 <h2>Quick Start</h2>
-Basics had been set during install. Post changing configuration run jitsi-cli reset to apply it. Run jitsi-cli refresh weekly for new releases.
-Using a NAT router ensure to set DOCKER_HOST_ADDRESS to external ip route streaming port 10000(udp). Use Synology Reverse-Proxy to route https-443 to container http-8080.
+Install did set the basics. Further configuration changes require runing jitsi-cli reset to apply it. Run jitsi-cli refresh weekly for new releases.
+When using a NAT router with dynamic IP schedule jitsi-cli start each morning to set DOCKER_HOST_ADDRESS to public ip. Use Synology Reverse-Proxy to route https-443 to container http-8080.
 <center><a href="https://github.com/jitsi/docker-jitsi-meet#jitsi-meet-on-docker"  target="_blank"><img src="images/jitsi-docker.png" alt="Jitsi Architecture"></a></center>
 </section>
 <section id="frmArc" style="display:none">
 <h2>Architecture</h2>
-A Jitsi Meet installation can be broken down into the following components:
+A Jitsi-Meet installation can be broken down into the following components:
 <li>a web interface (for landing) & a XMPP server (for user authentication)
 <li>a conference focus component & a video router (could be more than one)
 <li>a SIP gateway for audio calls & a Broadcasting Infrastructure for recording or streaming a conference.
@@ -26,14 +26,29 @@ A Jitsi Meet installation can be broken down into the following components:
 </section>
 <section id="frmFaq" style="display:none">
 <h2>Frequently Asked Questions</h2>
+<B><I>I have trouble with SSL and Lets-Encrypt, I enabled it in Docker Environment as per HowTo</I></B>
+<br>The embedded Lets-Encrypt feature of Jitsi does not work since Synology hold the port 80 and 4443. However it is not necessary to give SSL certificate to container. Instead use the Synology Reverse Proxy feature under Control Panel, Application Portal mapping http(s) to localhost:8080 (or your respective port). On the other hand the package allows via 'SYNOPKG_SYNO_CERT_SYNC=1' to sync a certificated maintainind via Lets-Encrypt on Synology level into the container, a power user feature.
+<br><B><I>I enabled all features and the Jibri container fails to run</I></B>
+<br>As indicated at install Jibri is experimental and will currently not start in docker unless ALSA audio loopback is installed on host (see <a href="https://github.com/jitsi/docker-jitsi-meet/issues/721" target="_blank">Issue 721</a>).
+<br><B><I>Jitsi video stream stops after a few seconds. It was working initally</I></B>
+<br>Run jitsicli health. Probably your public dynamic ip address changed and it is not reflected in Jitsi. To apply this start the package each morning. 
+<br><B><I>How can I make sure no one anonymous is misusing my Jitsi starting conferences?</I></B>
+<br>This Jitsi package runs with authentication mode by default, hence the initial moderator user and password at install. You cann add more via jitsi-cli add-usr. At each reset / refresh the users will be added again.
+<br><B><I>How can customize Jitsi e.g. adding my imprint and data protection link?</I></B>
+<br>This is where the Imprint-Footer and Config-Mod script comes into play. Look at the templates. Respectively the mod-script has interesting features prepared to be uncommented.<br>
+<B><I>I cannot update the configuration file, the save button is disabled</I></B>
+<br>The JavaScript class does not detect inline editing in some cases. Add space at end of new line to get the save button enabled.
 </section>
 <section id="frmChg" style="display:none">
 <h2>Change-Log & Roadmap</h2>
-[2020-05-22 v.0.5 [Modify nginx to show real-ip from reverse proxy instead of docker ips]<br>
+[2020-09-12 v.0.8 [Health check cmd-line and UI, added Etherpad, Jibri, Jigasi orchestration]<br>
+[2020-08-22 v.0.7 [Yml files from repo, imprint in jitsi-web, modding-script after refresh]<br>
+[2020-06-12 v.0.6 [Minor fixes, option to disable welcome page, refresh as ui bg job]<br>
+[2020-05-23 v.0.5 [Modify nginx to show real-ip from reverse proxy instead of docker ips]<br>
 [2020-05-21 v.0.4 [Sync public IP, sync Synology Let's Encrypt certificate  to Jitsi]<br>
 [2020-05-16 v.0.3 [Initial stable build with UI to run cfg and jitsi-cli via browser]<br>
 [2020-05-09 v.0.2 [Moderator user at install and via jitsi-cli added each container refresh]<br>
 [2020-05-01 v.0.1 [initial build using jitsi-docker-meet repository extending cmds by jitsi-cli]<br>
-Roadmap: optional features like etherpad, list connect, room usage from logs 
+Roadmap: warning on used ports before container start, room usage logs, Jibri audi dependency<br>
 </section>
 </p></big></div>

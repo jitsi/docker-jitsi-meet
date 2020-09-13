@@ -113,7 +113,7 @@ sub admin_or_die { # wrappes isadmin from user_priv and exit html msg
     $debug = "CGI-User: $cgiUser, UI-User: $uiUser isAdmin: $isAdmin, dsmToken: $dsmToken, xsToken: $xsToken" if $isDebug;
     # exit with warning if not admin or in admin group
     if ( !$isAdmin ) {
-        print "<HTML><HEAD><TITLE>Login Required</TITLE></HEAD><BODY><H3>&nbsp;Please login as priviledged admin for using this webpage<br>&nbsp;user cgi / ui: $cgiUser / $uiUser, token: $dsmToken</H3></BODY></HTML>\n";
+        print "Please login as priviledged admin for using this webpage";
         die;
     }
     return ($debug);

@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use File::Copy;
-my $isDebug = 1; # debug modus enable for cmd-line test and to get query, token info
+my $isDebug = 0; # debug modus enable for cmd-line test and to get query, token info
 my $debug = ""; # debug text
 my $uiDir=$0; # get current working dir runing ui
 $uiDir=~s#/[^/]+$##g; # cleaning to get dirname
@@ -14,7 +14,7 @@ chomp($dsmLang) if $dsmLang;
 
 # *** common head cgi section: set html context, verify login
 print "Content-type: text/html\n\n";
-admin_or_die($isDebug, $debug); # returns user infor in debug string, when debug is on it will not die
+admin_or_die($isDebug, $debug); # returns user info in debug string, when debug is on it will not die
 $debug .= " QueryStr: $ENV{'QUERY_STRING'}" if $isDebug && $ENV{'QUERY_STRING'};
 
 # *** specific cgi section:

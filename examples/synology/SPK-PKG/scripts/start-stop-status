@@ -23,7 +23,9 @@ MYSCRIPT=$(basename "$0")
 case $1 in
     start)
         echo "Starting $CONTAINERS..."
-		UPDATE_PUBLIC_IP
+		if ! PUBLIC_IP_IN_SYNC ; then
+			UPDATE_PUBLIC_IP
+		fi
 		# initial start after reset: start to get cfg, run real-ip, special settings restart
 		if [ ! -e /etc/jitsi/web/nginx ] ; then
 			START_CONTAINER
@@ -37,18 +39,18 @@ case $1 in
 		# list nginx-error-log last entry
 		WEB_ERR=$(EXEC_IN_CONTAINER web "tail -1 /var/log/nginx/error.log")
 		[ -z "$WEB_ERR" ] || echo "Jitsi-Web last error: $WEB_ERR"
-       ;;
+ 		exit 0
+      ;;
     stop)
         echo "Stopping $CONTAINERS..."
 		STOP_CONTAINER
+		exit 0
         ;;
     status)
-		for CONT in $IMGS_SHORT; do
-			if ! $SUDO "$DOCKER_BIN" inspect "jitsi_$CONT" | grep -q "\"Status\": \"running\"," ; then
-				echo "$CONT stopped"
-				exit 1
-			fi
-		done
+		# quick status on containers not using compose for max performance to Synology GUI
+		if ! QUICKSTAT_CONTAINER ; then
+			exit 1
+		fi
 		# as jitsi-cli act more verbose with longer compose response time 
 		if [ "$MYSCRIPT" = "jitsi-cli" ] ; then
 	        echo "Running - fetching details..."
@@ -56,19 +58,73 @@ case $1 in
 		fi
 		exit 0
         ;;
+    health)
+		HEALTH_OK=1
+		if ! QUICKSTAT_CONTAINER ; then
+			MSG="Some Container are stopped restart and check logs.."
+			#MSG=$(MESSAGE_LANG "$CONT_STOPPED")
+			echo "$MSG"
+			HEALTH_OK=0
+		fi
+		if ! PUBLIC_IP_IN_SYNC ; then
+			MSG="Your routers public IP is out of sync with Jitsi Docker-Settings; run start to resync.."
+			#MSG=$(MESSAGE_LANG "$PUBIP_OUTSYNC")
+			echo "$MSG"			
+			MSG="Hint: schedule $MYSCRIPT start each morning in case routers dynamic IP changes each night"
+			#MSG=$(MESSAGE_LANG "$RESTART_4IPSYNC")
+			echo "$MSG"
+			HEALTH_OK=0
+		fi
+		if ! DOCKER_UPDATE_IN_SYNC ; then
+			MSG="New Jitsi images have been released on Docker-Hub; run $MYSCRIPT refresh.."
+			#MSG=$(MESSAGE_LANG "$IMG_OUTSYNC")
+			echo "$MSG"			
+			MSG="Hint: schedule $MYSCRIPT refresh each week to stay in sync with Docker images releases.."
+			#MSG=$(MESSAGE_LANG "$RESTART_4IPSYNC")
+			echo "$MSG"
+			HEALTH_OK=0
+		fi
+		DO_ETHERPAD=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ETHERPAD)
+		[ -z "$DO_ETHERPAD" ] && DO_ETHERPAD=0
+		# shellcheck disable=SC2086
+		if [ $DO_ETHERPAD -eq 1 ] && $SUDO grep -q "^#ETHERPAD_URL_BASE" "$ETC_PATH"/.env ; then
+			MSG="Etherpad container is enabled but in environment file ETHERPAD_URL_BASE is commented out, so it will not work.."
+			#MSG=$(MESSAGE_LANG "$ETHPAD_ENABLE")
+			echo "$MSG"
+			HEALTH_OK=0
+		fi
+		if [ $HEALTH_OK -eq 1 ] ; then
+			DOCKER_UPDATE=$(GET_DOCKER_UPDATE web)
+			MSG="Everything looks healthy for Jitsi-Meet on Images from $DOCKER_UPDATE.."
+			#MSG=$(MESSAGE_LANG "$HEALTY")
+			echo "$MSG"
+			exit 0
+		else
+			exit 0
+		fi
+        ;;
     log)
 		case "$2" in
 			web)
-				SERVICE=jitsi-web
+				SERVICE=jitsi_web
 				;;
 			prosody)
-				SERVICE=jitsi-prosody
+				SERVICE=jitsi_prosody
 				;;
 			jicofo)
-				SERVICE=jitsi-jicofo
+				SERVICE=jitsi_jicofo
 				;;
 			jvb)
-				SERVICE=jitsi-jvb
+				SERVICE=jitsi_jvb
+				;;
+			etherpad)
+				SERVICE=jitsi_etherpad
+				;;
+			jibri)
+				SERVICE=jitsi_jibri
+				;;
+			jigasi)
+				SERVICE=jitsi_jigasi
 				;;
 			pkg)
 				if [ -t 1 ] ; then $SUDO chmod 666 "$LOG_FILE" ; fi
@@ -88,7 +144,8 @@ case $1 in
 				;;
 		esac
 		CONTAINER_LOGS "$SERVICE"
-        ;;
+ 		exit 0
+       ;;
     reset)
 		LOG_IF_BETA "running REMOVE_CONTAINER.."
 		REMOVE_CONTAINER
@@ -118,35 +175,22 @@ case $1 in
 			fi
 			LOG_IF_BETA "done.."
 		fi
-        ;;
+ 		exit 0
+       ;;
     refresh)
-		if [ -z "$2" ]; then
-			MODE=img
-			echo "defaulting refresh mode to: img (docker-image); also available: cfg (docker-yml and env) or all"
+		if DOCKER_UPDATE_IN_SYNC ; then
+			MSG="Your Images and Container are up to date with Jitsi on Docker-Hub.."
+			#MSG=$(MESSAGE_LANG "$IMAGES_INSYNC")
+			echo "$MSG"			
 		else
-			if [ "$2" != "img" ] && [ "$2" != "cfg" ] && [ "$2" != "all" ] ; then
-				echo "need mode for refresh: img or cfg or all"
-				exit 1
-			fi
-			MODE="$2"
-		fi
-		if [ "$MODE" != "img" ] ; then
+			# refresh env, compose and docker images as these to avoid new features not reflected in env
 			LOG_IF_BETA "running LOAD_REPO_CFG.."
 			LOAD_REPO_CFG
 			LOG_IF_BETA "running REFRESH_ENV.."
 			REFRESH_ENV
-		fi
-		if [ "$MODE" != "cfg" ] ; then
-			LOG_IF_BETA "running GET_DOCKER_UPDATE.."
-			DOCKER_UPDATE=$(GET_DOCKER_UPDATE)
-			SYNOPKG_DOCKER_UPDATE=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_DOCKER_UPDATE)
-			# set docker_update or exit if up to date
-			if [ "$DOCKER_UPDATE" = "$SYNOPKG_DOCKER_UPDATE" ] ; then
-				echo "Docker Images are up to date: $DOCKER_UPDATE"
-				exit 0
-			else
-				$SUDO sed -i -e "s~SYNOPKG_DOCKER_UPDATE=.*~SYNOPKG_DOCKER_UPDATE=${DOCKER_UPDATE}~" "$ETC_PATH"/.cfg
-			fi
+			# set new Docker_Update into cfg
+			DOCKER_UPDATE=$(GET_DOCKER_UPDATE web)
+			$SUDO sed -i -e "s~SYNOPKG_DOCKER_UPDATE=.*~SYNOPKG_DOCKER_UPDATE=${DOCKER_UPDATE}~" "$ETC_PATH"/.cfg
 			LOG_IF_BETA "running REMOVE_CONTAINER/IMAGES,COMPOSE_CONTAINER and restart.."
 			REMOVE_CONTAINER
 			REMOVE_IMAGES
@@ -171,6 +215,7 @@ case $1 in
 				fi
 			fi
 		fi
+		exit 0
         ;;
     cmd-line)
 		case "$2" in
@@ -189,6 +234,12 @@ case $1 in
 			etherpad)
 				SERVICE=etherpad
 				;;
+			jibri)
+				SERVICE=jibri
+				;;
+			jigasi)
+				SERVICE=jigasi
+				;;
 			*)
 				echo "Need service for cmd-line: web, prosody, jicofo, jvb, etherpad"
 				exit 1
@@ -201,6 +252,7 @@ case $1 in
 			CMD="bash"
 		fi
 		EXEC_IN_CONTAINER "$SERVICE" "$CMD"
+		exit 0
 		;;
     add-usr)
 		if [ $# -lt 3 ] ; then
@@ -210,6 +262,7 @@ case $1 in
 		echo "adding user $2 via prosodyctl in prosody container.."
 		EXEC_IN_CONTAINER prosody "prosodyctl --config /config/prosody.cfg.lua register $2 meet.jitsi $3"
 		STORE_USER "$2" "$3"
+		exit 0
 		;;
     del-usr)
 		if [ $# -lt 2 ] ; then
@@ -219,9 +272,10 @@ case $1 in
 		echo "deleting user $2 via prosodyctl in prosody container.."
 		EXEC_IN_CONTAINER prosody "prosodyctl --config /config/prosody.cfg.lua deluser ${2}@meet.jitsi"
 		REMOVE_USER "$2"
+		exit 0
 		;;
     *)
-		echo "usage $MYSCRIPT start | stop | status | log | reset | refresh | add-usr | del-usr | cmd-line"
+		echo "usage $MYSCRIPT start | stop | status | health | log | reset | refresh | add-usr | del-usr | cmd-line"
         exit 1
         ;;
 esac

@@ -12,7 +12,7 @@ DOCKER_BIN=/usr/local/bin/docker
 DOCKER_COMP=/usr/local/bin/docker-compose
 LOG_FILE="$TARGET_PATH"/log/package.log
 if [ ! -e "$TARGET_PATH" ]; then LOG_FILE=/tmp/"${PKG_SHORT}"-package.log ; fi
-COMPOSE_FILE="$ETC_SHORT"/docker-compose.yml
+COMPOSE_FILE_CORE="$ETC_SHORT"/docker-compose.yml
 
 # *** sub-routines common tooling ***
 # build messages for logging based on lang strings putting arguments inline on prepared position {0},{1}.. 
@@ -69,9 +69,6 @@ NOTIFY_MESSAGE()
 		RCP="@administrators"
 	fi
 	/usr/syno/bin/synodsmnotify "$RCP" "$PKG_NAME" "$1"
-}
-GEN_PASSWORD() {
-    openssl rand -hex 16
 }
 MEET_LE_CERT_PATH() {
 	local MEET_DOM="$1"
@@ -172,6 +169,10 @@ DO_SOFTLINKS() {
 	REAL_UI=$(realpath /var/packages/"$PKG_NAME"/target/ui)
 	ln -sf "$REAL_UI" "$UI_PATH"
 }
+# generate password e.g. for the secrets in env
+GEN_PASSWORD() {
+    openssl rand -hex 16
+}
 # modify the .cfg and .usr file with secrets, initial user and other settings from package-wizard
 SET_ENV_CFG_USR_SECRETS() {
 	# set package wizard values for test modus from cmd-line
@@ -188,6 +189,9 @@ SET_ENV_CFG_USR_SECRETS() {
 		PKGWIZ_SYNO_CERT_SYNC=false
 		PKGWIZ_PUBIP_TO_DOCKER_HOST_ADDRESS=false
 		PKGWIZ_X_REALIP_TO_NGINX=false
+		PKGWIZ_ETHERPAD=0
+		PKGWIZ_JIBRI=0
+		PKGWIZ_JIGASI=0
 		SYNOPKG_DSM_LANGUAGE=enu
 		PKGWIZ_MOD_USR=demo_moderator
 		PKGWIZ_MOD_PASSWD=secret
@@ -216,8 +220,14 @@ SET_ENV_CFG_USR_SECRETS() {
 	[ "$PKGWIZ_PUBIP_TO_DOCKER_HOST_ADDRESS" = true ] && SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=1
 	local PUBLIC_IP=$(curl -s "$IPINFO_URL")
 	local SYNOPKG_X_REALIP_TO_NGINX=0
+	local SYNOPKG_ETHERPAD=0
+	[ "$PKGWIZ_ETHERPAD" = true ] && SYNOPKG_ETHERPAD=1
+	local SYNOPKG_JIBRI=0
+	[ "$PKGWIZ_JIBRI" = true ] && SYNOPKG_JIBRI=1
+	local SYNOPKG_JIGASI=0
+	[ "$PKGWIZ_JIGASI" = true ] && SYNOPKG_JIGASI=1
 	[ "$PKGWIZ_X_REALIP_TO_NGINX" = true ] && SYNOPKG_X_REALIP_TO_NGINX=1
-	local SYNOPKG_DOCKER_UPDATE=$(GET_DOCKER_UPDATE)
+	local SYNOPKG_DOCKER_UPDATE=$(GET_DOCKER_UPDATE web)
 
 	local JICOFO_COMPONENT_SECRET=$(GEN_PASSWORD)
 	local JICOFO_AUTH_PASSWORD=$(GEN_PASSWORD)
@@ -228,73 +238,153 @@ SET_ENV_CFG_USR_SECRETS() {
 
 	# update env via sed, we uncomment '#' for: PUBLIC_URL, ENABLE_AUTH / GUEST, DISABLE_HTTPS
 	sed -i \
-	    -e "s~JICOFO_COMPONENT_SECRET=.*~JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}~g" \
-	    -e "s~JICOFO_AUTH_PASSWORD=.*~JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}~g" \
+	    -e "s~JICOFO_COMPONENT_SECRET=.*~JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}~" \
+	    -e "s~JICOFO_AUTH_PASSWORD=.*~JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}~" \
 	    -e "s~JVB_AUTH_PASSWORD=.*~JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}~g" \
-	    -e "s~JIGASI_XMPP_PASSWORD=.*~JIGASI_XMPP_PASSWORD=${JIGASI_XMPP_PASSWORD}~g" \
-	    -e "s~JIBRI_RECORDER_PASSWORD=.*~JIBRI_RECORDER_PASSWORD=${JIBRI_RECORDER_PASSWORD}~g" \
-	    -e "s~JIBRI_XMPP_PASSWORD=.*~JIBRI_XMPP_PASSWORD=${JIBRI_XMPP_PASSWORD}~g" \
+	    -e "s~JIGASI_XMPP_PASSWORD=.*~JIGASI_XMPP_PASSWORD=${JIGASI_XMPP_PASSWORD}~" \
+	    -e "s~JIBRI_RECORDER_PASSWORD=.*~JIBRI_RECORDER_PASSWORD=${JIBRI_RECORDER_PASSWORD}~" \
+	    -e "s~JIBRI_XMPP_PASSWORD=.*~JIBRI_XMPP_PASSWORD=${JIBRI_XMPP_PASSWORD}~" \
 	    -e "s~CONFIG=.*~CONFIG=${CONFIG}~g" \
 	    -e "s~HTTP_PORT=.*~HTTP_PORT=${HTTP_PORT}~" \
 	    -e "s~HTTPS_PORT=.*~HTTPS_PORT=${HTTPS_PORT}~" \
 	    -e "s~TZ=.*~TZ=${TZ}~g" \
-	    -e "s~#PUBLIC_URL=.*~PUBLIC_URL=${PUBLIC_URL}~g" \
-	    -e "s~#DOCKER_HOST_ADDRESS=.*~DOCKER_HOST_ADDRESS=${PUBLIC_IP}~g" \
-	    -e "s~JVB_PORT=.*~JVB_PORT=${JVB_PORT}~g" \
-	    -e "s~JVB_TCP_PORT=.*~JVB_TCP_PORT=${JVB_TCP_PORT}~g" \
-	    -e "s~#ENABLE_AUTH=.*~ENABLE_AUTH=${ENABLE_AUTH}~g" \
-	    -e "s~#ENABLE_GUESTS=.*~ENABLE_GUESTS=${ENABLE_GUESTS}~g" \
-	    -e "s~#DISABLE_HTTPS=.*~DISABLE_HTTPS=${DISABLE_HTTPS}~g" \
-	    "$ETC_PATH"/.env
-	# update cfg via sed to keep the parameters passed from Package-Wizard during install
-	sed -i \
-	    -e "s~SYNOPKG_DSM_LANGUAGE=.*~SYNOPKG_DSM_LANGUAGE=\"${SYNOPKG_DSM_LANGUAGE}\"~" \
-	    -e "s~SYNOPKG_MEET_DOMAIN_NAME=.*~SYNOPKG_MEET_DOMAIN_NAME=\"${SYNOPKG_MEET_DOMAIN_NAME}\"~" \
-	    -e "s~SYNOPKG_ADD_IMPRINT=.*~SYNOPKG_ADD_IMPRINT=${SYNOPKG_ADD_IMPRINT}~" \
-	    -e "s~SYNOPKG_SYNO_CERT_SYNC=.*~SYNOPKG_SYNO_CERT_SYNC=${SYNOPKG_SYNO_CERT_SYNC}~" \
-	    -e "s~SYNOPKG_PRIVIP_DOCKER_HOST=.*~SYNOPKG_PRIVIP_DOCKER_HOST=${SYNOPKG_PRIVIP_DOCKER_HOST}~" \
-	    -e "s~SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=.*~SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=${SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS}~" \
-	    -e "s~SYNOPKG_X_REALIP_TO_NGINX=.*~SYNOPKG_X_REALIP_TO_NGINX=${SYNOPKG_X_REALIP_TO_NGINX}~" \
-	    -e "s~SYNOPKG_DOCKER_UPDATE.*~SYNOPKG_DOCKER_UPDATE=${SYNOPKG_DOCKER_UPDATE}~" \
-	    "$ETC_PATH"/.cfg
-	# update usr via sed to populate 1st moderator user, pwd from Package-Wizard during install
-	sed -i -e "s~refresh~refresh\nUSR_${PKGWIZ_MOD_USR}=\"${PKGWIZ_MOD_PASSWD}\"~" "$ETC_PATH"/.usr
-}
-# refresh environment and compose files post loaded from repository
-REFRESH_ENV() {
-	# source cfg file, before refresh, make it readable if not root
-	$SUDO chmod 644 "$ETC_PATH"/.env
-	. "$ETC_PATH"/.env
-	$SUDO rm "$ETC_PATH"/.env
-	$SUDO cp "$TARGET_PATH"/cfg/env.example "$ETC_PATH"/.env
-	$SUDO chmod 640 "$ETC_PATH"/.env
-	$SUDO rm "$ETC_PATH"/*.yml
-	$SUDO cp "$TARGET_PATH"/cfg/*.yml "$ETC_PATH"
-	$SUDO chmod 640 "$ETC_PATH"/*.yml
-	$SUDO sed -i \
-	    -e "s~JICOFO_COMPONENT_SECRET=.*~JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}~" \
-	    -e "s~JICOFO_AUTH_PASSWORD=.*~JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}~" \
-	    -e "s~JVB_AUTH_PASSWORD=.*~JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}~" \
-	    -e "s~JIGASI_XMPP_PASSWORD=.*~JIGASI_XMPP_PASSWORD=${JIGASI_XMPP_PASSWORD}~" \
-	    -e "s~JIBRI_RECORDER_PASSWORD=.*~JIBRI_RECORDER_PASSWORD=${JIBRI_RECORDER_PASSWORD}~" \
-	    -e "s~JIBRI_XMPP_PASSWORD=.*~JIBRI_XMPP_PASSWORD=${JIBRI_XMPP_PASSWORD}~" \
-	    -e "s~CONFIG=.*~CONFIG=${CONFIG}~" \
-	    -e "s~HTTP_PORT=.*~HTTP_PORT=${HTTP_PORT}~" \
-	    -e "s~HTTPS_PORT=.*~HTTPS_PORT=${HTTPS_PORT}~" \
-	    -e "s~TZ=.*~TZ=${TZ}~g" \
 	    -e "s~#PUBLIC_URL=.*~PUBLIC_URL=${PUBLIC_URL}~" \
-	    -e "s~#DOCKER_HOST_ADDRESS=.*~DOCKER_HOST_ADDRESS=${DOCKER_HOST_ADDRESS}~" \
+	    -e "s~#DOCKER_HOST_ADDRESS=.*~DOCKER_HOST_ADDRESS=${PUBLIC_IP}~" \
 	    -e "s~JVB_PORT=.*~JVB_PORT=${JVB_PORT}~" \
 	    -e "s~JVB_TCP_PORT=.*~JVB_TCP_PORT=${JVB_TCP_PORT}~" \
 	    -e "s~#ENABLE_AUTH=.*~ENABLE_AUTH=${ENABLE_AUTH}~" \
 	    -e "s~#ENABLE_GUESTS=.*~ENABLE_GUESTS=${ENABLE_GUESTS}~" \
 	    -e "s~#DISABLE_HTTPS=.*~DISABLE_HTTPS=${DISABLE_HTTPS}~" \
 	    "$ETC_PATH"/.env
+	# update cfg via sed to keep the parameters passed from Package-Wizard during install
+	sed -i \
+	    -e "s~SYNOPKG_DSM_LANGUAGE=.*~SYNOPKG_DSM_LANGUAGE=${SYNOPKG_DSM_LANGUAGE}~" \
+	    -e "s~SYNOPKG_MEET_DOMAIN_NAME=.*~SYNOPKG_MEET_DOMAIN_NAME=${SYNOPKG_MEET_DOMAIN_NAME}~" \
+	    -e "s~SYNOPKG_ADD_IMPRINT=.*~SYNOPKG_ADD_IMPRINT=${SYNOPKG_ADD_IMPRINT}~" \
+	    -e "s~SYNOPKG_SYNO_CERT_SYNC=.*~SYNOPKG_SYNO_CERT_SYNC=${SYNOPKG_SYNO_CERT_SYNC}~" \
+	    -e "s~SYNOPKG_PRIVIP_DOCKER_HOST=.*~SYNOPKG_PRIVIP_DOCKER_HOST=${SYNOPKG_PRIVIP_DOCKER_HOST}~" \
+	    -e "s~SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=.*~SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS=${SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS}~" \
+	    -e "s~SYNOPKG_X_REALIP_TO_NGINX=.*~SYNOPKG_X_REALIP_TO_NGINX=${SYNOPKG_X_REALIP_TO_NGINX}~" \
+	    -e "s~SYNOPKG_ETHERPAD.*~SYNOPKG_ETHERPAD=${SYNOPKG_ETHERPAD}~" \
+	    -e "s~SYNOPKG_JIBRI.*~SYNOPKG_JIBRI=${SYNOPKG_JIBRI}~" \
+	    -e "s~SYNOPKG_JIGASI.*~SYNOPKG_JIGASI=${SYNOPKG_JIGASI}~" \
+	    -e "s~SYNOPKG_DOCKER_UPDATE.*~SYNOPKG_DOCKER_UPDATE=${SYNOPKG_DOCKER_UPDATE}~" \
+	    "$ETC_PATH"/.cfg
+	# update usr via sed to populate 1st moderator user, pwd from Package-Wizard during install
+	sed -i -e "s~refresh~refresh\nUSR_${PKGWIZ_MOD_USR}=\"${PKGWIZ_MOD_PASSWD}\"~" "$ETC_PATH"/.usr
+	# enable etherpad if required
+	if [ $SYNOPKG_ETHERPAD -eq 1 ] ; then
+		sed -i -e "s~#ETHERPAD_URL_BASE~ETHERPAD_URL_BASE~" "$ETC_PATH"/.env
+	fi
+}
+# set new environment file from source putting backup to ui-originals folder e.g. when updating with new env.example
+SET_ENV_TO_ENV() {
+	local ENV_FILE
+	local ENV_SOURCE
+	local ENV_TARGET
+	local ENV_SAMPLE
+	local ENV_VARS
+	local ENV_VAR
+	local ENV_KEY=""
+	local ENV_VALUE=""
+	if [ -n "$1" ] ; then
+		ENV_FILE="$1"
+	else
+		ENV_FILE=".env"
+	fi
+	ENV_SOURCE="$TARGET_PATH"/ui/original/"$ENV_FILE"
+	ENV_TARGET="$ETC_SHORT"/"$ENV_FILE"
+	# cut of first char . and append example
+	ENV_SAMPLE="$TARGET_PATH/cfg/${ENV_FILE#?}.example"
+	if [ ! -f "$ENV_TARGET" ] ; then
+		echo "Error: env file to update not found: $ENV_TARGET"
+		return 1
+	fi
+	if [ ! -f "$ENV_SAMPLE" ] ; then
+		echo "Error: env file sample not found: $ENV_SAMPLE"
+		return 1
+	fi
+	# copy current env file to ui-original to use as source and use example file as new target
+	$SUDO cp -f "$ENV_TARGET" "$ENV_SOURCE"
+	$SUDO cp -f "$ENV_SAMPLE" "$ENV_TARGET"
+    ENV_VARS=$($SUDO grep -v '^#' "$ENV_SOURCE" | xargs)
+	LOG_IF_BETA "$ENV_FILE: $ENV_VARS"
+	for ENV_VAR in $ENV_VARS ; do
+		# key value split by seperator "=" and %%-* or #* for left and right side
+		# shellcheck disable=SC2034
+		ENV_KEY=${ENV_VAR%%'='*}
+		ENV_VALUE=${ENV_VAR#*'='}
+		# set new value from source file uncomment if needed
+		if $SUDO grep -q "^#${ENV_KEY}" "$ENV_TARGET" ; then
+			$SUDO sed -i -e "s~#$ENV_KEY=.*~$ENV_KEY=${ENV_VALUE}~" "$ENV_TARGET"
+		else
+			$SUDO sed -i -e "s~$ENV_KEY=.*~$ENV_KEY=${ENV_VALUE}~" "$ENV_TARGET"
+		fi
+	done
+	return 0
+}
+
+# refresh environment and compose files post loaded from repository using SET_ENV_TO_ENV
+REFRESH_ENV() {
+	SET_ENV_TO_ENV ".env"
+	SET_ENV_TO_ENV ".cfg"
+	# copy current yml files to ui-original and replace it with new ones downloaded to target dir
+	$SUDO cp -f "$ETC_PATH"/*.yml "$TARGET_PATH"/ui/original
+	$SUDO cp -f "$TARGET_PATH"/cfg/*.yml "$ETC_PATH"
+}
+# load the cfg aka yml and env files from jitsi repository 
+LOAD_REPO_CFG() {
+	if ! CHECK_DOWNLOAD_SOURCE "$GREPO_URL/env.example"
+	then
+		MSG=$(MESSAGE_LANG "$FAILED_REPO" "$GREPO_URL")
+		echo "$MSG"
+		LOG_MESSAGE "$MSG"
+		exit 1
+	fi
+	local GET_FILE
+	# remove old files in target dir
+	if [ -f "$TARGET_PATH"/cfg/env.example ] ; then
+		$SUDO rm "$TARGET_PATH"/cfg/env.example
+	fi
+	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] ; then
+		$SUDO rm "$TARGET_PATH"/cfg/*.yml
+	fi
+	for GET_FILE in $ETC_REPO_FILES ; do
+		LOG_IF_BETA "wget -q --no-check-certificate -P $TARGET_PATH/cfg  $GREPO_URL/$GET_FILE"
+		$SUDO wget -q --no-check-certificate "$GREPO_URL"/"$GET_FILE" -P "$TARGET_PATH"/cfg
+		if [ ! -f "$TARGET_PATH"/cfg/"$GET_FILE" ] ; then
+			echo "could not load from repo $GREPO_URL/$GET_FILE"
+		fi
+	done
+	local CONT_SHORT=""
+	# add container and host-name to compose files
+	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] && ! grep -q "hostname"  "$TARGET_PATH"/cfg/docker-compose.yml ; then
+		for CONT_SHORT in $IMGS_BASE_SHORT; do
+			LOG_IF_BETA "adding to docker-compose.yml hostname for $CONT_SHORT.."
+			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        hostname: jitsi-${CONT_SHORT}~" "$TARGET_PATH"/cfg/docker-compose.yml
+		done
+	fi
+	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] && ! grep -q "container_name"  "$TARGET_PATH"/cfg/docker-compose.yml ; then
+		for CONT_SHORT in $IMGS_BASE_SHORT; do
+			LOG_IF_BETA "adding to docker-compose.yml container_name for $CONT_SHORT.."
+			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        container_name: jitsi_${CONT_SHORT}~" "$TARGET_PATH"/cfg/docker-compose.yml
+		done
+	fi
+	for CONT_SHORT in $IMGS_XTRA_SHORT; do
+		LOG_IF_BETA "adding to ${CONT_SHORT}.yml hostname / container_name.."
+		if [ -f "$TARGET_PATH"/cfg/"${CONT_SHORT}".yml ] && ! grep -q "hostname"  "$TARGET_PATH"/cfg/"${CONT_SHORT}".yml ; then
+			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        hostname: jitsi-${CONT_SHORT}~" "$TARGET_PATH"/cfg/"${CONT_SHORT}".yml
+		fi
+		if [ -f "$TARGET_PATH"/cfg/"${CONT_SHORT}".yml ] && ! grep -q "container_name"  "$TARGET_PATH"/cfg/"${CONT_SHORT}".yml ; then
+			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        container_name: jitsi_${CONT_SHORT}~" "$TARGET_PATH"/cfg/"${CONT_SHORT}".yml
+		fi
+	done
 }
 # ** show progress in docker gui /var/packages/Docker/target/tool/helper JOB: image_name image_tag image_path image_download_size_mb
 # ** ensure SYNOPKG_PKG_PROGRESS_PATH is set to /tmp/install_progress_$PKG_NAME when testing not wrapped into synology install GUI mode
 LOAD_IMAGES_GUI() {
 	local IMG
+	local IMG_NO
 	local IDX=0
 	local SIZE_TOT=0
 	local LOAD_JOB=""
@@ -303,16 +393,29 @@ LOAD_IMAGES_GUI() {
 		SYNOPKG_PKG_PROGRESS_PATH="/tmp/install_progress_$PKG_NAME"
 		export SYNOPKG_PKG_PROGRESS_PATH
 	fi
-	# build string for images to load of name, tag, path, size to pass to helper tool
-	for IMG in $IMGS_SHORT; do
-		LOAD_JOB="$LOAD_JOB jitsi/${IMG} ${IMGS_TAG[$IDX]} "/tmp/$PKG_NAME-${IDX}.tar.xz" ${IMGS_SIZE[$IDX]}"
+	# build string for images to load by name, tag, path, size to pass to helper tool
+	for IMG in $IMGS_BASE_SHORT; do
+		LOAD_JOB="$LOAD_JOB jitsi/${IMG} ${IMGS_BASE_TAG[$IDX]} "/tmp/$PKG_NAME-${IDX}.tar.xz" ${IMGS_BASE_SIZE[$IDX]}"
 		let IDX=1+$IDX
-		let SIZE_TOT=${IMGS_SIZE[$IDX]}+$SIZE_TOT
+		let SIZE_TOT=${IMGS_BASE_SIZE[$IDX]}+$SIZE_TOT
 	done
 	# chop off first space character
 	LOAD_JOB="${LOAD_JOB:1}"
-	# build_ Pulling the $IDX $PKG_SHORT images at total size ${SIZE_TOT}M. See progress in Docker GUI Images
-	MSG=$(MESSAGE_LANG "$PULL_IMAGES_MSG" "$IDX" "$PKG_SHORT" "$SIZE_TOT")
+	IMG_NO=$IDX
+	# now add extra images in case PKGWIZ_ETHERPAD / JIBRI / JIGASI is set
+	IDX=0
+	for IMG in $IMGS_XTRA_SHORT; do
+		if  [ $IDX -eq 0 ] && [ "$PKGWIZ_ETHERPAD" = "true" ]  ||
+			[ $IDX -eq 1 ] && [ "$PKGWIZ_JIBRI" = "true" ]  ||
+			[ $IDX -eq 2 ] && [ "$PKGWIZ_JIGASI" = "true" ] ; then
+			LOAD_JOB="$LOAD_JOB jitsi/${IMG} ${IMGS_XTRA_TAG[$IDX]} "/tmp/$PKG_NAME-1${IDX}.tar.xz" ${IMGS_XTRA_SIZE[$IDX]}"
+			let IDX=1+$IDX
+			let SIZE_TOT=${IMGS_XTRA_SIZE[$IDX]}+$SIZE_TOT
+		fi
+	done
+	let IMG_NO=$IMG_NO+$IDX
+	# build_ Pulling the $IMG_NO $PKG_SHORT images at total size ${SIZE_TOT}M. See progress in Docker GUI Images
+	MSG=$(MESSAGE_LANG "$PULL_IMAGES_MSG" "$IMG_NO" "$PKG_SHORT" "$SIZE_TOT")
 	NOTIFY_MESSAGE "$MSG"
 	MSG=$(MESSAGE_LANG "$PULL_IMAGES_LOG" "$SIZE_TOT" "$LOAD_JOB")
 	LOG_MESSAGE "$MSG"
@@ -326,54 +429,7 @@ LOAD_IMAGES_GUI() {
 		return 0
 	fi
 }
-# load the cfg aka yml and env files from repository 
-LOAD_REPO_CFG() {
-	if ! CHECK_DOWNLOAD_SOURCE "$GREPO_URL/env.example"
-	then
-		MSG=$(MESSAGE_LANG "$FAILED_REPO" "$GREPO_URL")
-		echo "$MSG"
-		LOG_MESSAGE "$MSG"
-		exit 1
-	fi
-	local GET_FILE
-	# remove old files in target dir
-	if [ -f "$TARGET_PATH"/cfg/env.example ] ; then
-		rm "$TARGET_PATH"/cfg/env.example
-	fi
-	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] ; then
-		rm "$TARGET_PATH"/cfg/*.yml
-	fi
-	for GET_FILE in $ETC_REPO_FILES ; do
-		LOG_IF_BETA "wget -q --no-check-certificate -P $TARGET_PATH/cfg  $GREPO_URL/$GET_FILE"
-		wget -q --no-check-certificate "$GREPO_URL"/"$GET_FILE" -P "$TARGET_PATH"/cfg
-		if [ ! -f "$TARGET_PATH"/cfg/"$GET_FILE" ] ; then
-			echo "could not load from repo $GREPO_URL/$GET_FILE"
-		fi
-	done
-	local CONT_SHORT=""
-	# add container and host-name to compose files
-	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] && ! grep -q "hostname"  "$TARGET_PATH"/cfg/docker-compose.yml ; then
-		for CONT_SHORT in $IMGS_SHORT; do
-			LOG_IF_BETA "adding to docker-compose.yml hostname for $CONT_SHORT.."
-			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        hostname: jitsi-${CONT_SHORT}~" "$TARGET_PATH"/cfg/docker-compose.yml
-		done
-	fi
-	if [ -f "$TARGET_PATH"/cfg/docker-compose.yml ] && ! grep -q "container_name"  "$TARGET_PATH"/cfg/docker-compose.yml ; then
-		for CONT_SHORT in $IMGS_SHORT; do
-			LOG_IF_BETA "adding to docker-compose.yml container_name for $CONT_SHORT.."
-			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        container_name: jitsi_${CONT_SHORT}~" "$TARGET_PATH"/cfg/docker-compose.yml
-		done
-	fi
-	for CONT_SHORT in $IMG_XTRA_SHORT; do
-		LOG_IF_BETA "adding to ${CONT_SHORT}.yml hostname / container_name.."
-		if [ -f "$TARGET_PATH"/cfg/${CONT_SHORT}.yml ] && ! grep -q "hostname"  "$TARGET_PATH"/cfg/${CONT_SHORT}.yml ; then
-			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        hostname: jitsi-${CONT_SHORT}~" "$TARGET_PATH"/cfg/etherpad.yml
-		fi
-		if [ -f "$TARGET_PATH"/cfg/${CONT_SHORT}.yml ] && ! grep -q "container_name"  "$TARGET_PATH"/cfg/${CONT_SHORT}.yml ; then
-			sed -i -e "s~jitsi/${CONT_SHORT}:latest~jitsi/${CONT_SHORT}:latest\n        container_name: jitsi_${CONT_SHORT}~" "$TARGET_PATH"/cfg/${CONT_SHORT}.yml
-		fi
-	done
-}
+# docker compose functions to buil-run, start, stop, status, run cmd, show logs, remove it
 COMPOSE_CONTAINER() {
 	local COMP_PARAM
 	# when we have console ansi and colors are ok otherwise disable it
@@ -382,10 +438,35 @@ COMPOSE_CONTAINER() {
 	else
 		COMP_PARAM="--no-ansi up --no-start"
 	fi
-	echo "Composing and starting container $CONTAINERS from $DOCKER_UPDATE"
+	local DOCKER_UPDATE=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_DOCKER_UPDATE)
+	local DO_ETHERPAD=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ETHERPAD)
+	local DO_JIBRI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIBRI)
+	local DO_JIGASI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIGASI)
+	[ -z "$DO_ETHERPAD" ] && DO_ETHERPAD=0
+	[ -z "$DO_JIBRI" ] && DO_JIBRI=0
+	[ -z "$DO_JIGASI" ] && DO_JIGASI=0
+	local COMPOSE_FILE="$COMPOSE_FILE_CORE"
+	local CONTAINER="$IMGS_BASE_SHORT"
+	# shellcheck disable=SC2086
+	if [ $DO_ETHERPAD -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/etherpad.yml"
+		CONTAINER="$CONTAINER etherpad"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIBRI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jibri.yml"
+		CONTAINER="$CONTAINER jibri"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIGASI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jigasi.yml"
+		CONTAINER="$CONTAINER jigasi"
+	fi
+	echo "Composing and starting container $CONTAINER from $DOCKER_UPDATE"
+	LOG_IF_BETA "$DOCKER_COMP -f $COMPOSE_FILE -p $PKG_SHORT --project-directory $ETC_SHORT $COMP_PARAM"
 	# $COMP_PARAM is not wrapped in quotes by purpose, as call would fail so disable spellcheck
 	# shellcheck disable=SC2086
-	if $SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" -p "$PKG_SHORT" --project-directory "$ETC_SHORT" $COMP_PARAM >/tmp/compose."$PKG_SHORT" 2>&1 ; then
+	if $SUDO "$DOCKER_COMP" -f $COMPOSE_FILE -p "$PKG_SHORT" --project-directory "$ETC_SHORT" $COMP_PARAM >/tmp/compose."$PKG_SHORT" 2>&1 ; then
 		cat /tmp/compose."$PKG_SHORT"
 	else
 		local BIND_ERR=$(grep allocated /tmp/compose."$PKG_SHORT")
@@ -400,8 +481,27 @@ START_CONTAINER() {
 	else
 		COMP_PARAM="--no-ansi start"
 	fi
+	local DO_ETHERPAD=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ETHERPAD)
+	local DO_JIBRI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIBRI)
+	local DO_JIGASI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIGASI)
+	[ -z "$DO_ETHERPAD" ] && DO_ETHERPAD=0
+	[ -z "$DO_JIBRI" ] && DO_JIBRI=0
+	[ -z "$DO_JIGASI" ] && DO_JIGASI=0
+	local COMPOSE_FILE="$COMPOSE_FILE_CORE"
 	# shellcheck disable=SC2086
-	$SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" $COMP_PARAM
+	if [ $DO_ETHERPAD -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/etherpad.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIBRI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jibri.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIGASI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jigasi.yml"
+	fi
+	# shellcheck disable=SC2086
+	$SUDO "$DOCKER_COMP" -f $COMPOSE_FILE --project-directory "$ETC_SHORT" $COMP_PARAM
 }
 STOP_CONTAINER() {
 	local COMP_PARAM
@@ -410,8 +510,27 @@ STOP_CONTAINER() {
 	else
 		COMP_PARAM="--no-ansi stop"
 	fi
+	local DO_ETHERPAD=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ETHERPAD)
+	local DO_JIBRI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIBRI)
+	local DO_JIGASI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIGASI)
+	[ -z "$DO_ETHERPAD" ] && DO_ETHERPAD=0
+	[ -z "$DO_JIBRI" ] && DO_JIBRI=0
+	[ -z "$DO_JIGASI" ] && DO_JIGASI=0
+	local COMPOSE_FILE="$COMPOSE_FILE_CORE"
 	# shellcheck disable=SC2086
-	$SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" $COMP_PARAM
+	if [ $DO_ETHERPAD -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/etherpad.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIBRI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jibri.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIGASI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jigasi.yml"
+	fi
+	# shellcheck disable=SC2086
+	$SUDO "$DOCKER_COMP" -f $COMPOSE_FILE --project-directory "$ETC_SHORT" $COMP_PARAM
 }
 STATUS_CONTAINER() {
 	local COMP_PARAM
@@ -420,8 +539,57 @@ STATUS_CONTAINER() {
 	else
 		COMP_PARAM="--no-ansi ps"
 	fi
+	local DO_ETHERPAD=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ETHERPAD)
+	local DO_JIBRI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIBRI)
+	local DO_JIGASI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIGASI)
+	[ -z "$DO_ETHERPAD" ] && DO_ETHERPAD=0
+	[ -z "$DO_JIBRI" ] && DO_JIBRI=0
+	[ -z "$DO_JIGASI" ] && DO_JIGASI=0
+	local COMPOSE_FILE="$COMPOSE_FILE_CORE"
 	# shellcheck disable=SC2086
-	$SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" $COMP_PARAM
+	if [ $DO_ETHERPAD -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/etherpad.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIBRI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jibri.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIGASI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jigasi.yml"
+	fi
+	# shellcheck disable=SC2086
+	$SUDO "$DOCKER_COMP" -f $COMPOSE_FILE --project-directory "$ETC_SHORT" $COMP_PARAM
+}
+# container status not using compose but docker container json output which is faster
+QUICKSTAT_CONTAINER() {
+	local CONT
+	local CONTAINER="$IMGS_BASE_SHORT"
+	local DO_ETHERPAD=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ETHERPAD)
+	local DO_JIBRI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIBRI)
+	local DO_JIGASI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIGASI)
+	[ -z "$DO_ETHERPAD" ] && DO_ETHERPAD=0
+	[ -z "$DO_JIBRI" ] && DO_JIBRI=0
+	[ -z "$DO_JIGASI" ] && DO_JIGASI=0
+	# shellcheck disable=SC2086
+	if [ $DO_ETHERPAD -eq 1 ] ; then
+		CONTAINER="$CONTAINER etherpad"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIBRI -eq 1 ] ; then
+		CONTAINER="$CONTAINER jibri"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIGASI -eq 1 ] ; then
+		CONTAINER="$CONTAINER jigasi"
+	fi
+	for CONT in $CONTAINER; do
+		if ! $SUDO "$DOCKER_BIN" inspect "jitsi_$CONT" | grep -q "\"Status\": \"running\"," ; then
+			echo "$CONT stopped"
+			return 1
+		fi
+	done
+	return 0
 }
 EXEC_IN_CONTAINER() {
 	local C_NAME="$1"
@@ -430,14 +598,33 @@ EXEC_IN_CONTAINER() {
 		echo "error can only run interactive from shell in terminal mode"
 		return
 	fi
+	local DO_ETHERPAD=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ETHERPAD)
+	local DO_JIBRI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIBRI)
+	local DO_JIGASI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIGASI)
+	[ -z "$DO_ETHERPAD" ] && DO_ETHERPAD=0
+	[ -z "$DO_JIBRI" ] && DO_JIBRI=0
+	[ -z "$DO_JIGASI" ] && DO_JIGASI=0
+	local COMPOSE_FILE="$COMPOSE_FILE_CORE"
+	# shellcheck disable=SC2086
+	if [ $DO_ETHERPAD -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/etherpad.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIBRI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jibri.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIGASI -eq 1 ] ; then
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jigasi.yml"
+	fi
 	# $C_CMD is not wrapped in quotes by purpose, as call would fail so disable spellcheck
 	if [ -t 1 ] ; then 
 		# shellcheck disable=SC2086
-		$SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" exec "$C_NAME" $C_CMD
+		$SUDO "$DOCKER_COMP" -f $COMPOSE_FILE --project-directory "$ETC_SHORT" exec "$C_NAME" $C_CMD
 	else
 		# send enter and disable tty to avoid mess up when called from perl ui
 		# shellcheck disable=SC2086
-		echo -e "\n" | $SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" exec -T "$C_NAME" $C_CMD
+		echo -e "\n" | $SUDO "$DOCKER_COMP" -f $COMPOSE_FILE --project-directory "$ETC_SHORT" exec -T "$C_NAME" $C_CMD
 	fi
 }
 CONTAINER_LOGS() {
@@ -447,11 +634,36 @@ CONTAINER_LOGS() {
 	$SUDO "$DOCKER_BIN" logs --tail 50 "$C_NAME"
 }
 REMOVE_CONTAINER() {
-	echo "Removing container $CONTAINERS"
+	local CONTAINER="$IMGS_BASE_SHORT"
 	local SDIR
+	local DO_ETHERPAD=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_ETHERPAD)
+	local DO_JIBRI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIBRI)
+	local DO_JIGASI=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_JIGASI)
+	[ -z "$DO_ETHERPAD" ] && DO_ETHERPAD=0
+	[ -z "$DO_JIBRI" ] && DO_JIBRI=0
+	[ -z "$DO_JIGASI" ] && DO_JIGASI=0
+	local COMPOSE_FILE="$COMPOSE_FILE_CORE"
+	# shellcheck disable=SC2086
+	if [ $DO_ETHERPAD -eq 1 ] ; then
+		CONTAINER="$CONTAINER etherpad"
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/etherpad.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIBRI -eq 1 ] ; then
+		CONTAINER="$CONTAINER jibri"
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jibri.yml"
+	fi
+	# shellcheck disable=SC2086
+	if [ $DO_JIGASI -eq 1 ] ; then
+		CONTAINER="$CONTAINER jigasi"
+		COMPOSE_FILE="$COMPOSE_FILE -f $ETC_SHORT/jigasi.yml"
+	fi
+	echo "Removing container $CONTAINER"
 	# stop container and remove etc-cfg files to kick off new initialisation
-	$SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" stop >/dev/null 2>&1
-	$SUDO "$DOCKER_COMP" -f "$COMPOSE_FILE" --project-directory "$ETC_SHORT" down >/dev/null 2>&1
+	# shellcheck disable=SC2086
+	$SUDO "$DOCKER_COMP" -f $COMPOSE_FILE --project-directory "$ETC_SHORT" stop >/dev/null 2>&1
+	# shellcheck disable=SC2086
+	$SUDO "$DOCKER_COMP" -f $COMPOSE_FILE --project-directory "$ETC_SHORT" down >/dev/null 2>&1
 	# reset the etc subdirectories
 	for SDIR in $ETC_SUB_DIRS ; do
 		if [ -e "$ETC_SHORT/$SDIR" ] ; then $SUDO rm -R "$ETC_SHORT"/"$SDIR" ; fi
@@ -462,7 +674,7 @@ REMOVE_CONTAINER() {
 	done
 }
 REMOVE_IMAGES() {
-	echo "Removing images of $PKG_SHORT"
+	echo "Removing all Jitsi_ images"
 	local IMG
 	# shellcheck disable=SC2062
 	local IMG_LIST=$($SUDO docker images | grep "$PKG_SHORT" | grep -o [0-f][0-f][0-f][0-f][0-f][0-f][0-f][0-f][0-f][0-f][0-f][0-f])
@@ -470,36 +682,49 @@ REMOVE_IMAGES() {
 	echo "done verifying no more $PKG_SHORT container"
 	$SUDO "$DOCKER_BIN" images | grep "$PKG_SHORT"
 }
-
-# get public ip via ipinfo.io and rest container if it changed we use synos get_key_value to capture env / cfg
+# 
+DOCKER_UPDATE_IN_SYNC() {
+	local DOCKER_UPDATE=$(GET_DOCKER_UPDATE web)
+	local SYNOPKG_DOCKER_UPDATE=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_DOCKER_UPDATE)
+	# set docker_update or exit if up to date
+	if [ "$DOCKER_UPDATE" = "$SYNOPKG_DOCKER_UPDATE" ] ; then
+		return 0
+	else
+		return 1
+	fi
+}
+# get public ip via ipinfo.io and warn if container's docker_ip is out of sync we use synos get_key_value to capture env / cfg
+PUBLIC_IP_IN_SYNC() {
+	local CUR_DOCKER_IP=$($SUDO /bin/get_key_value "$ETC_PATH"/.env DOCKER_HOST_ADDRESS)
+	local PUBLIC_IP=$(curl -s "$IPINFO_URL")
+	if [ -z "$PUBLIC_IP" ] ; then
+		MSG="Error using $IPINFO_URL to get public ip"
+		#MSG=$(MESSAGE_LANG "$FAIL_IPINFO" "$IPINFO_URL")
+		echo "$MSG"
+		return 1
+	fi
+	if [ "$CUR_DOCKER_IP" != "$PUBLIC_IP" ] ; then
+		return 1
+	else
+		return 0
+	fi
+}
+# update public ip in env and reset containers triggered by PUBLIC_IP_IN_SYNC fail
 UPDATE_PUBLIC_IP() {
 	local DO_UPDATE=$($SUDO /bin/get_key_value "$ETC_PATH"/.cfg SYNOPKG_PUBIP_TO_DOCKER_HOST_ADDRESS)
 	[ -z "$DO_UPDATE" ] && DO_UPDATE=0
-	local PUBLIC_IP=$(curl -s "$IPINFO_URL")
 	# shellcheck disable=SC2086
 	if [ $DO_UPDATE -eq 1 ] ; then
-		if [ -z "$PUBLIC_IP" ] ; then
-			MSG="Error using $IPINFO_URL to get public ip"
-			#MSG=$(MESSAGE_LANG "$FAIL_IPINFO" "$IPINFO_URL")
-			echo "$MSG"
-			LOG_MESSAGE "$MSG"
-		else
-			local CUR_DOCKER_IP=$($SUDO /bin/get_key_value "$ETC_PATH"/.env DOCKER_HOST_ADDRESS)
-			if [ -z "$CUR_DOCKER_IP" ] || [ "$CUR_DOCKER_IP" != "$PUBLIC_IP" ] ; then
-				sed -i -e "s~DOCKER_HOST_ADDRESS=.*~DOCKER_HOST_ADDRESS=${PUBLIC_IP}~" "$ETC_PATH"/.env
-				MSG="Updating public ip $PUBLIC_IP to DOCKER_HOST_ADDRESS and resetting.."
-				#MSG=$(MESSAGE_LANG "$RESET_PUBIP" "$IPINFO_URL")
-				echo "$MSG"
-				LOG_MESSAGE "$MSG"
-				# reset unless we are starting post reset so web subdir does not exist
-				if [ -e "$ETC_PATH"/web/nginx ] ; then
-					MSG="Updating public ip $PUBLIC_IP to DOCKER_HOST_ADDRESS and resetting.."
-					#MSG=$(MESSAGE_LANG "$RESET_PUBIP" "$IPINFO_URL")
-					echo "$MSG"
-					REMOVE_CONTAINER
-					COMPOSE_CONTAINER
-				fi
-			fi
+		local PUBLIC_IP=$(curl -s "$IPINFO_URL")
+		$SUDO sed -i -e "s~DOCKER_HOST_ADDRESS=.*~DOCKER_HOST_ADDRESS=${PUBLIC_IP}~" "$ETC_PATH"/.env
+		MSG="Updating public IP $PUBLIC_IP to DOCKER_HOST_ADDRESS and resetting.."
+		#MSG=$(MESSAGE_LANG "$RESET_PUBIP" "$IPINFO_URL")
+		echo "$MSG"
+		LOG_MESSAGE "$MSG"
+		# reset unless we are starting post reset so web subdir does not exist
+		if [ -e "$ETC_PATH"/web/nginx ] ; then
+			REMOVE_CONTAINER
+			COMPOSE_CONTAINER
 		fi
 	fi
 }

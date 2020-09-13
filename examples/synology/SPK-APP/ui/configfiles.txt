@@ -4,7 +4,10 @@
 # <full path to file>,<name to display>
 #######################################
 /etc/jitsi/.env,Docker-Evironment
-/etc/jitsi/docker-compose.yml,Docker-Compose
+/etc/jitsi/docker-compose.yml,Docker-Compose-Core
+/etc/jitsi/jibri.yml,Docker-Compose-Jibri
+/etc/jitsi/jigasi.yml,Docker-Compose-Jigasi
+/etc/jitsi/etherpad.yml,Docker-Compose-Etherpad
 /etc/jitsi/.cfg,Package-Config
 /etc/jitsi/.imp,Imprint-Footer
 /etc/jitsi/.mod,Config-Mod-Script
