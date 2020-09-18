@@ -106,6 +106,7 @@ services:
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
         env_file:
             - .secrets/JICOFO_COMPONENT_SECRET.env
+            - .secrets/JWT_APP_SECRET.env
             - .secrets/JICOFO_AUTH_PASSWORD.env
             - .secrets/JVB_AUTH_PASSWORD.env
             - .secrets/JIGASI_XMPP_PASSWORD.env
@@ -147,7 +148,6 @@ services:
             - JIBRI_XMPP_USER
             - JIBRI_RECORDER_USER
             - JWT_APP_ID
-            - JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
             - JWT_ACCEPTED_AUDIENCES
             - JWT_ASAP_KEYSERVER

@@ -31,6 +31,10 @@ GENERATED_ENV_VARIABLES=(
 
     # XMPP password for Jibri client connections
     JIBRI_XMPP_PASSWORD
+
+    # JWT Authentication
+    # Application secret known only to your token
+    JWT_APP_SECRET
 )
 
 for ENV_VARIABLE in "${GENERATED_ENV_VARIABLES[@]}"; do
