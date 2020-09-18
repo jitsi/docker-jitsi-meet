@@ -32,6 +32,9 @@ GENERATED_ENV_VARIABLES=(
     # XMPP password for Jibri client connections
     JIBRI_XMPP_PASSWORD
 
+    # Password for the specified SIP account as a clear text
+    JIGASI_SIP_PASSWORD
+
     # JWT Authentication
     # Application secret known only to your token
     JWT_APP_SECRET
