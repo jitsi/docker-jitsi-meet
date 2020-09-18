@@ -40,9 +40,21 @@ GENERATED_ENV_VARIABLES=(
     JWT_APP_SECRET
 )
 
+MANUAL_ENV_VARIABLES=(
+    GC_PRIVATE_KEY_ID
+    GC_PRIVATE_KEY
+)
+
 for ENV_VARIABLE in "${GENERATED_ENV_VARIABLES[@]}"; do
     if [[ -e ".secrets/${ENV_VARIABLE}.env" ]]; then
 	mv ".secrets/${ENV_VARIABLE}.env" ".secrets/${ENV_VARIABLE}.env.bak"
     fi
     echo "${ENV_VARIABLE}=$(generatePassword)" > ".secrets/${ENV_VARIABLE}.env"
+done
+
+for ENV_VARIABLE in "${MANUAL_ENV_VARIABLES[@]}"; do
+    if [[ -e ".secrets/${ENV_VARIABLE}.env" ]]; then
+	mv ".secrets/${ENV_VARIABLE}.env" ".secrets/${ENV_VARIABLE}.env.bak"
+    fi
+    echo "${ENV_VARIABLE}=" > ".secrets/${ENV_VARIABLE}.env"
 done
