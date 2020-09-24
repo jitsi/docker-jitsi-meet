@@ -185,6 +185,10 @@ services:
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
             - TZ
+            - ENABLE_OCTO
+            - OCTO_BRIDGE_SELECTION_STRATEGY
+            - OCTO_BIND_PORT
+            - OCTO_REGION
         depends_on:
             - prosody
         networks:
@@ -215,6 +219,7 @@ services:
             - JVB_ENABLE_APIS
             - PUBLIC_URL
             - TZ
+            - TESTING_OCTO_PROBABILITY
         depends_on:
             - prosody
         networks:
