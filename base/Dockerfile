@@ -1,6 +1,7 @@
 FROM debian:stretch-slim
 
 ARG JITSI_RELEASE=stable
+ARG FREP_VERSION=1.3.11
 
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
@@ -12,7 +13,7 @@ RUN \
 	apt-dpkg-wrap apt-get install -y wget && \
 	wget -qO - https://github.com/just-containers/s6-overlay/releases/download/v1.22.1.0/s6-overlay-amd64.tar.gz | tar xfz - -C / && \
 	wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | apt-key add - && \
-	wget -q https://github.com/subchen/frep/releases/download/v1.3.5/frep-1.3.5-linux-amd64 -O /usr/bin/frep && \
+	wget -q https://github.com/subchen/frep/releases/download/v$FREP_VERSION/frep-$FREP_VERSION-linux-amd64 -O /usr/bin/frep && \
 	apt-dpkg-wrap apt-get --purge remove -y wget && \
 	echo "deb https://download.jitsi.org $JITSI_RELEASE/" > /etc/apt/sources.list.d/jitsi.list && \
 	echo "deb http://ftp.debian.org/debian stretch-backports main" > /etc/apt/sources.list.d/backports.list && \
