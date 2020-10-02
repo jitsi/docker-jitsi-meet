@@ -68,6 +68,7 @@ services:
             - INVITE_SERVICE_URL
             - JICOFO_AUTH_USER
             - MICROSOFT_API_APP_CLIENT_ID
+            - NGINX_RESOLVER
             - P2P_USE_STUN_TURN
             - PEOPLE_SEARCH_URL
             - RESOLUTION
