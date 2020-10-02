@@ -1,3 +1,23 @@
+## stable-5076
+
+Based on stable release 5076.
+
+* 5ceaf5f web: add IPv6 support
+* aff3775 xmpp: allow recorders to bypass lobby
+* ad5625b jvb: switch to WebSocket based bridge channels
+* 8110336 web: add ability to configure the nginx resolver
+* 2f47518 jicofo: no auth URL in JWT auth mode
+* c149463 web: build config.js on each boot
+* c792bbc base: update frep
+* bec928c prosody: configure lobby on the guest domain is necessary
+* bcbd977 jicofo: pass XMPP_MUC_DOMAIN through docker-compose.yml
+* 8f9caa4 jicofo: set XMPP_MUC_COMPONENT_PREFIX
+* 2a0120d web: set security headers also for non HTTPS
+* e6586f2 jvb: set LOCAL_ADDRESS to the correct local IP (#630)
+* 97f5e75 base: optimize size
+* b78c89e misc: minor Dockerfile Improvements
+* a754519 misc: working on latest
+
 ## stable-4857
 
 Based on stable release 4857.
