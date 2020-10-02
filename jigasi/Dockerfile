@@ -10,4 +10,8 @@ RUN \
 
 COPY rootfs/ /
 
+RUN /fix-permissions.sh
+
 VOLUME ["/config", "/tmp/transcripts"]
+
+USER 1001

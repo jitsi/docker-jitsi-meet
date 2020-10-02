@@ -3,6 +3,7 @@ FROM debian:buster-slim
 ARG JITSI_RELEASE=stable
 ARG FREP_VERSION=1.3.11
 
+ENV S6_READ_ONLY_ROOT 1
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 COPY rootfs /
@@ -18,13 +19,9 @@ RUN \
 	apt-dpkg-wrap apt-get update && \
 	apt-dpkg-wrap apt-get dist-upgrade -y && \
 	apt-cleanup && \
-	chmod +x /usr/bin/frep
+	chmod +x /usr/bin/frep && \
+	/install-devtools.sh
 
-RUN \
-	[ "$JITSI_RELEASE" = "unstable" ] && \
-	apt-dpkg-wrap apt-get update && \
-	apt-dpkg-wrap apt-get install -y jq procps curl vim iputils-ping net-tools && \
-	apt-cleanup || \
-	true
+RUN mkdir /config
 
-ENTRYPOINT [ "/init" ]
+ENTRYPOINT [ "/pre-init.sh" ]
