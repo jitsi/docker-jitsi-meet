@@ -16,6 +16,10 @@ RUN \
 	apt-cleanup && \
 	rm -rf /tmp/pkg /var/cache/apt
 
-EXPOSE 80 443
+RUN /fix-permissions.sh
+
+EXPOSE 8080 4443
 
 VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
+
+USER 1001

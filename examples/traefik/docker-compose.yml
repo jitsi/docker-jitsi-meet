@@ -49,7 +49,7 @@ services:
             - "traefik.backend=jc_backend"
             # traefik: change that to your actual fqdn 
             - "traefik.basic.frontend.rule=Host:your.host.name"
-            - "traefik.basic.port=80"
+            - "traefik.basic.port=8080"
 
     # XMPP server
     prosody:

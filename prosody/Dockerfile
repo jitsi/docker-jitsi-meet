@@ -45,13 +45,27 @@ RUN \
     && apt-cleanup \
     && rm -rf /tmp/pkg /var/cache/apt
 
-RUN patch -d /usr/lib/prosody/modules/muc -p0 < /prosody-plugins/muc_owner_allow_kick.patch
-
 COPY rootfs/ /
 
 COPY --from=builder /usr/local/lib/lua /usr/local/lib/lua
 COPY --from=builder /usr/local/share/lua /usr/local/share/lua
 
+RUN \
+    patch -d /usr/lib/prosody/modules/muc -p0 < /prosody-plugins/muc_owner_allow_kick.patch && \
+    patch -d /usr/bin -p1 < /prosodyctl-certdir-permission-fix.patch
+
+# Apply config
+RUN echo "TLS_REQCERT allow" >> /etc/ldap/ldap.conf
+
+# Fix permissions
+RUN \
+  /fix-permissions.sh && \
+  touch /etc/saslauthd.conf && \
+  chmod g=u -R /prosody-plugins /etc/saslauthd.conf && \
+  chgrp -R root /etc/sasldb2 /run/saslauthd
+
 EXPOSE 5222 5347 5280
 
 VOLUME ["/config", "/prosody-plugins-custom"]
+
+USER 1001
