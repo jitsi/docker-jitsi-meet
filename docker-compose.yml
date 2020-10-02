@@ -41,7 +41,6 @@ services:
             - DROPBOX_REDIRECT_URI
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUTH
-            - ENABLE_BRIDGE_CHANNEL
             - ENABLE_CALENDAR
             - ENABLE_FILE_RECORDING_SERVICE
             - ENABLE_FILE_RECORDING_SERVICE_SHARING
@@ -209,11 +208,14 @@ services:
             - JVB_TCP_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
+            - PUBLIC_URL
             - TZ
         depends_on:
             - prosody
         networks:
             meet.jitsi:
+                aliases:
+                    - jvb.meet.jitsi
 
 # Custom network so all services can communicate using a FQDN
 networks:

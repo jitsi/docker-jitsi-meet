@@ -1,7 +1,6 @@
 {{ $DEPLOYMENTINFO_USERREGION := .Env.DEPLOYMENTINFO_USERREGION | default "" -}}
-{{ $BRIDGE_CHANNEL := .Env.BRIDGE_CHANNEL | default "datachannel" -}}
+{{ $BRIDGE_CHANNEL := .Env.BRIDGE_CHANNEL | default "websocket" -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
-{{ $ENABLE_BRIDGE_CHANNEL := .Env.ENABLE_BRIDGE_CHANNEL | default "true" -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SERVICE := .Env.ENABLE_FILE_RECORDING_SERVICE | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SERVICE_SHARING := .Env.ENABLE_FILE_RECORDING_SERVICE_SHARING | default "false" | toBool -}}
@@ -230,7 +229,7 @@ config.enableLipSync = {{ $ENABLE_LIPSYNC }};
 config.enableRemb = {{ $ENABLE_REMB }};
 config.enableTcc = {{ $ENABLE_TCC }};
 
-config.openBridgeChannel = '{{ $ENABLE_BRIDGE_CHANNEL }}';
+config.openBridgeChannel = '{{ $BRIDGE_CHANNEL }}';
 
 // Enable IPv6 support.
 config.useIPv6 = {{ $ENABLE_IPV6 }};
