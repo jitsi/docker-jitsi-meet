@@ -133,6 +133,16 @@ config.analytics.amplitudeAPPKey = '{{ .Env.AMPLITUDE_ID }}';
 config.analytics.googleAnalyticsTrackingId = '{{ .Env.GOOGLE_ANALYTICS_ID }}';
 {{ end -}}
 
+{{ if .Env.MATOMO_ENDPOINT -}}
+// Matomo endpoint:
+config.analytics.matomoEndpoint = '{{ .Env.MATOMO_ENDPOINT }}';
+{{ end -}}
+
+{{ if .Env.MATOMO_SITE_ID -}}
+// Matomo site ID:
+config.analytics.matomoSiteID = '{{ .Env.MATOMO_SITE_ID }}';
+{{ end -}}
+
 {{ if .Env.ANALYTICS_SCRIPT_URLS -}}
 // Array of script URLs to load as lib-jitsi-meet "analytics handlers".
 config.analytics.scriptURLs = [ '{{ join "','" (splitList "," .Env.ANALYTICS_SCRIPT_URLS) }}' ];
