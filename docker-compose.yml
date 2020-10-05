@@ -185,7 +185,7 @@ services:
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
             - TZ
-            - ENABLE_OCTO
+            - TESTING_OCTO_PROBABILITY
             - OCTO_BRIDGE_SELECTION_STRATEGY
             - OCTO_BIND_PORT
             - OCTO_REGION
