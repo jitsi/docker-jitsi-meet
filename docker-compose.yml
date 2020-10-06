@@ -24,6 +24,7 @@ services:
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
             - BRIDGE_CHANNEL
+            - BRANDING_DATA_URL
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
             - CALLSTATS_SECRET
