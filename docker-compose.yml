@@ -186,7 +186,6 @@ services:
             - JIBRI_PENDING_TIMEOUT
             - TZ
             - TESTING_OCTO_PROBABILITY
-            - OCTO_BRIDGE_SELECTION_STRATEGY
             - OCTO_BIND_PORT
             - OCTO_REGION
         depends_on:
