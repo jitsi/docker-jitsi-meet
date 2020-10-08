@@ -66,6 +66,8 @@ services:
             - GOOGLE_API_APP_CLIENT_ID
             - INVITE_SERVICE_URL
             - JICOFO_AUTH_USER
+            - MATOMO_ENDPOINT
+            - MATOMO_SITE_ID
             - MICROSOFT_API_APP_CLIENT_ID
             - NGINX_RESOLVER
             - P2P_USE_STUN_TURN
