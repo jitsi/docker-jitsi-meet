@@ -76,6 +76,7 @@ services:
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
             - RESOLUTION_WIDTH_MIN
+            - START_AUDIO_ONLY
             - START_AUDIO_MUTED
             - START_BITRATE
             - START_VIDEO_MUTED
