@@ -252,6 +252,11 @@ config.useStunTurn = {{ $USE_STUN_TURN }};
 // Transcriptions (subtitles and buttons can be configured in interface_config)
 config.transcribingEnabled = {{ $ENABLE_TRANSCRIPTIONS }};
 
+{{ if .Env.BRANDING_DATA_URL -}}
+// External API url used to receive branding specific information.
+config.brandingDataUrl = '{{ .Env.BRANDING_DATA_URL }}';
+{{ end -}}
+
 
 // Deployment information.
 //
