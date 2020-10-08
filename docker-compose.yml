@@ -71,7 +71,6 @@ services:
             - MATOMO_SITE_ID
             - MICROSOFT_API_APP_CLIENT_ID
             - NGINX_RESOLVER
-            - P2P_USE_STUN_TURN
             - PEOPLE_SEARCH_URL
             - RESOLUTION
             - RESOLUTION_MIN
@@ -83,7 +82,6 @@ services:
             - START_VIDEO_MUTED
             - TESTING_CAP_SCREENSHARE_BITRATE
             - TESTING_OCTO_PROBABILITY
-            - USE_STUN_TURN
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
             - XMPP_DOMAIN
