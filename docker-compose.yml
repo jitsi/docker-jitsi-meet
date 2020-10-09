@@ -210,6 +210,7 @@ services:
             - JVB_PORT
             - JVB_TCP_HARVESTER_DISABLED
             - JVB_TCP_PORT
+            - JVB_TCP_MAPPED_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
             - PUBLIC_URL
