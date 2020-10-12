@@ -201,6 +201,7 @@ services:
             - ${CONFIG}/jvb:/config:Z
         environment:
             - DOCKER_HOST_ADDRESS
+            - DOCKER_HOST_ADDRESS2
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
