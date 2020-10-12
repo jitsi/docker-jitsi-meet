@@ -5,7 +5,7 @@ JAVA_SYS_PROPS="-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/ -Dnet.java.si
 if [[ -z "$DOCKER_HOST_ADDRESS2" && ! -z "$DOCKER_HOST_ADDRESS" ]]; then
     DOCKER_HOST_ADDRESS2=$DOCKER_HOST_ADDRESS
 fi
-if [[ ! -z "$DOCKER_HOST_ADDRESS" ]]; then
+if [[ ! -z "$DOCKER_HOST_ADDRESS2" ]]; then
     LOCAL_ADDRESS=$(ip route get "$DOCKER_HOST_ADDRESS2" | head -n1 | cut -d " " -f7)
     JAVA_SYS_PROPS="$JAVA_SYS_PROPS -Dorg.ice4j.ice.harvest.NAT_HARVESTER_LOCAL_ADDRESS=$LOCAL_ADDRESS -Dorg.ice4j.ice.harvest.NAT_HARVESTER_PUBLIC_ADDRESS=$DOCKER_HOST_ADDRESS2"
 fi
