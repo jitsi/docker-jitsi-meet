@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 
+export LOCAL_ADDRESS=$(ip addr show dev "$(ip route|awk '/^default/ { print $5 }')" | grep -oP '(?<=inet\s)\d+(\.\d+){3}')
+
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'
     exit 1
