@@ -211,6 +211,7 @@ services:
             - JVB_TCP_MAPPED_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
+            - JVB_WS_SERVER_ID
             - PUBLIC_URL
             - TZ
         depends_on:
