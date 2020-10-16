@@ -25,6 +25,7 @@ services:
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
             - BRIDGE_CHANNEL
+            - BRANDING_DATA_URL
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
             - CALLSTATS_SECRET
@@ -67,6 +68,8 @@ services:
             - GOOGLE_API_APP_CLIENT_ID
             - INVITE_SERVICE_URL
             - JICOFO_AUTH_USER
+            - MATOMO_ENDPOINT
+            - MATOMO_SITE_ID
             - MICROSOFT_API_APP_CLIENT_ID
             - NGINX_RESOLVER
             - P2P_USE_STUN_TURN
@@ -75,6 +78,7 @@ services:
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
             - RESOLUTION_WIDTH_MIN
+            - START_AUDIO_ONLY
             - START_AUDIO_MUTED
             - START_BITRATE
             - START_VIDEO_MUTED
@@ -207,6 +211,7 @@ services:
             - JVB_PORT
             - JVB_TCP_HARVESTER_DISABLED
             - JVB_TCP_PORT
+            - JVB_TCP_MAPPED_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
             - PUBLIC_URL

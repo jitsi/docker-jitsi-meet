@@ -22,6 +22,7 @@
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
 {{ $RESOLUTION_WIDTH_MIN := .Env.RESOLUTION_WIDTH_MIN | default "320" -}}
+{{ $START_AUDIO_ONLY := .Env.START_AUDIO_ONLY | default "false" | toBool -}}
 {{ $START_AUDIO_MUTED := .Env.START_AUDIO_MUTED | default 10 -}}
 {{ $START_VIDEO_MUTED := .Env.START_VIDEO_MUTED | default 10 -}}
 {{ $TESTING_OCTO_PROBABILITY := .Env.TESTING_OCTO_PROBABILITY | default "0" -}}
@@ -55,6 +56,7 @@ config.enableNoAudioDetection = {{ $ENABLE_NO_AUDIO_DETECTION }};
 config.enableTalkWhileMuted = {{ $ENABLE_TALK_WHILE_MUTED }};
 config.disableAP = {{ not $ENABLE_AUDIO_PROCESSING }};
 config.stereo = {{ $ENABLE_STEREO }};
+config.startAudioOnly = {{ $START_AUDIO_ONLY }};
 config.startAudioMuted = {{ $START_AUDIO_MUTED }};
 
 
@@ -131,6 +133,16 @@ config.analytics.amplitudeAPPKey = '{{ .Env.AMPLITUDE_ID }}';
 {{ if .Env.GOOGLE_ANALYTICS_ID -}}
 // The Google Analytics Tracking ID:
 config.analytics.googleAnalyticsTrackingId = '{{ .Env.GOOGLE_ANALYTICS_ID }}';
+{{ end -}}
+
+{{ if .Env.MATOMO_ENDPOINT -}}
+// Matomo endpoint:
+config.analytics.matomoEndpoint = '{{ .Env.MATOMO_ENDPOINT }}';
+{{ end -}}
+
+{{ if .Env.MATOMO_SITE_ID -}}
+// Matomo site ID:
+config.analytics.matomoSiteID = '{{ .Env.MATOMO_SITE_ID }}';
 {{ end -}}
 
 {{ if .Env.ANALYTICS_SCRIPT_URLS -}}
@@ -239,6 +251,11 @@ config.useStunTurn = {{ $USE_STUN_TURN }};
 
 // Transcriptions (subtitles and buttons can be configured in interface_config)
 config.transcribingEnabled = {{ $ENABLE_TRANSCRIPTIONS }};
+
+{{ if .Env.BRANDING_DATA_URL -}}
+// External API url used to receive branding specific information.
+config.brandingDataUrl = '{{ .Env.BRANDING_DATA_URL }}';
+{{ end -}}
 
 
 // Deployment information.
