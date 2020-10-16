@@ -50,6 +50,7 @@ services:
             - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
             - ENABLE_P2P
+            - ENABLE_PREJOIN_PAGE
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
