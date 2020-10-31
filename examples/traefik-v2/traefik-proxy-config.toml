@@ -1,0 +1,42 @@
+#################
+#### MIDDLEWARES
+#################
+[http.middlewares]
+  [http.middlewares.security-headers.headers]
+    accessControlAllowMethods= ["GET", "OPTIONS", "PUT"]
+    #accessControlAllowOrigin = "origin-list-or-null"
+    accessControlMaxAge = 100
+    addVaryHeader = true
+    #frameDeny = true
+    sslRedirect = true
+    browserXssFilter = true
+    contentTypeNosniff = true
+    #
+    stsIncludeSubdomains = true
+    stsPreload = true
+    stsSeconds = 31536000
+
+#####################
+#### CUSTOM TLS CERT
+#####################
+
+[tls]
+  [tls.options]
+    [tls.options.myoptions]
+      minVersion = "VersionTLS12"
+      curvePreferences = ["CurveP521", "CurveP384"]
+      sniStrict = true
+
+      cipherSuites = [
+        "TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384",
+        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384", # tls1.2
+        "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+        #"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256", # 128 bit
+        "TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305",
+        "TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305", # tls1.2
+        "TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384",
+        "TLS_FALLBACK_SCSV", # Client is doing version fallback. See RFC 7507.
+        "TLS_AES_256_GCM_SHA384",  # tls1.3
+        "TLS_CHACHA20_POLY1305_SHA256" # tls1.3
+
+      ]
