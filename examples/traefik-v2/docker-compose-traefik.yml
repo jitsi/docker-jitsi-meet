@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+
+  traefik:
+    image: "traefik:v2.3.1"
+    restart: ${RESTART_POLICY}
+    hostname: "traefik"
+    labels:
+      - "traefik.enable=false"
+      - "traefik.docker.network=proxy" # create external network proxy for traefik
+      - "traefik.http.routers.api.rule=Host(`traefik.example.in`)  && (PathPrefix(`/api`) || PathPrefix(`/dashboard`))"
+      - "traefik.http.routers.api.service=api@internal"
+      #- "traefik.http.routers.api.middlewares=auth"
+      ## Middlewares
+      #- "traefik.http.middlewares.auth.basicauth.users=alpha:$$1$$SEjVHN0z$$Apa3.iHJAW2dbAi6OuwDe/"
+      - "traefik.http.routers.api.middlewares=security-headers@file"
+      # enable https for api/dashboard
+      - "traefik.http.routers.api.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.api.entrypoints=websecure"
+      - "traefik.http.routers.api.tls.domains[0].main=traefik.example.in"
+      # tls options from file
+      - "traefik.http.routers.api.tls.options=myoptions@file"
+      # dummy port
+      - "traefik.http.services.dummyservice.loadbalancer.server.port=1111" # In swarm mode, traefik requires a dummy Port
+
+    command:
+      - --api=true
+      - --api.dashboard=true
+      - --providers.file.filename=/etc/traefik/traefik-proxy-config.toml # Using file for reading dynamic config
+      - --providers.file.watch=true  # this checks for changes dynamic config file 
+      - --providers.docker=true  # enable docker provider
+      - --providers.docker.endpoint=unix:///var/run/docker.sock
+      - --providers.docker.swarmMode=false
+      - --providers.docker.exposedbydefault=false  # this ensures that if traefik is not enabled for container then traefik can't access that continer
+      - --log.level=DEBUG #INFO
+      - --accesslog=false
+      # global redirection. No need to set middleware if this is enabled
+      - --entryPoints.web.address=:80
+      - --entrypoints.web.http.redirections.entrypoint.to=websecure
+      - --entrypoints.web.http.redirections.entrypoint.scheme=https
+      - --entrypoints.web.http.redirections.entrypoint.permanent=true
+      - --entryPoints.websecure.address=:443
+      # staging CA. Use it for development and disable it for production
+      - --certificatesResolvers.letsencrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory
+      - --certificatesResolvers.letsencrypt.acme.tlsChallenge=true  # Using tls challenge
+      - --certificatesresolvers.letsencrypt.acme.email=your_email@gmail.com 
+      - --certificatesResolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
+    ports:
+      - target: 80
+        published: 80
+        mode: host
+
+      - target: 443
+        published: 443
+        mode: host
+
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "./letsencrypt:/letsencrypt"
+      - "./traefik-proxy-config.toml:/etc/traefik/traefik-proxy-config.toml:ro"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: proxy
