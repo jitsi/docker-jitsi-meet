@@ -185,6 +185,9 @@ services:
             - JIBRI_BREWERY_MUC
             - JIBRI_PENDING_TIMEOUT
             - TZ
+            - JICOFO_SHORT_ID
+            - TESTING_OCTO_PROBABILITY 
+            - OCTO_BRIDGE_SELECTION_STRATEGY
         depends_on:
             - prosody
         networks:
