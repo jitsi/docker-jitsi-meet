@@ -1,18 +1,14 @@
 # Basic configuration to use with the traefik reverse proxy
 
-Note: Tested with traefik 2.2.0
+Note: Tested with traefik 2.3.1
 
 - When running behind traefik, it's a better practice to remove the port-binds for the web service.
-- The provided example uses an external network with the name "web". This is the network which moste likely was created while setting up traefik.
+- The provided example uses two external networks with the name `jitsi` for `jitsi-setup` and `proxy` for `Traefik`. Both of these network need to be created externally using below commands.
+
+  **`docker network create --driver=bridge jitsi`**
+
+  **`docker network create --driver=bridge proxy`**
+
 - Look for comments starting with **#traefik:** to see the changes made in docker-compose.yml.
-- Traefik obtains Let's Encrypt certificates automatically.
-
-Uncomment and set DOCKER_HOST_ADDRESS in .env. I'm pretty sure, that this is mandatory for the docker-setup and should be clearer in the original README. Could be the proxying, didn't investigate further.
-
-## TODO
-
-Add or rewrite the example with docker-compose extends
-
-````env
-DOCKER_HOST_ADDRESS=1.2.3.4
-````
+- Traefik obtains Let's Encrypt certificates automatically. This example uses `TLS-challenge` for obtaining certificate. 
+- Please change `traefik.example.in` to your `subdomain` for accessing Traefik dashboard and replace `meet.example.in` to access the `Jitsi-setup` on https. 
