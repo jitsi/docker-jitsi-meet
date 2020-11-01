@@ -3,7 +3,7 @@
 Note: Tested with traefik 2.3.1
 
 - When running behind traefik, it's a better practice to remove the port-binds for the web service.
-- The provided example uses two external networks with the name `jitsi` for `jitsi-setup` and `proxy` for `Traefik`. Both of these network need to be created externally using below commands.
+- The provided example uses two external networks with the name `jitsi` for `jitsi-setup` and `proxy` for `Traefik`. Both of these networks need to be created externally using the below commands.
 
   **`docker network create --driver=bridge jitsi`**
 
