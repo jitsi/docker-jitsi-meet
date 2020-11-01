@@ -10,5 +10,5 @@ Note: Tested with traefik 2.3.1
   **`docker network create --driver=bridge proxy`**
 
 - Look for comments starting with **#traefik:** to see the changes made in docker-compose.yml.
-- Traefik obtains Let's Encrypt certificates automatically. This example uses `TLS-challenge` for obtaining certificate. 
+- Traefik obtains Let's Encrypt certificates automatically. This example uses `TLS-challenge` to obtain the certificates. 
 - Please change `traefik.example.in` to your `subdomain` for accessing Traefik dashboard and replace `meet.example.in` to access the `Jitsi-setup` on https. 
