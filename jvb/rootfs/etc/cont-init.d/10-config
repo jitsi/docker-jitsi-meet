@@ -20,7 +20,7 @@ if [[ ! -f /config/logging.properties ]]; then
 fi
 
 if [[ ! -z $JVB_JVM_MAX_MEM ]]; then 
-    echo -n "# The amount of memory that the java process can consume.\n# Use the format that is in use for java's -Xmx switch# The default is 3072m\n# Only effective on linux, 64 bit \nVIDEOBRIDGE_MAX_MEMORY=$JVB_JVM_MAX_MEM" > /usr/share/jitsi-videobridge/libs/viedobridge.rc
+    echo -n "# The amount of memory that the java process can consume.\n# Use the format that is in use for java's -Xmx switch\n# The default is 3072m\n# Only effective on linux, 64 bit \nVIDEOBRIDGE_MAX_MEMORY=$JVB_JVM_MAX_MEM" > /usr/share/jitsi-videobridge/libs/videobridge.rc
 fi
 
 chown -R jvb:jitsi /config
