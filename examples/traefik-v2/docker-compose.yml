@@ -4,67 +4,140 @@ services:
     # Frontend
     web:
         image: jitsi/web
+        restart: ${RESTART_POLICY}
         volumes:
-            - ${CONFIG}/web:/config
-            - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
-            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
+            - ${CONFIG}/web:/config:Z
+            - ${CONFIG}/web/letsencrypt:/etc/letsencrypt:Z
+            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
-            - ENABLE_AUTH
-            - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
-            - ENABLE_TRANSCRIPTIONS
+            - ENABLE_XMPP_WEBSOCKET
             - DISABLE_HTTPS
-            - JICOFO_AUTH_USER
-            - LETSENCRYPT_DOMAIN
-            - LETSENCRYPT_EMAIL
             - PUBLIC_URL
-            - XMPP_DOMAIN
+            - TZ
+            - AMPLITUDE_ID
+            - ANALYTICS_SCRIPT_URLS
+            - ANALYTICS_WHITELISTED_EVENTS
+            - BRIDGE_CHANNEL
+            - BRANDING_DATA_URL
+            - CALLSTATS_CUSTOM_SCRIPT_URL
+            - CALLSTATS_ID
+            - CALLSTATS_SECRET
+            - CHROME_EXTENSION_BANNER_JSON
+            - CONFCODE_URL
+            - CONFIG_EXTERNAL_CONNECT
+            - DEPLOYMENTINFO_ENVIRONMENT
+            - DEPLOYMENTINFO_ENVIRONMENT_TYPE
+            - DEPLOYMENTINFO_USERREGION
+            - DIALIN_NUMBERS_URL
+            - DIALOUT_AUTH_URL
+            - DIALOUT_CODES_URL
+            - DROPBOX_APPKEY
+            - DROPBOX_REDIRECT_URI
+            - ENABLE_AUDIO_PROCESSING
+            - ENABLE_AUTH
+            - ENABLE_CALENDAR
+            - ENABLE_FILE_RECORDING_SERVICE
+            - ENABLE_FILE_RECORDING_SERVICE_SHARING
+            - ENABLE_GUESTS
+            - ENABLE_IPV6
+            - ENABLE_LIPSYNC
+            - ENABLE_NO_AUDIO_DETECTION
+            - ENABLE_P2P
+            - ENABLE_PREJOIN_PAGE
+            - ENABLE_RECORDING
+            - ENABLE_REMB
+            - ENABLE_REQUIRE_DISPLAY_NAME
+            - ENABLE_SIMULCAST
+            - ENABLE_STATS_ID
+            - ENABLE_STEREO
+            - ENABLE_SUBDOMAINS
+            - ENABLE_TALK_WHILE_MUTED
+            - ENABLE_TCC
+            - ENABLE_TRANSCRIPTIONS
+            - ETHERPAD_PUBLIC_URL
+            - ETHERPAD_URL_BASE
+            - GOOGLE_ANALYTICS_ID
+            - GOOGLE_API_APP_CLIENT_ID
+            - INVITE_SERVICE_URL
+            - JICOFO_AUTH_USER
+            - MATOMO_ENDPOINT
+            - MATOMO_SITE_ID
+            - MICROSOFT_API_APP_CLIENT_ID
+            - NGINX_RESOLVER
+            - PEOPLE_SEARCH_URL
+            - RESOLUTION
+            - RESOLUTION_MIN
+            - RESOLUTION_WIDTH
+            - RESOLUTION_WIDTH_MIN
+            - START_AUDIO_ONLY
+            - START_AUDIO_MUTED
+            - START_BITRATE
+            - START_VIDEO_MUTED
+            - TESTING_CAP_SCREENSHARE_BITRATE
+            - TESTING_OCTO_PROBABILITY
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
+            - XMPP_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
-            - ETHERPAD_URL_BASE
-            - ETHERPAD_PUBLIC_URL
-            - TZ
-            - JIBRI_BREWERY_MUC
-            - JIBRI_PENDING_TIMEOUT
-            - JIBRI_XMPP_USER
-            - JIBRI_XMPP_PASSWORD
-            - JIBRI_RECORDER_USER
-            - JIBRI_RECORDER_PASSWORD
-            - ENABLE_RECORDING
         networks:
             # traefik: change the following line to your external docker network 
-            web:
+            traefik:
             meet.jitsi:
                 aliases:
                     - ${XMPP_DOMAIN}
         labels:
+            #enable traefik for this service
+            traefik.enable: 'true'
+            #create a middleware for this service to redirect traffic to https
             traefik.http.middlewares.redirect.redirectscheme.scheme: https
-            traefik.http.routers.app-http.entrypoints: web
-            traefik.http.routers.app-http.middlewares: redirect
-            traefik.http.routers.app-http.rule: 'Host(`your.host.name`)'
-            traefik.http.routers.app.entrypoints: websecure
-            traefik.http.routers.app.rule: 'Host(`your.host.name`)'
-            traefik.http.routers.app.tls: 'true'
-            traefik.http.routers.app.tls.certresolver: le
-            traefik.http.services.app.loadbalancer.server.port: 80
+            #create a router called jitsi-http to listen on the entrypoint for http/80. 
+            #web is defined in your traefik setup, please change accordingly
+            traefik.http.routers.jitsi-http.entrypoints: web
+            #route traffic from jitsi-http to jitsi-https middleware         
+            traefik.http.routers.jitsi-http.middlewares: jitsi-https@docker
+            #which host should jitsi-http listen on.
+            #please change according to yours
+            traefik.http.routers.jitsi-http.rule: 'Host(`your.host.name`)'
+            #setup the entrypoint for https/443. Create a router called jitsi-jttps.
+            traefik.http.routers.jitsi-https.entrypoints: web-secure
+            #which host should jitsi-http listen on.
+            #please change according to yours
+            traefik.http.routers.jitsi-https.rule: 'Host(`your.host.name`)'
+            #use tls on jitsi-https
+            traefik.http.routers.jitsi-https.tls: 'true'
+            #usually traefik2 is setup to use LetsEncrypt to handle SSL-Certificates
+            #check your traefik2 config and change accordingly. 
+            #The resolver is something like default, le, letsencrypt
+            traefik.http.routers.jitsi-https.tls.certresolver: certificatesResolverDefault
+            #e.g. use this if you have another certificate issuer. 
+            #- traefik.http.routers.jitsi-https.tls.certresolver=dnsChallenge
+            #port for load-balance
+            traefik.http.services.jitsi-https.loadbalancer.server.port: '80'
+            #define which network traefik should connect to
+            traefik.docker.network: traefik
+           
 
     # XMPP server
     prosody:
         image: jitsi/prosody
+        restart: ${RESTART_POLICY}
         expose:
             - '5222'
             - '5347'
             - '5280'
         volumes:
-            - ${CONFIG}/prosody:/config
+            - ${CONFIG}/prosody:/config:Z
+            - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
         environment:
             - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - ENABLE_LOBBY
+            - ENABLE_XMPP_WEBSOCKET
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
             - LDAP_URL
@@ -109,6 +182,7 @@ services:
             - JWT_AUTH_TYPE
             - JWT_TOKEN_AUTH_MODULE
             - LOG_LEVEL
+            - PUBLIC_URL
             - TZ
         networks:
             meet.jitsi:
@@ -118,8 +192,9 @@ services:
     # Focus component
     jicofo:
         image: jitsi/jicofo
+        restart: ${RESTART_POLICY}
         volumes:
-            - ${CONFIG}/jicofo:/config
+            - ${CONFIG}/jicofo:/config:Z
         environment:
             - ENABLE_AUTH
             - XMPP_DOMAIN
@@ -143,11 +218,12 @@ services:
     # Video bridge
     jvb:
         image: jitsi/jvb
+        restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
             - '${JVB_TCP_MAPPED_PORT}:${JVB_TCP_PORT}'
         volumes:
-            - ${CONFIG}/jvb:/config
+            - ${CONFIG}/jvb:/config:Z
         environment:
             - DOCKER_HOST_ADDRESS
             - XMPP_AUTH_DOMAIN
@@ -159,8 +235,12 @@ services:
             - JVB_PORT
             - JVB_TCP_HARVESTER_DISABLED
             - JVB_TCP_PORT
+            - JVB_TCP_MAPPED_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
+            - JVB_WS_DOMAIN
+            - JVB_WS_SERVER_ID
+            - PUBLIC_URL
             - TZ
         depends_on:
             - prosody
@@ -169,11 +249,11 @@ services:
         labels:
             traefik.udp.routers.jvb.entrypoints: video
             traefik.udp.routers.jvb.service: jvb
-            traefik.udp.services.jvb.loadbalancer.server.port: 10000
+            traefik.udp.services.jvb.loadbalancer.server.port: '10000'
 
 # Custom network so all services can communicate using a FQDN
 networks:
     meet.jitsi:
     # traefik: change the following line to your external docker network 
-    web:
+    traefik:
         external: true
