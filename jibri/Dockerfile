@@ -44,6 +44,11 @@ RUN \
         && apt-dpkg-wrap apt-get install -y jitsi-upload-integrations jq \
         && apt-cleanup
 
+#Custom installs
+RUN \
+        apt-dpkg-wrap apt-get update \
+        && apt-dpkg-wrap apt-get install -y nano s3cmd bc php php-cli php-fpm php-json php-pdo php-mysql php-zip php-gd  php-mbstring php-curl php-xml php-pear php-bcmath
+
 COPY rootfs/ /
 
 VOLUME /config
