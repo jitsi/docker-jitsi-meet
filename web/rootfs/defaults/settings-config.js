@@ -8,6 +8,7 @@
 {{ $ENABLE_LIPSYNC := .Env.ENABLE_LIPSYNC | default "false" | toBool -}}
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "false" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
+{{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "false" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
@@ -17,7 +18,6 @@
 {{ $ENABLE_TALK_WHILE_MUTED := .Env.ENABLE_TALK_WHILE_MUTED | default "false" | toBool -}}
 {{ $ENABLE_TCC := .Env.ENABLE_TCC | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "false" | toBool -}}
-{{ $P2P_USE_STUN_TURN := .Env.P2P_USE_STUN_TURN | default "true" | toBool -}}
 {{ $RESOLUTION := .Env.RESOLUTION | default "720" -}}
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
@@ -27,7 +27,6 @@
 {{ $START_VIDEO_MUTED := .Env.START_VIDEO_MUTED | default 10 -}}
 {{ $TESTING_OCTO_PROBABILITY := .Env.TESTING_OCTO_PROBABILITY | default "0" -}}
 {{ $TESTING_CAP_SCREENSHARE_BITRATE := .Env.TESTING_CAP_SCREENSHARE_BITRATE | default "1" -}}
-{{ $USE_STUN_TURN := .Env.USE_STUN_TURN | default "true" | toBool -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN -}}
 
@@ -66,7 +65,6 @@ config.startAudioMuted = {{ $START_AUDIO_MUTED }};
 if (!config.hasOwnProperty('p2p')) config.p2p = {};
 
 config.p2p.enabled = {{ $ENABLE_P2P }};
-config.p2p.useStunTurn = {{ $P2P_USE_STUN_TURN }};
 
 
 // Etherpad
@@ -223,6 +221,9 @@ config.peopleSearchQueryTypes = ['user','conferenceRooms'];
 // Miscellaneous.
 //
 
+// Prejoin page.
+config.prejoinPageEnabled = {{ $ENABLE_PREJOIN_PAGE }};
+
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
 
@@ -245,9 +246,6 @@ config.openBridgeChannel = '{{ $BRIDGE_CHANNEL }}';
 
 // Enable IPv6 support.
 config.useIPv6 = {{ $ENABLE_IPV6 }};
-
-// Use XEP-0215 to fetch STUN and TURN servers.
-config.useStunTurn = {{ $USE_STUN_TURN }};
 
 // Transcriptions (subtitles and buttons can be configured in interface_config)
 config.transcribingEnabled = {{ $ENABLE_TRANSCRIPTIONS }};
