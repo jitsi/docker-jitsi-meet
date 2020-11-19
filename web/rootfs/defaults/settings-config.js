@@ -255,6 +255,11 @@ config.transcribingEnabled = {{ $ENABLE_TRANSCRIPTIONS }};
 config.brandingDataUrl = '{{ .Env.BRANDING_DATA_URL }}';
 {{ end -}}
 
+{{ if .Env.TOKEN_AUTH_URL -}}
+// Authenticate using external service or just focus external auth window if there is one already.
+config.tokenAuthUrl = '{{ .Env.TOKEN_AUTH_URL }}';
+{{ end -}}
+
 
 // Deployment information.
 //
