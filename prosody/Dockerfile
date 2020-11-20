@@ -18,6 +18,8 @@ RUN \
 
 FROM ${JITSI_REPO}/base
 
+ENV XMPP_CROSS_DOMAIN="false"
+
 RUN \
     wget -q https://prosody.im/files/prosody-debian-packages.key -O - | gpg --enarmor > /etc/apt/trusted.gpg.d/prosody.asc \
     && echo "deb http://packages.prosody.im/debian buster main" > /etc/apt/sources.list.d/prosody.list \

@@ -135,6 +135,7 @@ services:
             - XMPP_MUC_MODULES
             - XMPP_INTERNAL_MUC_MODULES
             - XMPP_RECORDER_DOMAIN
+            - XMPP_CROSS_DOMAIN
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
