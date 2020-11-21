@@ -88,6 +88,7 @@ services:
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
+            - TOKEN_AUTH_URL
         networks:
             meet.jitsi:
                 aliases:
