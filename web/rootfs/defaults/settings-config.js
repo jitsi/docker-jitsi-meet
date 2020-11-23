@@ -7,7 +7,9 @@
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
 {{ $ENABLE_LIPSYNC := .Env.ENABLE_LIPSYNC | default "false" | toBool -}}
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "false" | toBool -}}
+{{ $ENABLE_STUN_TURN := .Env.ENABLE_STUN_TURN | default "false" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
+{{ $ENABLE_P2P_STUN_TURN := .Env.ENABLE_P2P_STUN_TURN | default "false" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "false" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
@@ -47,6 +49,11 @@ config.startVideoMuted = {{ $START_VIDEO_MUTED }};
 config.startBitrate = '{{ .Env.START_BITRATE }}';
 {{ end -}}
 
+// Use XEP-0215 to fetch STUN and TURN servers.
+config.useStunTurn = {{ $ENABLE_STUN_TURN }};
+{{ if .Env.STUN_SERVERS -}}
+config.stunServers = [ {urls: '{{ join "'},{urls:'" (splitList "," .Env.STUN_SERVERS) }}' } ];
+{{ end -}}
 
 // Audio configuration.
 //
@@ -65,6 +72,7 @@ config.startAudioMuted = {{ $START_AUDIO_MUTED }};
 if (!config.hasOwnProperty('p2p')) config.p2p = {};
 
 config.p2p.enabled = {{ $ENABLE_P2P }};
+config.p2p.useStunTurn = {{ $ENABLE_P2P_STUN_TURN }};
 
 
 // Etherpad
