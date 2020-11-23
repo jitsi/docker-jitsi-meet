@@ -33,6 +33,7 @@ RUN \
       libsasl2-modules-ldap \
       lua-basexx \
       patch \
+      curl \
     && apt-dpkg-wrap apt-get install -t stretch-backports -y \
       lua-ldap \
       lua-sec \
@@ -44,8 +45,8 @@ RUN \
     && apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody \
     && dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg \
     && mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins \
-    && wget \
-      -O /usr/lib/prosody/modules/mod_turncredentials.lua \
+    && curl -4so \
+      /prosody-plugins/mod_turncredentials.lua \
       https://raw.githubusercontent.com/netaskd/mod_turncredentials/master/mod_turncredentials.lua \
     && apt-cleanup \
     && rm -rf /tmp/pkg /var/cache/apt
