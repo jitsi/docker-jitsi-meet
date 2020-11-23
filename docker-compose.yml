@@ -49,7 +49,9 @@ services:
             - ENABLE_IPV6
             - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
+            - ENABLE_STUN_TURN
             - ENABLE_P2P
+            - ENABLE_P2P_STUN_TURN
             - ENABLE_PREJOIN_PAGE
             - ENABLE_RECORDING
             - ENABLE_REMB
