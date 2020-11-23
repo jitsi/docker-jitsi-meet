@@ -51,9 +51,6 @@ config.startBitrate = '{{ .Env.START_BITRATE }}';
 
 // Use XEP-0215 to fetch STUN and TURN servers.
 config.useStunTurn = {{ $ENABLE_STUN_TURN }};
-{{ if .Env.STUN_SERVERS -}}
-config.stunServers = [ {urls: '{{ join "'},{urls:'" (splitList "," .Env.STUN_SERVERS) }}' } ];
-{{ end -}}
 
 // Audio configuration.
 //
@@ -73,6 +70,9 @@ if (!config.hasOwnProperty('p2p')) config.p2p = {};
 
 config.p2p.enabled = {{ $ENABLE_P2P }};
 config.p2p.useStunTurn = {{ $ENABLE_P2P_STUN_TURN }};
+{{ if .Env.P2P_STUN_SERVERS -}}
+config.p2p.stunServers = [ {urls:'{{ join "'},{urls:'" (splitList "," .Env.P2P_STUN_SERVERS) }}'} ];
+{{ end -}}
 
 
 // Etherpad
