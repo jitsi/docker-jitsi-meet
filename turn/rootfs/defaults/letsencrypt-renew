@@ -1,0 +1,7 @@
+#!/bin/bash
+
+certbot --no-self-upgrade -n renew >> /config/le-renew.log
+
+# Not sur it reload the service ...
+/bin/kill -HUP `cat /var/run/turnserver.pid 2>/dev/null` 2> /dev/null || true
+exit 0
