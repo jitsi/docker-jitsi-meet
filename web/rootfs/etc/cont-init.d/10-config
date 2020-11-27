@@ -54,17 +54,14 @@ fi
 # copy config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
 
-if [[ ! -f /config/nginx/meet.conf ]]; then
-    tpl /defaults/meet.conf > /config/nginx/meet.conf
+tpl /defaults/meet.conf > /config/nginx/meet.conf
+if [[ -f /config/nginx/custom-meet.conf ]]; then
+    cat /config/nginx/custom-meet.conf >> /config/nginx/meet.conf
 fi
 
-if [[ ! -f /config/nginx/ssl.conf ]]; then
-    tpl /defaults/ssl.conf > /config/nginx/ssl.conf
-fi
+tpl /defaults/ssl.conf > /config/nginx/ssl.conf
 
-if [[ ! -f /config/nginx/site-confs/default ]]; then
-    tpl /defaults/default > /config/nginx/site-confs/default
-fi
+tpl /defaults/default > /config/nginx/site-confs/default
 
 cp /defaults/config.js /config/config.js
 tpl /defaults/system-config.js >> /config/config.js
