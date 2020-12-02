@@ -1,3 +1,26 @@
+## stable-5142-1
+
+Based on stable release 5142-1.
+
+* b0cb4a1 web: update TLS config to Mozilla security guidelines
+* 0601212 web: replace certbot with acme.sh
+* 43f678d build: refactor Makefile
+* b00f92a web: use Python 3 only for certbot
+* 880b9b0 core: update base image to Debian Buster
+* ba01190 web: prevent s6 from restarting cron if it shouldn't be run
+* 42a4346 etherpad: use official image and making skin full width
+* c36c4d0 web: always rebuild nginx configs on start
+* aea4411 Adds private server.
+* 6b69576 web: add ability to configure tokenAuthUrl
+* ff6d9bc Fix websocket
+* e5746ae misc: add ENABLE_PREJOIN_PAGE to .env
+* 465816b web,prosody: turn on XMPP WebSocket by default
+* d747bfb web,prosody: add XMPP WebSocket / Stream Management support
+* 130eb55 jvb: migrate to new config file
+* 5290499 doc: updated link for running behind NAT
+* 7cb470c misc: support/encourage usage of ShellCheck
+* 04a210f misc: working on latest
+
 ## stable-5142
 
 Based on stable release 5142.
