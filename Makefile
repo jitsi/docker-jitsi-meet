@@ -4,7 +4,7 @@ JITSI_BUILD ?= latest
 JITSI_REPO ?= jitsi
 JITSI_SERVICES ?= base base-java web prosody jicofo jvb jigasi jibri
 
-BUILD_ARGS := --build-arg JITSI_REPO=$(JITSI_REPO)
+BUILD_ARGS := --build-arg JITSI_REPO=$(JITSI_REPO) --build-arg JITSI_RELEASE=$(JITSI_RELEASE)
 ifeq ($(FORCE_REBUILD), 1)
   BUILD_ARGS := $(BUILD_ARGS) --no-cache
 endif
@@ -15,7 +15,10 @@ all:	build-all
 release: tag-all push-all
 
 build:
-	$(MAKE) BUILD_ARGS="$(BUILD_ARGS)" JITSI_REPO="$(JITSI_REPO)" JITSI_RELEASE="$(JITSI_RELEASE)" -C $(JITSI_SERVICE) build
+	docker build $(BUILD_ARGS) --progress plain --tag $(JITSI_REPO)/$(JITSI_SERVICE) $(JITSI_SERVICE)/
+
+$(addprefix build_,$(JITSI_SERVICES)):
+	$(MAKE) --no-print-directory JITSI_SERVICE=$(patsubst build_%,%,$@) build
 
 tag:
 	docker tag $(JITSI_REPO)/$(JITSI_SERVICE):latest $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
@@ -36,4 +39,4 @@ prepare:
 	docker pull debian:buster-slim
 	FORCE_REBUILD=1 $(MAKE)
 
-.PHONY: all build tag push clean prepare release
+.PHONY: all build tag push clean prepare release $(addprefix build_,$(JITSI_SERVICES))
