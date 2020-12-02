@@ -1,5 +1,7 @@
 ## stable-5142-1
 
+**Important:** This release includes 2 major changes: migrating the base image to Debian Buster and replacing certbot with acme.sh for getting Letś Encrypt certificates. Please report any problems you find!
+
 Based on stable release 5142-1.
 
 * b0cb4a1 web: update TLS config to Mozilla security guidelines
