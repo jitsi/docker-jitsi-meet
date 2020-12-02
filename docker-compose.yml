@@ -10,7 +10,6 @@ services:
             - '${HTTPS_PORT}:443'
         volumes:
             - ${CONFIG}/web:/config:Z
-            - ${CONFIG}/web/letsencrypt:/etc/letsencrypt:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
             - ENABLE_LETSENCRYPT
@@ -19,6 +18,7 @@ services:
             - DISABLE_HTTPS
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
+            - LETSENCRYPT_USE_STAGING
             - PUBLIC_URL
             - TZ
             - AMPLITUDE_ID
