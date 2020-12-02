@@ -5,7 +5,8 @@ mkdir -p \
     /config/{nginx/site-confs,keys} \
     /run \
     /var/lib/nginx/tmp/client_body \
-    /var/tmp/nginx
+    /var/tmp/nginx \
+    /var/www/letsencrypt
 
 # generate keys (maybe)
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
