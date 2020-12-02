@@ -10,17 +10,25 @@ mkdir -p \
 # generate keys (maybe)
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
-        if [[ ! -f /etc/letsencrypt/live/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
-            if ! certbot-auto \
-                  certonly \
-                  --no-self-upgrade \
-                  --noninteractive \
-                  --standalone \
-                  --preferred-challenges http \
-                  -d $LETSENCRYPT_DOMAIN \
-                  --agree-tos \
-                  --email $LETSENCRYPT_EMAIL ; then
-
+        if [[ ! -f /config/acme.sh/acme.sh ]]; then
+            mkdir /config/acme.sh
+            pushd /opt
+            sh ./acme.sh --install --home /config/acme.sh --accountemail $LETSENCRYPT_EMAIL
+            popd
+        fi
+        if [[ ! -f /etc/nginx/acme/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
+            STAGING=""
+            if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
+                STAGING="--staging"
+            fi
+            # TODO: move away from standalone mode to webroot mode.
+            if ! /config/acme.sh/acme.sh \
+                    $STAGING \
+                    --issue \
+                    --standalone \
+                    --pre-hook "if [[ -f /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
+                    --post-hook "if [[ -f /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
+                    -d $LETSENCRYPT_DOMAIN ; then
                 echo "Failed to obtain a certificate from the Let's Encrypt CA."
                 # this tries to get the user's attention and to spare the
                 # authority's rate limit:
@@ -28,16 +36,18 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
                 echo "Exiting."
                 exit 1
             fi
-        fi
-
-        # remove default certbot renewal
-        if [[ -f /etc/cron.d/certbot ]]; then
-            rm /etc/cron.d/certbot
-        fi
-
-        # setup certbot renewal script
-        if [[ ! -f /etc/cron.daily/letencrypt-renew ]]; then
-            cp /defaults/letsencrypt-renew /etc/cron.daily/
+            mkdir -p /etc/nginx/acme/$LETSENCRYPT_DOMAIN
+            if ! /config/acme.sh/acme.sh \
+                    --install-cert -d $LETSENCRYPT_DOMAIN \
+                    --key-file /etc/nginx/acme/$LETSENCRYPT_DOMAIN/key.pem  \
+                    --fullchain-file /etc/nginx/acme/$LETSENCRYPT_DOMAIN/fullchain.pem ; then
+                echo "Failed to install certificate."
+                # this tries to get the user's attention and to spare the
+                # authority's rate limit:
+                sleep 15
+                echo "Exiting."
+                exit 1
+            fi
         fi
     else
         # use self-signed certs
