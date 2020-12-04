@@ -1,3 +1,14 @@
+## stable-5142-2
+
+Based on stable release 5142-2.
+
+* 700c04a web: properly handle acme.sh return codes
+* 4cb181c web: install acme certs to persistent storage
+* 1d2c68a web: fix running acme.sh on the right home directory
+* 5c44a84 misc: stop using apt-key, it's deprecated
+* 5f06c3a doc: update CHANGELOG
+* 0f780b4 misc: working on latest
+
 ## stable-5142-1
 
 **Important:** This release includes 2 major changes: migrating the base image to Debian Buster and replacing certbot with acme.sh for getting Letś Encrypt certificates. Please report any problems you find!
