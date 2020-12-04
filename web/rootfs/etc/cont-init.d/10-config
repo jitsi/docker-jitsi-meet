@@ -16,7 +16,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             sh ./acme.sh --install --home /config/acme.sh --accountemail $LETSENCRYPT_EMAIL
             popd
         fi
-        if [[ ! -f /etc/nginx/acme/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
+        if [[ ! -f /config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
             STAGING=""
             if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
                 STAGING="--staging"
@@ -37,11 +37,11 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
                 echo "Exiting."
                 exit 1
             fi
-            mkdir -p /etc/nginx/acme/$LETSENCRYPT_DOMAIN
+            mkdir -p /config/acme-certs/$LETSENCRYPT_DOMAIN
             if ! /config/acme.sh/acme.sh \
                     --install-cert -d $LETSENCRYPT_DOMAIN \
-                    --key-file /etc/nginx/acme/$LETSENCRYPT_DOMAIN/key.pem  \
-                    --fullchain-file /etc/nginx/acme/$LETSENCRYPT_DOMAIN/fullchain.pem ; then
+                    --key-file /config/acme-certs/$LETSENCRYPT_DOMAIN/key.pem  \
+                    --fullchain-file /config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem ; then
                 echo "Failed to install certificate."
                 # this tries to get the user's attention and to spare the
                 # authority's rate limit:
