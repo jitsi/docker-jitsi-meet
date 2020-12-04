@@ -21,6 +21,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
                 STAGING="--staging"
             fi
+            export LE_WORKING_DIR="/config/acme.sh"
             # TODO: move away from standalone mode to webroot mode.
             if ! /config/acme.sh/acme.sh \
                     $STAGING \
