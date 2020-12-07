@@ -16,7 +16,10 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             sh ./acme.sh --install --home /config/acme.sh --accountemail $LETSENCRYPT_EMAIL
             popd
         fi
-        if [[ ! -f /config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem ]]; then
+        # Support multiple comma-separated domains in $LETSENCRYPT_DOMAIN e.g. `example.com,foobar.com`
+        IFS=',' read -r -a DOMAINS <<< $LETSENCRYPT_DOMAIN
+        MAIN_DOMAIN="${DOMAINS[0]}"
+        if [[ ! -f /config/acme-certs/$MAIN_DOMAIN/fullchain.pem ]]; then
             STAGING=""
             if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
                 STAGING="--staging"
@@ -29,7 +32,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
                 --standalone \
                 --pre-hook "if [[ -f /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
                 --post-hook "if [[ -f /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
-                -d $LETSENCRYPT_DOMAIN
+                ${DOMAINS[@]/#/-d }
             rc=$?
             if [[ $rc -eq 1 ]]; then
                 echo "Failed to obtain a certificate from the Let's Encrypt CA."
@@ -39,11 +42,12 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
                 echo "Exiting."
                 exit 1
             fi
-            mkdir -p /config/acme-certs/$LETSENCRYPT_DOMAIN
+            mkdir -p /config/acme-certs/$MAIN_DOMAIN
             if ! /config/acme.sh/acme.sh \
-                    --install-cert -d $LETSENCRYPT_DOMAIN \
-                    --key-file /config/acme-certs/$LETSENCRYPT_DOMAIN/key.pem  \
-                    --fullchain-file /config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem ; then
+                    --install-cert \
+                    ${DOMAINS[@]/#/-d } \
+                    --key-file /config/acme-certs/$MAIN_DOMAIN/key.pem  \
+                    --fullchain-file /config/acme-certs/$MAIN_DOMAIN/fullchain.pem ; then
                 echo "Failed to install certificate."
                 # this tries to get the user's attention and to spare the
                 # authority's rate limit:
