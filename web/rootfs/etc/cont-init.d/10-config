@@ -43,7 +43,8 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             if ! /config/acme.sh/acme.sh \
                     --install-cert -d $LETSENCRYPT_DOMAIN \
                     --key-file /config/acme-certs/$LETSENCRYPT_DOMAIN/key.pem  \
-                    --fullchain-file /config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem ; then
+                    --fullchain-file /config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem \
+                    --reloadcmd "if [[ -f /var/run/s6/services/nginx ]]; then s6-svc -h /var/run/s6/services/nginx; fi"; then
                 echo "Failed to install certificate."
                 # this tries to get the user's attention and to spare the
                 # authority's rate limit:
