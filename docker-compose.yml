@@ -71,6 +71,8 @@ services:
             - MATOMO_SITE_ID
             - MICROSOFT_API_APP_CLIENT_ID
             - NGINX_RESOLVER
+            - NGINX_WORKER_PROCESSES
+            - NGINX_WORKER_CONNECTIONS
             - PEOPLE_SEARCH_URL
             - RESOLUTION
             - RESOLUTION_MIN
