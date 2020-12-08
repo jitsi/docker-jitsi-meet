@@ -8,34 +8,31 @@ RUN \
       lua5.2 \
       liblua5.2-dev \
       libsasl2-dev \
-      libssl1.0-dev \
+      libssl-dev \
       luarocks \
       git \
       gcc \
     && luarocks install cyrussasl 1.1.0-1 \
-    && luarocks install lua-cjson 2.1.0-1 \
-    && luarocks install luajwtjitsi 1.3-7 \
-    && luarocks install net-url 0.9-1
+    && luarocks install net-url 0.9-1 \
+    && luarocks install luajwtjitsi 2.0-0
 
 FROM ${JITSI_REPO}/base
 
-ADD https://prosody.im/files/prosody-debian-packages.key /tmp/prosody.key
+ENV XMPP_CROSS_DOMAIN="false"
 
 RUN \
-    apt-key add /tmp/prosody.key \
-    && rm -f /tmp/prosody.key \
-    && echo "deb http://packages.prosody.im/debian stretch main" > /etc/apt/sources.list.d/prosody.list \
+    wget -q https://prosody.im/files/prosody-debian-packages.key -O - | gpg --enarmor > /etc/apt/trusted.gpg.d/prosody.asc \
+    && echo "deb http://packages.prosody.im/debian buster main" > /etc/apt/sources.list.d/prosody.list \
     && apt-dpkg-wrap apt-get update \
     && apt-dpkg-wrap apt-get install -y \
       prosody \
-      libssl1.0.2 \
+      libssl1.1 \
       sasl2-bin \
       libsasl2-modules-ldap \
       lua-basexx \
-      patch \
-    && apt-dpkg-wrap apt-get install -t stretch-backports -y \
       lua-ldap \
       lua-sec \
+      patch \
     && apt-cleanup \
     && rm -rf /etc/prosody
 
