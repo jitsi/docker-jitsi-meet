@@ -74,6 +74,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ end }}
         "pubsub";
         "ping";
+        {{ if $JWT_IDENTIFIERS }}
+        "presence_identity";
+        {{ end }}
         "speakerstats";
         "conference_duration";
         {{ if and $ENABLE_LOBBY (not $ENABLE_GUEST_DOMAIN) }}
