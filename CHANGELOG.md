@@ -1,5 +1,7 @@
 ## stable-5142-3
 
+**Important:** This release should fix some update problems users found in -1 and -2 versions. The main problem observed is the introduction of XMPP WebSockets, which requires extra configuration for the /xmpp-wesocket route if a reverse proxy is used in front of this setup. Pure docker-compose installations don't need any changes.
+
 Based on stable release 5142-3.
 
 * c2c6460 prosody: fix cross-domain WS default value
