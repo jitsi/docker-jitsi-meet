@@ -53,6 +53,7 @@ services:
             - ENABLE_PREJOIN_PAGE
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
+            - ENABLE_NOISY_MIC_DETECTION
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
