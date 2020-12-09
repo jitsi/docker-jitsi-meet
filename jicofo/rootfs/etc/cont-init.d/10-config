@@ -17,8 +17,9 @@ if [[ "$JICOFO_AUTH_PASSWORD" == "$OLD_JICOFO_AUTH_PASSWORD" ]]; then
     exit 1
 fi
 
-if [[ ! -f /config/sip-communicator.properties ]]; then
-    tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
+tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
+if [[ -f /config/custom-sip-communicator.properties ]]; then
+    cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
 fi
 
 if [[ ! -f /config/logging.properties ]]; then

@@ -15,7 +15,7 @@ RUN \
 
 RUN \
 	[ "${CHROME_RELEASE}" = "latest" ] \
-	&& curl -4s https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
+	&& wget -q https://dl-ssl.google.com/linux/linux_signing_key.pub -O /etc/apt/trusted.gpg.d/google.asc \
 	&& echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
 	&& apt-dpkg-wrap apt-get update \
 	&& apt-dpkg-wrap apt-get install -y google-chrome-stable \
