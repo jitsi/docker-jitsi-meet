@@ -1,3 +1,15 @@
+## stable-5142-3
+
+Based on stable release 5142-3.
+
+* c2c6460 prosody: fix cross-domain WS default value
+* 8261f72 jicofo,jigase: add ability to extend the config file
+* 6a4887d web: use env variables to set worker processes and connections
+* 5679578 prosody: add env var to config cross domain settings
+* effb30b prosody: always rebuild configs on start
+* 905d431 jicofo,jigasi: always rebuild configs on start
+* c52b64a misc: working on latest
+
 ## stable-5142-2
 
 Based on stable release 5142-2.
