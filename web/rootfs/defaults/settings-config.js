@@ -9,6 +9,7 @@
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "false" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "false" | toBool -}}
+{{ $ENABLE_WELCOME_PAGE := .Env.ENABLE_WELCOME_PAGE | default "true" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
@@ -223,6 +224,9 @@ config.peopleSearchQueryTypes = ['user','conferenceRooms'];
 
 // Prejoin page.
 config.prejoinPageEnabled = {{ $ENABLE_PREJOIN_PAGE }};
+
+// Welcome page.
+config.enableWelcomePage = {{ .Env.ENABLE_WELCOME_PAGE }};
 
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
