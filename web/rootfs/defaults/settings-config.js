@@ -230,13 +230,13 @@ config.peopleSearchQueryTypes = ['user','conferenceRooms'];
 config.prejoinPageEnabled = {{ $ENABLE_PREJOIN_PAGE }};
 
 // Welcome page.
-config.enableWelcomePage = {{ .Env.ENABLE_WELCOME_PAGE }};
+config.enableWelcomePage = {{ $ENABLE_WELCOME_PAGE }};
 
 // Close page.
-config.enableClosePage = {{ .Env.ENABLE_CLOSE_PAGE }};
+config.enableClosePage = {{ $ENABLE_CLOSE_PAGE }};
 
 // Noisy mic detection notification.
-config.enableNoisyMicDetection = {{ .Env.ENABLE_NOISY_MIC_DETECTION }};
+config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
