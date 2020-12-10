@@ -83,6 +83,7 @@ services:
             - RESOLUTION_WIDTH_MIN
             - START_AUDIO_ONLY
             - START_AUDIO_MUTED
+            - DISABLE_AUDIO_LEVELS
             - START_BITRATE
             - START_VIDEO_MUTED
             - TESTING_CAP_SCREENSHARE_BITRATE

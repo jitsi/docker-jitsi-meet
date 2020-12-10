@@ -27,6 +27,7 @@
 {{ $RESOLUTION_WIDTH_MIN := .Env.RESOLUTION_WIDTH_MIN | default "320" -}}
 {{ $START_AUDIO_ONLY := .Env.START_AUDIO_ONLY | default "false" | toBool -}}
 {{ $START_AUDIO_MUTED := .Env.START_AUDIO_MUTED | default 10 -}}
+{{ $DISABLE_AUDIO_LEVELS := .Env.DISABLE_AUDIO_LEVELS | default "false" | toBool -}}
 {{ $START_VIDEO_MUTED := .Env.START_VIDEO_MUTED | default 10 -}}
 {{ $TESTING_OCTO_PROBABILITY := .Env.TESTING_OCTO_PROBABILITY | default "0" -}}
 {{ $TESTING_CAP_SCREENSHARE_BITRATE := .Env.TESTING_CAP_SCREENSHARE_BITRATE | default "1" -}}
@@ -60,6 +61,7 @@ config.disableAP = {{ not $ENABLE_AUDIO_PROCESSING }};
 config.stereo = {{ $ENABLE_STEREO }};
 config.startAudioOnly = {{ $START_AUDIO_ONLY }};
 config.startAudioMuted = {{ $START_AUDIO_MUTED }};
+config.disableAudioLevels = {{ $DISABLE_AUDIO_LEVELS }};
 
 
 // Peer-to-Peer options.
