@@ -53,7 +53,6 @@ services:
             - ENABLE_PREJOIN_PAGE
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
-            - ENABLE_NOISY_MIC_DETECTION
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
@@ -84,6 +83,7 @@ services:
             - START_AUDIO_ONLY
             - START_AUDIO_MUTED
             - DISABLE_AUDIO_LEVELS
+            - ENABLE_NOISY_MIC_DETECTION
             - START_BITRATE
             - START_VIDEO_MUTED
             - TESTING_CAP_SCREENSHARE_BITRATE
