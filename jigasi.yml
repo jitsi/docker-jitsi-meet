@@ -42,7 +42,7 @@ services:
             - GC_CLIENT_ID
             - GC_CLIENT_CERT_URL
             - TZ
-            - LDAP_URL
+            - AUTH_TYPE
         depends_on:
             - prosody
         networks:
