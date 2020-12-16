@@ -31,11 +31,12 @@ consider_bosh_secure = true;
 -- Deprecated in 0.12
 -- https://github.com/bjc/prosody/commit/26542811eafd9c708a130272d7b7de77b92712de
 {{ $XMPP_CROSS_DOMAINS := $PUBLIC_URL }}
-{{ if eq .Env.XMPP_CROSS_DOMAIN "true"}}
+{{ $XMPP_CROSS_DOMAIN := .Env.XMPP_CROSS_DOMAIN | default "" }}
+{{ if eq $XMPP_CROSS_DOMAIN "true"}}
 cross_domain_websocket = true
 cross_domain_bosh = true
 {{ else }}
-{{ if and .Env.XMPP_CROSS_DOMAIN (not (eq .Env.XMPP_CROSS_DOMAIN "false" )) }}
+{{ if not (eq $XMPP_CROSS_DOMAIN "false") }}
   {{ $XMPP_CROSS_DOMAINS = list $PUBLIC_URL .Env.XMPP_CROSS_DOMAIN | join "," }}
 {{ end }}
 cross_domain_websocket = { "{{ join "\",\"" (splitList "," $XMPP_CROSS_DOMAINS) }}" }
