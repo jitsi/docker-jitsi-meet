@@ -9,6 +9,8 @@
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "false" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "false" | toBool -}}
+{{ $ENABLE_WELCOME_PAGE := .Env.ENABLE_WELCOME_PAGE | default "true" | toBool -}}
+{{ $ENABLE_CLOSE_PAGE := .Env.ENABLE_CLOSE_PAGE | default "false" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
@@ -24,6 +26,8 @@
 {{ $RESOLUTION_WIDTH_MIN := .Env.RESOLUTION_WIDTH_MIN | default "320" -}}
 {{ $START_AUDIO_ONLY := .Env.START_AUDIO_ONLY | default "false" | toBool -}}
 {{ $START_AUDIO_MUTED := .Env.START_AUDIO_MUTED | default 10 -}}
+{{ $DISABLE_AUDIO_LEVELS := .Env.DISABLE_AUDIO_LEVELS | default "false" | toBool -}}
+{{ $ENABLE_NOISY_MIC_DETECTION := .Env.ENABLE_NOISY_MIC_DETECTION | default "true" | toBool -}}
 {{ $START_VIDEO_MUTED := .Env.START_VIDEO_MUTED | default 10 -}}
 {{ $TESTING_OCTO_PROBABILITY := .Env.TESTING_OCTO_PROBABILITY | default "0" -}}
 {{ $TESTING_CAP_SCREENSHARE_BITRATE := .Env.TESTING_CAP_SCREENSHARE_BITRATE | default "1" -}}
@@ -57,6 +61,8 @@ config.disableAP = {{ not $ENABLE_AUDIO_PROCESSING }};
 config.stereo = {{ $ENABLE_STEREO }};
 config.startAudioOnly = {{ $START_AUDIO_ONLY }};
 config.startAudioMuted = {{ $START_AUDIO_MUTED }};
+config.disableAudioLevels = {{ $DISABLE_AUDIO_LEVELS }};
+config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 
 
 // Peer-to-Peer options.
@@ -223,6 +229,12 @@ config.peopleSearchQueryTypes = ['user','conferenceRooms'];
 
 // Prejoin page.
 config.prejoinPageEnabled = {{ $ENABLE_PREJOIN_PAGE }};
+
+// Welcome page.
+config.enableWelcomePage = {{ $ENABLE_WELCOME_PAGE }};
+
+// Close page.
+config.enableClosePage = {{ $ENABLE_CLOSE_PAGE }};
 
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
