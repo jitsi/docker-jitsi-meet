@@ -45,9 +45,6 @@ RUN \
     && rm -rf /tmp/pkg /var/cache/apt
 
 RUN patch -d /usr/lib/prosody/modules/muc -p0 < /prosody-plugins/muc_owner_allow_kick.patch
-RUN \
-    curl -4so /prosody-plugins/mod_turncredentials.lua \
-    https://raw.githubusercontent.com/netaskd/mod_turncredentials/master/mod_turncredentials.lua
 
 COPY rootfs/ /
 

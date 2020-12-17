@@ -26,7 +26,7 @@ if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
 fi
 
 cp -r /defaults/* /config
-if [[ "${TURN_ENABLE}" == "1" || "${TURN_ENABLE}" == "true" ]]; then
+if [[ "${ENABLE_TURN}" == "1" || "${ENABLE_TURN}" == "true" ]]; then
      [ -z "${GLOBAL_MODULES}" ] && export GLOBAL_MODULES="turncredentials" \
      || export GLOBAL_MODULES="${GLOBAL_MODULES},turncredentials"
 fi
