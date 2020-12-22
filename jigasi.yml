@@ -42,7 +42,6 @@ services:
             - GC_CLIENT_ID
             - GC_CLIENT_CERT_URL
             - TZ
-            - AUTH_TYPE
         depends_on:
             - prosody
         networks:
