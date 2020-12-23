@@ -13,6 +13,7 @@ services:
         environment:
             - ENABLE_AUTH
             - XMPP_AUTH_DOMAIN
+            - XMPP_MUC_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
             - XMPP_DOMAIN
