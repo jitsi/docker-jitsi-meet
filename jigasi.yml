@@ -23,6 +23,7 @@ services:
             - JIGASI_SIP_SERVER
             - JIGASI_SIP_PORT
             - JIGASI_SIP_TRANSPORT
+            - JIGASI_SIP_DEFAULT_ROOM
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JIGASI_BREWERY_MUC
