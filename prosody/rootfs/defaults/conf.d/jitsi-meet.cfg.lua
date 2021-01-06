@@ -162,7 +162,7 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end }}
         {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") }}
-        "{{ $JWT_TOKEN_AUTH_MODULE }}";
+        "{{ join "\";\n\"" (splitList "," .Env.JWT_TOKEN_AUTH_MODULE) }}";
         {{ end }}
     }
     muc_room_cache_size = 1000
