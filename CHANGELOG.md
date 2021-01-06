@@ -1,3 +1,17 @@
+## stable-5142-4
+
+Based on stable release 5142-4.
+
+* 6f7b2b4 prosody: add internal domain name to default cross-domains list
+* ada7b95 jvb: fix check for JVB_TCP_HARVESTER_DISABLED
+* a7fb101 jibri: don't provide a non-existing finalizer path
+* d013053 jibri: add missing dependency for `kill` command
+* 0b25141 web: Add ENABLE_HSTS flag to disable strict-transport-security header
+* f856037 web: add more config options
+* eedac14 web: add ability to disable IPv6
+* af6f3ac doc: update CHANGELOG
+* e3bb5c1 misc: working on latest
+
 ## stable-5142-3
 
 **Important:** This release should fix some update problems users found in -1 and -2 versions. The main problem observed is the introduction of XMPP WebSockets, which requires extra configuration for the /xmpp-wesocket route if a reverse proxy is used in front of this setup. Pure docker-compose installations don't need any changes.

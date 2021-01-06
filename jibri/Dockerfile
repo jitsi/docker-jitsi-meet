@@ -10,7 +10,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 RUN \
 	apt-dpkg-wrap apt-get update \
-	&& apt-dpkg-wrap apt-get install -y jibri libgl1-mesa-dri \
+	&& apt-dpkg-wrap apt-get install -y jibri libgl1-mesa-dri procps \
 	&& apt-cleanup
 
 RUN \
