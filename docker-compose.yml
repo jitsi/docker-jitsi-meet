@@ -173,12 +173,13 @@ services:
             - ${CONFIG}/jicofo:/config:Z
         environment:
             - AUTH_TYPE
+            - BRIDGE_AVG_PARTICIPANT_STRESS
+            - BRIDGE_STRESS_THRESHOLD
             - ENABLE_AUTH
             - ENABLE_AUTO_OWNER
             - ENABLE_CODEC_VP8
             - ENABLE_CODEC_VP9
             - ENABLE_CODEC_H264
-            - ENABLE_JIBRI_SIP
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - JICOFO_COMPONENT_SECRET
