@@ -39,6 +39,7 @@ usermod -aG ${host_audio_group} jibri
 
 # script for finalizing must have executing bit.
 [ ! -z "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
+&& [ -f "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && [ ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}
 
