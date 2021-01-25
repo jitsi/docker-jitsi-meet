@@ -102,7 +102,7 @@ services:
             #which host should jitsi-http listen on.
             #please change according to yours
             traefik.http.routers.jitsi-http.rule: 'Host(`your.host.name`)'
-            #setup the entrypoint for https/443. Create a router called jitsi-jttps.
+            #setup the entrypoint for https/443. Create a router called jitsi-https.
             traefik.http.routers.jitsi-https.entrypoints: web-secure
             #which host should jitsi-http listen on.
             #please change according to yours
