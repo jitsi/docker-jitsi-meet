@@ -1,3 +1,13 @@
+## stable-5390
+
+Based on stable release 5390.
+
+* 0f541c8 jicofo: migrate to new config
+* 12823cb prosody: fix jibri recording websocket error
+* 7594ea2 jigasi: add ability to control SIP default room for incoming calls
+* b0e653a jigasi: fix when using authentication
+* 4564170 misc: working on latest
+
 ## stable-5142-4
 
 Based on stable release 5142-4.
