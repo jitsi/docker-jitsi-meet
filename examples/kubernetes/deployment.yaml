@@ -28,6 +28,8 @@ spec:
               value: meet.jitsi
             - name: XMPP_AUTH_DOMAIN
               value: auth.meet.jitsi
+            - name: XMPP_MUC_DOMAIN
+              value: muc.meet.jitsi
             - name: XMPP_INTERNAL_MUC_DOMAIN
               value: internal-muc.meet.jitsi
             - name: JICOFO_COMPONENT_SECRET
