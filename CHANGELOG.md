@@ -1,3 +1,10 @@
+## stable-stable-5390-2
+
+Based on stable release stable-5390-2.
+
+* 3e04fb4 prosody: fix lobby when authentication is enabled
+* 24781e3 misc: working on latest
+
 ## stable-5390-1
 
 Based on stable release 5390-1.

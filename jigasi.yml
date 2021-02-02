@@ -3,7 +3,7 @@ version: '3'
 services:
     # SIP gateway (audio)
     jigasi:
-        image: jitsi/jigasi:latest
+        image: jitsi/jigasi:stable-stable-5390-2
         restart: ${RESTART_POLICY}
         ports:
             - '${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}:${JIGASI_PORT_MIN}-${JIGASI_PORT_MAX}/udp'
