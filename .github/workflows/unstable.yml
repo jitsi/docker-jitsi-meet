@@ -6,8 +6,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      base: unstable
+      date: unstable-${{ steps.date.outputs.date }}
+    steps:
+      - name: Get current date
+        id: date
+        run: echo "::set-output name=date::$(date +%F)"
+
   base:
     runs-on: ubuntu-latest
+    needs: version
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -23,13 +34,15 @@ jobs:
         with:
           push: true
           context: ./base
-          tags: ${{ secrets.JITSI_REPO }}/base:unstable
+          tags: |
+            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_RELEASE=unstable
 
   base-java:
     runs-on: ubuntu-latest
-    needs: base
+    needs: [version, base]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -45,14 +58,16 @@ jobs:
         with:
           push: true
           context: ./base-java
-          tags: ${{ secrets.JITSI_REPO }}/base-java:unstable
+          tags: |
+            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=unstable
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   jibri:
     runs-on: ubuntu-latest
-    needs: base-java
+    needs: [version,base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -68,14 +83,16 @@ jobs:
         with:
           push: true
           context: ./jibri
-          tags: ${{ secrets.JITSI_REPO }}/jibri:unstable
+          tags: |
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=unstable
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   jicofo:
     runs-on: ubuntu-latest
-    needs: base-java
+    needs: [version,base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -91,14 +108,16 @@ jobs:
         with:
           push: true
           context: ./jicofo
-          tags: ${{ secrets.JITSI_REPO }}/jicofo:unstable
+          tags: |
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=unstable
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   jigasi:
     runs-on: ubuntu-latest
-    needs: base-java
+    needs: [version,base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -114,14 +133,16 @@ jobs:
         with:
           push: true
           context: ./jigasi
-          tags: ${{ secrets.JITSI_REPO }}/jigasi:unstable
+          tags: |
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=unstable
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   jvb:
     runs-on: ubuntu-latest
-    needs: base-java
+    needs: [version,base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -137,14 +158,16 @@ jobs:
         with:
           push: true
           context: ./jvb
-          tags: ${{ secrets.JITSI_REPO }}/jvb:unstable
+          tags: |
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=unstable
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   prosody:
     runs-on: ubuntu-latest
-    needs: base
+    needs: [version,base]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -160,14 +183,16 @@ jobs:
         with:
           push: true
           context: ./prosody
-          tags: ${{ secrets.JITSI_REPO }}/prosody:unstable
+          tags: |
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=unstable
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   web:
     runs-on: ubuntu-latest
-    needs: base
+    needs: [version,base]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -183,7 +208,9 @@ jobs:
         with:
           push: true
           context: ./web
-          tags: ${{ secrets.JITSI_REPO }}/web:unstable
+          tags: |
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=unstable
+            BASE_TAG=${{ needs.version.outputs.base }}
