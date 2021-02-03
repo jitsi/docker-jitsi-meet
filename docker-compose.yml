@@ -26,7 +26,6 @@ services:
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
             - BRIDGE_CHANNEL
-            - BRANDING_DATA_URL
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
             - CALLSTATS_SECRET
@@ -41,6 +40,7 @@ services:
             - DIALOUT_CODES_URL
             - DROPBOX_APPKEY
             - DROPBOX_REDIRECT_URI
+            - DYNAMIC_BRANDING_URL
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUTH
             - ENABLE_CALENDAR
