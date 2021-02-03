@@ -267,9 +267,9 @@ config.useIPv6 = {{ $ENABLE_IPV6 }};
 // Transcriptions (subtitles and buttons can be configured in interface_config)
 config.transcribingEnabled = {{ $ENABLE_TRANSCRIPTIONS }};
 
-{{ if .Env.BRANDING_DATA_URL -}}
+{{ if .Env.DYNAMIC_BRANDING_URL -}}
 // External API url used to receive branding specific information.
-config.brandingDataUrl = '{{ .Env.BRANDING_DATA_URL }}';
+config.dynamicBrandingUrl = '{{ .Env.DYNAMIC_BRANDING_URL }}';
 {{ end -}}
 
 {{ if .Env.TOKEN_AUTH_URL -}}
