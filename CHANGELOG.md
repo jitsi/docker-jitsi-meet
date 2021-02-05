@@ -1,3 +1,17 @@
+## stable-5390-3
+
+Based on stable release 5390-3.
+
+* a698da5 misc: add jicofo reservation env variables to compose
+* 86c3022 web: brandingDataUrl -> dynamicBrandingUrl
+* 88e950d jicofo: fix healthcheck
+* 493cbdd misc: fix typo
+* e12d7f2 web : Add DESKTOP_SHARING_FRAMERATE_MIN and MAX env vars
+* fa98a31 examples: fix k8s example
+* 88d1034 doc: add port to PUBLIC_URL
+* c876b40 doc: update CHANGELOG
+* 5cf14b0 misc: working on latest
+
 ## stable-5390-2
 
 Based on stable release 5390-2.
