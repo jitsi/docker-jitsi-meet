@@ -9,32 +9,92 @@ services:
             - ${CONFIG}/web/letsencrypt:/etc/letsencrypt
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts
         environment:
-            - ENABLE_AUTH
-            - ENABLE_GUESTS
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
-            - ENABLE_TRANSCRIPTIONS
+            - ENABLE_HSTS
+            - ENABLE_XMPP_WEBSOCKET
             - DISABLE_HTTPS
-            - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
+            - LETSENCRYPT_USE_STAGING
             - PUBLIC_URL
-            - XMPP_DOMAIN
+            - TZ
+            - AMPLITUDE_ID
+            - ANALYTICS_SCRIPT_URLS
+            - ANALYTICS_WHITELISTED_EVENTS
+            - BRIDGE_CHANNEL
+            - CALLSTATS_CUSTOM_SCRIPT_URL
+            - CALLSTATS_ID
+            - CALLSTATS_SECRET
+            - CHROME_EXTENSION_BANNER_JSON
+            - CONFCODE_URL
+            - CONFIG_EXTERNAL_CONNECT
+            - DEPLOYMENTINFO_ENVIRONMENT
+            - DEPLOYMENTINFO_ENVIRONMENT_TYPE
+            - DEPLOYMENTINFO_USERREGION
+            - DIALIN_NUMBERS_URL
+            - DIALOUT_AUTH_URL
+            - DIALOUT_CODES_URL
+            - DROPBOX_APPKEY
+            - DROPBOX_REDIRECT_URI
+            - DYNAMIC_BRANDING_URL
+            - ENABLE_AUDIO_PROCESSING
+            - ENABLE_AUTH
+            - ENABLE_CALENDAR
+            - ENABLE_FILE_RECORDING_SERVICE
+            - ENABLE_FILE_RECORDING_SERVICE_SHARING
+            - ENABLE_GUESTS
+            - ENABLE_IPV6
+            - ENABLE_LIPSYNC
+            - ENABLE_NO_AUDIO_DETECTION
+            - ENABLE_P2P
+            - ENABLE_PREJOIN_PAGE
+            - ENABLE_WELCOME_PAGE
+            - ENABLE_CLOSE_PAGE
+            - ENABLE_RECORDING
+            - ENABLE_REMB
+            - ENABLE_REQUIRE_DISPLAY_NAME
+            - ENABLE_SIMULCAST
+            - ENABLE_STATS_ID
+            - ENABLE_STEREO
+            - ENABLE_SUBDOMAINS
+            - ENABLE_TALK_WHILE_MUTED
+            - ENABLE_TCC
+            - ENABLE_TRANSCRIPTIONS
+            - ETHERPAD_PUBLIC_URL
+            - ETHERPAD_URL_BASE
+            - GOOGLE_ANALYTICS_ID
+            - GOOGLE_API_APP_CLIENT_ID
+            - INVITE_SERVICE_URL
+            - JICOFO_AUTH_USER
+            - MATOMO_ENDPOINT
+            - MATOMO_SITE_ID
+            - MICROSOFT_API_APP_CLIENT_ID
+            - NGINX_RESOLVER
+            - NGINX_WORKER_PROCESSES
+            - NGINX_WORKER_CONNECTIONS
+            - PEOPLE_SEARCH_URL
+            - RESOLUTION
+            - RESOLUTION_MIN
+            - RESOLUTION_WIDTH
+            - RESOLUTION_WIDTH_MIN
+            - START_AUDIO_ONLY
+            - START_AUDIO_MUTED
+            - DISABLE_AUDIO_LEVELS
+            - ENABLE_NOISY_MIC_DETECTION
+            - START_BITRATE
+            - DESKTOP_SHARING_FRAMERATE_MIN
+            - DESKTOP_SHARING_FRAMERATE_MAX
+            - START_VIDEO_MUTED
+            - TESTING_CAP_SCREENSHARE_BITRATE
+            - TESTING_OCTO_PROBABILITY
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
+            - XMPP_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
-            - ETHERPAD_URL_BASE
-            - ETHERPAD_PUBLIC_URL
-            - TZ
-            - JIBRI_BREWERY_MUC
-            - JIBRI_PENDING_TIMEOUT
-            - JIBRI_XMPP_USER
-            - JIBRI_XMPP_PASSWORD
-            - JIBRI_RECORDER_USER
-            - JIBRI_RECORDER_PASSWORD
-            - ENABLE_RECORDING
+            - TOKEN_AUTH_URL
         networks:
             # traefik: change the following line to your external docker network 
             web:
@@ -51,6 +111,8 @@ services:
             traefik.http.routers.app.tls: 'true'
             traefik.http.routers.app.tls.certresolver: le
             traefik.http.services.app.loadbalancer.server.port: 80
+            # traefik: change the following line to your external docker network
+            traefik.docker.network: web
 
     # XMPP server
     prosody:
@@ -65,6 +127,8 @@ services:
             - AUTH_TYPE
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - ENABLE_LOBBY
+            - ENABLE_XMPP_WEBSOCKET
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
             - LDAP_URL
@@ -89,6 +153,7 @@ services:
             - XMPP_MUC_MODULES
             - XMPP_INTERNAL_MUC_MODULES
             - XMPP_RECORDER_DOMAIN
+            - XMPP_CROSS_DOMAIN
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
@@ -109,6 +174,7 @@ services:
             - JWT_AUTH_TYPE
             - JWT_TOKEN_AUTH_MODULE
             - LOG_LEVEL
+            - PUBLIC_URL
             - TZ
         networks:
             meet.jitsi:
@@ -121,20 +187,40 @@ services:
         volumes:
             - ${CONFIG}/jicofo:/config
         environment:
+            - AUTH_TYPE
+            - BRIDGE_AVG_PARTICIPANT_STRESS
+            - BRIDGE_STRESS_THRESHOLD
             - ENABLE_AUTH
-            - XMPP_DOMAIN
-            - XMPP_AUTH_DOMAIN
-            - XMPP_INTERNAL_MUC_DOMAIN
-            - XMPP_SERVER
+            - ENABLE_AUTO_OWNER
+            - ENABLE_CODEC_VP8
+            - ENABLE_CODEC_VP9
+            - ENABLE_CODEC_H264
+            - ENABLE_RECORDING
+            - ENABLE_SCTP
             - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
+            - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
+            - JICOFO_CONF_INITIAL_PARTICIPANT_WAIT_TIMEOUT
+            - JICOFO_CONF_SINGLE_PARTICIPANT_TIMEOUT
+            - JICOFO_ENABLE_HEALTH_CHECKS
+            - JICOFO_SHORT_ID
+            - JICOFO_RESERVATION_ENABLED
             - JICOFO_RESERVATION_REST_BASE_URL
-            - JVB_BREWERY_MUC
-            - JIGASI_BREWERY_MUC
             - JIBRI_BREWERY_MUC
+            - JIBRI_REQUEST_RETRIES
             - JIBRI_PENDING_TIMEOUT
+            - JIGASI_BREWERY_MUC
+            - JIGASI_SIP_URI
+            - JVB_BREWERY_MUC
+            - MAX_BRIDGE_PARTICIPANTS
+            - OCTO_BRIDGE_SELECTION_STRATEGY
             - TZ
+            - XMPP_DOMAIN
+            - XMPP_AUTH_DOMAIN
+            - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_MUC_DOMAIN
+            - XMPP_SERVER
         depends_on:
             - prosody
         networks:
@@ -159,8 +245,12 @@ services:
             - JVB_PORT
             - JVB_TCP_HARVESTER_DISABLED
             - JVB_TCP_PORT
+            - JVB_TCP_MAPPED_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
+            - JVB_WS_DOMAIN
+            - JVB_WS_SERVER_ID
+            - PUBLIC_URL
             - TZ
         depends_on:
             - prosody
