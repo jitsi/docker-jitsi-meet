@@ -7,6 +7,7 @@ metadata:
 data:
   JVB_BREWERY_MUC: '{{ .Values.jvb.breweryMuc }}'
   JVB_PORT: '{{ .Values.jvb.UDPPort }}'
+  JVB_STUN_SERVERS: '{{.Values.jvb.stunServers }}'
   {{- if .Values.jvb.enableTCP }}
   JVB_TCP_PORT: '{{ .Values.jvb.TCPPort }}'
   JVB_TCP_HARVESTER_DISABLED: '0'

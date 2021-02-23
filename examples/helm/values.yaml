@@ -116,6 +116,7 @@ jvb:
     user: jvb
     password:
 
+  stunServers: 'meet-jit-si-turnrelay.jitsi.net:443'
   useHostPort: false
   enableTCP: false
   UDPPort: 10000
