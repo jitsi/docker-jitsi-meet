@@ -87,3 +87,18 @@ Create the name of the service account to use
   {{ include "call-nested" (list . "prosody" "prosody.fullname") }}.{{ .Release.Namespace }}.svc
 {{- end -}}
 {{- end -}}
+
+
+{{- define "jitsi-meet.publicURL" -}}
+{{- if .Values.publicURL }}
+{{ .Values.pulicURL }}
+{{- else -}}
+{{- if .Values.web.ingress.tls -}}https://{{- else -}}http://{{- end -}}
+{{- if .Values.web.ingress.tls -}}
+{{- (.Values.web.ingress.tls|first).hosts|first -}}
+{{- else if .Values.web.ingress.hosts -}}
+{{- (.Values.web.ingress.hosts|first).host -}}
+{{ required "You need to define a publicURL or some value for ingress" .Values.publicURL }}
+{{- end -}}
+{{- end -}}
+{{- end -}}
