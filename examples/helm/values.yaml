@@ -157,7 +157,7 @@ serviceAccount:
   name:
 
 xmpp:
-  domain:
+  domain: meet.jitsi
   authDomain:
   mucDomain:
   internalMucDomain:
