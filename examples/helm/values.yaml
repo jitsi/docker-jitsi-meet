@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  podLabels: {}
+  podAnnotations: {}
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -53,6 +56,8 @@ web:
       path: /
       port: http
 
+  podLabels: {}
+  podAnnotations: {}
   podSecurityContext: {}
     # fsGroup: 2000
 
@@ -99,6 +104,8 @@ jicofo:
     tcpSocket:
       port: 8888
 
+  podLabels: {}
+  podAnnotations: {}
   podSecurityContext: {}
   securityContext: {}
   resources: {}
@@ -139,6 +146,8 @@ jvb:
       - pgrep
       - java
 
+  podLabels: {}
+  podAnnotations: {}
   podSecurityContext: {}
   securityContext: {}
   resources: {}

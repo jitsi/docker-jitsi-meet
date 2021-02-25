@@ -13,9 +13,15 @@ spec:
     metadata:
       labels:
         {{- include "jitsi-meet.jvb.selectorLabels" . | nindent 8 }}
+      {{- range $label, $value := mergeOverwrite .Values.global.podLabels .Values.jvb.podLabels }}
+        {{ $label }}: {{ $value }}
+      {{- end }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/jvb/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/jvb/xmpp-secret.yaml") . | sha256sum }}
+      {{- range $annotation, $value := mergeOverwrite .Values.global.podAnnotations .Values.jvb.podAnnotations }}
+        {{ $annotation }}: {{ $value }}
+      {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

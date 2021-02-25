@@ -14,6 +14,15 @@ spec:
     metadata:
       labels:
         {{- include "prosody.selectorLabels" . | nindent 8 }}
+      {{- range $label, $value := mergeOverwrite .Values.global.podLabels .Values.podLabels }}
+        {{ $label }}: {{ $value }}
+      {{- end }}
+      {{- with mergeOverwrite .Values.global.podAnnotations .Values.podAnnotations }}
+      annotations:
+      {{- range $annotation, $value := . }}
+        {{ $annotation }}: {{ $value }}
+      {{- end }}
+      {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:

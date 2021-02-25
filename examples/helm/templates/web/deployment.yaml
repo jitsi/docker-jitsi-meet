@@ -13,8 +13,14 @@ spec:
     metadata:
       labels:
         {{- include "jitsi-meet.web.selectorLabels" . | nindent 8 }}
+      {{- range $label, $value := mergeOverwrite .Values.global.podLabels .Values.web.podLabels }}
+        {{ $label }}: {{ $value }}
+      {{- end }}
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/web/configmap.yaml") . | sha256sum }}
+      {{- range $annotation, $value := mergeOverwrite .Values.global.podAnnotations .Values.web.podAnnotations }}
+        {{ $annotation }}: {{ $value }}
+      {{- end }}
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
