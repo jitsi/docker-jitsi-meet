@@ -1,3 +1,10 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jitsi
+  namespace: jitsi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -143,3 +150,4 @@ spec:
               value: jvbbrewery
             - name: TZ
               value: America/Los_Angeles
+      serviceAccountName: jitsi
