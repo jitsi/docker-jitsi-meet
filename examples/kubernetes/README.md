@@ -14,7 +14,7 @@ Deploy the service to listen for JVB UDP traffic on all cluster nodes port 30300
 
 `kubectl create -f jvb-service.yaml`
 
-Now we can deploy the rest of the application. First modify the `DOCKER_HOST_ADDRESS` env value in deployment.yaml to point to one of nodes in your cluster (or load-balancer for all nodes if you have one), and then deploy it:
+Now we can deploy the rest of the application:
 
 `kubectl create -f deployment.yaml`
 
