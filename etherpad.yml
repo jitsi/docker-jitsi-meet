@@ -6,10 +6,10 @@ services:
         image: etherpad/etherpad:1.8.6
         restart: ${RESTART_POLICY}
         environment:
-            - TITLE="${ETHERPAD_TITLE}"
-            - DEFAULT_PAD_TEXT="${ETHERPAD_DEFAULT_PAD_TEXT}"
-            - SKIN_NAME="${ETHERPAD_SKIN_NAME}"
-            - SKIN_VARIANTS="${ETHERPAD_SKIN_VARIANTS}"
+            - TITLE=${ETHERPAD_TITLE}
+            - DEFAULT_PAD_TEXT=${ETHERPAD_DEFAULT_PAD_TEXT}
+            - SKIN_NAME=${ETHERPAD_SKIN_NAME}
+            - SKIN_VARIANTS=${ETHERPAD_SKIN_VARIANTS}
         networks:
             meet.jitsi:
                 aliases:
