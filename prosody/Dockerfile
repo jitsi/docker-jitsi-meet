@@ -7,12 +7,10 @@ RUN \
     && apt-dpkg-wrap apt-get install -y \
       lua5.2 \
       liblua5.2-dev \
-      libsasl2-dev \
       libssl-dev \
       luarocks \
       git \
       gcc \
-    && luarocks install cyrussasl 1.1.0-1 \
     && luarocks install net-url 0.9-1 \
     && luarocks install luajwtjitsi 2.0-0
 
@@ -31,8 +29,10 @@ RUN \
       libsasl2-modules-ldap \
       lua-basexx \
       lua-ldap \
-      lua-sec \
       patch \
+    && apt-dpkg-wrap apt-get install -t buster-backports -y \
+      lua-cyrussasl \
+      lua-sec \
     && apt-cleanup \
     && rm -rf /etc/prosody
 
