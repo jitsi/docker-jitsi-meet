@@ -29,6 +29,7 @@ RUN \
       libsasl2-modules-ldap \
       lua-basexx \
       lua-ldap \
+      lua-http \
       patch \
     && apt-dpkg-wrap apt-get install -t buster-backports -y \
       lua-cyrussasl \
