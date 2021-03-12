@@ -91,7 +91,7 @@ Create the name of the service account to use
 
 {{- define "jitsi-meet.publicURL" -}}
 {{- if .Values.publicURL }}
-{{ .Values.pulicURL }}
+{{- .Values.publicURL -}}
 {{- else -}}
 {{- if .Values.web.ingress.tls -}}https://{{- else -}}http://{{- end -}}
 {{- if .Values.web.ingress.tls -}}
