@@ -4,7 +4,7 @@ This guide will deploy jitsi on a kubernetes cluster in the most simple way base
 The setup is based on [Kustomize](https://kubernetes.io/docs/tasks/manage-kubernetes-objects/kustomization/) providing a declarative object management.
 
 
-## Deploy 
+## Kustomize your Jitsi 
 
 To create a custom deployment create an overlay with your custom settings. First create a new folder with the file *kustomization.yaml*:
 
@@ -30,9 +30,7 @@ So will have the following directory structure:
 	│   ├── 031-ingress.yaml
 	│   └── kustomization.yaml
 	
-You can now build the overlay with:
 
-	$ kubectl apply --kustomize  ./my-deployment
 
 
 
@@ -105,44 +103,24 @@ You can find further details about Kustomize [here](https://github.com/imixs/imi
 
 
 
+## Deploy
 
+Befor you deploy first create a namespace to deploy jitsi to:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
- : as several containers in a single pod. This is enough to start in case your hardware is enough. If you need to scale components to severa instance, you'll have to modify it to use several services and pods.
-
-Create a namespace to deploy jitsi to:
-
-`kubectl create namespace jitsi`
+	kubectl create namespace jitsi
 
 Add the secret with secret values (replace `...` with some random strings):
 
-`kubectl create secret generic jitsi-config -n jitsi --from-literal=JICOFO_COMPONENT_SECRET=... --from-literal=JICOFO_AUTH_PASSWORD=... --from-literal=JVB_AUTH_PASSWORD=... `
+	kubectl create secret generic jitsi-config -n jitsi --from-literal=JICOFO_COMPONENT_SECRET=... --from-literal=JICOFO_AUTH_PASSWORD=... --from-literal=JVB_AUTH_PASSWORD=... 
 
+
+
+You can now deploy your jitsi  with:
+
+	$ kubectl apply --kustomize  ./my-deployment
+	
+	
+	
 Deploy the service to listen for JVB UDP traffic on all cluster nodes port 30300:
 
 `kubectl create -f jvb-service.yaml`

@@ -119,7 +119,7 @@ spec:
             - name: XMPP_SERVER
               value: localhost
             - name: DOCKER_HOST_ADDRESS
-              value: <Set the address for any node in the cluster here>
+              value: 0.0.0.0
             - name: XMPP_DOMAIN
               value: meet.jitsi
             - name: XMPP_AUTH_DOMAIN
