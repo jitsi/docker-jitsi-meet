@@ -63,7 +63,7 @@ The file 031-ingress.yaml contains the custom ingress configuration applied to y
 	        pathType: Prefix
 	        backend:
 	          service:
-	            name: jitsi
+	            name: web
 	            port:
 	              number: 80
               
@@ -92,9 +92,10 @@ The following example shows how to set DOCKER_HOST_ADDRESS which should point to
 	          env:
 	            - name: DOCKER_HOST_ADDRESS
 	              value: <Set the address for any node in the cluster here>
+	        - name: web
+	          env:
 	            - name: ENABLE_XMPP_WEBSOCKET
 	              value: "0"
-
 
 
 
