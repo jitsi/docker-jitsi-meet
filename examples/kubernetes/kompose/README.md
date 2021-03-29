@@ -1,21 +1,29 @@
 I was able to get a basic jitsi installation working behind an HA-proxy on a microk8s Kubernetes cluster using the [kompose](https://kompose.io/) tool on the docker-compose.yml file supplied here. I've outlined the basic steps below, but may have missed something. Also, I *did* in fact test with 3 participants, as with two it seems that the web service completely bypasses jvb which makes testing quite a hassle if you're trying to get up and running quickly.
 
+## Transform `env.example` and `docker-compose.yml` into kompose-friendly format
+These steps are already done, and the results are in the current directory. However, they may need to be updated if the jitsi team ever updates `env.example` or `docker-compose.yml`
+
 ### .env file updates
-Rename example.env to .env and make at least the following adjustments:
 - `XMPP_SERVER=prosody` (these are identified by service name)
 - `XMPP_BOSH_URL_BASE=http://prosody:5280`
 - `JVB_PORT=30300`
 - `JVB_TCP_PORT=30301`
 - `JVB_TCP_MAPPED_PORT=30301`
-- `PUBLIC_URL=` (full external url to your service, usually defined by an ingress)
-- `DOCKER_HOST_ADDRESS=` (ip address of one of your kubernetes cluster nodes, *not* your external ip address - otherwise it won't work inside your LAN, and the STUN server figures out your public ip anyways)
-- Don't forget to add passwords! (run `gen-passwords.sh`)
 
 ### docker-compose.yml updates
 Kompose chokes on a few things with the current docker-compose.yml that we don't really need.
 - Delete all references to volumes, networks, and depends_on.
 - Change all ports to have a single number form instead of Port:Port form (using the environment variables)
 - Add an `expose: - '9090'` entry to the jvb service (this allows the internal websockets to work)
+
+## Run Kompose and apply the result to Kubernetes
+These steps must be done by the person deploying to kubernetes.
+
+### .env file updates
+Rename example.env to .env and make at least the following adjustments:
+- `PUBLIC_URL=` (full external url to your service, usually defined by an ingress)
+- `DOCKER_HOST_ADDRESS=` (ip address of one of your kubernetes cluster nodes, *not* your external ip address - otherwise it won't work inside your LAN, and the STUN server figures out your public ip anyways)
+- Don't forget to add passwords! (run `../../gen-passwords.sh`)
 
 ### Apply .env file to docker-compose and run [kompose](https://kompose.io/)
 Kompose doesn't support .env files, so get around this by doing the following:
@@ -94,7 +102,7 @@ spec:
 ```
 
 ### Configure Port Forwarding and HA-proxy on your router or firewall
-Forward port 30300 UDP to one of your node ports' 30300 (probably the same one you specified in `DOCKER_HOST_ADDRESS`), and same with TCP port 30301 if you set `JVB_TCP_HARVESTER_DISABLED=true`. Also either port forward 80/443 or point HA-proxy to your k8s ingress.
+Forward port 30300 UDP to one of your node ports' 30300 (probably the same one you specified in `DOCKER_HOST_ADDRESS`), and same with TCP port 30301 if you set `JVB_TCP_HARVESTER_DISABLED=false`. Also either port forward 80/443 or point HA-proxy to your k8s ingress.
 
 ### Done
 Go to the website and test this. It probably won't support too many simultaneous meetings, but it's good enough for a small application.
