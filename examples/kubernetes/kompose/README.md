@@ -16,14 +16,14 @@ These steps are already done, and the results are in the current directory. Howe
 Kompose chokes on a few things with the current docker-compose.yml that we don't really need.
 - Delete all references to volumes, networks, and depends_on.
 - Change all ports to have a single number form instead of Port:Port form (using the environment variables)
-- Add an `expose: - '9090'` entry to the jvb service (this allows the internal websockets to work)
+- Add an `expose: - '9090'` entry to the jvb service (this allows the internal websockets to work across multiple deployments)
 
 ## Run Kompose and apply the result to Kubernetes
 These steps must be done by the person deploying to kubernetes.
 
 ### 1) .env file updates
 Rename example.env to .env and make at least the following adjustments:
-- `PUBLIC_URL=` (full external url to your service, usually defined by an ingress)
+- `PUBLIC_URL=` (full external url to your service, usually defined by an ingress. Do *NOT* include a trailing slash, or else the websocket connections will break with prosody)
 - `DOCKER_HOST_ADDRESS=` (ip address of one of your kubernetes cluster nodes, *not* your external ip address - otherwise it won't work inside your LAN, and the STUN server figures out your public ip anyways)
 - Don't forget to add passwords! (run `../../gen-passwords.sh`)
 
@@ -36,7 +36,7 @@ kompose convert -f docker-compose-resolved.yam
 If there are errors, the error message should give enough information to know what to fix. Probably port issues like "FATA services.web.ports.0 must be a string or number." Simply delete anything other than the port number and the leading `-`.
 
 ### 3) Modify generated jvb-service.yaml
-Since k8s ingress doesn't support forwarding udp, you need to change its type to NodePort. Also you don't need 9090 exposed, or 90901 if you set `JVB_TCP_HARVESTER_DISABLED=true` in the .env. Once I'm done, mine looks like this:
+Since k8s ingress doesn't support forwarding udp, you need to change its type to NodePort. Also you don't need 9090 exposed via the service (just in the deployment spec), or 90901 if you set `JVB_TCP_HARVESTER_DISABLED=true` in the .env. Once I'm done, mine looks like this:
 ```
 apiVersion: v1
 kind: Service
