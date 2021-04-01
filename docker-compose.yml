@@ -12,6 +12,7 @@ services:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
+            - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_LETSENCRYPT
             - ENABLE_HTTP_REDIRECT
             - ENABLE_HSTS
@@ -226,6 +227,7 @@ services:
         volumes:
             - ${CONFIG}/jvb:/config:Z
         environment:
+            - ENABLE_COLIBRI_WEBSOCKET
             - DOCKER_HOST_ADDRESS
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
