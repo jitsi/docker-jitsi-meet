@@ -188,7 +188,6 @@ services:
             - ENABLE_CODEC_H264
             - ENABLE_RECORDING
             - ENABLE_SCTP
-            - JICOFO_COMPONENT_SECRET
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
             - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS

@@ -29,12 +29,13 @@ cp -r /defaults/* /config
 tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
 tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua
 
-if [[ -z $JICOFO_COMPONENT_SECRET || -z $JICOFO_AUTH_PASSWORD ]]; then
-    echo 'FATAL ERROR: Jicofo component secret and auth password must be set'
+if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
+    echo 'FATAL ERROR: Jicofo auth password must be set'
     exit 1
 fi
 
 prosodyctl --config $PROSODY_CFG register $JICOFO_AUTH_USER $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
+prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN $JICOFO_AUTH_USER@$XMPP_AUTH_DOMAIN
 
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'
