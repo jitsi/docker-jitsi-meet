@@ -206,6 +206,7 @@ services:
             - JVB_BREWERY_MUC
             - MAX_BRIDGE_PARTICIPANTS
             - OCTO_BRIDGE_SELECTION_STRATEGY
+            - TESTING_OCTO_PROBABILITY
             - TZ
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
