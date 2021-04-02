@@ -305,7 +305,5 @@ if (!config.testing.hasOwnProperty('octo')) config.testing.octo = {};
 config.testing.capScreenshareBitrate = {{ $TESTING_CAP_SCREENSHARE_BITRATE }};
 config.testing.octo.probability = {{ $TESTING_OCTO_PROBABILITY }};
 
-{{ if $DISABLE_DEEP_LINKING -}}
 // Deep Linking
-config.disableDeepLinking = '{{ .Env.DISABLE_DEEP_LINKING }}';
-{{ end -}}
+config.disableDeepLinking = {{ $DISABLE_DEEP_LINKING }};
