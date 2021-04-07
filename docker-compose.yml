@@ -187,6 +187,7 @@ services:
             - ENABLE_CODEC_VP8
             - ENABLE_CODEC_VP9
             - ENABLE_CODEC_H264
+            - ENABLE_OCTO
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - JICOFO_AUTH_USER
