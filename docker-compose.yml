@@ -187,6 +187,7 @@ services:
             - ENABLE_CODEC_VP8
             - ENABLE_CODEC_VP9
             - ENABLE_CODEC_H264
+            - ENABLE_OCTO
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - JICOFO_AUTH_USER
@@ -206,7 +207,6 @@ services:
             - JVB_BREWERY_MUC
             - MAX_BRIDGE_PARTICIPANTS
             - OCTO_BRIDGE_SELECTION_STRATEGY
-            - TESTING_OCTO_PROBABILITY
             - TZ
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
