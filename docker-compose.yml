@@ -245,10 +245,10 @@ services:
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
             - PUBLIC_URL
-            - JVB_NAT_HARVESTER_LOCAL_ADDRESS
-            - JVB_NAT_HARVESTER_PUBLIC_ADDRESS
-            - OCTO_BIND_PORT
-            - OCTO_REGION
+            - JVB_OCTO_BIND_ADDRESS
+            - JVB_OCTO_PUBLIC_ADDRESS
+            - JVB_OCTO_BIND_PORT
+            - JVB_OCTO_REGION
             - TZ
         depends_on:
             - prosody
