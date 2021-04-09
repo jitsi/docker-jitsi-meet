@@ -229,6 +229,7 @@ services:
             - ${CONFIG}/jvb:/config:Z
         environment:
             - ENABLE_COLIBRI_WEBSOCKET
+            - ENABLE_OCTO
             - DOCKER_HOST_ADDRESS
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
@@ -245,6 +246,10 @@ services:
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
             - PUBLIC_URL
+            - JVB_OCTO_BIND_ADDRESS
+            - JVB_OCTO_PUBLIC_ADDRESS
+            - JVB_OCTO_BIND_PORT
+            - JVB_OCTO_REGION
             - TZ
         depends_on:
             - prosody
