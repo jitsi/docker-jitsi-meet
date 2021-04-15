@@ -18,6 +18,7 @@ services:
             - ENABLE_HSTS
             - ENABLE_XMPP_WEBSOCKET
             - DISABLE_HTTPS
+            - DISABLE_DEEP_LINKING
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
             - LETSENCRYPT_USE_STAGING
