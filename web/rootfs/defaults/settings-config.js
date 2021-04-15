@@ -284,8 +284,16 @@ if (!config.hasOwnProperty('deploymentInfo')) config.deploymentInfo = {};
 config.deploymentInfo.environment = '{{ .Env.DEPLOYMENTINFO_ENVIRONMENT }}';
 {{ end -}}
 
+{{ if .Env.DEPLOYMENTINFO_SHARD -}}
+config.deploymentInfo.shard = '{{ .Env.DEPLOYMENTINFO_SHARD }}';
+{{ end -}}
+
 {{ if .Env.DEPLOYMENTINFO_ENVIRONMENT_TYPE -}}
 config.deploymentInfo.envType = '{{ .Env.DEPLOYMENTINFO_ENVIRONMENT_TYPE }}';
+{{ end -}}
+
+{{ if .Env.DEPLOYMENTINFO_REGION -}}
+config.deploymentInfo.region = '{{ .Env.DEPLOYMENTINFO_REGION }}';
 {{ end -}}
 
 {{ if $DEPLOYMENTINFO_USERREGION -}}
