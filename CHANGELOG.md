@@ -1,3 +1,28 @@
+## stable-5765
+
+Based on stable release 5765.
+
+* 9bc262a prosody: fix building unstable images
+* 0cbe0d9 web: add a env variable to enable/disable deep linking
+* b22421b misc: publish nightly unstable images
+* 78699fe web: allow to configure shard name using env variable
+* a6853ef jvb: add octo configuration options
+* d6fac8e jicofo: disable octo by default
+* 1fa5048 doc: add link to Kubernetes setup
+* e1cebcc web,jvb: add ability to disable web sockets for colibri
+* 6c4dce1 jicofo: fix ENABLE_SCTP type
+* 953a4d2 jicofo: use a client proxy connection
+* d27336b web: always try to renew cert on container boot
+* 73acbad web: remove deprecated config option
+* cb4d941 web: removed duplicate host headers
+* ec570ba k8s: fix PodSecurityPolicy
+* c4fc3d3 web: make a custom interface config possible
+* b45b505 web: always install acme.sh when container starts
+* 94ca16d etherpad: remove quotes from all env vars
+* c89ccc9 jicofo: reintroduce shibboleth auth
+* a6486b4 examples: update traefik v2 example
+* f4ec023 misc: working on latest
+
 ## stable-5390-3
 
 Based on stable release 5390-3.
