@@ -1,6 +1,7 @@
 ARG JITSI_REPO=jitsi
+ARG BASE_TAG=latest
 
-FROM ${JITSI_REPO}/base as builder
+FROM ${JITSI_REPO}/base:${BASE_TAG} as builder
 
 RUN \
     apt-dpkg-wrap apt-get update \
@@ -16,7 +17,7 @@ RUN \
     && luarocks install net-url 0.9-1 \
     && luarocks install luajwtjitsi 2.0-0
 
-FROM ${JITSI_REPO}/base
+FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 ENV XMPP_CROSS_DOMAIN="false"
 
