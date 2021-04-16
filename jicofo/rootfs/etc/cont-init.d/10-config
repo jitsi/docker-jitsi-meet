@@ -13,10 +13,7 @@ if [[ "$JICOFO_AUTH_PASSWORD" == "$OLD_JICOFO_AUTH_PASSWORD" ]]; then
     exit 1
 fi
 
+tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/jicofo.conf > /config/jicofo.conf
-
-if [[ ! -f /config/logging.properties ]]; then
-    tpl /defaults/logging.properties > /config/logging.properties
-fi
 
 chown -R jicofo:jitsi /config

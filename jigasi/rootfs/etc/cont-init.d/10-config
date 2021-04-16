@@ -13,13 +13,11 @@ if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
     exit 1
 fi
 
+tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
+
 if [[ -f /config/custom-sip-communicator.properties ]]; then
     cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
-fi
-
-if [[ ! -f /config/logging.properties ]]; then
-    tpl /defaults/logging.properties > /config/logging.properties
 fi
 
 mkdir -pm777 /tmp/transcripts
