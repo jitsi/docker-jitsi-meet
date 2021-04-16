@@ -19,10 +19,7 @@ if [[ -f /config/custom-sip-communicator.properties ]]; then
     cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
 fi
 
+tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/jvb.conf > /config/jvb.conf
-
-if [[ ! -f /config/logging.properties ]]; then
-    tpl /defaults/logging.properties > /config/logging.properties
-fi
 
 chown -R jvb:jitsi /config
