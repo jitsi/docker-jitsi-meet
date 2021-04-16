@@ -43,6 +43,9 @@ services:
             - GC_CLIENT_EMAIL
             - GC_CLIENT_ID
             - GC_CLIENT_CERT_URL
+            - SENTRY_DSN="${JIGASI_SENTRY_DSN}"
+            - SENTRY_ENVIRONMENT
+            - SENTRY_RELEASE
             - TZ
         depends_on:
             - prosody
