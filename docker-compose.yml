@@ -57,6 +57,7 @@ services:
             - ENABLE_PREJOIN_PAGE
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
+            - DEFAULT_LANGUAGE
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
