@@ -86,12 +86,15 @@ services:
             - RESOLUTION_WIDTH_MIN
             - START_AUDIO_ONLY
             - START_AUDIO_MUTED
+            - START_WITH_AUDIO_MUTED
+            - START_SILENT
             - DISABLE_AUDIO_LEVELS
             - ENABLE_NOISY_MIC_DETECTION
             - START_BITRATE
             - DESKTOP_SHARING_FRAMERATE_MIN
             - DESKTOP_SHARING_FRAMERATE_MAX
             - START_VIDEO_MUTED
+            - START_WITH_VIDEO_MUTED
             - TESTING_CAP_SCREENSHARE_BITRATE
             - TESTING_OCTO_PROBABILITY
             - XMPP_AUTH_DOMAIN
