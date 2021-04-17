@@ -213,9 +213,6 @@ services:
             - JVB_BREWERY_MUC
             - MAX_BRIDGE_PARTICIPANTS
             - OCTO_BRIDGE_SELECTION_STRATEGY
-            - SENTRY_DSN="${JICOFO_SENTRY_DSN}"
-            - SENTRY_ENVIRONMENT
-            - SENTRY_RELEASE
             - TZ
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
@@ -259,9 +256,6 @@ services:
             - JVB_OCTO_PUBLIC_ADDRESS
             - JVB_OCTO_BIND_PORT
             - JVB_OCTO_REGION
-            - SENTRY_DSN="${JVB_SENTRY_DSN}"
-            - SENTRY_ENVIRONMENT
-            - SENTRY_RELEASE
             - TZ
         depends_on:
             - prosody
