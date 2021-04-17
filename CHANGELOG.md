@@ -1,3 +1,13 @@
+## stable-5765-1
+
+Based on stable release 5765-1.
+
+* 2900680 Revert "misc: add support for sentry logging"
+* 7a47202 jicofo: make sure client-proxy is properly configured
+* 5c32833 web: add start environment variables START_WITH_AUDIO_MUTED; START_SILENT; START_WITH_VIDEO_MUTED
+* 8d2a29f misc: add support for sentry logging
+* 3d93f2b misc: working on latest
+
 ## stable-5765
 
 Based on stable release 5765.
