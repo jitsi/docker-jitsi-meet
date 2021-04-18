@@ -246,6 +246,11 @@ config.enableWelcomePage = {{ $ENABLE_WELCOME_PAGE }};
 // Close page.
 config.enableClosePage = {{ $ENABLE_CLOSE_PAGE }};
 
+// Default language.
+{{ if .Env.DEFAULT_LANGUAGE -}}
+config.defaultLanguage = '{{ .Env.DEFAULT_LANGUAGE }}';
+{{ end -}}
+
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
 
