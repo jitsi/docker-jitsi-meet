@@ -4,7 +4,6 @@
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "false" | toBool -}}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool -}}
 {{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" }}
-{{ $PUBLIC_URL_DOMAIN := .Env.PUBLIC_URL | default "https://localhost:8443" | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN -}}
@@ -38,7 +37,7 @@ config.hosts.authdomain = '{{ $XMPP_DOMAIN }}';
 
 config.bosh = '/http-bind';
 {{ if $ENABLE_XMPP_WEBSOCKET -}}
-config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
+config.websocket = 'wss://' + window.location.origin.replace(/^https?:\/\//, '') + '/xmpp-websocket';
 {{ end -}}
 
 {{ if $CONFIG_EXTERNAL_CONNECT -}}
