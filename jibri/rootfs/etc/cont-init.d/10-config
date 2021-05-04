@@ -47,7 +47,7 @@ usermod -aG ${host_audio_group} jibri
 [ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID=$(date +%N)
 
 # always recreate configs
-tpl /defaults/config.json > /etc/jitsi/jibri/config.json
+tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
 tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
 
 # make recording dir
