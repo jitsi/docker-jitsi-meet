@@ -4,8 +4,8 @@ FROM ${JITSI_REPO}/base-java:${BASE_TAG}
 
 #ARG CHROME_RELEASE=latest
 #ARG CHROMEDRIVER_MAJOR_RELEASE=latest
-ARG CHROME_RELEASE=78.0.3904.97
-ARG CHROMEDRIVER_MAJOR_RELEASE=78
+ARG CHROME_RELEASE=90.0.4430.212
+ARG CHROMEDRIVER_MAJOR_RELEASE=90
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -24,10 +24,10 @@ RUN \
 	|| true
 
 RUN \
-        [ "${CHROME_RELEASE}" != "latest" ] \
-        && curl -4so "/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb" "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb" \
+    [ "${CHROME_RELEASE}" != "latest" ] \
+    && curl -4so "/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb" "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb" \
 	&& apt-dpkg-wrap apt-get update \
-        && apt-dpkg-wrap apt-get install -y "/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb" \
+    && apt-dpkg-wrap apt-get install -y "/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb" \
 	&& apt-cleanup \
 	|| true
 
