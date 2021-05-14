@@ -108,8 +108,6 @@ services:
             - TOKEN_AUTH_URL
         networks:
             meet.jitsi:
-                aliases:
-                    - ${XMPP_DOMAIN}
 
     # XMPP server
     prosody:
