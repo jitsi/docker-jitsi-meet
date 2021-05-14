@@ -1,3 +1,16 @@
+## stable-5870
+
+Based on stable release 5870.
+
+* d9b84cf jibri: set base URL for joining meetings
+* a77a43e jibri: update default Chrome version to 90
+* a90e4ce doc: drop confusing port number from PUBLIC_URL
+* 8620caa doc: clarify env variable
+* 6f52f71 web: add FLoC environment variable
+* 014aa59 web: add default language variable
+* ce25bf6 doc: update CHANGELOG
+* 6bf1336 misc: working on latest
+
 ## stable-5765-1
 
 Based on stable release 5765.
