@@ -13,6 +13,7 @@ services:
         devices:
             - /dev/snd:/dev/snd
         environment:
+            - PUBLIC_URL
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
