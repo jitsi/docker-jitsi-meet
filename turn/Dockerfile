@@ -1,8 +1,9 @@
 ARG VERSION
-FROM instrumentisto/coturn:${VERSION:-latest}
+FROM coturn/coturn:${VERSION:-latest}
 
 RUN apk add --no-cache openssl
 RUN apk add --no-cache certbot
+RUN apk add --no-cache curl
 RUN apk add --no-cache bash
 
 ADD ./rootfs/defaults/docker-entrypoint.sh /docker-entrypoint.sh
