@@ -39,6 +39,7 @@
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
 {{ $ENABLE_VIDEOQUALITY := .Env.ENABLE_VIDEOQUALITY | default "false" | toBool -}}
+{{ $VIDEOQUALITY_ENFORCE_PREFERRED_CODEC := .Env.VIDEOQUALITY_ENFORCE_PREFERRED_CODEC | default "false" | toBool -}}
 {{ $VIDEOQUALITY_BITRATE_H264_LOW := .Env.VIDEOQUALITY_BITRATE_H264_LOW | default "200000" -}}
 {{ $VIDEOQUALITY_BITRATE_H264_STANDARD := .Env.VIDEOQUALITY_BITRATE_H264_STANDARD | default "500000" -}}
 {{ $VIDEOQUALITY_BITRATE_H264_HIGH := .Env.VIDEOQUALITY_BITRATE_H264_HIGH | default "1500000" -}}
@@ -91,8 +92,9 @@ config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 if (!config.hasOwnProperty('p2p')) config.p2p = {};
 
 config.p2p.enabled = {{ $ENABLE_P2P }};
-
-
+{{ if .Env.P2P_PREFERRED_CODEC -}}
+config.p2p.preferredCodec = '{{ .Env.P2P_PREFERRED_CODEC }}';
+{{ end -}}
 // Etherpad
 //
 
