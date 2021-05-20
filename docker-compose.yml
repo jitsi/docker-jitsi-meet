@@ -83,6 +83,7 @@ services:
             - NGINX_WORKER_PROCESSES
             - NGINX_WORKER_CONNECTIONS
             - PEOPLE_SEARCH_URL
+            - P2P_PREFERRED_CODEC
             - RESOLUTION
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
