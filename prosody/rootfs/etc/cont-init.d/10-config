@@ -2,27 +2,12 @@
 
 if [[ ! -f /etc/saslauthd.conf ]]; then
   tpl /defaults/saslauthd.conf > /etc/saslauthd.conf
-  mkdir -pm777 /var/run/saslauthd
-  adduser prosody sasl
-  echo >> /etc/ldap/ldap.conf "TLS_REQCERT allow"
 fi
 
 PROSODY_CFG="/config/prosody.cfg.lua"
 
 if [[ ! -d /config/data ]]; then
-    mkdir -pm 750 /config/data
-fi
-
-if [[ "$(stat -c %U /config)" != "prosody" ]]; then
-    chown -R prosody /config
-fi
-
-if [[ "$(stat -c %U /prosody-plugins)" != "prosody" ]]; then
-    chown -R prosody /prosody-plugins
-fi
-
-if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
-    chown -R prosody /prosody-plugins-custom
+    mkdir -pm 770 /config/data
 fi
 
 cp -r /defaults/* /config

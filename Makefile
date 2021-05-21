@@ -10,7 +10,7 @@ ifeq ($(FORCE_REBUILD), 1)
 endif
 
 
-all:	build-all
+all: build-all
 
 release: tag-all push-all
 

@@ -1,0 +1,27 @@
+diff --git a/prosodyctl b/prosodyctl
+index 964285a..0fcf2a5 100755
+--- a/prosodyctl
++++ b/prosodyctl
+@@ -803,15 +803,17 @@ function commands.cert(arg)
+ 			return 1; -- TODO Should we create it?
+ 		end
+ 		local uid = pposix.getuid();
+-		if uid ~= 0 and uid ~= cert_dir_attrs.uid then
+-			show_warning("The directory "..cert_basedir.." is not owned by the current user, won't be able to write files to it");
++		local gid = pposix.getgid();
++		if uid ~= 0 and not (
++			(cert_dir_attrs.permissions:match("^.w.......$") and uid == cert_dir_attrs.uid) or
++			(cert_dir_attrs.permissions:match("^....w....$") and gid == cert_dir_attrs.gid) or
++			cert_dir_attrs.permissions:match("^.......w.$")
++		) then
++			show_warning("The directory "..cert_basedir.." is not writable by this user");
+ 			return 1;
+ 		elseif not cert_dir_attrs.permissions then -- COMPAT with LuaFilesystem < 1.6.2 (hey CentOS!)
+ 			show_message("Unable to check permissions on "..cert_basedir.." (LuaFilesystem 1.6.2+ required)");
+ 			show_message("Please confirm that Prosody (and only Prosody) can write to this directory)");
+-		elseif cert_dir_attrs.permissions:match("^%.w..%-..%-.$") then
+-			show_warning("The directory "..cert_basedir.." not only writable by its owner");
+-			return 1;
+ 		end
+ 		local subcmd = table.remove(arg, 1);
+ 		if type(cert_commands[subcmd]) == "function" then

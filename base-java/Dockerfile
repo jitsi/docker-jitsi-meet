@@ -2,6 +2,8 @@ ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
+ENV JAVA_SYS_PROPS "-Djava.util.prefs.userRoot=/root"
+
 RUN	\
 	mkdir -p /usr/share/man/man1 && \
 	wget -q https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public -O /etc/apt/trusted.gpg.d/openjdk.asc && \

@@ -8,11 +8,11 @@ metadata:
 spec:
   ports:
   - name: "http"
-    port: 80
-    targetPort: 80
+    port: 8080
+    targetPort: 8080
   - name: "https"
-    port: 443
-    targetPort: 443
+    port: 4443
+    targetPort: 4443
   selector:
     k8s-app: jitsi
 ---
