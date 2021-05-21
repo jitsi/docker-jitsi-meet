@@ -148,6 +148,7 @@ Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
         {{ end }}
     }
+    restrict_room_creation = true
     muc_room_locking = false
     muc_room_default_public_jids = true
 
