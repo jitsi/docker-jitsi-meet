@@ -69,7 +69,6 @@ services:
             - ENABLE_TALK_WHILE_MUTED
             - ENABLE_TCC
             - ENABLE_TRANSCRIPTIONS
-            - ENABLE_VIDEOQUALITY
             - ETHERPAD_PUBLIC_URL
             - ETHERPAD_URL_BASE
             - GOOGLE_ANALYTICS_ID
