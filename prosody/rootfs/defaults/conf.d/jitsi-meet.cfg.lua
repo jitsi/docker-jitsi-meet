@@ -95,6 +95,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "ldap") }}
         "auth_cyrus";
         {{end}}
+        {{ if .Env.ENABLE_TURN | default "0" | toBool }}
+        "turncredentials";
+        {{end}}
     }
 
     {{ if $ENABLE_LOBBY }}
