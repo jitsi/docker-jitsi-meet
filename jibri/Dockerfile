@@ -13,7 +13,7 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jibri libgl1-mesa-dri procps && \
     apt-cleanup && \
     [ "${CHROME_RELEASE}" = "latest" ] && \
-    wget -qO /etc/apt/trusted.gpg.d/google.asc https://dl-ssl.google.com/linux/linux_signing_key.pub && \
+    wget -qO - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmour /etc/apt/trusted.gpg.d/google.gpg && \
     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y google-chrome-stable && \
