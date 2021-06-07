@@ -43,6 +43,7 @@ modules_enabled = {
 	-- Not essential, but recommended
 		"private"; -- Private XML storage (for room bookmarks, etc.)
 		"vcard"; -- Allow users to set vCards
+		"limits"; -- Enable bandwidth limiting for XMPP connections
 
 	-- These are commented by default as they have a performance impact
 		--"privacy"; -- Support privacy lists
@@ -92,6 +93,16 @@ modules_disabled = {
 allow_registration = false;
 
 daemonize = false;
+
+-- Enable rate limits for incoming client and server connections
+limits = {
+  c2s = {
+    rate = "10kb/s";
+  };
+  s2sin = {
+    rate = "30kb/s";
+  };
+}
 
 pidfile = "/config/data/prosody.pid";
 
