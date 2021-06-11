@@ -1,3 +1,11 @@
+## stable-5963
+
+Based on stable release 5963.
+
+* 6f6fe77 prosody: enable limits
+* db3d790 prosody: fix: restrict room creation to jicofo (#1059)
+* 281db36 misc: working on latest
+
 ## stable-5870
 
 Based on stable release 5870.
