@@ -173,6 +173,12 @@ services:
             - LOG_LEVEL
             - PUBLIC_URL
             - TZ
+            - ENABLE_TURN
+            - TURN_SECRET
+            - TURN_HOST
+            - TURN_PORT
+            - TURN_TRANSPORT
+            - TURN_TYPE
         networks:
             meet.jitsi:
                 aliases:
