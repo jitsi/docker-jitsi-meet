@@ -19,5 +19,4 @@ If you plan to install the jitsi-meet stack on a Kubernetes cluster you can find
 ## TODO
 
 * Support container replicas (where applicable).
-* TURN server.
 
