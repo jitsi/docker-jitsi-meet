@@ -172,6 +172,11 @@ services:
             - JWT_TOKEN_AUTH_MODULE
             - LOG_LEVEL
             - PUBLIC_URL
+            - TURN_CREDENTIALS
+            - TURN_HOST
+            - TURNS_HOST
+            - TURN_PORT
+            - TURNS_PORT
             - TZ
         networks:
             meet.jitsi:
