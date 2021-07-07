@@ -111,6 +111,8 @@ services:
             - JWT_TOKEN_AUTH_MODULE
             - LOG_LEVEL
             - TZ
+        labels:
+            - "traefik.enable=false"
         networks:
             meet.jitsi:
                 aliases:
@@ -141,6 +143,8 @@ services:
             - TZ
         depends_on:
             - prosody
+        labels:
+            - "traefik.enable=false"
         networks:
             meet.jitsi:
 
