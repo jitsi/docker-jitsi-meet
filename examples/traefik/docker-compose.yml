@@ -163,6 +163,7 @@ services:
             - JVB_BREWERY_MUC
             - JVB_PORT
             - JVB_TCP_HARVESTER_DISABLED
+            - JVB_TCP_HARVESTER_SSLTCP
             - JVB_TCP_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
