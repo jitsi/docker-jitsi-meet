@@ -1,5 +1,6 @@
 {{ $DEPLOYMENTINFO_USERREGION := .Env.DEPLOYMENTINFO_USERREGION | default "" -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
+{{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SERVICE := .Env.ENABLE_FILE_RECORDING_SERVICE | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SERVICE_SHARING := .Env.ENABLE_FILE_RECORDING_SERVICE_SHARING | default "false" | toBool -}}
@@ -55,7 +56,7 @@ config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};
 {{ if .Env.START_BITRATE -}}
 config.startBitrate = '{{ .Env.START_BITRATE }}';
 {{ end -}}
- 
+
 // ScreenShare Configuration.
 //
 config.desktopSharingFrameRate = { min: {{ $DESKTOP_SHARING_FRAMERATE_MIN }}, max: {{ $DESKTOP_SHARING_FRAMERATE_MAX }} };
@@ -81,6 +82,14 @@ config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 if (!config.hasOwnProperty('p2p')) config.p2p = {};
 
 config.p2p.enabled = {{ $ENABLE_P2P }};
+
+
+// Breakout Rooms
+//
+
+{{ if not $ENABLE_BREAKOUT_ROOMS -}}
+config.hideAddRoomButton = true;
+{{ end -}}
 
 
 // Etherpad
