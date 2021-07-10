@@ -48,6 +48,7 @@ services:
             - DYNAMIC_BRANDING_URL
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUTH
+            - ENABLE_BREAKOUT_ROOMS
             - ENABLE_CALENDAR
             - ENABLE_FILE_RECORDING_SERVICE
             - ENABLE_FILE_RECORDING_SERVICE_SHARING
@@ -123,6 +124,7 @@ services:
         environment:
             - AUTH_TYPE
             - ENABLE_AUTH
+            - ENABLE_BREAKOUT_ROOMS
             - ENABLE_GUESTS
             - ENABLE_LOBBY
             - ENABLE_XMPP_WEBSOCKET
@@ -203,8 +205,8 @@ services:
             - JICOFO_CONF_SINGLE_PARTICIPANT_TIMEOUT
             - JICOFO_ENABLE_HEALTH_CHECKS
             - JICOFO_SHORT_ID
-            - JICOFO_RESERVATION_ENABLED 
-            - JICOFO_RESERVATION_REST_BASE_URL 
+            - JICOFO_RESERVATION_ENABLED
+            - JICOFO_RESERVATION_REST_BASE_URL
             - JIBRI_BREWERY_MUC
             - JIBRI_REQUEST_RETRIES
             - JIBRI_PENDING_TIMEOUT

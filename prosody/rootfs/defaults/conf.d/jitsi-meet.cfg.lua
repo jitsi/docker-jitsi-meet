@@ -19,6 +19,7 @@ http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
 {{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
 {{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "0" | toBool }}
+{{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "1" | toBool }}
 
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
@@ -94,6 +95,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ if $ENABLE_LOBBY }}
         "muc_lobby_rooms";
         {{ end }}
+        {{ if $ENABLE_BREAKOUT_ROOMS }}
+        "muc_breakout_rooms";
+        {{ end }}
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
         {{ end }}
@@ -102,12 +106,17 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{end}}
     }
 
-    {{ if $ENABLE_LOBBY }}
+    {{ if or $ENABLE_LOBBY $ENABLE_BREAKOUT_ROOMS }}
     main_muc = "{{ .Env.XMPP_MUC_DOMAIN }}"
+    {{ end }}
+    {{ if $ENABLE_LOBBY }}
     lobby_muc = "lobby.{{ .Env.XMPP_DOMAIN }}"
     {{ if .Env.XMPP_RECORDER_DOMAIN }}
     muc_lobby_whitelist = { "{{ .Env.XMPP_RECORDER_DOMAIN }}" }
     {{ end }}
+    {{ end }}
+    {{ if $ENABLE_BREAKOUT_ROOMS }}
+    breakout_rooms_muc = "breakout.{{ .Env.XMPP_DOMAIN }}"
     {{ end }}
 
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
@@ -174,6 +183,21 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     muc_room_cache_size = 1000
     muc_room_locking = false
     muc_room_default_public_jids = true
+
+{{ if $ENABLE_BREAKOUT_ROOMS }}
+Component "breakout.{{ .Env.XMPP_DOMAIN }}" "muc"
+    storage = "memory"
+    modules_enabled = {
+        "muc_meeting_id";
+        {{ if .Env.XMPP_MUC_MODULES }}
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
+        {{ end }}
+    }
+    muc_room_cache_size = 1000
+    muc_room_locking = false
+    muc_room_default_public_jids = true
+    restrict_room_creation = true
+{{ end }}
 
 Component "focus.{{ .Env.XMPP_DOMAIN }}" "client_proxy"
     target_address = "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}"
