@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 
+export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jigasi | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
+
 if [[ -z $JIGASI_XMPP_PASSWORD ]]; then
     echo 'FATAL ERROR: Jigasi auth password must be set'
     exit 1
@@ -11,13 +13,11 @@ if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
     exit 1
 fi
 
+tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
+
 if [[ -f /config/custom-sip-communicator.properties ]]; then
     cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
-fi
-
-if [[ ! -f /config/logging.properties ]]; then
-    cp /defaults/logging.properties /config
 fi
 
 mkdir -pm777 /tmp/transcripts
