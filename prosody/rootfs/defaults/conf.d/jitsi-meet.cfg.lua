@@ -7,6 +7,7 @@
 {{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
 {{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool }}
 {{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool }}
+{{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool }}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
@@ -115,6 +116,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ if $ENABLE_LOBBY }}
         "muc_lobby_rooms";
         {{ end }}
+        {{ if $ENABLE_BREAKOUT_ROOMS }}
+        "muc_breakout_rooms";
+        {{ end }}
         {{ if $ENABLE_AV_MODERATION }}
         "av_moderation";
         {{ end }}
@@ -126,12 +130,17 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{end}}
     }
 
-    {{ if $ENABLE_LOBBY }}
     main_muc = "{{ .Env.XMPP_MUC_DOMAIN }}"
+
+    {{ if $ENABLE_LOBBY }}
     lobby_muc = "lobby.{{ .Env.XMPP_DOMAIN }}"
     {{ if .Env.XMPP_RECORDER_DOMAIN }}
     muc_lobby_whitelist = { "{{ .Env.XMPP_RECORDER_DOMAIN }}" }
     {{ end }}
+    {{ end }}
+
+    {{ if $ENABLE_BREAKOUT_ROOMS }}
+    breakout_rooms_muc = "breakout.{{ .Env.XMPP_DOMAIN }}"
     {{ end }}
 
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
@@ -214,6 +223,14 @@ Component "avmoderation.{{ .Env.XMPP_DOMAIN }}" "av_moderation_component"
 
 {{ if $ENABLE_LOBBY }}
 Component "lobby.{{ .Env.XMPP_DOMAIN }}" "muc"
+    storage = "memory"
+    restrict_room_creation = true
+    muc_room_locking = false
+    muc_room_default_public_jids = true
+{{ end }}
+
+{{ if $ENABLE_BREAKOUT_ROOMS }}
+Component "breakout.{{ .Env.XMPP_DOMAIN }}" "muc"
     storage = "memory"
     restrict_room_creation = true
     muc_room_locking = false
