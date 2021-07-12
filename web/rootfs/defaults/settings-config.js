@@ -92,6 +92,12 @@ config.etherpad_base = '{{ .Env.ETHERPAD_PUBLIC_URL }}';
 config.etherpad_base = '{{.Env.PUBLIC_URL}}/etherpad/p/';
 {{ end -}}
 
+ // GenericIFrame
+//
+
+{{ if .Env.GENERIC_IFRAME_TEMPLATE_URL -}}
+config.genericIFrameTemplateUrl = '{{ .Env.GENERIC_IFRAME_TEMPLATE_URL }}';
+{{ end -}}
 
 // Recording.
 //
