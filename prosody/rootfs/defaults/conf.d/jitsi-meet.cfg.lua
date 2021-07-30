@@ -9,6 +9,8 @@ unlimited_jids = {
 }
 
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
+-- domain mapper options, must at least have domain base set to use the mapper
+muc_mapper_domain_base = "{{ .Env.XMPP_DOMAIN }}";
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
