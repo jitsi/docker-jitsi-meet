@@ -119,6 +119,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ if $ENABLE_LOBBY }}
         "muc_lobby_rooms";
         {{ end }}
+        {{ if $ENABLE_AV_MODERATION }}
+        "av_moderation";
+        {{ end }}
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
         {{ end }}
@@ -137,6 +140,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ .Env.XMPP_DOMAIN }}"
+    av_moderation_component = "avmoderation.{{ .Env.XMPP_DOMAIN }}"
 
     c2s_require_encryption = false
 
@@ -207,6 +211,9 @@ Component "speakerstats.{{ .Env.XMPP_DOMAIN }}" "speakerstats_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
 
 Component "conferenceduration.{{ .Env.XMPP_DOMAIN }}" "conference_duration_component"
+    muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+
+Component "avmoderation.{{ .Env.XMPP_DOMAIN }}" "av_moderation_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
 
 {{ if $ENABLE_LOBBY }}
