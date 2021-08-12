@@ -1,3 +1,18 @@
+{{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
+{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
+{{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
+{{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
+{{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
+{{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
+{{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
+{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "0" | toBool }}
+{{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "0" | toBool }}
+{{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
+{{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
+{{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
+{{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
+{{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0 }}
+
 admins = {
     "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
     "{{ .Env.JVB_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}"
@@ -9,23 +24,11 @@ unlimited_jids = {
 }
 
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
--- domain mapper options, must at least have domain base set to use the mapper
+
 muc_mapper_domain_base = "{{ .Env.XMPP_DOMAIN }}";
+muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
+
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
-
-{{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
-{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
-{{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
-{{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
-{{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
-{{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
-{{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
-{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "0" | toBool }}
-
-{{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
-{{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
-{{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
-{{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
 
 {{ if .Env.TURN_CREDENTIALS }}
 external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
@@ -119,6 +122,9 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         {{ if $ENABLE_LOBBY }}
         "muc_lobby_rooms";
         {{ end }}
+        {{ if $ENABLE_AV_MODERATION }}
+        "av_moderation";
+        {{ end }}
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
         {{ end }}
@@ -137,6 +143,10 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ .Env.XMPP_DOMAIN }}"
+
+    {{ if $ENABLE_AV_MODERATION }}
+    av_moderation_component = "avmoderation.{{ .Env.XMPP_DOMAIN }}"
+    {{ end }}
 
     c2s_require_encryption = false
 
@@ -208,6 +218,11 @@ Component "speakerstats.{{ .Env.XMPP_DOMAIN }}" "speakerstats_component"
 
 Component "conferenceduration.{{ .Env.XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+
+{{ if $ENABLE_AV_MODERATION }}
+Component "avmoderation.{{ .Env.XMPP_DOMAIN }}" "av_moderation_component"
+    muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+{{ end }}
 
 {{ if $ENABLE_LOBBY }}
 Component "lobby.{{ .Env.XMPP_DOMAIN }}" "muc"
