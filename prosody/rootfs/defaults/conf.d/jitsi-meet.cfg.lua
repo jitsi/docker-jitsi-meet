@@ -80,7 +80,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     authentication = "{{ $JWT_AUTH_TYPE }}"
     app_id = "{{ .Env.JWT_APP_ID }}"
     app_secret = "{{ .Env.JWT_APP_SECRET }}"
-    allow_empty_token = {{ if $JWT_ALLOW_EMPTY }}true{{ else }}false{{ end }}
+    allow_empty_token = {{ $JWT_ALLOW_EMPTY }}
     {{ if $JWT_ASAP_KEYSERVER }}
     asap_key_server = "{{ .Env.JWT_ASAP_KEYSERVER }}"
     {{ end }}
@@ -93,15 +93,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     authentication = "internal_hashed"
   {{ end }}
 {{ else }}
-    -- https://github.com/jitsi/docker-jitsi-meet/pull/502#issuecomment-619146339
-    {{ if $ENABLE_XMPP_WEBSOCKET }}
-    authentication = "token"
-    {{ else }}
-    authentication = "anonymous"
-    {{ end }}
-    app_id = ""
-    app_secret = ""
-    allow_empty_token = true
+    authentication = "jitsi-anonymous"
 {{ end }}
     ssl = {
         key = "/config/certs/{{ .Env.XMPP_DOMAIN }}.key";
@@ -153,15 +145,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 
 {{ if $ENABLE_GUEST_DOMAIN }}
 VirtualHost "{{ .Env.XMPP_GUEST_DOMAIN }}"
-    -- https://github.com/jitsi/docker-jitsi-meet/pull/502#issuecomment-619146339
-    {{ if $ENABLE_XMPP_WEBSOCKET }}
-    authentication = "token"
-    {{ else }}
-    authentication = "anonymous"
-    {{ end }}
-    app_id = ""
-    app_secret = ""
-    allow_empty_token = true
+    authentication = "jitsi-anonymous"
 
     c2s_require_encryption = false
 {{ end }}
