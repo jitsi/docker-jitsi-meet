@@ -149,6 +149,7 @@ services:
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
+            - XMPP_MUC_DOMAIN_PREFIX
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_MODULES
             - XMPP_MUC_MODULES

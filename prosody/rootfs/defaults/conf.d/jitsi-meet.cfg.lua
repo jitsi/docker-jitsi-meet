@@ -11,8 +11,7 @@ unlimited_jids = {
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 -- domain mapper options, must at least have domain base set to use the mapper
 muc_mapper_domain_base = "{{ .Env.XMPP_DOMAIN }}";
-{{ $XMPP_DOMAIN_PREFIX := .Env.XMPP_DOMAIN_PREFIX | default "conference" }}
-muc_mapper_domain_prefix = "{{ $XMPP_DOMAIN_PREFIX }}";
+muc_mapper_domain_prefix = "{{ .Env.XMPP_MUC_DOMAIN_PREFIX }}";
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
@@ -196,7 +195,6 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
         "muc_meeting_id";
-        "muc_domain_mapper";
         {{ if .Env.XMPP_MUC_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end }}
