@@ -142,7 +142,10 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ .Env.XMPP_DOMAIN }}"
+
+    {{ if $ENABLE_AV_MODERATION }}
     av_moderation_component = "avmoderation.{{ .Env.XMPP_DOMAIN }}"
+    {{ end }}
 
     c2s_require_encryption = false
 
@@ -215,8 +218,10 @@ Component "speakerstats.{{ .Env.XMPP_DOMAIN }}" "speakerstats_component"
 Component "conferenceduration.{{ .Env.XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
 
+{{ if $ENABLE_AV_MODERATION }}
 Component "avmoderation.{{ .Env.XMPP_DOMAIN }}" "av_moderation_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+{{ end }}
 
 {{ if $ENABLE_LOBBY }}
 Component "lobby.{{ .Env.XMPP_DOMAIN }}" "muc"
