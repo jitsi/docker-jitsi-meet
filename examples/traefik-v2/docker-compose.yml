@@ -128,6 +128,7 @@ services:
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LOBBY
+            - ENABLE_AV_MODERATION
             - ENABLE_XMPP_WEBSOCKET
             - GLOBAL_MODULES
             - GLOBAL_CONFIG
