@@ -13,6 +13,7 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 muc_mapper_domain_base = "{{ .Env.XMPP_DOMAIN }}";
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
+{{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
@@ -177,9 +178,9 @@ Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
         "ping";
-        {{ if .Env.XMPP_INTERNAL_MUC_MODULES }}
+        {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
-        {{ end }}
+        {{ end -}}
     }
     restrict_room_creation = true
     muc_room_locking = false
@@ -189,12 +190,15 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
         "muc_meeting_id";
-        {{ if .Env.XMPP_MUC_MODULES }}
+        {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
-        {{ end }}
-        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") }}
+        {{ end -}}
+        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") -}}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
-        {{ end }}
+        {{ end -}}
+        {{ if not $DISABLE_POLLS -}}
+        "polls";
+        {{ end -}}
     }
     muc_room_cache_size = 1000
     muc_room_locking = false

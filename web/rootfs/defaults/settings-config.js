@@ -38,7 +38,8 @@
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
-
+{{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
+{{ $ENABLE_REACTIONS := .Env.ENABLE_REACTIONS | default "true" | toBool -}}
 // Video configuration.
 //
 
@@ -323,3 +324,9 @@ config.testing.octo.probability = {{ $TESTING_OCTO_PROBABILITY }};
 
 // Deep Linking
 config.disableDeepLinking = {{ $DISABLE_DEEP_LINKING }};
+
+// Enables reactions feature.
+config.enableReactions = {{ $ENABLE_REACTIONS }};
+
+// Polls
+config.disablePolls = {{ $DISABLE_POLLS }};
