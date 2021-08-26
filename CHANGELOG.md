@@ -1,3 +1,13 @@
+## stable-6173
+
+Based on stable release 6173.
+
+* c95f0d6 prosody: add support for A/V Moderation
+* 856e414 prosody: add ability to configure external TURN server
+* bcae3b1 prosody: add domain mapper options to default configuration
+* cf90461 web: fix acme.sh pre and post hooks
+* 65563d9 misc: working on latest
+
 ## stable-5963
 
 Based on stable release 5963.

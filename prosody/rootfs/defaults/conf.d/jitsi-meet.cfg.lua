@@ -1,3 +1,20 @@
+{{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
+{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
+{{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
+{{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
+{{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
+{{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
+{{ $MATRIX_UVS_ISSUER := .Env.MATRIX_UVS_ISSUER | default "issuer" }}
+{{ $MATRIX_UVS_SYNC_POWER_LEVELS := .Env.MATRIX_UVS_SYNC_POWER_LEVELS | default "0" | toBool }}
+{{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
+{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "0" | toBool }}
+{{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "0" | toBool }}
+{{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
+{{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
+{{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
+{{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
+{{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0 }}
+
 admins = {
     "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
     "{{ .Env.JVB_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}"
@@ -9,21 +26,29 @@ unlimited_jids = {
 }
 
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
+
+muc_mapper_domain_base = "{{ .Env.XMPP_DOMAIN }}";
+muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
+
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
-{{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
-{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
-{{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
-{{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
-{{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
-{{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
-{{ $MATRIX_UVS_ISSUER := .Env.MATRIX_UVS_ISSUER | default "issuer" }}
-{{ $MATRIX_UVS_SYNC_POWER_LEVELS := .Env.MATRIX_UVS_SYNC_POWER_LEVELS | default "0" | toBool }}
-{{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
-{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "0" | toBool }}
+{{ if .Env.TURN_CREDENTIALS }}
+external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
+{{ end }}
 
-{{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
-{{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
+{{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
+external_services = {
+  {{ if .Env.TURN_HOST }}
+     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
+  {{ end }}
+  {{ if and .Env.TURN_HOST .Env.TURNS_HOST }}
+  ,
+  {{ end }}
+  {{ if .Env.TURNS_HOST }}
+     { type = "turns", host = "{{ .Env.TURNS_HOST }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
+  {{ end }}
+};
+{{ end }}
 
 {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
@@ -102,8 +127,14 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
         "ping";
         "speakerstats";
         "conference_duration";
+        {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
+        "external_services";
+        {{ end }}
         {{ if $ENABLE_LOBBY }}
         "muc_lobby_rooms";
+        {{ end }}
+        {{ if $ENABLE_AV_MODERATION }}
+        "av_moderation";
         {{ end }}
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
@@ -123,6 +154,10 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 
     speakerstats_component = "speakerstats.{{ .Env.XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ .Env.XMPP_DOMAIN }}"
+
+    {{ if $ENABLE_AV_MODERATION }}
+    av_moderation_component = "avmoderation.{{ .Env.XMPP_DOMAIN }}"
+    {{ end }}
 
     c2s_require_encryption = false
 
@@ -197,6 +232,11 @@ Component "speakerstats.{{ .Env.XMPP_DOMAIN }}" "speakerstats_component"
 
 Component "conferenceduration.{{ .Env.XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+
+{{ if $ENABLE_AV_MODERATION }}
+Component "avmoderation.{{ .Env.XMPP_DOMAIN }}" "av_moderation_component"
+    muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+{{ end }}
 
 {{ if $ENABLE_LOBBY }}
 Component "lobby.{{ .Env.XMPP_DOMAIN }}" "muc"
