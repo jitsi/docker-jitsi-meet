@@ -89,12 +89,3 @@ fi
 if [[ -f /config/custom-interface_config.js ]]; then
     cat /config/custom-interface_config.js >> /config/interface_config.js
 fi
-
-# It will remove parameter 'closedcaptions' from TOOLBAR_BUTTONS if ENABLE_TRANSCRIPTIONS is false,
-# because it enabled by default, but not supported out of the box.
-if [[ $ENABLE_TRANSCRIPTIONS -ne 1 && "$ENABLE_TRANSCRIPTIONS" != "true" ]]; then
-    sed -i \
-        -e "s#'closedcaptions', ##" \
-        /config/interface_config.js
-fi
-
