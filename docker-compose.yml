@@ -202,6 +202,7 @@ services:
             - ENABLE_OCTO
             - ENABLE_RECORDING
             - ENABLE_SCTP
+            - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
             - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
