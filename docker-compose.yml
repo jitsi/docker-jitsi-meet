@@ -10,6 +10,7 @@ services:
             - '${HTTPS_PORT}:443'
         volumes:
             - ${CONFIG}/web:/config:Z
+            - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
             - ENABLE_COLIBRI_WEBSOCKET
