@@ -44,6 +44,7 @@ services:
             - DIALIN_NUMBERS_URL
             - DIALOUT_AUTH_URL
             - DIALOUT_CODES_URL
+            - DISABLE_POLLS
             - DROPBOX_APPKEY
             - DROPBOX_REDIRECT_URI
             - DYNAMIC_BRANDING_URL
@@ -56,6 +57,7 @@ services:
             - ENABLE_IPV6
             - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
+            - ENABLE_REACTIONS
             - ENABLE_P2P
             - ENABLE_PREJOIN_PAGE
             - ENABLE_WELCOME_PAGE
@@ -135,6 +137,7 @@ services:
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
         environment:
             - AUTH_TYPE
+            - DISABLE_POLLS
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - ENABLE_LOBBY

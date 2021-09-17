@@ -12,6 +12,7 @@
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0 }}
+{{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 
 admins = {
     "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
@@ -187,9 +188,9 @@ Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
         "ping";
-        {{ if .Env.XMPP_INTERNAL_MUC_MODULES }}
+        {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
-        {{ end }}
+        {{ end -}}
     }
     restrict_room_creation = true
     muc_room_locking = false
@@ -199,12 +200,15 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
         "muc_meeting_id";
-        {{ if .Env.XMPP_MUC_MODULES }}
+        {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
-        {{ end }}
-        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") }}
+        {{ end -}}
+        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") -}}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
-        {{ end }}
+        {{ end -}}
+        {{ if not $DISABLE_POLLS -}}
+        "polls";
+        {{ end -}}
     }
     muc_room_cache_size = 1000
     muc_room_locking = false
