@@ -10,6 +10,7 @@ services:
             - '${HTTPS_PORT}:443'
         volumes:
             - ${CONFIG}/web:/config:Z
+            - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
             - ENABLE_COLIBRI_WEBSOCKET
@@ -84,6 +85,7 @@ services:
             - NGINX_WORKER_PROCESSES
             - NGINX_WORKER_CONNECTIONS
             - PEOPLE_SEARCH_URL
+            - P2P_PREFERRED_CODEC
             - RESOLUTION
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
@@ -101,13 +103,24 @@ services:
             - START_WITH_VIDEO_MUTED
             - TESTING_CAP_SCREENSHARE_BITRATE
             - TESTING_OCTO_PROBABILITY
+            - TOKEN_AUTH_URL
+            - VIDEOQUALITY_PREFERRED_CODEC
+            - VIDEOQUALITY_ENFORCE_PREFERRED_CODEC
+            - VIDEOQUALITY_BITRATE_H264_LOW
+            - VIDEOQUALITY_BITRATE_H264_STANDARD
+            - VIDEOQUALITY_BITRATE_H264_HIGH
+            - VIDEOQUALITY_BITRATE_VP8_LOW
+            - VIDEOQUALITY_BITRATE_VP8_STANDARD
+            - VIDEOQUALITY_BITRATE_VP8_HIGH
+            - VIDEOQUALITY_BITRATE_VP9_LOW
+            - VIDEOQUALITY_BITRATE_VP9_STANDARD
+            - VIDEOQUALITY_BITRATE_VP9_HIGH
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
             - XMPP_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
-            - TOKEN_AUTH_URL
         networks:
             meet.jitsi:
 
@@ -205,6 +218,7 @@ services:
             - ENABLE_OCTO
             - ENABLE_RECORDING
             - ENABLE_SCTP
+            - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
             - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
@@ -222,6 +236,9 @@ services:
             - JVB_BREWERY_MUC
             - MAX_BRIDGE_PARTICIPANTS
             - OCTO_BRIDGE_SELECTION_STRATEGY
+            - SENTRY_DSN="${JICOFO_SENTRY_DSN:-0}"
+            - SENTRY_ENVIRONMENT
+            - SENTRY_RELEASE
             - TZ
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
@@ -265,6 +282,9 @@ services:
             - JVB_OCTO_PUBLIC_ADDRESS
             - JVB_OCTO_BIND_PORT
             - JVB_OCTO_REGION
+            - SENTRY_DSN="${JVB_SENTRY_DSN:-0}"
+            - SENTRY_ENVIRONMENT
+            - SENTRY_RELEASE
             - TZ
         depends_on:
             - prosody

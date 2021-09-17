@@ -38,6 +38,7 @@
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
+{{ $VIDEOQUALITY_ENFORCE_PREFERRED_CODEC := .Env.VIDEOQUALITY_ENFORCE_PREFERRED_CODEC | default "false" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $ENABLE_REACTIONS := .Env.ENABLE_REACTIONS | default "true" | toBool -}}
 // Video configuration.
@@ -325,7 +326,31 @@ config.testing.octo.probability = {{ $TESTING_OCTO_PROBABILITY }};
 // Deep Linking
 config.disableDeepLinking = {{ $DISABLE_DEEP_LINKING }};
 
-// Enables reactions feature.
+// P2P preferred codec
+{{ if .Env.P2P_PREFERRED_CODEC -}}
+config.p2p.preferredCodec = '{{ .Env.P2P_PREFERRED_CODEC }}';
+{{ end -}}
+
+// enable preffered video Codec
+if (!config.hasOwnProperty('videoQuality')) config.videoQuality = {};
+{{ if .Env.VIDEOQUALITY_PREFERRED_CODEC -}}
+config.videoQuality.preferredCodec = '{{ .Env.VIDEOQUALITY_PREFERRED_CODEC }}';
+{{ end -}}
+
+config.videoQuality.enforcePreferredCodec = {{ $VIDEOQUALITY_ENFORCE_PREFERRED_CODEC }};
+
+if (!config.videoQuality.hasOwnProperty('maxBitratesVideo')) config.videoQuality.maxBitratesVideo = {};
+{{ if and .Env.VIDEOQUALITY_BITRATE_H264_LOW .Env.VIDEOQUALITY_BITRATE_H264_STANDARD .Env.VIDEOQUALITY_BITRATE_H264_HIGH -}}
+config.videoQuality.maxBitratesVideo.H264 = { low: {{ .Env.VIDEOQUALITY_BITRATE_H264_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_H264_HIGH }} };
+{{ end -}}
+{{ if and .Env.VIDEOQUALITY_BITRATE_VP8_LOW .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD .Env.VIDEOQUALITY_BITRATE_VP8_HIGH -}}
+config.videoQuality.maxBitratesVideo.VP8 = { low: {{ .Env.VIDEOQUALITY_BITRATE_VP8_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }} };
+{{ end -}}
+{{ if and .Env.VIDEOQUALITY_BITRATE_VP9_LOW .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD .Env.VIDEOQUALITY_BITRATE_VP9_HIGH -}}
+config.videoQuality.maxBitratesVideo.VP9 = { low: {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }} };
+{{ end -}}
+
+ // Enables reactions feature.
 config.enableReactions = {{ $ENABLE_REACTIONS }};
 
 // Polls
