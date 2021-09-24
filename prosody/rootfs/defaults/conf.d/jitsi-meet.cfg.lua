@@ -14,6 +14,7 @@
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0 }}
+{{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 
 admins = {
     "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
@@ -81,7 +82,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     authentication = "{{ $JWT_AUTH_TYPE }}"
     app_id = "{{ .Env.JWT_APP_ID }}"
     app_secret = "{{ .Env.JWT_APP_SECRET }}"
-    allow_empty_token = {{ if $JWT_ALLOW_EMPTY }}true{{ else }}false{{ end }}
+    allow_empty_token = {{ $JWT_ALLOW_EMPTY }}
     {{ if $JWT_ASAP_KEYSERVER }}
     asap_key_server = "{{ .Env.JWT_ASAP_KEYSERVER }}"
     {{ end }}
@@ -103,15 +104,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     authentication = "internal_hashed"
   {{ end }}
 {{ else }}
-    -- https://github.com/jitsi/docker-jitsi-meet/pull/502#issuecomment-619146339
-    {{ if $ENABLE_XMPP_WEBSOCKET }}
-    authentication = "token"
-    {{ else }}
-    authentication = "anonymous"
-    {{ end }}
-    app_id = ""
-    app_secret = ""
-    allow_empty_token = true
+    authentication = "jitsi-anonymous"
 {{ end }}
     ssl = {
         key = "/config/certs/{{ .Env.XMPP_DOMAIN }}.key";
@@ -163,15 +156,7 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 
 {{ if $ENABLE_GUEST_DOMAIN }}
 VirtualHost "{{ .Env.XMPP_GUEST_DOMAIN }}"
-    -- https://github.com/jitsi/docker-jitsi-meet/pull/502#issuecomment-619146339
-    {{ if $ENABLE_XMPP_WEBSOCKET }}
-    authentication = "token"
-    {{ else }}
-    authentication = "anonymous"
-    {{ end }}
-    app_id = ""
-    app_secret = ""
-    allow_empty_token = true
+    authentication = "jitsi-anonymous"
 
     c2s_require_encryption = false
 {{ end }}
@@ -198,9 +183,9 @@ Component "{{ .Env.XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
         "ping";
-        {{ if .Env.XMPP_INTERNAL_MUC_MODULES }}
+        {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
-        {{ end }}
+        {{ end -}}
     }
     restrict_room_creation = true
     muc_room_locking = false
@@ -210,15 +195,18 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
         "muc_meeting_id";
-        {{ if .Env.XMPP_MUC_MODULES }}
+        {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
-        {{ end }}
-        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") }}
+        {{ end -}}
+        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") -}}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
-        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "matrix") $MATRIX_UVS_SYNC_POWER_LEVELS }}
+        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "matrix") $MATRIX_UVS_SYNC_POWER_LEVELS -}}
         "matrix_power_sync";
-        {{ end }}
+        {{ end -}}
+        {{ if not $DISABLE_POLLS -}}
+        "polls";
+        {{ end -}}
     }
     muc_room_cache_size = 1000
     muc_room_locking = false
