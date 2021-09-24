@@ -82,10 +82,7 @@ if [[ -f /config/custom-config.js ]]; then
     cat /config/custom-config.js >> /config/config.js
 fi
 
-if [[ ! -f /config/interface_config.js || -f /config/custom-interface_config.js ]]; then
-    cp /defaults/interface_config.js /config/interface_config.js
-fi
-
+cp /defaults/interface_config.js /config/interface_config.js
 if [[ -f /config/custom-interface_config.js ]]; then
     cat /config/custom-interface_config.js >> /config/interface_config.js
 fi
