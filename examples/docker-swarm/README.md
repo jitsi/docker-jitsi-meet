@@ -24,11 +24,7 @@
 
     E. Verify the setup using command `docker node ls` which will show all the three nodes with role as a manager.
 
-3. Create an Overlay network. We have to create two networks here one for jitsi setup and other one is for traefik.
-
-    A. Create network `jitsi` using command `docker network create --attachable --driver overlay jitsi`.
-
-    B. Create network `proxy` using command `docker network create --attachable --driver overlay proxy`.
+3. Create an Overlay network for jitsi using command `docker network create --attachable --driver overlay jitsi`
 
 4. Now open below ports for jitsi deployment.
 
@@ -38,14 +34,8 @@
 
     C. Prosody ports `5222, 5347, 5280 TCP` for internal use only.
 
-    D. Web port `80 TCP` for internal use only.
+    D. Web port `80 TCP` and `443 TCP` for everyone and make sure to enable `ENABLE_HTTP_REDIRECT` in `stack-web.yml` file.
 
-5. Create a directory `letsencrypt` for Traefik to store the letsencrypt certificate.
+5. Now deploy the jitsi setup files using command `docker stack deploy -c stack-web.yaml -c stack-prosdy.yml -c stack-jicofo.yml -c stack-jvb1.yml jitsi`.
 
-6. Now deploy the jitsi setup files using command `docker stack deploy -c stack-web.yaml -c stack-prosdy.yml -c stack-jicofo.yml -c stack-jvb1.yml jitsi`.
-
-7. Deploy the Traefik using command `docker stack deploy -c stack-traefik.yml proxy`.
-
-8. Please note that you can restrict which service you want to deploy on which node by uncommenting the `placement` in the files. Make sure you are running Traefik on the node for which you have added a DNS record.
-
-9. Initiallly Traefik will use letsencrypt staging server to issue a certificate to avoid the rate-limit. Once the setup is working fine then you can comment out `--certificatesResolvers.letsencrypt.acme.caServer=https://acme-staging-v02.api.letsencrypt.org/directory` line in `stack-traefik.yml` file to get the certificate.
+6. Please note that you can restrict which service you want to deploy on which node by uncommenting the `placement` in the files. Make sure you are running service web on the node for which you have added a DNS record.

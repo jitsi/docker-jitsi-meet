@@ -103,9 +103,6 @@ services:
                - focus.meet.jitsi
 # Custom network so all services can communicate using a FQDN
 networks:
-  proxy:
-    external: true
-    name: proxy
   jitsi:
     external: true
     name: jitsi
