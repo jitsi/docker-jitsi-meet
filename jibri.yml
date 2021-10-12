@@ -39,7 +39,6 @@ services:
             - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER
             - XMPP_TRUST_ALL_CERTS
-            - XORG_DUMMY_VIDEO_RESOLUTION
         depends_on:
             - jicofo
         networks:
