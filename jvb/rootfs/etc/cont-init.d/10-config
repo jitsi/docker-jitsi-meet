@@ -14,9 +14,8 @@ if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
     exit 1
 fi
 
-tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
 if [[ -f /config/custom-sip-communicator.properties ]]; then
-    cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
+    cat /config/custom-sip-communicator.properties > /config/sip-communicator.properties
 fi
 
 tpl /defaults/logging.properties > /config/logging.properties
