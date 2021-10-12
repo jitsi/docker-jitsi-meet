@@ -43,16 +43,13 @@ usermod -aG ${host_audio_group} jibri
 && [ ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}
 
-# set rundom jibri nickname for the instance if is not set
+# set random jibri nickname for the instance if is not set
 [ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID=$(date +%N)
 
 # always recreate configs
 tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
 tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
-
-# change the resolution in xorg-video-dummy file if var is not empty
-[[ ! -z "$XORG_DUMMY_VIDEO_RESOLUTION" ]] &&  \
-sed -i -e "s/Virtual 1920 1080/Virtual ${XORG_DUMMY_VIDEO_RESOLUTION}/g" /etc/jitsi/jibri/xorg-video-dummy.conf
+tpl /defaults/xorg-video-dummy.conf > /etc/jitsi/jibri/xorg-video-dummy.conf
 
 # make recording dir
 [ -z "${JIBRI_RECORDING_DIR}" ] && export JIBRI_RECORDING_DIR=/config/recordings

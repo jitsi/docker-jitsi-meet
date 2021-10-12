@@ -16,11 +16,11 @@ services:
             - CHROMIUM_FLAGS
             - DISPLAY=:0
             - ENABLE_STATS_D
-            - JIBRI_FFMPEG_RESOLUTION
             - JIBRI_FFMPEG_AUDIO_SOURCE
             - JIBRI_FFMPEG_AUDIO_DEVICE
             - JIBRI_HTTP_API_EXTERNAL_PORT
             - JIBRI_HTTP_API_INTERNAL_PORT
+            - JIBRI_RECORDING_RESOLUTION
             - JIBRI_USAGE_TIMEOUT
             - JIBRI_XMPP_USER
             - JIBRI_XMPP_PASSWORD
