@@ -5,8 +5,8 @@
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
 {{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
-{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "0" | toBool }}
-{{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "0" | toBool }}
+{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool }}
+{{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool }}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
