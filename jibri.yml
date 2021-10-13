@@ -13,12 +13,15 @@ services:
         devices:
             - /dev/snd:/dev/snd
         environment:
-            - PUBLIC_URL
-            - XMPP_AUTH_DOMAIN
-            - XMPP_INTERNAL_MUC_DOMAIN
-            - XMPP_RECORDER_DOMAIN
-            - XMPP_SERVER
-            - XMPP_DOMAIN
+            - CHROMIUM_FLAGS
+            - DISPLAY=:0
+            - ENABLE_STATS_D
+            - JIBRI_FFMPEG_AUDIO_SOURCE
+            - JIBRI_FFMPEG_AUDIO_DEVICE
+            - JIBRI_HTTP_API_EXTERNAL_PORT
+            - JIBRI_HTTP_API_INTERNAL_PORT
+            - JIBRI_RECORDING_RESOLUTION
+            - JIBRI_USAGE_TIMEOUT
             - JIBRI_XMPP_USER
             - JIBRI_XMPP_PASSWORD
             - JIBRI_BREWERY_MUC
@@ -28,8 +31,14 @@ services:
             - JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
             - JIBRI_STRIP_DOMAIN_JID
             - JIBRI_LOGS_DIR
-            - DISPLAY=:0
+            - PUBLIC_URL
             - TZ
+            - XMPP_AUTH_DOMAIN
+            - XMPP_DOMAIN
+            - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_RECORDER_DOMAIN
+            - XMPP_SERVER
+            - XMPP_TRUST_ALL_CERTS
         depends_on:
             - jicofo
         networks:
