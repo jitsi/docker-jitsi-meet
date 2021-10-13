@@ -44,7 +44,7 @@ usermod -aG ${host_audio_group} jibri
 && chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}
 
 # set random jibri nickname for the instance if is not set
-[ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID=$(date +%N)
+[ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID="jibri-$(date +%N)"
 
 # always recreate configs
 tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
