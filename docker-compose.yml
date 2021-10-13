@@ -285,6 +285,8 @@ services:
             - SENTRY_DSN="${JVB_SENTRY_DSN:-0}"
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
+            - COLIBRI_REST_ENABLED
+            - SHUTDOWN_REST_ENABLED
             - TZ
         depends_on:
             - prosody
