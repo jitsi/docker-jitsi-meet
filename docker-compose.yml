@@ -57,7 +57,7 @@ services:
             - ENABLE_IPV6
             - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
-            - ENABLE_REACTIONS
+            - DISABLE_REACTIONS
             - ENABLE_P2P
             - ENABLE_PREJOIN_PAGE
             - ENABLE_WELCOME_PAGE
