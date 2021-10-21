@@ -13,19 +13,6 @@ services:
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
         environment:
-            - ENABLE_COLIBRI_WEBSOCKET
-            - ENABLE_FLOC
-            - ENABLE_LETSENCRYPT
-            - ENABLE_HTTP_REDIRECT
-            - ENABLE_HSTS
-            - ENABLE_XMPP_WEBSOCKET
-            - DISABLE_HTTPS
-            - DISABLE_DEEP_LINKING
-            - LETSENCRYPT_DOMAIN
-            - LETSENCRYPT_EMAIL
-            - LETSENCRYPT_USE_STAGING
-            - PUBLIC_URL
-            - TZ
             - AMPLITUDE_ID
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
@@ -41,25 +28,36 @@ services:
             - DEPLOYMENTINFO_REGION
             - DEPLOYMENTINFO_SHARD
             - DEPLOYMENTINFO_USERREGION
+            - DESKTOP_SHARING_FRAMERATE_MIN
+            - DESKTOP_SHARING_FRAMERATE_MAX
             - DIALIN_NUMBERS_URL
             - DIALOUT_AUTH_URL
             - DIALOUT_CODES_URL
+            - DISABLE_AUDIO_LEVELS
+            - DISABLE_DEEP_LINKING
+            - DISABLE_HTTPS
             - DISABLE_POLLS
+            - DISABLE_REACTIONS
             - DROPBOX_APPKEY
             - DROPBOX_REDIRECT_URI
             - DYNAMIC_BRANDING_URL
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUTH
             - ENABLE_CALENDAR
+            - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_FILE_RECORDING_SERVICE
             - ENABLE_FILE_RECORDING_SERVICE_SHARING
+            - ENABLE_FLOC
             - ENABLE_GUESTS
+            - ENABLE_HSTS
+            - ENABLE_HTTP_REDIRECT
             - ENABLE_IPV6
+            - ENABLE_LETSENCRYPT
             - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
-            - ENABLE_REACTIONS
-            - ENABLE_P2P
+            - ENABLE_NOISY_MIC_DETECTION
             - ENABLE_PREJOIN_PAGE
+            - ENABLE_P2P
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
             - ENABLE_RECORDING
@@ -72,12 +70,16 @@ services:
             - ENABLE_TALK_WHILE_MUTED
             - ENABLE_TCC
             - ENABLE_TRANSCRIPTIONS
+            - ENABLE_XMPP_WEBSOCKET
             - ETHERPAD_PUBLIC_URL
             - ETHERPAD_URL_BASE
             - GOOGLE_ANALYTICS_ID
             - GOOGLE_API_APP_CLIENT_ID
             - INVITE_SERVICE_URL
             - JICOFO_AUTH_USER
+            - LETSENCRYPT_DOMAIN
+            - LETSENCRYPT_EMAIL
+            - LETSENCRYPT_USE_STAGING
             - MATOMO_ENDPOINT
             - MATOMO_SITE_ID
             - MICROSOFT_API_APP_CLIENT_ID
@@ -85,27 +87,23 @@ services:
             - NGINX_WORKER_PROCESSES
             - NGINX_WORKER_CONNECTIONS
             - PEOPLE_SEARCH_URL
+            - PUBLIC_URL
             - P2P_PREFERRED_CODEC
             - RESOLUTION
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
             - RESOLUTION_WIDTH_MIN
-            - START_AUDIO_ONLY
             - START_AUDIO_MUTED
-            - START_WITH_AUDIO_MUTED
-            - START_SILENT
-            - DISABLE_AUDIO_LEVELS
-            - ENABLE_NOISY_MIC_DETECTION
+            - START_AUDIO_ONLY
             - START_BITRATE
-            - DESKTOP_SHARING_FRAMERATE_MIN
-            - DESKTOP_SHARING_FRAMERATE_MAX
+            - START_SILENT
+            - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
             - START_WITH_VIDEO_MUTED
             - TESTING_CAP_SCREENSHARE_BITRATE
             - TESTING_OCTO_PROBABILITY
             - TOKEN_AUTH_URL
-            - VIDEOQUALITY_PREFERRED_CODEC
-            - VIDEOQUALITY_ENFORCE_PREFERRED_CODEC
+            - TZ
             - VIDEOQUALITY_BITRATE_H264_LOW
             - VIDEOQUALITY_BITRATE_H264_STANDARD
             - VIDEOQUALITY_BITRATE_H264_HIGH
@@ -115,6 +113,8 @@ services:
             - VIDEOQUALITY_BITRATE_VP9_LOW
             - VIDEOQUALITY_BITRATE_VP9_STANDARD
             - VIDEOQUALITY_BITRATE_VP9_HIGH
+            - VIDEOQUALITY_ENFORCE_PREFERRED_CODEC
+            - VIDEOQUALITY_PREFERRED_CODEC
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
             - XMPP_DOMAIN
@@ -139,25 +139,52 @@ services:
             - AUTH_TYPE
             - DISABLE_POLLS
             - ENABLE_AUTH
+            - ENABLE_AV_MODERATION
             - ENABLE_GUESTS
             - ENABLE_LOBBY
-            - ENABLE_AV_MODERATION
             - ENABLE_XMPP_WEBSOCKET
-            - GLOBAL_MODULES
             - GLOBAL_CONFIG
-            - LDAP_URL
+            - GLOBAL_MODULES
+            - JIBRI_RECORDER_USER
+            - JIBRI_RECORDER_PASSWORD
+            - JIBRI_XMPP_USER
+            - JIBRI_XMPP_PASSWORD
+            - JICOFO_AUTH_USER
+            - JICOFO_AUTH_PASSWORD
+            - JICOFO_COMPONENT_SECRET
+            - JIGASI_XMPP_USER
+            - JIGASI_XMPP_PASSWORD
+            - JVB_AUTH_USER
+            - JVB_AUTH_PASSWORD
+            - JWT_APP_ID
+            - JWT_APP_SECRET
+            - JWT_ACCEPTED_ISSUERS
+            - JWT_ACCEPTED_AUDIENCES
+            - JWT_ASAP_KEYSERVER
+            - JWT_ALLOW_EMPTY
+            - JWT_AUTH_TYPE
+            - JWT_TOKEN_AUTH_MODULE
+            - LOG_LEVEL
+            - LDAP_AUTH_METHOD
             - LDAP_BASE
             - LDAP_BINDDN
             - LDAP_BINDPW
             - LDAP_FILTER
-            - LDAP_AUTH_METHOD
             - LDAP_VERSION
-            - LDAP_USE_TLS
             - LDAP_TLS_CIPHERS
             - LDAP_TLS_CHECK_PEER
             - LDAP_TLS_CACERT_FILE
             - LDAP_TLS_CACERT_DIR
             - LDAP_START_TLS
+            - LDAP_URL
+            - LDAP_USE_TLS
+            - PUBLIC_URL
+            - TURN_CREDENTIALS
+            - TURN_HOST
+            - TURNS_HOST
+            - TURN_PORT
+            - TURNS_PORT
+            - TZ
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
@@ -168,33 +195,6 @@ services:
             - XMPP_INTERNAL_MUC_MODULES
             - XMPP_RECORDER_DOMAIN
             - XMPP_CROSS_DOMAIN
-            - JICOFO_COMPONENT_SECRET
-            - JICOFO_AUTH_USER
-            - JICOFO_AUTH_PASSWORD
-            - JVB_AUTH_USER
-            - JVB_AUTH_PASSWORD
-            - JIGASI_XMPP_USER
-            - JIGASI_XMPP_PASSWORD
-            - JIBRI_XMPP_USER
-            - JIBRI_XMPP_PASSWORD
-            - JIBRI_RECORDER_USER
-            - JIBRI_RECORDER_PASSWORD
-            - JWT_APP_ID
-            - JWT_APP_SECRET
-            - JWT_ACCEPTED_ISSUERS
-            - JWT_ACCEPTED_AUDIENCES
-            - JWT_ASAP_KEYSERVER
-            - JWT_ALLOW_EMPTY
-            - JWT_AUTH_TYPE
-            - JWT_TOKEN_AUTH_MODULE
-            - LOG_LEVEL
-            - PUBLIC_URL
-            - TURN_CREDENTIALS
-            - TURN_HOST
-            - TURNS_HOST
-            - TURN_PORT
-            - TURNS_PORT
-            - TZ
         networks:
             meet.jitsi:
                 aliases:
@@ -260,12 +260,9 @@ services:
         volumes:
             - ${CONFIG}/jvb:/config:Z
         environment:
+            - DOCKER_HOST_ADDRESS
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_OCTO
-            - DOCKER_HOST_ADDRESS
-            - XMPP_AUTH_DOMAIN
-            - XMPP_INTERNAL_MUC_DOMAIN
-            - XMPP_SERVER
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
@@ -275,17 +272,20 @@ services:
             - JVB_TCP_MAPPED_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
-            - JVB_WS_DOMAIN
-            - JVB_WS_SERVER_ID
-            - PUBLIC_URL
             - JVB_OCTO_BIND_ADDRESS
             - JVB_OCTO_PUBLIC_ADDRESS
             - JVB_OCTO_BIND_PORT
             - JVB_OCTO_REGION
+            - JVB_WS_DOMAIN
+            - JVB_WS_SERVER_ID
+            - PUBLIC_URL
             - SENTRY_DSN="${JVB_SENTRY_DSN:-0}"
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
+            - XMPP_AUTH_DOMAIN
+            - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_SERVER
         depends_on:
             - prosody
         networks:
