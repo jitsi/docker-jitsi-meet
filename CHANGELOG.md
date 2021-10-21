@@ -1,3 +1,34 @@
+## stable-6433
+
+Based on stable release 6433.
+
+* 487bcca jvb: try to use the correct IP as the default server ID
+* 9e982fe examples: move to jitsi-contrib
+* 192a623 jvb: add ability to configure the shutdown API
+* 5dcf7b4 compose: changed REACTIONS env variable name in docker-compose file
+* d94f4b6 jvb: remove unneeded alias
+* 7cd71a2 jibri: default to recording in 720p
+* bee4b6a jibri: use new configuration file
+* 76a16a8 jvb: use modern config for ice4j
+* 18ac85b jibri: allow graceful shutdown of the container
+* 3c19ed6 jibri: uppdate Chrome to version 94
+* b858b37 base-java: update to Java 11
+* 2061b86 misc: enable features by default
+* 343062b misc: fix/ improve shebang compatibility
+* ff8c1c2 web: regenerate interface_config.js on every boot
+* bda1502 prosody: simplify code
+* cfd8d3c web: add config options for polls and reactions
+* 537fcd5 misc: add support for sentry logging
+* be1da0e misc: cleanup Dockerfiles
+* 09cf0a8 web: add env variables for configuring vp9
+* 3df32d9 web: persist crontabs for letsencrypt
+* f748484 jicofo: add enable-auto-login config option
+* 96419ba web: remove no longer needed code
+* 1835d65 web: recreate interface_config.js on container restart
+* b555d41 jicofo: fix boolean values in configuration file
+* 6be198c misc: remove quotation marks from TURN configuration (#1111)
+* 407a98d misc: working on latest
+
 ## stable-6173
 
 Based on stable release 6173.
