@@ -252,6 +252,8 @@ services:
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
             - PUBLIC_URL
+            - COLIBRI_REST_ENABLED
+            - SHUTDOWN_REST_ENABLED
             - TZ
         depends_on:
             - prosody

@@ -166,6 +166,8 @@ services:
             - JVB_TCP_PORT
             - JVB_STUN_SERVERS
             - JVB_ENABLE_APIS
+            - COLIBRI_REST_ENABLED
+            - SHUTDOWN_REST_ENABLED
             - TZ
         depends_on:
             - prosody
