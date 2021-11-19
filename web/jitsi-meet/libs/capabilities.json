@@ -1,0 +1,99 @@
+{
+    "safari": [
+        {"version": "10.2" },
+        {
+            "capabilities": {
+                "audioIn": true,
+                "audioOut": true,
+                "videoIn": false,
+                "videoOut": false,
+                "screenSharing": false
+            },
+            "iframeCapabilities": {
+                "isSupported": false
+            }
+        }
+    ],
+    "chrome":
+    [
+        {"version": "51" },
+        {
+            "capabilities": {
+                "audioIn": true,
+                "audioOut": true,
+                "videoIn": true,
+                "videoOut": true,
+                "screenSharing": true
+            }
+        }
+    ],
+    "opera":
+    [
+        {"version": "22" },
+        {
+            "capabilities": {
+                "audioIn": true,
+                "audioOut": true,
+                "videoIn": true,
+                "videoOut": true,
+                "screenSharing": false
+            }
+        }
+    ],
+    "firefox": [
+        {"version": "52.4" },
+        {
+            "capabilities": {
+                "audioIn": true,
+                "audioOut": true,
+                "videoIn": true,
+                "videoOut": true,
+                "screenSharing": true
+            }
+        }
+    ],
+    "edge": [
+        {
+            "capabilities": {
+                "audioIn": true,
+                "audioOut": true,
+                "videoIn": true,
+                "videoOut": true,
+                "screenSharing": false
+            }
+        }
+    ],
+    "nwjs": [
+        {
+            "capabilities": {
+                "audioIn": true,
+                "audioOut": true,
+                "videoIn": true,
+                "videoOut": true,
+                "screenSharing": true
+            }
+        }
+    ],
+    "electron": [
+        {
+            "capabilities": {
+                "audioIn": true,
+                "audioOut": true,
+                "videoIn": true,
+                "videoOut": true,
+                "screenSharing": true
+            }
+        }
+    ],
+    "react-native": [
+        {
+            "capabilities": {
+                "audioIn": true,
+                "audioOut": true,
+                "videoIn": true,
+                "videoOut": true,
+                "screenSharing": false
+            }
+        }
+    ]
+}

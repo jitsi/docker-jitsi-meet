@@ -15,9 +15,13 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-cleanup && \
     rm -rf /tmp/pkg /var/cache/apt
 
-COPY jitsi-meet/css/all.css /usr/share/jitsi-meet/css/all.css
-COPY jitsi-meet/images/watermark.svg /usr/share/jitsi-meet/images/watermark.svg
-COPY jitsi-meet/interface_config.js /usr/share/jitsi-meet/interface_config.js
+# https://alexclaydon.dev/post/2020-10-05-jitsi-meet-deployment
+# The jitsi-meet folder is output by running make && make source-package in 
+# https://github.com/otixo-inc/jitsi-meet
+
+COPY jitsi-meet/ /usr/share/jitsi-meet
+COPY jitsi-meet/interface_config.js /defaults/interface_config.js
+
 EXPOSE 80 443
 
 VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
