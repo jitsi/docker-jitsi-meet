@@ -1,3 +1,7 @@
+# Jitsi Meet We.Team 
+
+[Read this for information on how to develop and release for We.Team](web/README.md)
+
 # Jitsi Meet on Docker
 
 ![](resources/jitsi-docker.png)

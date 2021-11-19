@@ -1,4 +1,44 @@
-aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 425766172722.dkr.ecr.us-east-1.amazonaws.com
-docker build -t jitsi-meet-web .
-docker tag jitsi-meet-web:latest 425766172722.dkr.ecr.us-east-1.amazonaws.com/jitsi-meet-web:latest
-docker push 425766172722.dkr.ecr.us-east-1.amazonaws.com/jitsi-meet-web:latest
+# Jitsi Meet We.Team 
+
+## Making changes to Jitsi Meet UI
+
+### Get the Jitsi Meet source
+
+Clone our fork of the Jitsi Meet repository:
+
+https://github.com/otixo-inc/jitsi-meet
+
+### Checkout the latest stable release
+
+The master branch is unstable, so we want to find the latest stable release.
+
+Find the latest jitsi-meet release here:
+
+https://github.com/jitsi/jitsi-meet/releases
+
+`git checkout` the tag for this release and create a new branch.
+
+### Developing
+
+Follow this guide for instuctions on how to run jitsi-meet in development mode
+
+https://jitsi.github.io/handbook/docs/dev-guide/dev-guide-web
+
+
+### Releasing
+
+Run the following command to create a source package:
+
+```sh
+make && make source-package
+```
+
+Unzip `jitsi-meet.tar.bz2` and copy the folder to the following location in this repository:
+
+[web/jitsi-meet](/web/jitsi-meet)
+
+Push your changes. 
+
+The following action will run on GitHub and publish a new docker image to AWS ECR:
+
+[.github/workflows/docker-image.yml](/.github/workflows/docker-image.yml)
