@@ -1,7 +1,7 @@
 name: Docker Image CI
 
 on:
-  push:
+  pull_request:
     branches: [ master ]
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
     - name: Build, tag, and push image to Amazon ECR
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-        ECR_REPOSITORY: jitsi-meet-web-prod
+        ECR_REPOSITORY: jitsi-meet-web-dev
         IMAGE_TAG: commit-sha-${{ github.sha }}
       run: |
         cd web
