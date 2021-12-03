@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 
 ARG JITSI_RELEASE=stable
 ARG FREP_VERSION=1.3.11
@@ -13,7 +13,7 @@ RUN apt-dpkg-wrap apt-get update && \
     wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | gpg --dearmour > /etc/apt/trusted.gpg.d/jitsi.gpg && \
     wget -qO /usr/bin/frep https://github.com/subchen/frep/releases/download/v$FREP_VERSION/frep-$FREP_VERSION-linux-amd64 && \
     echo "deb https://download.jitsi.org $JITSI_RELEASE/" > /etc/apt/sources.list.d/jitsi.list && \
-    echo "deb http://ftp.debian.org/debian buster-backports main" > /etc/apt/sources.list.d/backports.list && \
+    echo "deb http://ftp.debian.org/debian bullseye-backports main" > /etc/apt/sources.list.d/backports.list && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get dist-upgrade -y && \
     apt-cleanup && \

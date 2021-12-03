@@ -21,7 +21,7 @@ FROM ${JITSI_REPO}/base:${BASE_TAG}
 ENV XMPP_CROSS_DOMAIN="false"
 
 RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
-    echo "deb http://packages.prosody.im/debian buster main" > /etc/apt/sources.list.d/prosody.list && \
+    echo "deb http://packages.prosody.im/debian bullseye main" > /etc/apt/sources.list.d/prosody.list && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
       prosody \
