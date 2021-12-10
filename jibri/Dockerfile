@@ -7,7 +7,7 @@ FROM ${JITSI_REPO}/base-java:${BASE_TAG}
 ARG CHROME_RELEASE=96.0.4664.45
 ARG CHROMEDRIVER_MAJOR_RELEASE=96
 
-SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+SHELL ["/bin/bash", "-o", "pipefail", "-cx"]
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jibri libgl1-mesa-dri procps && \
