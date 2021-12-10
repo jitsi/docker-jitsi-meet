@@ -26,6 +26,7 @@ RUN apt-dpkg-wrap apt-get update && \
     [ "${CHROMEDRIVER_MAJOR_RELEASE}" = "latest" ] && \
     CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE)" || \
     CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})" && \
+    [[ "${CHROMEDRIVER_RELEASE}" =~ ^${CHROMEDRIVER_MAJOR_RELEASE}.* ]] || exit 1 && \
     curl -4Ls "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_RELEASE}/chromedriver_linux64.zip" \
     | zcat >> /usr/bin/chromedriver && \
     chmod +x /usr/bin/chromedriver && \
