@@ -24,6 +24,8 @@
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
 {{ $RESOLUTION_WIDTH_MIN := .Env.RESOLUTION_WIDTH_MIN | default "320" -}}
+{{ $FRAMERATE := .Env.FRAMERATE | default "30" -}}
+{{ $FRAMERATE_MIN := .Env.FRAMERATE_MIN | default "15" -}}
 {{ $START_AUDIO_ONLY := .Env.START_AUDIO_ONLY | default "false" | toBool -}}
 {{ $START_AUDIO_MUTED := .Env.START_AUDIO_MUTED | default 10 -}}
 {{ $START_WITH_AUDIO_MUTED := .Env.START_WITH_AUDIO_MUTED | default "false" | toBool -}}
@@ -53,6 +55,7 @@ if (!config.constraints.hasOwnProperty('video')) config.constraints.video = {};
 config.resolution = {{ $RESOLUTION }};
 config.constraints.video.height = { ideal: {{ $RESOLUTION }}, max: {{ $RESOLUTION }}, min: {{ $RESOLUTION_MIN }} };
 config.constraints.video.width = { ideal: {{ $RESOLUTION_WIDTH }}, max: {{ $RESOLUTION_WIDTH }}, min: {{ $RESOLUTION_WIDTH_MIN }}};
+config.constraints.video.frameRate = { ideal: {{ $FRAMERATE }}, max: {{ $FRAMERATE }}, min: {{ $FRAMERATE_MIN }}};
 config.disableSimulcast = {{ not $ENABLE_SIMULCAST }};
 config.startVideoMuted = {{ $START_VIDEO_MUTED }};
 config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};

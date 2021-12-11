@@ -74,6 +74,8 @@ services:
             - ENABLE_XMPP_WEBSOCKET
             - ETHERPAD_PUBLIC_URL
             - ETHERPAD_URL_BASE
+            - FRAMERATE
+            - FRAMERATE_MIN
             - GOOGLE_ANALYTICS_ID
             - GOOGLE_API_APP_CLIENT_ID
             - INVITE_SERVICE_URL
@@ -117,6 +119,7 @@ services:
             - VIDEOQUALITY_ENFORCE_PREFERRED_CODEC
             - VIDEOQUALITY_PREFERRED_CODEC
             - XMPP_AUTH_DOMAIN
+            - XMPP_BOSH_PATH
             - XMPP_BOSH_URL_BASE
             - XMPP_DOMAIN
             - XMPP_GUEST_DOMAIN
@@ -285,6 +288,7 @@ services:
             - SENTRY_RELEASE
             - COLIBRI_REST_ENABLED
             - SHUTDOWN_REST_ENABLED
+            - TRUST_BWE
             - TZ
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN

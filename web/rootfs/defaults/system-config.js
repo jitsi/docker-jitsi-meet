@@ -6,6 +6,7 @@
 {{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" }}
 {{ $PUBLIC_URL_DOMAIN := .Env.PUBLIC_URL | default "https://localhost:8443" | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN -}}
+{{ $XMPP_BOSH_PATH := .Env.XMPP_BOSH_PATH | default "/http-bind" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0  -}}
@@ -36,7 +37,7 @@ config.hosts.anonymousdomain = '{{ .Env.XMPP_GUEST_DOMAIN }}';
 config.hosts.authdomain = '{{ $XMPP_DOMAIN }}';
 {{ end -}}
 
-config.bosh = '/http-bind';
+config.bosh = '{{ $XMPP_BOSH_PATH }}';
 {{ if $ENABLE_XMPP_WEBSOCKET -}}
 config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
 {{ end -}}
