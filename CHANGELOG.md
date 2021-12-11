@@ -1,3 +1,14 @@
+## stable-6726
+
+Based on stable release 6726.
+
+* e9275d5 jvb: remove deprecated option
+* f40a8d5 jicofo: Handle special characters in password
+* 6f56e5b web,prosody: add breakout rooms support
+* 3208296 base: update base images to Debian Bullseye
+* b02a689 env:  fix unexpected character bug with recent docker desktop
+* b5dbfa0 misc: working on latest
+
 ## stable-6433
 
 Based on stable release 6433.
