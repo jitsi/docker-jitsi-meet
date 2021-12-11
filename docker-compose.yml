@@ -273,7 +273,6 @@ services:
             - JVB_TCP_PORT
             - JVB_TCP_MAPPED_PORT
             - JVB_STUN_SERVERS
-            - JVB_ENABLE_APIS
             - JVB_OCTO_BIND_ADDRESS
             - JVB_OCTO_PUBLIC_ADDRESS
             - JVB_OCTO_BIND_PORT
