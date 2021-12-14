@@ -1,3 +1,12 @@
+## stable-6726-1
+
+Based on stable release 6726-1.
+
+* 9ac7b59 jibri: update Chrome to version 96
+* fb2326e prosody: add missing package libldap-common
+* 0600ece sample: add  ENABLE_BREAKOUT_ROOMS to env.example
+* 6cf0176 misc: working on latest
+
 ## stable-6726
 
 Based on stable release 6726.
