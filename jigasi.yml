@@ -12,7 +12,9 @@ services:
             - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
             - ENABLE_AUTH
+            - ENABLE_GUESTS
             - XMPP_AUTH_DOMAIN
+            - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
