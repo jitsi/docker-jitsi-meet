@@ -3,7 +3,8 @@ version: '3'
 services:
     # Frontend
     web:
-        image: jitsi/web:latest
+#        image: jitsi/web:latest
+        build: ./web
         restart: ${RESTART_POLICY}
         ports:
             - '${HTTP_PORT}:80'
@@ -122,7 +123,8 @@ services:
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
-            - XMPP_SERVER
+        depends_on:
+            - jvb
         networks:
             meet.jitsi:
 
