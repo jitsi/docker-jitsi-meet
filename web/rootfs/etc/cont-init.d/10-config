@@ -63,6 +63,12 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
     fi
 fi
 
+# On environments like Swarm the IP address used by the default gateway need not be
+# the one used for inter-container traffic. Use that one for our fallback ID.
+XMPP_SERVER_IP=$(dig +short ${XMPP_SERVER})
+# export this here to ensure JVB and nginx are in sync about websocket proxy host
+export JVB_WS_SERVER_ID_FALLBACK=$(ip route get ${XMPP_SERVER_IP} | grep -oP '(?<=src ).*' | awk '{ print $1 '})
+
 # copy config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
 
