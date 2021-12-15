@@ -64,7 +64,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
 fi
 
 # export this here to ensure JVB and nginx are in sync about websocket proxy host
-JVB_WS_SERVER_ID_FALLBACK=$(dig +short jvb)
+export JVB_WS_SERVER_ID_FALLBACK=$(dig +short jvb)
 
 # copy config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
