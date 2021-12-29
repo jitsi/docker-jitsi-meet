@@ -13,7 +13,7 @@ fi
 
 # On environments like Swarm the IP address used by the default gateway need not be
 # the one used for inter-container traffic. Use that one for our fallback ID.
-XMPP_SERVER_IP=$(dig +short ${XMPP_SERVER})
+XMPP_SERVER_IP=$(dig +short +search ${XMPP_SERVER})
 export JVB_WS_SERVER_ID_FALLBACK=$(ip route get ${XMPP_SERVER_IP} | grep -oP '(?<=src ).*' | awk '{ print $1 '})
 
 # Local IP for the ice4j mapping harvester.
