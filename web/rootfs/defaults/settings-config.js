@@ -365,7 +365,7 @@ config.disableReactions = {{ $DISABLE_REACTIONS }};
 // Polls
 config.disablePolls = {{ $DISABLE_POLLS }};
 
-// configure toolbar buttons
+// Configure toolbar buttons
 {{ if .Env.TOOLBAR_BUTTONS -}}
 config.toolbarButtons = [ '{{ join "','" (splitList "," .Env.TOOLBAR_BUTTONS) }}' ];
 {{ end -}}
