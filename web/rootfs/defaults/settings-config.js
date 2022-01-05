@@ -364,3 +364,13 @@ config.disableReactions = {{ $DISABLE_REACTIONS }};
 
 // Polls
 config.disablePolls = {{ $DISABLE_POLLS }};
+
+// Configure toolbar buttons
+{{ if .Env.TOOLBAR_BUTTONS -}}
+config.toolbarButtons = [ '{{ join "','" (splitList "," .Env.TOOLBAR_BUTTONS) }}' ];
+{{ end -}}
+
+// Hides the buttons at pre-join screen
+{{ if .Env.HIDE_PREMEETING_BUTTONS -}}
+config.hiddenPremeetingButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREMEETING_BUTTONS) }}' ];
+{{ end -}}
