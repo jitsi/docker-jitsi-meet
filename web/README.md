@@ -8,16 +8,6 @@ Clone our fork of the Jitsi Meet repository:
 
 https://github.com/otixo-inc/jitsi-meet
 
-### Checkout the latest stable release
-
-The master branch is unstable, so we want to find the latest stable release.
-
-Find the latest jitsi-meet release here:
-
-https://github.com/jitsi/jitsi-meet/releases
-
-`git checkout` the tag for this release and create a new branch.
-
 ### Developing
 
 Follow this guide for instuctions on how to run jitsi-meet in development mode
