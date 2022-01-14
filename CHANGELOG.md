@@ -1,5 +1,7 @@
 ## stable-6726-2
 
+**IMPORTANT:** This version updates Prosody to version 0.11.12 to fix CVE-2022-0217: https://prosody.im/security/advisory_20220113/
+
 Based on stable release 6726-2.
 
 * ae3e7e7 jvb: make MUC_NICKNAME configurable
