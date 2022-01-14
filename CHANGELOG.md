@@ -1,3 +1,14 @@
+## stable-6726-2
+
+Based on stable release 6726-2.
+
+* ae3e7e7 jvb: make MUC_NICKNAME configurable
+* 0be9c8f web: allow configuring buttons in toolbar and pre-join screen
+* d9d12f0 jvb: fix resolving XMPP server aliases
+* 81dc384 jigasi: allow jigasi guest participants
+* a8a596b jicofo: configure trusted-domains for Jibri if ENABLE_RECORDING is set
+* d250ad7 misc: working on latest
+
 ## stable-6726-1
 
 Based on stable release 6726-1.
