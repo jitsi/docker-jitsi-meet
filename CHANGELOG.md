@@ -1,3 +1,11 @@
+## stable-6826
+
+Based on stable release 6826.
+
+* 238a636 jibri: correct chromedriver mismatch
+* 555a40e doc: update CHANGELOG
+* 825b4cb misc: working on latest
+
 ## stable-6726-2
 
 **IMPORTANT:** This version updates Prosody to version 0.11.12 to fix CVE-2022-0217: https://prosody.im/security/advisory_20220113/
