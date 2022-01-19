@@ -35,7 +35,9 @@ services:
             - DIALOUT_CODES_URL
             - DISABLE_AUDIO_LEVELS
             - DISABLE_DEEP_LINKING
+            - DISABLE_GRANT_MODERATOR
             - DISABLE_HTTPS
+            - DISABLE_KICKOUT
             - DISABLE_POLLS
             - DISABLE_REACTIONS
             - DROPBOX_APPKEY
