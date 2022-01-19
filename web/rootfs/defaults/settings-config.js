@@ -374,3 +374,12 @@ config.toolbarButtons = [ '{{ join "','" (splitList "," .Env.TOOLBAR_BUTTONS) }}
 {{ if .Env.HIDE_PREMEETING_BUTTONS -}}
 config.hiddenPremeetingButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREMEETING_BUTTONS) }}' ];
 {{ end -}}
+
+// Configure remote participant video menu
+if (!config.hasOwnProperty('remoteVideoMenu')) config.remoteVideoMenu = {};
+{{ if .Env.DISABLE_KICKOUT -}}
+config.remoteVideoMenu.disableKick = {{ .Env.DISABLE_KICKOUT }};
+{{ end -}}
+{{ if .Env.DISABLE_GRANT_MODERATOR -}}
+config.remoteVideoMenu.disableGrantModerator = {{ .Env.DISABLE_GRANT_MODERATOR }};
+{{ end -}}
