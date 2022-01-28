@@ -1,18 +1,18 @@
-{{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool }}
-{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
-{{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
-{{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
-{{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
-{{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
-{{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
-{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool }}
-{{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool }}
-{{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool }}
-{{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
+{{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
+{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
+{{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" -}}
+{{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" -}}
+{{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool -}}
+{{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" -}}
+{{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" -}}
+{{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool -}}
+{{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool -}}
+{{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
+{{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool -}}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
-{{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
-{{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
-{{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0 }}
+{{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
+{{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
+{{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0 -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 
 admins = {
@@ -32,23 +32,29 @@ muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
 
 http_default_host = "{{ .Env.XMPP_DOMAIN }}"
 
-{{ if .Env.TURN_CREDENTIALS }}
+{{ if .Env.TURN_CREDENTIALS -}}
 external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
-{{ end }}
+{{- end }}
 
-{{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
+{{ if or .Env.TURN_HOST .Env.TURNS_HOST -}}
 external_services = {
-  {{ if .Env.TURN_HOST }}
-     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
-  {{ end }}
-  {{ if and .Env.TURN_HOST .Env.TURNS_HOST }}
+  {{- if .Env.TURN_HOST -}}
+    {{- range $index, $host := (compact (splitList "," .Env.TURN_HOST)) -}}
+      {{- if $index -}},{{- end }}
+      { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
+    {{- end -}}
+  {{- end }}
+  {{- if and .Env.TURN_HOST .Env.TURNS_HOST -}}
   ,
-  {{ end }}
-  {{ if .Env.TURNS_HOST }}
-     { type = "turns", host = "{{ .Env.TURNS_HOST }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
-  {{ end }}
+  {{- end }}
+  {{- if .Env.TURNS_HOST -}}
+    {{- range $index, $host := (compact (splitList "," .Env.TURNS_HOST)) -}}
+      {{- if $index -}},{{- end }}
+      { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
+    {{- end -}}
+  {{- end }}
 };
-{{ end }}
+{{- end }}
 
 {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
