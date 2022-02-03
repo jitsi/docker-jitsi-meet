@@ -1,3 +1,13 @@
+## stable-6865
+
+Based on stable release 6865.
+
+* 8004ffe Use the new log formatters, clean up stale logging config.
+* a862e84 web: cache versioned static files
+* 48d499a web: configure remote participant video menu
+* 78791ad env.example : ETHERPAD_PUBLIC_URL : incl. /p/ path
+* a504b59 misc: working on latest
+
 ## stable-6826
 
 Based on stable release 6826.
