@@ -1,3 +1,9 @@
+LABEL org.opencontainers.image.title=Prosody IM
+LABEL org.opencontainers.image.descriptionXMPP server used for signalling.
+LABEL org.opencontainers.image.url=https://prosody.im/
+LABEL org.opencontainers.image.source=https://github.com/jitsi/docker-jitsi-meet
+LABEL org.opencontainers.image.documentation=https://jitsi.github.io/handbook/
+
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 
