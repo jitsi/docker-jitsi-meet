@@ -1,3 +1,9 @@
+LABEL org.opencontainers.image.title=Jitsi Meet
+LABEL org.opencontainers.image.description=WebRTC compatible JavaScript application that uses Jitsi Videobridge to provide high quality, scalable video conferences.
+LABEL org.opencontainers.image.url=https://jitsi.org/jitsi-meet/
+LABEL org.opencontainers.image.source=https://github.com/jitsi/docker-jitsi-meet
+LABEL org.opencontainers.image.documentation=https://jitsi.github.io/handbook/
+
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 FROM ${JITSI_REPO}/base:${BASE_TAG}
