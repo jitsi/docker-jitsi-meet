@@ -1,8 +1,8 @@
-LABEL org.opencontainers.image.title=Jitsi Videobridge (jvb)
-LABEL org.opencontainers.image.description=WebRTC compatible server designed to route video streams amongst participants in a conference.
-LABEL org.opencontainers.image.url=https://jitsi.org/jitsi-videobridge/
-LABEL org.opencontainers.image.source=https://github.com/jitsi/docker-jitsi-meet
-LABEL org.opencontainers.image.documentation=https://jitsi.github.io/handbook/
+LABEL org.opencontainers.image.title="Jitsi Videobridge (jvb)"
+LABEL org.opencontainers.image.description="WebRTC compatible server designed to route video streams amongst participants in a conference."
+LABEL org.opencontainers.image.url="https://jitsi.org/jitsi-videobridge/"
+LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
+LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
