@@ -1,9 +1,3 @@
-LABEL org.opencontainers.image.title="Prosody IM"
-LABEL org.opencontainers.image.description="XMPP server used for signalling."
-LABEL org.opencontainers.image.url="https://prosody.im/"
-LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
-LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
-
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 
@@ -23,6 +17,12 @@ RUN apt-dpkg-wrap apt-get update && \
     luarocks install luajwtjitsi 2.0-0
 
 FROM ${JITSI_REPO}/base:${BASE_TAG}
+
+LABEL org.opencontainers.image.title="Prosody IM"
+LABEL org.opencontainers.image.description="XMPP server used for signalling."
+LABEL org.opencontainers.image.url="https://prosody.im/"
+LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
+LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
 ENV XMPP_CROSS_DOMAIN="false"
 
