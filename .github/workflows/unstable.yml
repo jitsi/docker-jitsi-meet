@@ -33,12 +33,23 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           context: ./base
           tags: |
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_RELEASE=unstable
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./base
+          tags: |
+            jitsi/base:${{ needs.version.outputs.base }}
+            jitsi/base:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_RELEASE=unstable
 
@@ -58,14 +69,27 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           context: ./base-java
           tags: |
             ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
+            BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          push: true
+          context: ./base-java
+          tags: |
+            jitsi/base-java:${{ needs.version.outputs.base }}
+            jitsi/base-java:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
 
   jibri:
@@ -84,14 +108,27 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           context: ./jibri
           tags: |
             ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
+            BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          push: true
+          context: ./jibri
+          tags: |
+            jitsi/jibri:${{ needs.version.outputs.base }}
+            jitsi/jibri:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
 
   jicofo:
@@ -110,14 +147,27 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           context: ./jicofo
           tags: |
             ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
+            BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          push: true
+          context: ./jicofo
+          tags: |
+            jitsi/jicofo:${{ needs.version.outputs.base }}
+            jitsi/jicofo:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
 
   jigasi:
@@ -136,14 +186,27 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           context: ./jigasi
           tags: |
             ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
+            BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          push: true
+          context: ./jigasi
+          tags: |
+            jitsi/jigasi:${{ needs.version.outputs.base }}
+            jitsi/jigasi:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
 
   jvb:
@@ -162,14 +225,27 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           context: ./jvb
           tags: |
             ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
+            BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          push: true
+          context: ./jvb
+          tags: |
+            jitsi/jvb:${{ needs.version.outputs.base }}
+            jitsi/jvb:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
 
   prosody:
@@ -188,14 +264,27 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           context: ./prosody
           tags: |
             ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
+            BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          push: true
+          context: ./prosody
+          tags: |
+            jitsi/prosody:${{ needs.version.outputs.base }}
+            jitsi/prosody:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
 
   web:
@@ -214,12 +303,25 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
-          push: ${{ github.event_name != 'pull_request' }}
+          push: true
           context: ./web
           tags: |
             ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
+            BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          push: true
+          context: ./web
+          tags: |
+            jitsi/web:${{ needs.version.outputs.base }}
+            jitsi/web:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
