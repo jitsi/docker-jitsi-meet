@@ -83,7 +83,6 @@ jobs:
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          push: true
           context: ./base-java
           tags: |
             jitsi/base-java:${{ needs.version.outputs.base }}
@@ -122,7 +121,6 @@ jobs:
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          push: true
           context: ./jibri
           tags: |
             jitsi/jibri:${{ needs.version.outputs.base }}
@@ -161,7 +159,6 @@ jobs:
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          push: true
           context: ./jicofo
           tags: |
             jitsi/jicofo:${{ needs.version.outputs.base }}
@@ -200,7 +197,6 @@ jobs:
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          push: true
           context: ./jigasi
           tags: |
             jitsi/jigasi:${{ needs.version.outputs.base }}
@@ -239,7 +235,6 @@ jobs:
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          push: true
           context: ./jvb
           tags: |
             jitsi/jvb:${{ needs.version.outputs.base }}
@@ -278,7 +273,6 @@ jobs:
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          push: true
           context: ./prosody
           tags: |
             jitsi/prosody:${{ needs.version.outputs.base }}
@@ -317,7 +311,6 @@ jobs:
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
         with:
-          push: true
           context: ./web
           tags: |
             jitsi/web:${{ needs.version.outputs.base }}
