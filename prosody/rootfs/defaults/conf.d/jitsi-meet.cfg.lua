@@ -4,6 +4,8 @@
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
+{{ $MATRIX_UVS_ISSUER := .Env.MATRIX_UVS_ISSUER | default "issuer" }}
+{{ $MATRIX_UVS_SYNC_POWER_LEVELS := .Env.MATRIX_UVS_SYNC_POWER_LEVELS | default "0" | toBool }}
 {{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
 {{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool }}
 {{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool }}
@@ -85,11 +87,20 @@ VirtualHost "{{ .Env.XMPP_DOMAIN }}"
     {{ if $JWT_ASAP_KEYSERVER }}
     asap_key_server = "{{ .Env.JWT_ASAP_KEYSERVER }}"
     {{ end }}
-
-    {{ else if eq $AUTH_TYPE "ldap" }}
+  {{ else if eq $AUTH_TYPE "ldap" }}
     authentication = "cyrus"
     cyrus_application_name = "xmpp"
     allow_unencrypted_plain_auth = true
+  {{ else if eq $AUTH_TYPE "matrix" }}
+    authentication = "matrix_user_verification"
+    app_id = "{{ $MATRIX_UVS_ISSUER }}"
+    uvs_base_url = "{{ .Env.MATRIX_UVS_URL }}"
+    {{ if .Env.MATRIX_UVS_AUTH_TOKEN }}
+    uvs_auth_token = "{{ .Env.MATRIX_UVS_AUTH_TOKEN }}"
+    {{ end }}
+    {{ if $MATRIX_UVS_SYNC_POWER_LEVELS }}
+    uvs_sync_power_levels = true
+    {{ end }}
   {{ else if eq $AUTH_TYPE "internal" }}
     authentication = "internal_hashed"
   {{ end }}
@@ -198,6 +209,9 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         {{ end -}}
         {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") -}}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
+        {{ end }}
+        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "matrix") $MATRIX_UVS_SYNC_POWER_LEVELS -}}
+        "matrix_power_sync";
         {{ end -}}
         {{ if not $DISABLE_POLLS -}}
         "polls";

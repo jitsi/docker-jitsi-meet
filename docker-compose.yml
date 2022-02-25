@@ -170,6 +170,10 @@ services:
             - JWT_ALLOW_EMPTY
             - JWT_AUTH_TYPE
             - JWT_TOKEN_AUTH_MODULE
+            - MATRIX_UVS_URL
+            - MATRIX_UVS_ISSUER
+            - MATRIX_UVS_AUTH_TOKEN
+            - MATRIX_UVS_SYNC_POWER_LEVELS
             - LOG_LEVEL
             - LDAP_AUTH_METHOD
             - LDAP_BASE
