@@ -258,5 +258,8 @@ Component "breakout.{{ .Env.XMPP_DOMAIN }}" "muc"
         {{ if $ENABLE_SUBDOMAINS -}}
         "muc_domain_mapper";
         {{ end -}}
+        {{ if not $DISABLE_POLLS -}}
+        "polls";
+        {{ end -}}
     }
 {{ end }}
