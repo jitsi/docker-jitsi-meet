@@ -16,6 +16,7 @@
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0 }}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
+{{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 
 admins = {
     "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}",
@@ -216,6 +217,9 @@ Component "{{ .Env.XMPP_MUC_DOMAIN }}" "muc"
         {{ if not $DISABLE_POLLS -}}
         "polls";
         {{ end -}}
+        {{ if $ENABLE_SUBDOMAINS -}}
+        "muc_domain_mapper";
+        {{ end -}}
     }
     muc_room_cache_size = 1000
     muc_room_locking = false
@@ -249,4 +253,10 @@ Component "breakout.{{ .Env.XMPP_DOMAIN }}" "muc"
     restrict_room_creation = true
     muc_room_locking = false
     muc_room_default_public_jids = true
+    modules_enabled = {
+        "muc_meeting_id";
+        {{ if $ENABLE_SUBDOMAINS -}}
+        "muc_domain_mapper";
+        {{ end -}}
+    }
 {{ end }}
