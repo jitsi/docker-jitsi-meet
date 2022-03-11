@@ -1,3 +1,18 @@
+## stable-7001
+
+Based on stable release 7001.
+
+* 6e0dd04 base: replace frep with tpl
+* 1b51c77 feat: Enables polls for breakout rooms.
+* 0b019ee feat: Enables tenants/subdomains by default.
+* d50df67 fix: Fixes missing variable for prosody plugins.
+* 88997f5 prosody: authentication by matrix user authentication service
+* 7a93978 jvb: remove TCP support
+* c37706c misc: fix label order in  dockerfiles
+* 0de062b misc: add missing quotes to labels in dockerfiles
+* 76424fd chore: add opencontainers labels to Dockerfiles
+* 3b8ed7e misc: working on latest
+
 ## stable-6865
 
 Based on stable release 6865.
