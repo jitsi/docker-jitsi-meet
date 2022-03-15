@@ -57,6 +57,7 @@ services:
             - ENABLE_IPV6
             - ENABLE_LETSENCRYPT
             - ENABLE_LIPSYNC
+            - ENABLE_LOAD_TEST
             - ENABLE_NO_AUDIO_DETECTION
             - ENABLE_NOISY_MIC_DETECTION
             - ENABLE_PREJOIN_PAGE
