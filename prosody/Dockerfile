@@ -5,13 +5,18 @@ FROM ${JITSI_REPO}/base:${BASE_TAG} as builder
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
+      build-essential \
       lua5.2 \
       liblua5.2-dev \
       libsasl2-dev \
       libssl-dev \
-      luarocks \
+      libreadline-dev \
       git \
-      gcc && \
+      unzip \
+      wget && \
+    mkdir /tmp/luarocks && \
+    wget -qO - https://luarocks.github.io/luarocks/releases/luarocks-3.8.0.tar.gz | tar xfz - --strip-components 1 -C /tmp/luarocks && \
+    cd /tmp/luarocks && ./configure && make && make install && cd - && \
     luarocks install cyrussasl 1.1.0-1 && \
     luarocks install net-url 0.9-1 && \
     luarocks install luajwtjitsi 2.0-0
