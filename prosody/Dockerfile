@@ -37,7 +37,7 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     echo "deb http://packages.prosody.im/debian bullseye main" > /etc/apt/sources.list.d/prosody.list && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
-      prosody \
+      prosody=0.11.12-1~bpo11+1 \
       libssl1.1 \
       libldap-common \
       sasl2-bin \
