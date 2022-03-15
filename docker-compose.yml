@@ -267,6 +267,7 @@ services:
         restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT}:${JVB_PORT}/udp'
+            - '127.0.0.1:8080:8080'
         volumes:
             - ${CONFIG}/jvb:/config:Z
         environment:
