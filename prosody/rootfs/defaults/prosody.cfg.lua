@@ -92,8 +92,6 @@ modules_disabled = {
 -- For more information see http://prosody.im/doc/creating_accounts
 allow_registration = false;
 
-daemonize = false;
-
 -- Enable rate limits for incoming client and server connections
 limits = {
   c2s = {
@@ -173,7 +171,8 @@ network_settings = {
   tcp_backlog = 511;
 }
 
-component_interface = { "*" }
+http_ports = { 5280 }
+http_interfaces = { "*", "::" }
 
 data_path = "/config/data"
 

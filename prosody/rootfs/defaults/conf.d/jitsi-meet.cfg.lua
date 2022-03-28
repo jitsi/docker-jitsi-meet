@@ -62,21 +62,7 @@ asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AU
 {{ end }}
 
 consider_bosh_secure = true;
-
--- Deprecated in 0.12
--- https://github.com/bjc/prosody/commit/26542811eafd9c708a130272d7b7de77b92712de
-{{ $XMPP_CROSS_DOMAINS := $PUBLIC_URL }}
-{{ $XMPP_CROSS_DOMAIN := .Env.XMPP_CROSS_DOMAIN | default "" }}
-{{ if eq $XMPP_CROSS_DOMAIN "true"}}
-cross_domain_websocket = true
-cross_domain_bosh = true
-{{ else }}
-{{ if not (eq $XMPP_CROSS_DOMAIN "false") }}
-  {{ $XMPP_CROSS_DOMAINS = list $PUBLIC_URL (print "https://" .Env.XMPP_DOMAIN) .Env.XMPP_CROSS_DOMAIN | join "," }}
-{{ end }}
-cross_domain_websocket = { "{{ join "\",\"" (splitList "," $XMPP_CROSS_DOMAINS) }}" }
-cross_domain_bosh = { "{{ join "\",\"" (splitList "," $XMPP_CROSS_DOMAINS) }}" }
-{{ end }}
+consider_websocket_secure = true;
 
 VirtualHost "{{ .Env.XMPP_DOMAIN }}"
 {{ if $ENABLE_AUTH }}

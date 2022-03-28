@@ -204,7 +204,6 @@ services:
             - XMPP_MUC_MODULES
             - XMPP_INTERNAL_MUC_MODULES
             - XMPP_RECORDER_DOMAIN
-            - XMPP_CROSS_DOMAIN
         networks:
             meet.jitsi:
                 aliases:
