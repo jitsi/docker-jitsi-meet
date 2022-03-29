@@ -11,6 +11,7 @@ RUN apt-dpkg-wrap apt-get update && \
       libsasl2-dev \
       libssl-dev \
       libreadline-dev \
+      lua-event \
       git \
       unzip \
       wget && \
