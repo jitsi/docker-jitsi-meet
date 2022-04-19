@@ -48,6 +48,8 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
     mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+    rm -f /prosody-plugins/token/util.lib.lua && \
+    wget -qO /prosody-plugins/token/util.lib.lua https://raw.githubusercontent.com/jitsi/jitsi-meet/46dd88c91b63988f516114daee65ff8995c74c56/resources/prosody-plugins/token/util.lib.lua && \
     apt-cleanup && \
     rm -rf /tmp/pkg /var/cache/apt && \
     rm -rf /etc/prosody && \
