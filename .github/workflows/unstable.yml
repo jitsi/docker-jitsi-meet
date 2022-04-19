@@ -1,6 +1,7 @@
 name: Unstable Build
 
 on:
+  pull_request:
   schedule:
     - cron: "0 6 * * *"
   workflow_dispatch:
@@ -26,17 +27,29 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./base
           tags: |
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_RELEASE=unstable
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./base
+          tags: |
+            jitsi/base:${{ needs.version.outputs.base }}
+            jitsi/base:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_RELEASE=unstable
 
@@ -50,11 +63,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./base-java
@@ -64,10 +79,21 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./base-java
+          tags: |
+            jitsi/base-java:${{ needs.version.outputs.base }}
+            jitsi/base-java:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   jibri:
     runs-on: ubuntu-latest
-    needs: [version,base-java]
+    needs: [version, base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -75,11 +101,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./jibri
@@ -89,10 +117,21 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./jibri
+          tags: |
+            jitsi/jibri:${{ needs.version.outputs.base }}
+            jitsi/jibri:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   jicofo:
     runs-on: ubuntu-latest
-    needs: [version,base-java]
+    needs: [version, base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -100,11 +139,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./jicofo
@@ -114,10 +155,21 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./jicofo
+          tags: |
+            jitsi/jicofo:${{ needs.version.outputs.base }}
+            jitsi/jicofo:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   jigasi:
     runs-on: ubuntu-latest
-    needs: [version,base-java]
+    needs: [version, base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -125,11 +177,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./jigasi
@@ -139,10 +193,21 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./jigasi
+          tags: |
+            jitsi/jigasi:${{ needs.version.outputs.base }}
+            jitsi/jigasi:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   jvb:
     runs-on: ubuntu-latest
-    needs: [version,base-java]
+    needs: [version, base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -150,11 +215,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./jvb
@@ -164,10 +231,21 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./jvb
+          tags: |
+            jitsi/jvb:${{ needs.version.outputs.base }}
+            jitsi/jvb:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   prosody:
     runs-on: ubuntu-latest
-    needs: [version,base]
+    needs: [version, base]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -175,11 +253,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./prosody
@@ -189,10 +269,21 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./prosody
+          tags: |
+            jitsi/prosody:${{ needs.version.outputs.base }}
+            jitsi/prosody:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
+            BASE_TAG=${{ needs.version.outputs.base }}
 
   web:
     runs-on: ubuntu-latest
-    needs: [version,base]
+    needs: [version, base]
     steps:
       - name: Check out code
         uses: actions/checkout@v2
@@ -200,11 +291,13 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./web
@@ -213,4 +306,15 @@ jobs:
             ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
+            BASE_TAG=${{ needs.version.outputs.base }}
+      - name: Dryrun
+        uses: docker/build-push-action@v2
+        if: ${{ github.event_name == 'pull_request' }}
+        with:
+          context: ./web
+          tags: |
+            jitsi/web:${{ needs.version.outputs.base }}
+            jitsi/web:${{ needs.version.outputs.date }}
+          build-args: |
+            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
