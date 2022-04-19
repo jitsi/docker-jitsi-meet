@@ -78,6 +78,7 @@ modules_enabled = {
         {{ end }}
 };
 
+component_ports = { }
 https_ports = { }
 
 -- These modules are auto-loaded, but should you want

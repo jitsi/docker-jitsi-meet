@@ -66,6 +66,6 @@ COPY rootfs/ /
 COPY --from=builder /usr/local/lib/lua /usr/local/lib/lua
 COPY --from=builder /usr/local/share/lua /usr/local/share/lua
 
-EXPOSE 5222 5347 5280
+EXPOSE 5222 5280
 
 VOLUME ["/config", "/prosody-plugins-custom"]
