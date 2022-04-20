@@ -1,3 +1,20 @@
+## stable-7210
+
+Based on stable release 7210.
+
+* 1afa278 prosody: add temporary workaround for JWT auth
+* 6fe240a prosody: update to 0.12
+* 097558b ci: dry run Docker builds on PRs
+* eca5d16 web: fix matching etherpad location
+* 3afc1e3 prosody: update package version
+* b0617c0 web: fix Etherpad when using multi-domain
+* 0ce0f09 prosody: update version
+* 201a1b4 prosody: pin to version 0.11 for now
+* 29b4c23 prosody: use a more recent version of luarocks
+* c5b049a jvb: forward port 8080 to docker host
+* 6af7cd8 doc: update CHANGELOG
+* dd7b70b misc: working on latest
+
 ## stable-7001
 
 **IMPORTANT:** Starting with this release TCP has support has been removed from the JVB.
