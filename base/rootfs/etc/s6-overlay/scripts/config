@@ -1,0 +1,5 @@
+#!/bin/bash
+set -euo pipefail
+
+# file dedicated for doing any configuration work to run the services.
+exit 0

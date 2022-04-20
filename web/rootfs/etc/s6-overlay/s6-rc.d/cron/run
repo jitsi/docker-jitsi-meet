@@ -1,0 +1,3 @@
+#!/command/execlineb
+with-contenv
+/etc/s6-overlay/scripts/run-cron

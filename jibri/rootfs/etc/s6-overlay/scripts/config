@@ -1,0 +1,80 @@
+#!/command/with-contenv bash
+set -euo pipefail
+
+if [[ -z "${JIBRI_RECORDER_PASSWORD}" || -z "${JIBRI_XMPP_PASSWORD}" ]]; then
+    echo 'FATAL ERROR: Jibri recorder password and auth password must be set'
+    exit 1
+fi
+
+OLD_JIBRI_RECORDER_PASSWORD="passw0rd"
+if [[ "${JIBRI_RECORDER_PASSWORD}" == "${OLD_JIBRI_RECORDER_PASSWORD}" ]]; then
+    echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
+    exit 1
+fi
+
+OLD_JIBRI_XMPP_PASSWORD="passw0rd"
+if [[ "${JIBRI_XMPP_PASSWORD}" == "${OLD_JIBRI_XMPP_PASSWORD}" ]]; then
+    echo 'FATAL ERROR: Jibri auth password must be changed, check the README'
+    exit 1
+fi
+
+# DISPLAY is necessary for start
+if [[ -z "${DISPLAY}" ]]; then
+    echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"
+    kill 1
+    exit 1
+fi
+
+# check loaded snd_aloop module and exit if is not loaded on the host
+if ! (lsmod | grep -q -om1 snd_aloop); then
+    echo -e "\e[31mERROR: Please load snd-aloop module on the docker host.\e[39m"
+    kill 1
+    exit 1
+fi
+
+# get host's audio group id
+host_audio_group="$(stat -c %g /dev/snd/pcmC0D0p 2> /dev/null)"
+
+# audio group is not found. Has it been run without jibri.yml?
+if [[ -z "${host_audio_group}" ]]; then
+    echo -e "\e[31mERROR: Binding /dev/snd is not found. Please check that you run docker-compose with -f jibri.yml.\e[39m"
+    kill 1
+    exit 1
+fi
+
+# try to create group with this id. If group with the id already exists, just skip
+groupadd -g "${host_audio_group}" jibri-audio > /dev/null 2>&1
+# include user to the group by id
+usermod -aG "${host_audio_group}" jibri
+
+# script for finalizing must have executing bit.
+if [[ -n "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH:-}" && -f "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" && ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ]]; then
+    chmod +x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}"
+fi
+
+# set random jibri nickname for the instance if is not set
+if [[ -z "${JIBRI_INSTANCE_ID:-}" ]]; then
+    JIBRI_INSTANCE_ID="jibri-$(date +%N)"
+fi
+export JIBRI_INSTANCE_ID
+
+# always recreate configs
+tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
+tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
+tpl /defaults/xorg-video-dummy.conf > /etc/jitsi/jibri/xorg-video-dummy.conf
+
+# set recording dir
+if [[ -z "${JIBRI_RECORDING_DIR}" ]]; then
+    JIBRI_RECORDING_DIR="/config/recordings"
+fi
+export JIBRI_RECORDING_DIR
+
+# set logs dir
+if [[ -z "${JIBRI_LOGS_DIR}" ]]; then
+    JIBRI_LOGS_DIR="/config/logs"
+fi
+export JIBRI_LOGS_DIR
+
+# make directories
+mkdir -p "${JIBRI_LOGS_DIR}" "${JIBRI_RECORDING_DIR}"
+chown -R jibri:jibri "${JIBRI_LOGS_DIR}" "${JIBRI_RECORDING_DIR}"

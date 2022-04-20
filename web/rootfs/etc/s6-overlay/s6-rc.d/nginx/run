@@ -1,0 +1,2 @@
+#!/command/execlineb
+/etc/s6-overlay/scripts/run-nginx

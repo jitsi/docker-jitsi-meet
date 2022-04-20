@@ -1,0 +1,7 @@
+#!/bin/bash
+set -euo pipefail
+
+export JAVA_SYS_PROPS="-Djava.util.logging.config.file=/config/logging.properties -Dconfig.file=/config/jicofo.conf"
+
+cd /usr/share/jicofo
+exec /usr/share/jicofo/jicofo.sh --domain="${XMPP_DOMAIN}" --host="${XMPP_SERVER}" --user_name="${JICOFO_AUTH_USER}" --user_domain="${XMPP_AUTH_DOMAIN}" --user_password="${JICOFO_AUTH_PASSWORD}"

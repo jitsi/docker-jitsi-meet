@@ -1,0 +1,4 @@
+#!/command/execlineb
+with-contenv
+s6-setuidgid jigasi
+/etc/s6-overlay/scripts/run-jigasi

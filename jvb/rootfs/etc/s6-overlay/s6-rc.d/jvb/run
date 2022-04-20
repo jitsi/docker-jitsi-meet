@@ -1,0 +1,4 @@
+#!/command/execlineb
+with-contenv
+s6-setuidgid jvb
+/etc/s6-overlay/scripts/run-jvb

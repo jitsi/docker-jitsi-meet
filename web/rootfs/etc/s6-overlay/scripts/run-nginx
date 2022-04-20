@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+exec nginx -c /config/nginx/nginx.conf

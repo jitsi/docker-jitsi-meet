@@ -1,0 +1,3 @@
+#!/command/execlineb
+s6-setuidgid prosody
+/etc/s6-overlay/scripts/run-prosody

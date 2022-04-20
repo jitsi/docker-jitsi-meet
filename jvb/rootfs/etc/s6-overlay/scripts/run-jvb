@@ -1,0 +1,6 @@
+#!/bin/bash
+set -euo pipefail
+
+export JAVA_SYS_PROPS="-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/ -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=config -Djava.util.logging.config.file=/config/logging.properties -Dconfig.file=/config/jvb.conf"
+
+exec /usr/share/jitsi-videobridge/jvb.sh

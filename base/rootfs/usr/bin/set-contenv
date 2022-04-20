@@ -1,0 +1,24 @@
+#!/bin/bash
+set -euo pipefail
+
+function _set_contenv() {
+    for name in "${@}"; do
+        local -n content="${name}"
+        printf '%q' "${content}" > "${env_dir}/${name}"
+    done
+}
+
+function _main() {
+    local -r old_IFS=$IFS
+    local -r env_dir="/run/s6/container_environment"
+
+    IFS=$'\n\t '
+    _set_contenv "${@}"
+    ret="${?}"
+
+    IFS=$old_IFS
+    return $ret
+}
+
+_main "${@}"
+exit ${?}

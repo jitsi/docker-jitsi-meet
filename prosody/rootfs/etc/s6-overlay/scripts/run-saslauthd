@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+exec saslauthd -a ldap -O /etc/saslauthd.conf -c -m /var/run/saslauthd -n 5 -d

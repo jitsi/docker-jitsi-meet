@@ -1,11 +1,10 @@
-#!/bin/bash
-
-set -e
+#!/usr/bin/env bash
+set -euo pipefail
 
 # Don't start a release if the tree is dirty
 #
 
-if [[ ! -z $(git status -s) ]]; then
+if [[ -n "$(git status -s)" ]]; then
     echo "Git tree is not clean, aborting release!"
     exit 1
 fi
@@ -13,10 +12,10 @@ fi
 # Get version and branch (we only do stable for now)
 #
 
-V="$1"
+V="${1}"
 RELEASE="${2:-stable}"
 
-if [[ -z $V ]]; then
+if [[ -z "${V}" ]]; then
     echo "A version must be specified!"
     exit 1
 fi
@@ -24,16 +23,16 @@ fi
 VERSION="${RELEASE}-${V}"
 echo "Releasing ${VERSION}"
 
-if git rev-parse "${VERSION}" >/dev/null 2>&1; then
-	echo "Tag for such version already exists!"
-	exit 1
+if git rev-parse "${VERSION}" > /dev/null 2>&1; then
+    echo "Tag for such version already exists!"
+    exit 1
 fi
 
 # Prepare changelog
 #
 
-LAST_VERSION=$(git describe --tags --abbrev=0)
-CHANGES=$(git log --oneline --no-decorate --no-merges ${LAST_VERSION}..HEAD --pretty=format:"%x2a%x20%h%x20%s")
+LAST_VERSION="$(git describe --tags --abbrev=0)"
+CHANGES="$(git log --oneline --no-decorate --no-merges "${LAST_VERSION}..HEAD" --pretty=format:"%x2a%x20%h%x20%s")"
 
 echo "Changelog:"
 echo "$CHANGES"
@@ -45,7 +44,7 @@ mv tmp CHANGELOG.md
 # Set specific image tags in compose files
 #
 
-sed -i "" -e "s/latest/${VERSION}/" *.yml
+sed -i "" -e "s/latest/${VERSION}/" "${0%/*}/"{docker-compose,ji{gasi,bri}}.yml
 
 # Commit all changes and tag the repo
 #
@@ -61,7 +60,7 @@ JITSI_BUILD=${VERSION} make release
 # Revert back to "latest" for development
 #
 
-sed -i "" -e "s/${VERSION}/latest/" *.yml
+sed -i "" -e "s/${VERSION}/latest/" "${0%/*}/"{docker-compose,ji{gasi,bri}}.yml
 
 git commit -a -m "misc: working on latest"
 

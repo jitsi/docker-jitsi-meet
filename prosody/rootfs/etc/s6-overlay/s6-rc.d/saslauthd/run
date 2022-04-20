@@ -1,0 +1,3 @@
+#!/command/execlineb
+s6-setuidgid root
+/etc/s6-overlay/scripts/run-saslauthd

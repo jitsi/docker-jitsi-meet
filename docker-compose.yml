@@ -18,7 +18,6 @@ services:
             - ANALYTICS_WHITELISTED_EVENTS
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
-            - CALLSTATS_SECRET
             - CHROME_EXTENSION_BANNER_JSON
             - CONFCODE_URL
             - CONFIG_EXTERNAL_CONNECT
@@ -126,6 +125,8 @@ services:
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
+        secrets:
+            - CALLSTATS_SECRET
         networks:
             meet.jitsi:
 
@@ -152,18 +153,11 @@ services:
             - GLOBAL_CONFIG
             - GLOBAL_MODULES
             - JIBRI_RECORDER_USER
-            - JIBRI_RECORDER_PASSWORD
             - JIBRI_XMPP_USER
-            - JIBRI_XMPP_PASSWORD
             - JICOFO_AUTH_USER
-            - JICOFO_AUTH_PASSWORD
-            - JICOFO_COMPONENT_SECRET
             - JIGASI_XMPP_USER
-            - JIGASI_XMPP_PASSWORD
             - JVB_AUTH_USER
-            - JVB_AUTH_PASSWORD
             - JWT_APP_ID
-            - JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
             - JWT_ACCEPTED_AUDIENCES
             - JWT_ASAP_KEYSERVER
@@ -205,6 +199,14 @@ services:
             - XMPP_INTERNAL_MUC_MODULES
             - XMPP_RECORDER_DOMAIN
             - XMPP_CROSS_DOMAIN
+        secrets:
+            - JIBRI_RECORDER_PASSWORD
+            - JIBRI_XMPP_PASSWORD
+            - JICOFO_COMPONENT_SECRET
+            - JICOFO_AUTH_PASSWORD
+            - JIGASI_XMPP_PASSWORD
+            - JVB_AUTH_PASSWORD
+            - JWT_APP_SECRET
         networks:
             meet.jitsi:
                 aliases:
@@ -230,7 +232,6 @@ services:
             - ENABLE_SCTP
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_USER
-            - JICOFO_AUTH_PASSWORD
             - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
             - JICOFO_CONF_INITIAL_PARTICIPANT_WAIT_TIMEOUT
             - JICOFO_CONF_SINGLE_PARTICIPANT_TIMEOUT
@@ -256,6 +257,8 @@ services:
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER
+        secrets:
+            - JICOFO_AUTH_PASSWORD
         depends_on:
             - prosody
         networks:
@@ -275,7 +278,6 @@ services:
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_OCTO
             - JVB_AUTH_USER
-            - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
             - JVB_PORT
             - JVB_MUC_NICKNAME
@@ -296,6 +298,8 @@ services:
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
+        secrets:
+            - JVB_AUTH_PASSWORD
         depends_on:
             - prosody
         networks:
@@ -304,3 +308,28 @@ services:
 # Custom network so all services can communicate using a FQDN
 networks:
     meet.jitsi:
+
+secrets:
+    CALLSTATS_SECRET:
+        file: ${SECRETS_DIR}/CALLSTATS_SECRET
+
+    JIBRI_RECORDER_PASSWORD:
+        file: ${SECRETS_DIR}/JIBRI_RECORDER_PASSWORD
+
+    JIBRI_XMPP_PASSWORD:
+        file: ${SECRETS_DIR}/JIBRI_XMPP_PASSWORD
+
+    JICOFO_AUTH_PASSWORD:
+        file: ${SECRETS_DIR}/JICOFO_AUTH_PASSWORD
+
+    JICOFO_COMPONENT_SECRET:
+        file: ${SECRETS_DIR}/JICOFO_COMPONENT_SECRET
+
+    JIGASI_XMPP_PASSWORD:
+        file: ${SECRETS_DIR}/JIGASI_XMPP_PASSWORD
+
+    JVB_AUTH_PASSWORD:
+        file: ${SECRETS_DIR}/JVB_AUTH_PASSWORD
+
+    JWT_APP_SECRET:
+        file: ${SECRETS_DIR}/JWT_APP_SECRET

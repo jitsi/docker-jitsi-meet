@@ -17,8 +17,8 @@ release: tag-all push-all
 build:
 	docker build $(BUILD_ARGS) --progress plain --tag $(JITSI_REPO)/$(JITSI_SERVICE) $(JITSI_SERVICE)/
 
-$(addprefix build_,$(JITSI_SERVICES)):
-	$(MAKE) --no-print-directory JITSI_SERVICE=$(patsubst build_%,%,$@) build
+$(addprefix build-,$(JITSI_SERVICES)):
+	$(MAKE) --no-print-directory JITSI_SERVICE=$(patsubst build-%,%,$@) build
 
 tag:
 	docker tag $(JITSI_REPO)/$(JITSI_SERVICE):latest $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
@@ -39,4 +39,4 @@ prepare:
 	docker pull debian:bullseye-slim
 	FORCE_REBUILD=1 $(MAKE)
 
-.PHONY: all build tag push clean prepare release $(addprefix build_,$(JITSI_SERVICES))
+.PHONY: all build tag push clean prepare release $(addprefix build-,$(JITSI_SERVICES))

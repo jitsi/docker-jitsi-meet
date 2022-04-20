@@ -1,0 +1,21 @@
+#!/bin/bash
+set -euo pipefail
+
+if [[ ${DISABLE_HTTPS:-0} -ne 1 ]] && [[ ${ENABLE_LETSENCRYPT:-0} -eq 1 ]]; then
+    exec cron -f
+else
+    # if cron should not be started,
+    # prevent s6 from restarting this script again and again.
+
+    # simple trap to exit, when we get a SIGTERM
+    _trap_term() { exit 0; }
+    trap _trap_term TERM
+
+    # endless sleep loop, to keep the task active
+    declare -i SLEEP_DELAY="${SLEEP_DELAY:-60}"
+    while sleep "${SLEEP_DELAY}"; do :; done
+
+    # exit if we ever reach this
+    echo "WARNING: Something might be broken. This should not run" 1>&2
+    _trap_term
+fi

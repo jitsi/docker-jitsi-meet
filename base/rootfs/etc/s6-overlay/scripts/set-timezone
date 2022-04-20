@@ -1,0 +1,17 @@
+#!/bin/bash
+set -euo pipefail
+
+function _set_timezone() {
+    [[ "${TZ:-}" ]] || return 0
+
+    [[ -f "/usr/share/zoneinfo/${TZ}" ]] || {
+        echo "WARNING: '${TZ}' is not a valid time zone." 1>&2
+        return 0
+    }
+
+    ln -sf "/usr/share/zoneinfo/${TZ}" "/etc/localtime"
+    echo "${TZ}" > "/etc/timezone"
+}
+
+_set_timezone
+exit ${?}

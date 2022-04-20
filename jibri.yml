@@ -23,10 +23,8 @@ services:
             - JIBRI_RECORDING_RESOLUTION
             - JIBRI_USAGE_TIMEOUT
             - JIBRI_XMPP_USER
-            - JIBRI_XMPP_PASSWORD
             - JIBRI_BREWERY_MUC
             - JIBRI_RECORDER_USER
-            - JIBRI_RECORDER_PASSWORD
             - JIBRI_RECORDING_DIR
             - JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
             - JIBRI_STRIP_DOMAIN_JID
@@ -39,6 +37,9 @@ services:
             - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER
             - XMPP_TRUST_ALL_CERTS
+        secrets:
+            - JIBRI_RECORDER_PASSWORD
+            - JIBRI_XMPP_PASSWORD
         depends_on:
             - jicofo
         networks:

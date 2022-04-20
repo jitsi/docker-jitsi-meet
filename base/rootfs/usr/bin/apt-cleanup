@@ -1,3 +1,4 @@
-#!/bin/sh
+#!/bin/bash
+set -euo pipefail
 
-rm -rf /var/lib/apt/lists/
+rm -rf /var/lib/apt/lists/* /var/cache/apt/* /var/cache/debconf/* /var/cache/ldconfig/*

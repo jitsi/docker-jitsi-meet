@@ -1,0 +1,24 @@
+#!/command/with-contenv bash
+set -euo pipefail
+
+if [[ -z "${JICOFO_AUTH_PASSWORD:-}" ]]; then
+    echo 'FATAL ERROR: Jicofo auth password must be set' 1>&2
+    exit 1
+fi
+
+OLD_JICOFO_AUTH_PASSWORD="passw0rd"
+if [[ "${JICOFO_AUTH_PASSWORD}" == "${OLD_JICOFO_AUTH_PASSWORD}" ]]; then
+    echo 'FATAL ERROR: Jicofo auth password must be changed, check the README' 1>&2
+    exit 1
+fi
+
+if [[ -z "${SENTRY_RELEASE:-}" ]]; then
+    SENTRY_RELEASE="$(apt-cache policy jicofo | sed -n '/Installed/p' | sed -e 's/[^:]*: //')"
+fi
+export SENTRY_RELEASE
+set-contenv SENTRY_RELEASE
+
+tpl /defaults/logging.properties > /config/logging.properties
+tpl /defaults/jicofo.conf > /config/jicofo.conf
+
+chown -R jicofo:jitsi /config

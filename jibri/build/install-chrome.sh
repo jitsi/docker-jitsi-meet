@@ -1,9 +1,8 @@
 #!/bin/bash
+set -euxo pipefail
 
-set -o pipefail -xeu
-
-if  [ "${CHROME_RELEASE}" = "latest" ]; then
-    wget -qO - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmour > /etc/apt/trusted.gpg.d/google.gpg
+if [[ "${CHROME_RELEASE}" == "latest" ]]; then
+    wget -qO - "https://dl-ssl.google.com/linux/linux_signing_key.pub" | gpg --dearmour > /etc/apt/trusted.gpg.d/google.gpg
     echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
     apt-dpkg-wrap apt-get update
     apt-dpkg-wrap apt-get install -y google-chrome-stable
@@ -15,12 +14,12 @@ else
     apt-cleanup
 fi
 
-if [ "${CHROMEDRIVER_MAJOR_RELEASE}" = "latest" ]; then
-    CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE)"
+if [[ "${CHROMEDRIVER_MAJOR_RELEASE}" == "latest" ]]; then
+    CHROMEDRIVER_RELEASE="$(curl -4Ls "https://chromedriver.storage.googleapis.com/LATEST_RELEASE")"
 else
-    CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
+    CHROMEDRIVER_RELEASE="$(curl -4Ls "https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE}")"
 fi
 
-curl -4Ls "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_RELEASE}/chromedriver_linux64.zip"  | zcat >> /usr/bin/chromedriver
+curl -4Ls "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_RELEASE}/chromedriver_linux64.zip" | zcat >> /usr/bin/chromedriver
 chmod +x /usr/bin/chromedriver
 chromedriver --version

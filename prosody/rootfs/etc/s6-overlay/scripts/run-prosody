@@ -1,0 +1,4 @@
+#!/bin/bash
+set -euo pipefail
+
+exec prosody --config /config/prosody.cfg.lua

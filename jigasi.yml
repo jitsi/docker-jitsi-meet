@@ -27,7 +27,6 @@ services:
             - JIGASI_SIP_TRANSPORT
             - JIGASI_SIP_DEFAULT_ROOM
             - JIGASI_XMPP_USER
-            - JIGASI_XMPP_PASSWORD
             - JIGASI_BREWERY_MUC
             - JIGASI_PORT_MIN
             - JIGASI_PORT_MAX
@@ -49,6 +48,8 @@ services:
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
+        secrets:
+            - JIGASI_XMPP_PASSWORD
         depends_on:
             - prosody
         networks:
