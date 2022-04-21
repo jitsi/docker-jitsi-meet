@@ -22,7 +22,11 @@ jobs:
     needs: version
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -42,6 +46,7 @@ jobs:
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_RELEASE=unstable
+          platforms: linux/amd64,linux/arm64
       - name: Dryrun
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
@@ -52,13 +57,18 @@ jobs:
             jitsi/base:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_RELEASE=unstable
+          platforms: linux/amd64,linux/arm64
 
   base-java:
     runs-on: ubuntu-latest
     needs: [version, base]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -79,6 +89,7 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
       - name: Dryrun
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
@@ -90,13 +101,18 @@ jobs:
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
 
   jibri:
     runs-on: ubuntu-latest
     needs: [version, base-java]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -117,6 +133,8 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+          # FIXME jibri does not support linux/arm64
+          platforms: linux/amd64
       - name: Dryrun
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
@@ -128,13 +146,19 @@ jobs:
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
+          # FIXME jibri does not support linux/arm64
+          platforms: linux/amd64
 
   jicofo:
     runs-on: ubuntu-latest
     needs: [version, base-java]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -155,6 +179,7 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
       - name: Dryrun
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
@@ -166,13 +191,18 @@ jobs:
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
 
   jigasi:
     runs-on: ubuntu-latest
     needs: [version, base-java]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -193,6 +223,8 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+          # FIXME jigasi does not support linux/arm64
+          platforms: linux/amd64
       - name: Dryrun
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
@@ -204,13 +236,19 @@ jobs:
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
+          # FIXME jigasi does not support linux/arm64
+          platforms: linux/amd64
 
   jvb:
     runs-on: ubuntu-latest
     needs: [version, base-java]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -231,6 +269,7 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
       - name: Dryrun
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
@@ -242,13 +281,18 @@ jobs:
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
 
   prosody:
     runs-on: ubuntu-latest
     needs: [version, base]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -269,6 +313,7 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
       - name: Dryrun
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
@@ -280,13 +325,18 @@ jobs:
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
 
   web:
     runs-on: ubuntu-latest
     needs: [version, base]
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+        with:
+          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
@@ -307,6 +357,7 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
       - name: Dryrun
         uses: docker/build-push-action@v2
         if: ${{ github.event_name == 'pull_request' }}
@@ -318,3 +369,4 @@ jobs:
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
+          platforms: linux/amd64,linux/arm64
