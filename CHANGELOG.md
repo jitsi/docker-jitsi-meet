@@ -1,3 +1,11 @@
+## stable-7210-1
+
+Based on stable release 7210-1.
+
+* a8e6a34 prosody: completely disable external components
+* 8587d29 prosody: add mod_auth_cyrus from community libraries
+* 3a070e6 misc: working on latest
+
 ## stable-7210
 
 Based on stable release 7210.
