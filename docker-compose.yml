@@ -134,7 +134,7 @@ services:
         image: jitsi/prosody:latest
         restart: ${RESTART_POLICY}
         expose:
-            - '5222'
+            - '${XMPP_PORT}'
             - '5347'
             - '5280'
         volumes:
