@@ -38,6 +38,7 @@ services:
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER
+            - XMPP_PORT
             - XMPP_TRUST_ALL_CERTS
         depends_on:
             - jicofo
