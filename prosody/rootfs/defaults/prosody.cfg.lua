@@ -1,5 +1,5 @@
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
-{{ $ENABLE_XMPP_PORT := .Env.XMPP_PORT | default "0" | toBool }}
+{{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
 
 -- Prosody Example Configuration File
 --
@@ -111,10 +111,9 @@ pidfile = "/config/data/prosody.pid";
 
 c2s_require_encryption = false
 
-{{ if $ENABLE_XMPP_PORT -}}
--- force c2s port
-c2s_ports = { {{ .Env.XMPP_PORT }} } -- Listen on specific c2s port instead of default 5222
-{{ end -}}
+-- set c2s port
+c2s_ports = { {{ $XMPP_PORT }} } -- Listen on specific c2s port
+
 -- Force certificate authentication for server-to-server connections?
 -- This provides ideal security, but requires servers you communicate
 -- with to support encryption AND present valid, trusted certificates.
