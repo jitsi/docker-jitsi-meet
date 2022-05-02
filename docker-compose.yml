@@ -126,6 +126,7 @@ services:
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
+            - XMPP_PORT
         networks:
             meet.jitsi:
 
@@ -134,7 +135,7 @@ services:
         image: jitsi/prosody:latest
         restart: ${RESTART_POLICY}
         expose:
-            - '5222'
+            - '${XMPP_PORT:-5222}'
             - '5347'
             - '5280'
         volumes:
@@ -204,6 +205,7 @@ services:
             - XMPP_MUC_MODULES
             - XMPP_INTERNAL_MUC_MODULES
             - XMPP_RECORDER_DOMAIN
+            - XMPP_PORT
         networks:
             meet.jitsi:
                 aliases:
@@ -255,6 +257,7 @@ services:
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER
+            - XMPP_PORT
         depends_on:
             - prosody
         networks:
@@ -295,6 +298,7 @@ services:
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
+            - XMPP_PORT
         depends_on:
             - prosody
         networks:
