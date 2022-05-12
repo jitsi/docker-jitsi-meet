@@ -1,7 +1,13 @@
 #!/usr/bin/env bash
 
 function generatePassword() {
-    openssl rand -hex 16
+    # there is a clean base64 conversion we can use:
+    #   where:
+    #       R = random bytes count
+    #       L = base64 string length
+    #   L = R(4/3)
+    # therefore 48 will generate a 64 character base64 string
+    head -c 48 /dev/urandom | base64 -w0
 }
 
 JICOFO_AUTH_PASSWORD=$(generatePassword)
