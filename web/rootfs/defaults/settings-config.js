@@ -43,7 +43,8 @@
 {{ $VIDEOQUALITY_ENFORCE_PREFERRED_CODEC := .Env.VIDEOQUALITY_ENFORCE_PREFERRED_CODEC | default "false" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $DISABLE_REACTIONS := .Env.DISABLE_REACTIONS | default "false" | toBool -}}
-{{ $DISABLE_REMOTE_VIDEO_MENU := .Env.DISABLE_REMOTE_VIDEO_MENU | default "true" | toBool -}}
+{{ $DISABLE_REMOTE_VIDEO_MENU := .Env.DISABLE_REMOTE_VIDEO_MENU | default "false" | toBool -}}
+{{ $DISABLE_PRIVATE_CHAT:= .Env.DISABLE_PRIVATE_CHAT | default "false" | toBool -}}
 {{ $ENABLE_E2EPING := .Env.ENABLE_E2EPING | default "false" | toBool -}}
 
 // Video configuration.
@@ -394,9 +395,7 @@ config.remoteVideoMenu.disableKick = {{ .Env.DISABLE_KICKOUT }};
 {{ if .Env.DISABLE_GRANT_MODERATOR -}}
 config.remoteVideoMenu.disableGrantModerator = {{ .Env.DISABLE_GRANT_MODERATOR }};
 {{ end -}}
-{{ if .Env.DISABLE_PRIVATE_CHAT -}}
-config.remoteVideoMenu.disablePrivateChat = {{ .Env.DISABLE_PRIVATE_CHAT }};
-{{ end }}
+config.remoteVideoMenu.disablePrivateChat = {{ $DISABLE_PRIVATE_CHAT }};
 
 // Configure e2eping
 if (!config.hasOwnProperty('e2eping')) config.e2eping = {};
