@@ -40,7 +40,9 @@ services:
             - DISABLE_HTTPS
             - DISABLE_KICKOUT
             - DISABLE_POLLS
+            - DISABLE_PRIVATE_CHAT
             - DISABLE_REACTIONS
+            - DISABLE_REMOTE_VIDEO_MENU
             - DROPBOX_APPKEY
             - DROPBOX_REDIRECT_URI
             - DYNAMIC_BRANDING_URL
@@ -49,6 +51,7 @@ services:
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_CALENDAR
             - ENABLE_COLIBRI_WEBSOCKET
+            - ENABLE_E2EPING
             - ENABLE_FILE_RECORDING_SERVICE
             - ENABLE_FILE_RECORDING_SERVICE_SHARING
             - ENABLE_FLOC
@@ -78,6 +81,9 @@ services:
             - ENABLE_XMPP_WEBSOCKET
             - ETHERPAD_PUBLIC_URL
             - ETHERPAD_URL_BASE
+            - E2EPING_NUM_REQUESTS
+            - E2EPING_MAX_CONFERENCE_SIZE
+            - E2EPING_MAX_MESSAGE_PER_SECOND
             - GOOGLE_ANALYTICS_ID
             - GOOGLE_API_APP_CLIENT_ID
             - HIDE_PREMEETING_BUTTONS
