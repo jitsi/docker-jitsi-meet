@@ -45,6 +45,8 @@
 {{ $DISABLE_REACTIONS := .Env.DISABLE_REACTIONS | default "false" | toBool -}}
 {{ $DISABLE_REMOTE_VIDEO_MENU := .Env.DISABLE_REMOTE_VIDEO_MENU | default "false" | toBool -}}
 {{ $DISABLE_PRIVATE_CHAT:= .Env.DISABLE_PRIVATE_CHAT | default "false" | toBool -}}
+{{ $DISABLE_KICKOUT := .Env.DISABLE_KICKOUT | default "false" | toBool -}}
+{{ $DISABLE_GRANT_MODERATOR := .Env.DISABLE_GRANT_MODERATOR | default "false" | toBool -}}
 {{ $ENABLE_E2EPING := .Env.ENABLE_E2EPING | default "false" | toBool -}}
 
 // Video configuration.
@@ -389,12 +391,8 @@ config.hiddenPremeetingButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREME
 // Configure remote participant video menu
 if (!config.hasOwnProperty('remoteVideoMenu')) config.remoteVideoMenu = {};
 config.remoteVideoMenu.disabled = {{ $DISABLE_REMOTE_VIDEO_MENU }};
-{{ if .Env.DISABLE_KICKOUT -}}
-config.remoteVideoMenu.disableKick = {{ .Env.DISABLE_KICKOUT }};
-{{ end -}}
-{{ if .Env.DISABLE_GRANT_MODERATOR -}}
-config.remoteVideoMenu.disableGrantModerator = {{ .Env.DISABLE_GRANT_MODERATOR }};
-{{ end -}}
+config.remoteVideoMenu.disableKick = {{ $DISABLE_KICKOUT }};
+config.remoteVideoMenu.disableGrantModerator = {{ $DISABLE_GRANT_MODERATOR }};
 config.remoteVideoMenu.disablePrivateChat = {{ $DISABLE_PRIVATE_CHAT }};
 
 // Configure e2eping
