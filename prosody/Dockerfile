@@ -50,6 +50,8 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
     rm -f /prosody-plugins/token/util.lib.lua && \
     wget -qO /prosody-plugins/token/util.lib.lua https://raw.githubusercontent.com/jitsi/jitsi-meet/46dd88c91b63988f516114daee65ff8995c74c56/resources/prosody-plugins/token/util.lib.lua && \
+    wget -qO /prosody-plugins/mod_auth_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/mod_auth_cyrus.lua && \
+    wget -qO /prosody-plugins/sasl_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/sasl_cyrus.lua  && \
     apt-cleanup && \
     rm -rf /tmp/pkg /var/cache/apt && \
     rm -rf /etc/prosody && \
@@ -64,6 +66,6 @@ COPY rootfs/ /
 COPY --from=builder /usr/local/lib/lua /usr/local/lib/lua
 COPY --from=builder /usr/local/share/lua /usr/local/share/lua
 
-EXPOSE 5222 5347 5280
+EXPOSE 5222 5280
 
 VOLUME ["/config", "/prosody-plugins-custom"]

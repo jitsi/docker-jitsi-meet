@@ -18,6 +18,7 @@ services:
             - XMPP_MUC_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
+            - XMPP_PORT
             - XMPP_DOMAIN
             - PUBLIC_URL
             - JIGASI_SIP_URI

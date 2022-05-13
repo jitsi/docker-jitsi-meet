@@ -1,3 +1,26 @@
+## stable-7287
+
+Based on stable release 7287.
+
+* 41d6a9a jibri: bump Chrome to version 101
+* 88bb1bc feature: support multiple XMPP servers via list (#1276)
+* 95af778 jicofo: add optional XMPP_PORT value (#1275)
+* da0a43a misc: working on latest
+
+## stable-7210-2
+
+Based on stable release 7210-2.
+
+* 2634e96 misc: working on latest
+
+## stable-7210-1
+
+Based on stable release 7210-1.
+
+* a8e6a34 prosody: completely disable external components
+* 8587d29 prosody: add mod_auth_cyrus from community libraries
+* 3a070e6 misc: working on latest
+
 ## stable-7210
 
 Based on stable release 7210.
