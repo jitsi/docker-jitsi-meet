@@ -16,6 +16,7 @@ services:
             - AMPLITUDE_ID
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
+            - AUDIO_QUALITY_OPUS_BITRATE
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
             - CALLSTATS_SECRET
@@ -59,6 +60,7 @@ services:
             - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
             - ENABLE_NOISY_MIC_DETECTION
+            - ENABLE_OPUS_RED
             - ENABLE_PREJOIN_PAGE
             - ENABLE_P2P
             - ENABLE_WELCOME_PAGE
