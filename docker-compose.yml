@@ -157,6 +157,7 @@ services:
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_GUESTS
             - ENABLE_LOBBY
+            - ENABLE_RECORDING
             - ENABLE_XMPP_WEBSOCKET
             - GLOBAL_CONFIG
             - GLOBAL_MODULES
@@ -217,7 +218,7 @@ services:
         networks:
             meet.jitsi:
                 aliases:
-                    - ${XMPP_SERVER}
+                    - ${XMPP_SERVER:-xmpp.meet.jitsi}
 
     # Focus component
     jicofo:
@@ -276,7 +277,7 @@ services:
         image: jitsi/jvb:latest
         restart: ${RESTART_POLICY}
         ports:
-            - '${JVB_PORT}:${JVB_PORT}/udp'
+            - '${JVB_PORT:-10000}:${JVB_PORT:-10000}/udp'
             - '127.0.0.1:8080:8080'
         volumes:
             - ${CONFIG}/jvb:/config:Z
