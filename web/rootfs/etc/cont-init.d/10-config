@@ -75,7 +75,6 @@ tpl /defaults/ssl.conf > /config/nginx/ssl.conf
 
 tpl /defaults/default > /config/nginx/site-confs/default
 
-cp /defaults/config.js /config/config.js
 tpl /defaults/system-config.js >> /config/config.js
 tpl /defaults/settings-config.js >> /config/config.js
 if [[ -f /config/custom-config.js ]]; then
