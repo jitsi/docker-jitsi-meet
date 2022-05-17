@@ -11,7 +11,8 @@
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0  -}}
 
-// Begin default config overrides.
+// Jitsi Meet configuration.
+var config = {};
 
 if (!config.hasOwnProperty('hosts')) config.hosts = {};
 
