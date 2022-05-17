@@ -54,7 +54,6 @@ services:
             - ENABLE_E2EPING
             - ENABLE_FILE_RECORDING_SERVICE
             - ENABLE_FILE_RECORDING_SERVICE_SHARING
-            - ENABLE_FLOC
             - ENABLE_GUESTS
             - ENABLE_HSTS
             - ENABLE_HTTP_REDIRECT
