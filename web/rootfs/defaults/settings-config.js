@@ -14,6 +14,7 @@
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
+{{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
 {{ $ENABLE_SIMULCAST := .Env.ENABLE_SIMULCAST | default "true" | toBool -}}
 {{ $ENABLE_STATS_ID := .Env.ENABLE_STATS_ID | default "false" | toBool -}}
 {{ $ENABLE_STEREO := .Env.ENABLE_STEREO | default "false" | toBool -}}
@@ -48,6 +49,7 @@
 {{ $DISABLE_KICKOUT := .Env.DISABLE_KICKOUT | default "false" | toBool -}}
 {{ $DISABLE_GRANT_MODERATOR := .Env.DISABLE_GRANT_MODERATOR | default "false" | toBool -}}
 {{ $ENABLE_E2EPING := .Env.ENABLE_E2EPING | default "false" | toBool -}}
+
 
 // Video configuration.
 //
@@ -277,6 +279,10 @@ config.defaultLanguage = '{{ .Env.DEFAULT_LANGUAGE }}';
 
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
+
+// disables editing display name
+config.hidePrejoinDisplayName = {{ $HIDE_PREJOIN_DISPLAY_NAME }};
+
 
 // Chrome extension banner.
 {{ if .Env.CHROME_EXTENSION_BANNER_JSON -}}
