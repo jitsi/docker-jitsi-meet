@@ -45,7 +45,7 @@ mv tmp CHANGELOG.md
 # Set specific image tags in compose files
 #
 
-sed -i "" -e "s/latest/${VERSION}/" *.yml
+sed -i "" -e "s/unstable/${VERSION}/" *.yml
 
 # Commit all changes and tag the repo
 #
@@ -58,12 +58,12 @@ git tag -a "${VERSION}" -m "release" -m "${CHANGES}"
 
 JITSI_BUILD=${VERSION} make release
 
-# Revert back to "latest" for development
+# Revert back to "unstable" for development
 #
 
-sed -i "" -e "s/${VERSION}/latest/" *.yml
+sed -i "" -e "s/${VERSION}/unstable/" *.yml
 
-git commit -a -m "misc: working on latest"
+git commit -a -m "misc: working on unstable"
 
 # Push all changes and tags
 #
