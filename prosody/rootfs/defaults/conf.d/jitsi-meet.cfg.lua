@@ -14,7 +14,9 @@
 {{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool }}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool }}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
+{{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
+{{ $PUBLIC_URL_DOMAIN := $PUBLIC_URL | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
@@ -72,6 +74,19 @@ asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AU
 
 consider_bosh_secure = true;
 consider_websocket_secure = true;
+
+{{ if $ENABLE_JAAS_COMPONENTS }}
+VirtualHost "jigasi.meet.jitsi"
+    modules_enabled = {
+      "ping";
+      "bosh";
+    }
+    authentication = "token"
+    app_id = "jitsi";
+    asap_key_server = "https://jaas-public-keys.jitsi.net/jitsi-components/prod-8x8"
+    asap_accepted_issuers = { "jaas-components" }
+    asap_accepted_audiences = { "jigasi.{{ $PUBLIC_URL_DOMAIN }}" }
+{{ end }}
 
 VirtualHost "{{ $XMPP_DOMAIN }}"
 {{ if $ENABLE_AUTH }}

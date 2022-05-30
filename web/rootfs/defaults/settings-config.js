@@ -214,8 +214,16 @@ config.enableStatsID = {{ $ENABLE_STATS_ID }};
 // Dial in/out services.
 //
 
+{{ if $ENABLE_JAAS_COMPONENTS }}
+config.dialInConfCodeUrl = 'https://conference-mapper.jitsi.net/v1/access';
+config.dialInNumbersUrl = 'https://conference-mapper.jitsi.net/v1/access/dids';
+{{ else }}
 {{ if .Env.CONFCODE_URL -}}
 config.dialInConfCodeUrl = '{{ .Env.CONFCODE_URL }}';
+{{ end -}}
+{{ if .Env.DIALIN_NUMBERS_URL -}}
+config.dialInNumbersUrl = '{{ .Env.DIALIN_NUMBERS_URL }}';
+{{ end -}}
 {{ end -}}
 
 {{ if .Env.DIALIN_NUMBERS_URL -}}
