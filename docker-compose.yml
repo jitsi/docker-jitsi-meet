@@ -3,7 +3,7 @@ version: '3'
 services:
     # Frontend
     web:
-        image: jitsi/web:latest
+        image: jitsi/web:unstable
         restart: ${RESTART_POLICY}
         ports:
             - '${HTTP_PORT}:80'
@@ -79,6 +79,7 @@ services:
             - ENABLE_TCC
             - ENABLE_TRANSCRIPTIONS
             - ENABLE_XMPP_WEBSOCKET
+            - ENABLE_JAAS_COMPONENTS
             - ETHERPAD_PUBLIC_URL
             - ETHERPAD_URL_BASE
             - E2EPING_NUM_REQUESTS
@@ -140,7 +141,7 @@ services:
 
     # XMPP server
     prosody:
-        image: jitsi/prosody:latest
+        image: jitsi/prosody:unstable
         restart: ${RESTART_POLICY}
         expose:
             - '${XMPP_PORT:-5222}'
@@ -159,6 +160,7 @@ services:
             - ENABLE_LOBBY
             - ENABLE_RECORDING
             - ENABLE_XMPP_WEBSOCKET
+            - ENABLE_JAAS_COMPONENTS
             - GLOBAL_CONFIG
             - GLOBAL_MODULES
             - JIBRI_RECORDER_USER
@@ -222,7 +224,7 @@ services:
 
     # Focus component
     jicofo:
-        image: jitsi/jicofo:latest
+        image: jitsi/jicofo:unstable
         restart: ${RESTART_POLICY}
         volumes:
             - ${CONFIG}/jicofo:/config:Z
@@ -274,7 +276,7 @@ services:
 
     # Video bridge
     jvb:
-        image: jitsi/jvb:latest
+        image: jitsi/jvb:unstable
         restart: ${RESTART_POLICY}
         ports:
             - '${JVB_PORT:-10000}:${JVB_PORT:-10000}/udp'

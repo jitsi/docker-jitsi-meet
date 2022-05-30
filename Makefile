@@ -1,6 +1,6 @@
 FORCE_REBUILD ?= 0
 JITSI_RELEASE ?= stable
-JITSI_BUILD ?= latest
+JITSI_BUILD ?= unstable
 JITSI_REPO ?= jitsi
 NATIVE_ARCH ?= $(shell uname -m)
 
@@ -43,10 +43,9 @@ $(addprefix build_,$(JITSI_SERVICES)):
 	$(MAKE) --no-print-directory JITSI_SERVICE=$(patsubst build_%,%,$@) build
 
 tag:
-	docker tag $(JITSI_REPO)/$(JITSI_SERVICE):latest $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
+	docker tag $(JITSI_REPO)/$(JITSI_SERVICE) $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
 
 push:
-	docker push $(JITSI_REPO)/$(JITSI_SERVICE):latest
 	docker push $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
 
 %-all:
