@@ -70,6 +70,7 @@ services:
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
+            - HIDE_PREJOIN_DISPLAY_NAME
             - ENABLE_SIMULCAST
             - ENABLE_STATS_ID
             - ENABLE_STEREO
@@ -127,7 +128,6 @@ services:
             - VIDEOQUALITY_BITRATE_VP9_HIGH
             - VIDEOQUALITY_ENFORCE_PREFERRED_CODEC
             - VIDEOQUALITY_PREFERRED_CODEC
-            - HIDE_PREJOIN_DISPLAY_NAME
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
             - XMPP_DOMAIN
