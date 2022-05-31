@@ -227,10 +227,6 @@ config.dialInNumbersUrl = '{{ .Env.DIALIN_NUMBERS_URL }}';
 {{ end -}}
 {{ end -}}
 
-{{ if .Env.DIALIN_NUMBERS_URL -}}
-config.dialInNumbersUrl = '{{ .Env.DIALIN_NUMBERS_URL }}';
-{{ end -}}
-
 {{ if .Env.DIALOUT_AUTH_URL -}}
 config.dialOutAuthUrl = '{{ .Env.DIALOUT_AUTH_URL }}';
 {{ end -}}
