@@ -43,12 +43,13 @@ usermod -aG ${host_audio_group} jibri
 && [ ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}
 
-# set rundom jibri nickname for the instance if is not set
-[ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID=$(date +%N)
+# set random jibri nickname for the instance if is not set
+[ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID="jibri-$(date +%N)"
 
 # always recreate configs
-tpl /defaults/config.json > /etc/jitsi/jibri/config.json
+tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
 tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
+tpl /defaults/xorg-video-dummy.conf > /etc/jitsi/jibri/xorg-video-dummy.conf
 
 # make recording dir
 [ -z "${JIBRI_RECORDING_DIR}" ] && export JIBRI_RECORDING_DIR=/config/recordings

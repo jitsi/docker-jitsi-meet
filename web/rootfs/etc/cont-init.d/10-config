@@ -25,8 +25,8 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             $STAGING \
             --issue \
             --standalone \
-            --pre-hook "if [[ -f /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
-            --post-hook "if [[ -f /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
+            --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
+            --post-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
             -d $LETSENCRYPT_DOMAIN
         rc=$?
         if [[ $rc -eq 1 ]]; then
@@ -75,24 +75,13 @@ tpl /defaults/ssl.conf > /config/nginx/ssl.conf
 
 tpl /defaults/default > /config/nginx/site-confs/default
 
-cp /defaults/config.js /config/config.js
 tpl /defaults/system-config.js >> /config/config.js
 tpl /defaults/settings-config.js >> /config/config.js
 if [[ -f /config/custom-config.js ]]; then
     cat /config/custom-config.js >> /config/config.js
 fi
 
-if [[ ! -f /config/interface_config.js ]]; then
-    cp /defaults/interface_config.js /config/interface_config.js
-    if [[ -f /config/custom-interface_config.js ]]; then
-        cat /config/custom-interface_config.js >> /config/interface_config.js
-    fi
-
-    # It will remove parameter 'closedcaptions' from TOOLBAR_BUTTONS if ENABLE_TRANSCRIPTIONS is false,
-    # because it enabled by default, but not supported out of the box.
-    if [[ $ENABLE_TRANSCRIPTIONS -ne 1 && "$ENABLE_TRANSCRIPTIONS" != "true" ]]; then
-        sed -i \
-            -e "s#'closedcaptions', ##" \
-            /config/interface_config.js
-    fi
+cp /defaults/interface_config.js /config/interface_config.js
+if [[ -f /config/custom-interface_config.js ]]; then
+    cat /config/custom-interface_config.js >> /config/interface_config.js
 fi

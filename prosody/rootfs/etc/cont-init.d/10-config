@@ -25,6 +25,7 @@ if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
     chown -R prosody /prosody-plugins-custom
 fi
 
+mkdir /config/certs
 cp -r /defaults/* /config
 tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
 tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua
@@ -33,6 +34,16 @@ if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: Jicofo auth password must be set'
     exit 1
 fi
+
+# Defaults
+[ -z "${JIBRI_RECORDER_USER}" ] && export JIBRI_RECORDER_USER=recorder
+[ -z "${JIBRI_XMPP_USER}" ] && export JIBRI_XMPP_USER=jibri
+[ -z "${JICOFO_AUTH_USER}" ] && export JICOFO_AUTH_USER=focus
+[ -z "${JIGASI_XMPP_USER}" ] && export JIGASI_XMPP_USER=jigasi
+[ -z "${JVB_AUTH_USER}" ] && export JVB_AUTH_USER=jvb
+[ -z "${XMPP_DOMAIN}" ] && export XMPP_DOMAIN=meet.jitsi
+[ -z "${XMPP_AUTH_DOMAIN}" ] && export XMPP_AUTH_DOMAIN=auth.meet.jitsi
+[ -z "${XMPP_RECORDER_DOMAIN}" ] && export XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
 
 prosodyctl --config $PROSODY_CFG register $JICOFO_AUTH_USER $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
 prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN $JICOFO_AUTH_USER@$XMPP_AUTH_DOMAIN
@@ -50,7 +61,7 @@ fi
 
 prosodyctl --config $PROSODY_CFG register $JVB_AUTH_USER $XMPP_AUTH_DOMAIN $JVB_AUTH_PASSWORD
 
-if [[ ! -z $JIBRI_XMPP_USER ]] && [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
+if [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
     OLD_JIBRI_XMPP_PASSWORD=passw0rd
     if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
         echo 'FATAL ERROR: Jibri auth password must be changed, check the README'
@@ -59,7 +70,7 @@ if [[ ! -z $JIBRI_XMPP_USER ]] && [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
     prosodyctl --config $PROSODY_CFG register $JIBRI_XMPP_USER $XMPP_AUTH_DOMAIN $JIBRI_XMPP_PASSWORD
 fi
 
-if [[ ! -z $JIBRI_RECORDER_USER ]] && [[ ! -z $JIBRI_RECORDER_PASSWORD ]]; then
+if [[ ! -z $JIBRI_RECORDER_PASSWORD ]]; then
     OLD_JIBRI_RECORDER_PASSWORD=passw0rd
     if [[ "$JIBRI_RECORDER_PASSWORD" == "$OLD_JIBRI_RECORDER_PASSWORD" ]]; then
         echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
@@ -68,7 +79,7 @@ if [[ ! -z $JIBRI_RECORDER_USER ]] && [[ ! -z $JIBRI_RECORDER_PASSWORD ]]; then
     prosodyctl --config $PROSODY_CFG register $JIBRI_RECORDER_USER $XMPP_RECORDER_DOMAIN $JIBRI_RECORDER_PASSWORD
 fi
 
-if [[ ! -z $JIGASI_XMPP_USER ]] && [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
+if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
     OLD_JIGASI_XMPP_PASSWORD=passw0rd
     if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
         echo 'FATAL ERROR: Jigasi auth password must be changed, check the README'
@@ -76,8 +87,6 @@ if [[ ! -z $JIGASI_XMPP_USER ]] && [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
     fi
     prosodyctl --config $PROSODY_CFG register $JIGASI_XMPP_USER $XMPP_AUTH_DOMAIN $JIGASI_XMPP_PASSWORD
 fi
-
-mkdir -p /config/certs
 
 if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
     # echo for using all default values
