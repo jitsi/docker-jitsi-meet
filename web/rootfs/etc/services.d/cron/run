@@ -1,7 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-if [[ $DISABLE_HTTPS -ne 1 ]] && \
-   [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
+if [[ $DISABLE_HTTPS -ne 1 ]] && [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
     exec cron -f
 else
     # if cron should not be started,

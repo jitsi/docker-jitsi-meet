@@ -1,3 +1,160 @@
+## stable-7287
+
+Based on stable release 7287.
+
+* 41d6a9a jibri: bump Chrome to version 101
+* 88bb1bc feature: support multiple XMPP servers via list (#1276)
+* 95af778 jicofo: add optional XMPP_PORT value (#1275)
+* da0a43a misc: working on latest
+
+## stable-7210-2
+
+Based on stable release 7210-2.
+
+* 2634e96 misc: working on latest
+
+## stable-7210-1
+
+Based on stable release 7210-1.
+
+* a8e6a34 prosody: completely disable external components
+* 8587d29 prosody: add mod_auth_cyrus from community libraries
+* 3a070e6 misc: working on latest
+
+## stable-7210
+
+Based on stable release 7210.
+
+* 1afa278 prosody: add temporary workaround for JWT auth
+* 6fe240a prosody: update to 0.12
+* 097558b ci: dry run Docker builds on PRs
+* eca5d16 web: fix matching etherpad location
+* 3afc1e3 prosody: update package version
+* b0617c0 web: fix Etherpad when using multi-domain
+* 0ce0f09 prosody: update version
+* 201a1b4 prosody: pin to version 0.11 for now
+* 29b4c23 prosody: use a more recent version of luarocks
+* c5b049a jvb: forward port 8080 to docker host
+* 6af7cd8 doc: update CHANGELOG
+* dd7b70b misc: working on latest
+
+## stable-7001
+
+**IMPORTANT:** Starting with this release TCP has support has been removed from the JVB.
+
+Based on stable release 7001.
+
+* 6e0dd04 base: replace frep with tpl
+* 1b51c77 feat: Enables polls for breakout rooms.
+* 0b019ee feat: Enables tenants/subdomains by default.
+* d50df67 fix: Fixes missing variable for prosody plugins.
+* 88997f5 prosody: authentication by matrix user authentication service
+* 7a93978 jvb: remove TCP support
+* c37706c misc: fix label order in  dockerfiles
+* 0de062b misc: add missing quotes to labels in dockerfiles
+* 76424fd chore: add opencontainers labels to Dockerfiles
+* 3b8ed7e misc: working on latest
+
+## stable-6865
+
+Based on stable release 6865.
+
+* 8004ffe Use the new log formatters, clean up stale logging config.
+* a862e84 web: cache versioned static files
+* 48d499a web: configure remote participant video menu
+* 78791ad env.example : ETHERPAD_PUBLIC_URL : incl. /p/ path
+* a504b59 misc: working on latest
+
+## stable-6826
+
+Based on stable release 6826.
+
+* 238a636 jibri: correct chromedriver mismatch
+* 555a40e doc: update CHANGELOG
+* 825b4cb misc: working on latest
+
+## stable-6726-2
+
+**IMPORTANT:** This version updates Prosody to version 0.11.12 to fix CVE-2022-0217: https://prosody.im/security/advisory_20220113/
+
+Based on stable release 6726-2.
+
+* ae3e7e7 jvb: make MUC_NICKNAME configurable
+* 0be9c8f web: allow configuring buttons in toolbar and pre-join screen
+* d9d12f0 jvb: fix resolving XMPP server aliases
+* 81dc384 jigasi: allow jigasi guest participants
+* a8a596b jicofo: configure trusted-domains for Jibri if ENABLE_RECORDING is set
+* d250ad7 misc: working on latest
+
+## stable-6726-1
+
+Based on stable release 6726-1.
+
+* 9ac7b59 jibri: update Chrome to version 96
+* fb2326e prosody: add missing package libldap-common
+* 0600ece sample: add  ENABLE_BREAKOUT_ROOMS to env.example
+* 6cf0176 misc: working on latest
+
+## stable-6726
+
+Based on stable release 6726.
+
+* e9275d5 jvb: remove deprecated option
+* f40a8d5 jicofo: Handle special characters in password
+* 6f56e5b web,prosody: add breakout rooms support
+* 3208296 base: update base images to Debian Bullseye
+* b02a689 env:  fix unexpected character bug with recent docker desktop
+* b5dbfa0 misc: working on latest
+
+## stable-6433
+
+Based on stable release 6433.
+
+* 487bcca jvb: try to use the correct IP as the default server ID
+* 9e982fe examples: move to jitsi-contrib
+* 192a623 jvb: add ability to configure the shutdown API
+* 5dcf7b4 compose: changed REACTIONS env variable name in docker-compose file
+* d94f4b6 jvb: remove unneeded alias
+* 7cd71a2 jibri: default to recording in 720p
+* bee4b6a jibri: use new configuration file
+* 76a16a8 jvb: use modern config for ice4j
+* 18ac85b jibri: allow graceful shutdown of the container
+* 3c19ed6 jibri: uppdate Chrome to version 94
+* b858b37 base-java: update to Java 11
+* 2061b86 misc: enable features by default
+* 343062b misc: fix/ improve shebang compatibility
+* ff8c1c2 web: regenerate interface_config.js on every boot
+* bda1502 prosody: simplify code
+* cfd8d3c web: add config options for polls and reactions
+* 537fcd5 misc: add support for sentry logging
+* be1da0e misc: cleanup Dockerfiles
+* 09cf0a8 web: add env variables for configuring vp9
+* 3df32d9 web: persist crontabs for letsencrypt
+* f748484 jicofo: add enable-auto-login config option
+* 96419ba web: remove no longer needed code
+* 1835d65 web: recreate interface_config.js on container restart
+* b555d41 jicofo: fix boolean values in configuration file
+* 6be198c misc: remove quotation marks from TURN configuration (#1111)
+* 407a98d misc: working on latest
+
+## stable-6173
+
+Based on stable release 6173.
+
+* c95f0d6 prosody: add support for A/V Moderation
+* 856e414 prosody: add ability to configure external TURN server
+* bcae3b1 prosody: add domain mapper options to default configuration
+* cf90461 web: fix acme.sh pre and post hooks
+* 65563d9 misc: working on latest
+
+## stable-5963
+
+Based on stable release 5963.
+
+* 6f6fe77 prosody: enable limits
+* db3d790 prosody: fix: restrict room creation to jicofo (#1059)
+* 281db36 misc: working on latest
+
 ## stable-5870
 
 Based on stable release 5870.
