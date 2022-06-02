@@ -1,16 +1,18 @@
 {{ $CONFIG_EXTERNAL_CONNECT := .Env.CONFIG_EXTERNAL_CONNECT | default "false" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "false" | toBool -}}
 {{ $ENABLE_GUESTS := .Env.ENABLE_GUESTS | default "false" | toBool -}}
-{{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "false" | toBool -}}
+{{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool -}}
-{{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" }}
+{{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" -}}
 {{ $PUBLIC_URL_DOMAIN := .Env.PUBLIC_URL | default "https://localhost:8443" | trimPrefix "https://" | trimSuffix "/" -}}
-{{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN -}}
-{{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN -}}
-{{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN -}}
-{{ $XMPP_MUC_DOMAIN_PREFIX := (split "." .Env.XMPP_MUC_DOMAIN)._0  -}}
+{{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
+{{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
+{{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
+{{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
+{{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0  -}}
 
-// Begin default config overrides.
+// Jitsi Meet configuration.
+var config = {};
 
 if (!config.hasOwnProperty('hosts')) config.hosts = {};
 
@@ -30,7 +32,7 @@ config.hosts.muc = '{{ $XMPP_MUC_DOMAIN }}';
 {{ if $ENABLE_AUTH -}}
 {{ if $ENABLE_GUESTS -}}
 // When using authentication, domain for guest users.
-config.hosts.anonymousdomain = '{{ .Env.XMPP_GUEST_DOMAIN }}';
+config.hosts.anonymousdomain = '{{ $XMPP_GUEST_DOMAIN }}';
 {{ end -}}
 // Domain for authenticated users. Defaults to <domain>.
 config.hosts.authdomain = '{{ $XMPP_DOMAIN }}';

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 function generatePassword() {
     openssl rand -hex 16
