@@ -28,8 +28,8 @@
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
-{{ $JICOFO_RESERVATION_ENABLED := .Env.JICOFO_RESERVATION_ENABLED | default "false" | toBool }}
-{{ $JICOFO_RESERVATION_REST_BASE_URL := .Env.JICOFO_RESERVATION_REST_BASE_URL | default "" }}
+{{ $PROSODY_RESERVATION_ENABLED := .Env.PROSODY_RESERVATION_ENABLED | default "false" | toBool }}
+{{ $PROSODY_RESERVATION_REST_BASE_URL := .Env.PROSODY_RESERVATION_REST_BASE_URL | default "" }}
 
 admins = {
     "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
@@ -152,7 +152,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "ldap") }}
         "auth_cyrus";
         {{end}}
-        {{ if $JICOFO_RESERVATION_ENABLED }}
+        {{ if $PROSODY_RESERVATION_ENABLED }}
         "reservations";
         {{ end }}
     }
@@ -166,8 +166,8 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ end }}
     {{ end }}
 
-    {{ if $JICOFO_RESERVATION_ENABLED }}
-    reservations_api_prefix = { "{{ $JICOFO_RESERVATION_REST_BASE_URL }}" }  
+    {{ if $PROSODY_RESERVATION_ENABLED }}
+    reservations_api_prefix = { "{{ $PROSODY_RESERVATION_REST_BASE_URL }}" }  
     {{ end }}
 
     {{ if $ENABLE_BREAKOUT_ROOMS }}
