@@ -169,8 +169,6 @@ services:
             - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
             - JICOFO_COMPONENT_SECRET
-            - PROSODY_RESERVATION_ENABLED
-            - PROSODY_RESERVATION_REST_BASE_URL
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JVB_AUTH_USER
@@ -201,6 +199,8 @@ services:
             - LDAP_START_TLS
             - LDAP_URL
             - LDAP_USE_TLS
+            - PROSODY_RESERVATION_ENABLED
+            - PROSODY_RESERVATION_REST_BASE_URL
             - PUBLIC_URL
             - TURN_CREDENTIALS
             - TURN_HOST
