@@ -9,12 +9,12 @@
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "true" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "true" | toBool -}}
+{{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
 {{ $ENABLE_WELCOME_PAGE := .Env.ENABLE_WELCOME_PAGE | default "true" | toBool -}}
 {{ $ENABLE_CLOSE_PAGE := .Env.ENABLE_CLOSE_PAGE | default "false" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
-{{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
 {{ $ENABLE_SIMULCAST := .Env.ENABLE_SIMULCAST | default "true" | toBool -}}
 {{ $ENABLE_STATS_ID := .Env.ENABLE_STATS_ID | default "false" | toBool -}}
 {{ $ENABLE_STEREO := .Env.ENABLE_STEREO | default "false" | toBool -}}
@@ -272,8 +272,17 @@ config.peopleSearchQueryTypes = ['user','conferenceRooms'];
 //
 
 // Prejoin page.
-config.prejoinPageEnabled = {{ $ENABLE_PREJOIN_PAGE }};
+ if (!config.hasOwnProperty('prejoinConfig')) config.prejoinConfig = {};
+config.prejoinConfig.enabled = {{ $ENABLE_PREJOIN_PAGE }};
 
+// Hides the participant name editing field in the prejoin screen.
+config.prejoinConfig.hideDisplayName = {{ $HIDE_PREJOIN_DISPLAY_NAME }};
+ 
+// List of buttons to hide from the extra join options dropdown.
+{{ if .Env.HIDE_PREJOIN_EXTRA_BUTTONS -}}
+config.prejoinConfig.hideExtraJoinButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREJOIN_EXTRA_BUTTONS) }}' ];
+{{ end -}}
+ 
 // Welcome page.
 config.enableWelcomePage = {{ $ENABLE_WELCOME_PAGE }};
 
@@ -287,9 +296,6 @@ config.defaultLanguage = '{{ .Env.DEFAULT_LANGUAGE }}';
 
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
-
-// disables editing display name
-config.hidePrejoinDisplayName = {{ $HIDE_PREJOIN_DISPLAY_NAME }};
 
 
 // Chrome extension banner.
