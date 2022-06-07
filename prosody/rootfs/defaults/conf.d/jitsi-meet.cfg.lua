@@ -167,7 +167,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ end }}
 
     {{ if $PROSODY_RESERVATION_ENABLED }}
-    reservations_api_prefix = { "{{ $PROSODY_RESERVATION_REST_BASE_URL }}" }  
+    reservations_api_prefix = "{{ $PROSODY_RESERVATION_REST_BASE_URL }}" 
     {{ end }}
 
     {{ if $ENABLE_BREAKOUT_ROOMS }}
