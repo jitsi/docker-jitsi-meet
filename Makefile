@@ -4,6 +4,9 @@ JITSI_BUILD ?= unstable
 JITSI_REPO ?= jitsi
 NATIVE_ARCH ?= $(shell uname -m)
 
+JITSI_MULTIARCH_SERVICES := base base-java web prosody jicofo jvb
+JITSI_AMD64ONLY_SERVICES := jigasi jibri
+
 ifeq ($(NATIVE_ARCH),x86_64)
 	TARGETPLATFORM := linux/amd64
 	JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
@@ -25,9 +28,29 @@ ifeq ($(FORCE_REBUILD), 1)
 endif
 
 
-all:	build-all
+all: build-all
 
-release: tag-all push-all
+release:
+	@$(foreach SERVICE, $(JITSI_MULTIARCH_SERVICES), $(MAKE) --no-print-directory JITSI_SERVICE=$(SERVICE) _buildx_multiarch;)
+	@$(foreach SERVICE, $(JITSI_AMD64ONLY_SERVICES), $(MAKE) --no-print-directory JITSI_SERVICE=$(SERVICE) _buildx_amd64;)
+
+_buildx_multiarch:
+	docker buildx build \
+	--platform linux/amd64,linux/arm64 \
+	--progress=plain \
+	$(BUILD_ARGS) --build-arg BASE_TAG=$(JITSI_BUILD) \
+	--pull --push \
+	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD) \
+	$(JITSI_SERVICE)
+
+_buildx_amd64:
+	docker buildx build \
+	--platform linux/amd64 \
+	--progress=plain \
+	$(BUILD_ARGS) --build-arg BASE_TAG=$(JITSI_BUILD) \
+	--pull --push \
+	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD) \
+	$(JITSI_SERVICE)
 
 ifeq ($(TARGETPLATFORM), unsupported)
 build:
