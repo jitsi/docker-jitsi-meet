@@ -2,8 +2,8 @@ version: '3'
 
 services:
     jibri:
-        image: jitsi/jibri:unstable
-        restart: ${RESTART_POLICY}
+        image: jitsi/jibri:${JITSI_IMAGE_VERSION:-unstable}
+        restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ${CONFIG}/jibri:/config:Z
             - /dev/shm:/dev/shm
