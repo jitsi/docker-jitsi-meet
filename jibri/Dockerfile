@@ -14,8 +14,8 @@ RUN apt-dpkg-wrap apt-get update && \
 
 #ARG CHROME_RELEASE=latest
 #ARG CHROMEDRIVER_MAJOR_RELEASE=latest
-ARG CHROME_RELEASE=101.0.4951.41
-ARG CHROMEDRIVER_MAJOR_RELEASE=101
+ARG CHROME_RELEASE=102.0.5005.61
+ARG CHROMEDRIVER_MAJOR_RELEASE=102
 COPY build/install-chrome.sh /install-chrome.sh
 RUN /install-chrome.sh && \
     rm /install-chrome.sh
