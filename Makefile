@@ -4,15 +4,15 @@ JITSI_BUILD ?= unstable
 JITSI_REPO ?= jitsi
 NATIVE_ARCH ?= $(shell uname -m)
 
-JITSI_MULTIARCH_SERVICES := base base-java web prosody jicofo jvb
-JITSI_AMD64ONLY_SERVICES := jigasi jibri
+JITSI_MULTIARCH_SERVICES := base base-java web prosody jicofo jvb jibri
+JITSI_AMD64ONLY_SERVICES := jigasi
 
 ifeq ($(NATIVE_ARCH),x86_64)
 	TARGETPLATFORM := linux/amd64
 	JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
 else ifeq ($(NATIVE_ARCH),aarch64)
 	TARGETPLATFORM := linux/arm64
-	JITSI_SERVICES := base base-java web prosody jicofo jvb
+	JITSI_SERVICES := base base-java web prosody jicofo jvb jibri
 else
 	TARGETPLATFORM := unsupported
 	JITSI_SERVICES := dummy
