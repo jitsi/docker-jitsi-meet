@@ -18,8 +18,9 @@ ARG CHROMEDRIVER_MAJOR_RELEASE=102
 COPY rootfs/ /
 
 RUN apt-dpkg-wrap apt-get update && \
-    apt-dpkg-wrap apt-get install -y jibri libgl1-mesa-dri procps jitsi-upload-integrations jq && \
+    apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" jibri libgl1-mesa-dri procps jitsi-upload-integrations jq pulseaudio dbus dbus-x11 rtkit && \
     /usr/bin/install-chrome.sh && \
-    apt-cleanup
+    apt-cleanup && \
+    adduser jibri rtkit
 
 VOLUME /config
