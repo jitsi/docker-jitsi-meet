@@ -9,15 +9,10 @@ services:
             - /dev/shm:/dev/shm
         cap_add:
             - SYS_ADMIN
-            - NET_BIND_SERVICE
-        devices:
-            - /dev/snd:/dev/snd
         environment:
             - CHROMIUM_FLAGS
             - DISPLAY=:0
             - ENABLE_STATS_D
-            - JIBRI_FFMPEG_AUDIO_SOURCE
-            - JIBRI_FFMPEG_AUDIO_DEVICE
             - JIBRI_HTTP_API_EXTERNAL_PORT
             - JIBRI_HTTP_API_INTERNAL_PORT
             - JIBRI_RECORDING_RESOLUTION
@@ -30,7 +25,6 @@ services:
             - JIBRI_RECORDING_DIR
             - JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
             - JIBRI_STRIP_DOMAIN_JID
-            - JIBRI_LOGS_DIR
             - PUBLIC_URL
             - TZ
             - XMPP_AUTH_DOMAIN
@@ -45,4 +39,3 @@ services:
             - jicofo
         networks:
             meet.jitsi:
-

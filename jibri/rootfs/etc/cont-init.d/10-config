@@ -21,22 +21,6 @@ fi
 [ -z "${DISPLAY}" ] \
 && ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
 
-# check loaded snd_aloop module and exit if is not loaded on the host
-[ -z "$(lsmod | grep -om1 snd_aloop)" ] \
-&& ( echo -e "\e[31mERROR: Please load snd-aloop module on the docker host.\e[39m"; kill 1; exit 1 )
-
-# get host's audio group id
-host_audio_group="$(stat -c %g /dev/snd/pcmC0D0p 2>/dev/null)"
-
-# audio group is not found. Has it been run without jibri.yml?
-[ -z "${host_audio_group}" ] \
-&& ( echo -e "\e[31mERROR: Binding /dev/snd is not found. Please check that you run docker-compose with -f jibri.yml.\e[39m"; kill 1; exit 1 )
-
-# try to create group with this id. If group with the id already exists, just skip
-groupadd -g ${host_audio_group} jibri-audio >/dev/null 2>&1
-# include user to the group by id
-usermod -aG ${host_audio_group} jibri
-
 # script for finalizing must have executing bit.
 [ ! -z "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && [ -f "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
@@ -57,6 +41,6 @@ mkdir -p ${JIBRI_RECORDING_DIR}
 chown -R jibri ${JIBRI_RECORDING_DIR}
 
 # make logs dir
-[ -z "${JIBRI_LOGS_DIR}" ] && export JIBRI_LOGS_DIR=/config/logs
+JIBRI_LOGS_DIR=/config/logs
 mkdir -p ${JIBRI_LOGS_DIR}
 chown -R jibri ${JIBRI_LOGS_DIR}
