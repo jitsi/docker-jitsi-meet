@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 
 services:
     jibri:
@@ -6,7 +6,7 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ${CONFIG}/jibri:/config:Z
-            - /dev/shm:/dev/shm
+        shm_size: '2gb'
         cap_add:
             - SYS_ADMIN
         environment:
