@@ -41,6 +41,7 @@ _buildx_multiarch:
 	$(BUILD_ARGS) --build-arg BASE_TAG=$(JITSI_BUILD) \
 	--pull --push \
 	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD) \
+	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_RELEASE) \
 	$(JITSI_SERVICE)
 
 _buildx_amd64:
@@ -50,6 +51,7 @@ _buildx_amd64:
 	$(BUILD_ARGS) --build-arg BASE_TAG=$(JITSI_BUILD) \
 	--pull --push \
 	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD) \
+	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_RELEASE) \
 	$(JITSI_SERVICE)
 
 ifeq ($(TARGETPLATFORM), unsupported)
