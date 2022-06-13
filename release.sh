@@ -56,7 +56,7 @@ git tag -a "${VERSION}" -m "release" -m "${CHANGES}"
 # Tag Docker images and push them to DockerHub
 #
 
-JITSI_BUILD=${VERSION} make release
+JITSI_BUILD=${VERSION} JITSI_RELEASE=${RELEASE} make release
 
 # Revert back to "unstable" for development
 #
