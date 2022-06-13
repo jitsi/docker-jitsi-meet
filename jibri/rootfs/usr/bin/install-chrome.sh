@@ -4,9 +4,7 @@ set -o pipefail -xeu
 
 if [ "${USE_CHROMIUM}" = 1 -o "${TARGETPLATFORM}" = "linux/arm64" ]; then
     echo "Using Debian's Chromium"
-    apt-dpkg-wrap apt-get update
     apt-dpkg-wrap apt-get install -y chromium chromium-driver chromium-sandbox
-    apt-cleanup
     chromium --version
 else
     if  [ "${CHROME_RELEASE}" = "latest" ]; then
@@ -14,12 +12,9 @@ else
         echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
         apt-dpkg-wrap apt-get update
         apt-dpkg-wrap apt-get install -y google-chrome-stable
-        apt-cleanup
     else
         curl -4so "/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb" "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
-        apt-dpkg-wrap apt-get update
         apt-dpkg-wrap apt-get install -y "/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
-        apt-cleanup
     fi
 
     google-chrome --version
