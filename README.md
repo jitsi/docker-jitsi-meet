@@ -12,7 +12,7 @@ All our images are published on [DockerHub](https://hub.docker.com/u/jitsi/).
 
 ## Supported architectures
 
-Startin with `stable-7289-1` the published images are available for `amd64` and `arm64` with the exception of `jigasi` and `jibri`.
+Starting with `stable-7289-1` the published images are available for `amd64` and `arm64` with the exception of `jigasi`.
 
 ## Tags
 
@@ -37,4 +37,3 @@ If you plan to install the jitsi-meet stack on a Kubernetes cluster you can find
 ## TODO
 
 * Builtin TURN server.
-
