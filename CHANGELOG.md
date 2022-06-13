@@ -1,3 +1,17 @@
+## stable-7287-2
+
+Based on stable release 7287-2.
+
+* ab08247 build: make sure JITSI_RELEASE is passed when invoking make
+* 5109874 prosody: update to latest stable
+* 343ef56 doc: update README
+* 829841e jibri: add support for arm64
+* 8d5a9cf jvb: fix not setting WS server ID
+* cffab8f jibri: fix log location template
+* 94833b5 doc: update README
+* d3901ba build: also release a "stable" tag
+* 9217b0a misc: working on unstable
+
 ## stable-7287-1
 
 Based on stable release 7287-1.
