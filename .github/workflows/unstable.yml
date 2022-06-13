@@ -141,8 +141,7 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          # FIXME jibri does not support linux/arm64
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
       - name: Dryrun
@@ -156,8 +155,7 @@ jobs:
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
-          # FIXME jibri does not support linux/arm64
-          platforms: linux/amd64
+          platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
