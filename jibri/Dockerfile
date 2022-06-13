@@ -12,7 +12,7 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jibri libgl1-mesa-dri procps jitsi-upload-integrations jq && \
     apt-cleanup
 
-ARG TARGETPLATFORM=unset
+ARG TARGETPLATFORM
 ARG USE_CHROMIUM=0
 #ARG CHROME_RELEASE=latest
 #ARG CHROMEDRIVER_MAJOR_RELEASE=latest

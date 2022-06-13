@@ -20,8 +20,7 @@ endif
 
 BUILD_ARGS := \
 	--build-arg JITSI_REPO=$(JITSI_REPO) \
-	--build-arg JITSI_RELEASE=$(JITSI_RELEASE) \
-	--build-arg TARGETPLATFORM=$(TARGETPLATFORM)
+	--build-arg JITSI_RELEASE=$(JITSI_RELEASE)
 
 ifeq ($(FORCE_REBUILD), 1)
   BUILD_ARGS := $(BUILD_ARGS) --no-cache
@@ -61,7 +60,7 @@ build:
 else
 build:
 	@echo "Building for $(TARGETPLATFORM)"
-	docker build $(BUILD_ARGS) --progress plain --tag $(JITSI_REPO)/$(JITSI_SERVICE) $(JITSI_SERVICE)/
+	docker build $(BUILD_ARGS) --build-arg TARGETPLATFORM=$(TARGETPLATFORM) --progress plain --tag $(JITSI_REPO)/$(JITSI_SERVICE) $(JITSI_SERVICE)/
 endif
 
 $(addprefix build_,$(JITSI_SERVICES)):
