@@ -22,6 +22,7 @@
 {{ $ENABLE_TCC := .Env.ENABLE_TCC | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "false" | toBool -}}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
+{{ $ENABLE_MULTI_STREAM := .Env.ENABLE_MULTI_STREAM | default "0" | toBool }}
 {{ $RESOLUTION := .Env.RESOLUTION | default "720" -}}
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
@@ -66,6 +67,12 @@ config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};
 {{ if .Env.START_BITRATE -}}
 config.startBitrate = '{{ .Env.START_BITRATE }}';
 {{ end -}}
+
+{{ if $ENABLE_MULTI_STREAM -}}
+config.flags.sourceNameSignaling = true;
+config.flags.sendMultipleVideoStreams = true;
+{{ end -}}
+
 
 // ScreenShare Configuration.
 //
