@@ -1,3 +1,45 @@
+## stable-7287-2
+
+Based on stable release 7287-2.
+
+* ab08247 build: make sure JITSI_RELEASE is passed when invoking make
+* 5109874 prosody: update to latest stable
+* 343ef56 doc: update README
+* 829841e jibri: add support for arm64
+* 8d5a9cf jvb: fix not setting WS server ID
+* cffab8f jibri: fix log location template
+* 94833b5 doc: update README
+* d3901ba build: also release a "stable" tag
+* 9217b0a misc: working on unstable
+
+## stable-7287-1
+
+Based on stable release 7287-1.
+
+* 22e727c build: adapt release process to multiarch builds
+* be422c7 jibri: update Chrome to M102
+* 1463df4 compose: add ability to override image versions
+* 7c29b57 prosody: fix reservations API
+* 8337c0b jicofo,prosody: migrate to new reservations system
+* 70c5cbf misc: update dialin numbers url setup (#1298)
+* 7790012 misc: define ENABLE_JAAS_COMPONENTS variable (#1297)
+* 62ad172 misc: update env.example
+* 74ef7de web,prosody: add support for JaaS components
+* 902a673 misc: move security options in sample file
+* 2a23095 misc: use the "unstable" tag between releases
+* 741ec4a build: add native arch building support
+* 68d97c8 ci: add GH action docker build caching
+* 8b02b8a build,ci: add initial arm64 support
+* 3b86df0 compose: add ability to change the JVB colibri REST API exposed port
+* 458515c env: add link to handbook
+* 261577c web: stop using the default config file
+* ed6ef89 web: remove config option to control FLoC
+* cb5a753 config: simplify configuration
+* b505d58 misc: add stalebot
+* 5ff2735 web: add e2eping support using env variables
+* 6284167 web: add more audio quality options
+* 515bd19 misc: working on latest
+
 ## stable-7287
 
 Based on stable release 7287.

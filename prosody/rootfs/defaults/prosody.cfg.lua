@@ -175,6 +175,9 @@ network_backend = "epoll";
 network_settings = {
   tcp_backlog = 511;
 }
+unbound = {
+    resolvconf = true
+}
 
 http_ports = { 5280 }
 http_interfaces = { "*", "::" }
