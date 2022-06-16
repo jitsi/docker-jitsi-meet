@@ -23,6 +23,7 @@
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "false" | toBool -}}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
 {{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
+{{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
 {{ $RESOLUTION := .Env.RESOLUTION | default "720" -}}
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
@@ -116,7 +117,7 @@ config.hideAddRoomButton = {{ $ENABLE_BREAKOUT_ROOMS | not }};
 {{ if .Env.ETHERPAD_PUBLIC_URL -}}
 config.etherpad_base = '{{ .Env.ETHERPAD_PUBLIC_URL }}';
 {{ else if .Env.ETHERPAD_URL_BASE -}}
-config.etherpad_base = '{{.Env.PUBLIC_URL}}/etherpad/p/';
+config.etherpad_base = '{{ $PUBLIC_URL }}/etherpad/p/';
 {{ end -}}
 
 
