@@ -291,6 +291,7 @@ services:
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
+            - JVB_DISABLE_STUN
             - JVB_PORT
             - JVB_MUC_NICKNAME
             - JVB_STUN_SERVERS
