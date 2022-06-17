@@ -4,18 +4,14 @@ JITSI_BUILD ?= unstable
 JITSI_REPO ?= jitsi
 NATIVE_ARCH ?= $(shell uname -m)
 
-JITSI_MULTIARCH_SERVICES := base base-java web prosody jicofo jvb jibri
-JITSI_AMD64ONLY_SERVICES := jigasi
+JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
 
 ifeq ($(NATIVE_ARCH),x86_64)
 	TARGETPLATFORM := linux/amd64
-	JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
 else ifeq ($(NATIVE_ARCH),aarch64)
 	TARGETPLATFORM := linux/arm64
-	JITSI_SERVICES := base base-java web prosody jicofo jvb jibri
 else
 	TARGETPLATFORM := unsupported
-	JITSI_SERVICES := dummy
 endif
 
 BUILD_ARGS := \
@@ -30,28 +26,20 @@ endif
 all: build-all
 
 release:
-	@$(foreach SERVICE, $(JITSI_MULTIARCH_SERVICES), $(MAKE) --no-print-directory JITSI_SERVICE=$(SERVICE) _buildx_multiarch;)
-	@$(foreach SERVICE, $(JITSI_AMD64ONLY_SERVICES), $(MAKE) --no-print-directory JITSI_SERVICE=$(SERVICE) _buildx_amd64;)
+	@$(foreach SERVICE, $(JITSI_SERVICES), $(MAKE) --no-print-directory JITSI_SERVICE=$(SERVICE) buildx;)
 
-_buildx_multiarch:
+buildx:
 	docker buildx build \
-	--platform linux/amd64,linux/arm64 \
-	--progress=plain \
-	$(BUILD_ARGS) --build-arg BASE_TAG=$(JITSI_BUILD) \
-	--pull --push \
-	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD) \
-	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_RELEASE) \
-	$(JITSI_SERVICE)
+		--platform linux/amd64,linux/arm64 \
+		--progress=plain \
+		$(BUILD_ARGS) --build-arg BASE_TAG=$(JITSI_BUILD) \
+		--pull --push \
+		--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD) \
+		--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_RELEASE) \
+		$(JITSI_SERVICE)
 
-_buildx_amd64:
-	docker buildx build \
-	--platform linux/amd64 \
-	--progress=plain \
-	$(BUILD_ARGS) --build-arg BASE_TAG=$(JITSI_BUILD) \
-	--pull --push \
-	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD) \
-	--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_RELEASE) \
-	$(JITSI_SERVICE)
+$(addprefix buildx_,$(JITSI_SERVICES)):
+	$(MAKE) --no-print-directory JITSI_SERVICE=$(patsubst buildx_%,%,$@) buildx
 
 ifeq ($(TARGETPLATFORM), unsupported)
 build:
@@ -60,7 +48,11 @@ build:
 else
 build:
 	@echo "Building for $(TARGETPLATFORM)"
-	docker build $(BUILD_ARGS) --build-arg TARGETPLATFORM=$(TARGETPLATFORM) --progress plain --tag $(JITSI_REPO)/$(JITSI_SERVICE) $(JITSI_SERVICE)/
+	docker build \
+		$(BUILD_ARGS) --build-arg TARGETPLATFORM=$(TARGETPLATFORM) \
+		--progress plain \
+		--tag $(JITSI_REPO)/$(JITSI_SERVICE) \
+		$(JITSI_SERVICE)
 endif
 
 $(addprefix build_,$(JITSI_SERVICES)):
