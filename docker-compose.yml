@@ -87,6 +87,8 @@ services:
             - GOOGLE_ANALYTICS_ID
             - GOOGLE_API_APP_CLIENT_ID
             - HIDE_PREMEETING_BUTTONS
+            - HIDE_PREJOIN_DISPLAY_NAME
+            - HIDE_PREJOIN_EXTRA_BUTTONS
             - INVITE_SERVICE_URL
             - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
