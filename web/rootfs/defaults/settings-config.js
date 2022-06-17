@@ -69,10 +69,9 @@ config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};
 config.startBitrate = '{{ .Env.START_BITRATE }}';
 {{ end -}}
 
-{{ if $ENABLE_MULTI_STREAM -}}
-config.flags.sourceNameSignaling = true;
-config.flags.sendMultipleVideoStreams = true;
-{{ end -}}
+if (!config.hasOwnProperty('flags')) config.flags = {};
+config.flags.sourceNameSignaling = {{ $ENABLE_MULTI_STREAM }};
+config.flags.sendMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
 
 
 // ScreenShare Configuration.
