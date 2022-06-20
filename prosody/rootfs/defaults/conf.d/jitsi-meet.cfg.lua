@@ -243,6 +243,9 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     muc_room_cache_size = 1000
     muc_room_locking = false
     muc_room_default_public_jids = true
+    {{ if .Env.XMPP_MUC_CONFIGURATION -}}
+    "{{ join "\"\n\"" (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}";
+    {{ end -}}
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
     target_address = "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
