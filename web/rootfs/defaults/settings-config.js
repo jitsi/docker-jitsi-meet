@@ -401,6 +401,7 @@ config.disableReactions = {{ $DISABLE_REACTIONS }};
 
 // Polls
 config.disablePolls = {{ $DISABLE_POLLS }};
+config.enablePollsModeration = {{ $ENABLE_POLLS_MODERATION }};
 
 // Configure toolbar buttons
 {{ if .Env.TOOLBAR_BUTTONS -}}

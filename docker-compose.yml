@@ -64,6 +64,7 @@ services:
             - ENABLE_NOISY_MIC_DETECTION
             - ENABLE_OPUS_RED
             - ENABLE_PREJOIN_PAGE
+            - ENABLE_POLLS_MODERATION
             - ENABLE_P2P
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
@@ -152,6 +153,7 @@ services:
         volumes:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
+            - /home/ddd/projects/jitsi/netsyno-github-jitsi-meet/resources/prosody-plugins/mod_polls.lua:/prosody-plugins/mod_polls.lua:Z
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS
@@ -160,6 +162,7 @@ services:
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_GUESTS
             - ENABLE_LOBBY
+            - ENABLE_POLLS_MODERATION
             - ENABLE_RECORDING
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS

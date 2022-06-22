@@ -27,6 +27,7 @@
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 }}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
+{{ $ENABLE_POLLS_MODERATION := .Env.ENABLE_POLLS_MODERATION | default "false" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $PROSODY_RESERVATION_ENABLED := .Env.PROSODY_RESERVATION_ENABLED | default "false" | toBool }}
 {{ $PROSODY_RESERVATION_REST_BASE_URL := .Env.PROSODY_RESERVATION_REST_BASE_URL | default "" }}
@@ -47,6 +48,8 @@ muc_mapper_domain_base = "{{ $XMPP_DOMAIN }}";
 muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
 
 http_default_host = "{{ $XMPP_DOMAIN }}"
+
+enable_polls_moderation = {{ $ENABLE_POLLS_MODERATION }};
 
 {{ if .Env.TURN_CREDENTIALS }}
 external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
