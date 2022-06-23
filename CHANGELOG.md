@@ -1,3 +1,25 @@
+## stable-7439
+
+Based on stable release 7439.
+
+* ea37859 prosody: add ability to configure MUC modules through ENV variables
+* 5ff69fd jvb: fix jvb.conf parsing error
+* 8f38fe6 web,jvb: add option to enable multi-stream
+* 701dadf jvb: add ability to disable STUN
+* 264a3d8 web: add prejoin config options
+* fec78e4 jigasi: build on arm
+* c04f658 web,jvb: allow underscore in JVB_WS_SERVER_ID
+* 55a4591 prosody: configure unbound resolver
+* 576e5a9 web: start with clean config.js
+* a7f260e web,etherpad: fix default public URL
+* 0cbfbfd web: don't proxy HTTP traffic to WS endpoints
+* 7ed5063 jibri,compose: avoid mounting /dev/shm/
+* fbb8a2d jibri: switch to PulseAudio
+* e7533f8 jibri: simplify Dockerfile
+* 7e74308 jigasi: switch to Java 11
+* a9d1ed6 misc: working on unstable
+* b227b73 build: fix multiarch build
+
 ## stable-7287-2
 
 Based on stable release 7287-2.
