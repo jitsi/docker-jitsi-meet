@@ -1,3 +1,14 @@
+## stable-7439-2
+
+Based on stable release 7439-2.
+
+* b2f704a misc: working on unstable
+* 62655d8 release: stable-7439-1
+* 22dc822 prosody: fix XMPP_MUC_CONFIGURATION
+* 11de38f fix: properly use default SIP config
+* 82a5382 fix: add missing $ to JIGASI_XMPP_USER
+* 76ff646 misc: working on unstable
+
 ## stable-7439-1
 
 Based on stable release 7439-1.
