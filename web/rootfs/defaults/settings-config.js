@@ -9,6 +9,7 @@
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "true" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "true" | toBool -}}
+{{ $ENABLE_ENCODED_TRANSFORM_SUPPORT := .Env.ENABLE_ENCODED_TRANSFORM_SUPPORT | default "false" | toBool -}}
 {{ $ENABLE_WELCOME_PAGE := .Env.ENABLE_WELCOME_PAGE | default "true" | toBool -}}
 {{ $ENABLE_CLOSE_PAGE := .Env.ENABLE_CLOSE_PAGE | default "false" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
@@ -287,6 +288,9 @@ config.prejoinConfig.hideDisplayName = {{ $HIDE_PREJOIN_DISPLAY_NAME }};
 config.prejoinConfig.hideExtraJoinButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREJOIN_EXTRA_BUTTONS) }}' ];
 {{ end -}}
  
+// E2EE
+config.enableEncodedTransformSupport = {{ $ENABLE_ENCODED_TRANSFORM_SUPPORT }};
+
 // Welcome page.
 config.enableWelcomePage = {{ $ENABLE_WELCOME_PAGE }};
 
