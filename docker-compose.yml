@@ -65,6 +65,7 @@ services:
             - ENABLE_OPUS_RED
             - ENABLE_PREJOIN_PAGE
             - ENABLE_P2P
+            - ENABLE_ENCODED_TRANSFORM_SUPPORT
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
             - ENABLE_RECORDING
