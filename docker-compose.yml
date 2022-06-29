@@ -159,6 +159,7 @@ services:
             - ENABLE_AV_MODERATION
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_GUESTS
+            - ENABLE_IPV6
             - ENABLE_LOBBY
             - ENABLE_RECORDING
             - ENABLE_XMPP_WEBSOCKET

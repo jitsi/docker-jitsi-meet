@@ -1,5 +1,6 @@
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
+{{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
 
 -- Prosody Example Configuration File
 --
@@ -180,7 +181,13 @@ unbound = {
 }
 
 http_ports = { 5280 }
+{{ if $ENABLE_IPV6 }}
 http_interfaces = { "*", "::" }
+https_interfaces = { "*", "::" }
+{{ else }}
+http_interfaces = { "*" }
+https_interfaces = { "*" }
+{{ end }}
 
 data_path = "/config/data"
 
