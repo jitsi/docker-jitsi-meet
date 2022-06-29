@@ -81,7 +81,7 @@ services:
             - ENABLE_JAAS_COMPONENTS
             - ENABLE_MULTI_STREAM
             - ETHERPAD_PUBLIC_URL
-            - ETHERPAD_URL_BASE
+            - ENABLE_ETHERPAD_STACK
             - E2EPING_NUM_REQUESTS
             - E2EPING_MAX_CONFERENCE_SIZE
             - E2EPING_MAX_MESSAGE_PER_SECOND

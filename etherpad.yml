@@ -3,14 +3,25 @@ version: '3.5'
 services:
     # Etherpad: real-time collaborative document editing
     etherpad:
-        image: etherpad/etherpad:1.8.6
+        image: jitsi/etherpad:latest
         restart: ${RESTART_POLICY:-unless-stopped}
-        environment:
-            - TITLE=${ETHERPAD_TITLE}
-            - DEFAULT_PAD_TEXT=${ETHERPAD_DEFAULT_PAD_TEXT}
-            - SKIN_NAME=${ETHERPAD_SKIN_NAME}
-            - SKIN_VARIANTS=${ETHERPAD_SKIN_VARIANTS}
+        env_file: .env.etherpad
+        expose:
+          - '9001'
         networks:
             meet.jitsi:
                 aliases:
                     - etherpad.meet.jitsi
+    # WBO: whiteboard:
+    wbo:
+        image: lovasoa/wbo:v1.17.0
+        restart: ${RESTART_POLICY:-unless-stopped}
+        env_file: .env.etherpad
+        expose:
+          - '80'
+        volumes:
+            - ${CONFIG}/wbo:/opt/app/server-data:Z
+        networks:
+            meet.jitsi:
+                aliases:
+                    - wbo.meet.jitsi
