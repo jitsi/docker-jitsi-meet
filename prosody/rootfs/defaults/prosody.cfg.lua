@@ -188,10 +188,8 @@ unbound = {
 http_ports = { 5280 }
 {{ if $ENABLE_IPV6 }}
 http_interfaces = { "*", "::" }
-https_interfaces = { "*", "::" }
 {{ else }}
 http_interfaces = { "*" }
-https_interfaces = { "*" }
 {{ end }}
 
 data_path = "/config/data"
