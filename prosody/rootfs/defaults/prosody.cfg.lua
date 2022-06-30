@@ -114,6 +114,11 @@ c2s_require_encryption = false
 
 -- set c2s port
 c2s_ports = { {{ $XMPP_PORT }} } -- Listen on specific c2s port
+{{ if $ENABLE_IPV6 }}
+c2s_interfaces = { "*", "::" }
+{{ else }}
+c2s_interfaces = { "*" }
+{{ end }}
 
 -- Force certificate authentication for server-to-server connections?
 -- This provides ideal security, but requires servers you communicate
