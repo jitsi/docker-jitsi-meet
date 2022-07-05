@@ -13,7 +13,7 @@ services:
         environment:
             - ENABLE_AUTH
             - ENABLE_GCLOUD_TRANSCRIPTION
-            - ENABLE_VOSK
+            - ENABLE_VOSK_TRANSCRIPTION
             - ENABLE_GUESTS
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
