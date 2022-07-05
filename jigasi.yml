@@ -12,6 +12,7 @@ services:
             - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
             - ENABLE_AUTH
+            - ENABLE_VOSK
             - ENABLE_GUESTS
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
@@ -50,6 +51,7 @@ services:
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
+            - VOSK_SERVER
         depends_on:
             - prosody
         networks:
