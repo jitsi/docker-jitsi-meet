@@ -12,6 +12,7 @@ services:
             - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
             - ENABLE_AUTH
+            - ENABLE_GCLOUD_TRANSCRIPTION
             - ENABLE_VOSK
             - ENABLE_GUESTS
             - XMPP_AUTH_DOMAIN
