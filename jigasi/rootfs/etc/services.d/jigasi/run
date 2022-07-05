@@ -1,5 +1,5 @@
 #!/usr/bin/with-contenv bash
-if [[ $ENABLE_GLCOUD_TRANSCRIPTION -eq 1 || $ENABLE_GLCOUD_TRANSCRIPTION == "true" ]]; then
+if [[ -f /config/key.json ]]; then
     GOOGLE_APPLICATION_CREDENTIALS="/config/key.json"
 fi
 
