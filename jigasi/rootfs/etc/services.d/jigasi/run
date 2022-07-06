@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 if [[ -f /config/key.json ]]; then
-    GOOGLE_APPLICATION_CREDENTIALS="/config/key.json"
+    export GOOGLE_APPLICATION_CREDENTIALS=/config/key.json
 fi
 
 JAVA_SYS_PROPS="-Djava.util.logging.config.file=/config/logging.properties"
