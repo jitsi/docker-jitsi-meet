@@ -281,12 +281,12 @@ config.prejoinConfig.enabled = {{ $ENABLE_PREJOIN_PAGE }};
 
 // Hides the participant name editing field in the prejoin screen.
 config.prejoinConfig.hideDisplayName = {{ $HIDE_PREJOIN_DISPLAY_NAME }};
- 
+
 // List of buttons to hide from the extra join options dropdown on prejoin screen.
 {{ if .Env.HIDE_PREJOIN_EXTRA_BUTTONS -}}
 config.prejoinConfig.hideExtraJoinButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREJOIN_EXTRA_BUTTONS) }}' ];
 {{ end -}}
- 
+
 // Welcome page.
 config.enableWelcomePage = {{ $ENABLE_WELCOME_PAGE }};
 
@@ -326,6 +326,8 @@ config.transcribingEnabled = {{ $ENABLE_TRANSCRIPTIONS }};
 {{ if .Env.DYNAMIC_BRANDING_URL -}}
 // External API url used to receive branding specific information.
 config.dynamicBrandingUrl = '{{ .Env.DYNAMIC_BRANDING_URL }}';
+{{ else if .Env.BRANDING_DATA_URL  -}}
+config.brandingDataUrl = '{{ .Env.BRANDING_DATA_URL }}';
 {{ end -}}
 
 {{ if .Env.TOKEN_AUTH_URL -}}
