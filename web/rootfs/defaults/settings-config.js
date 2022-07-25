@@ -311,8 +311,8 @@ config.chromeExtensionBanner = {{ .Env.CHROME_EXTENSION_BANNER_JSON }};
 {{ end -}}
 
 // Disables profile and the edit of all fields from the profile settings (display name and email)
-{{ if .Env.DISABLE_PROFILE -}}
-config.disableProfile = {{ $DISABLE_PROFILE }};
+{{ if $DISABLE_PROFILE -}}
+config.disableProfile =  true;
 {{ end -}}
 
 
