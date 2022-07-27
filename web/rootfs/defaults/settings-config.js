@@ -133,9 +133,9 @@ config.etherpad_base = '{{ $PUBLIC_URL }}/etherpad/p/';
 
 {{ if $ENABLE_RECORDING -}}
 
-if (!config.hasOwnProperty('recordingService')) config.recordingService = {};
-
 config.hiddenDomain = '{{ $XMPP_RECORDER_DOMAIN }}';
+
+if (!config.hasOwnProperty('recordingService')) config.recordingService = {};
 
 // Whether to enable file recording or not
 config.recordingService.enabled = true;
@@ -165,10 +165,8 @@ config.recordingService.sharingEnabled = true;
 
 
 // Local recording configuration.
-{{ if $DISABLE_LOCAL_RECORDING -}}
 if (!config.hasOwnProperty('localRecording')) config.localRecording = {};
-config.localRecording.disable = true;
-{{ end -}}
+config.localRecording.disable = $DISABLE_LOCAL_RECORDING;
 
 
 // Analytics.
@@ -311,10 +309,7 @@ config.chromeExtensionBanner = {{ .Env.CHROME_EXTENSION_BANNER_JSON }};
 {{ end -}}
 
 // Disables profile and the edit of all fields from the profile settings (display name and email)
-{{ if $DISABLE_PROFILE -}}
-config.disableProfile =  true;
-{{ end -}}
-
+config.disableProfile = $DISABLE_PROFILE;
 
 // Advanced.
 //
