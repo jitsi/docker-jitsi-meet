@@ -52,6 +52,8 @@
 {{ $DISABLE_GRANT_MODERATOR := .Env.DISABLE_GRANT_MODERATOR | default "false" | toBool -}}
 {{ $ENABLE_E2EPING := .Env.ENABLE_E2EPING | default "false" | toBool -}}
 {{ $DISABLE_LOCAL_RECORDING := .Env.DISABLE_LOCAL_RECORDING | default "false" | toBool -}}
+{{ $ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT := .Env.ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT | default "false" | toBool -}}
+{{ $ENABLE_LOCAL_RECORDING_SELF_START := .Env.ENABLE_LOCAL_RECORDING_SELF_START | default "false" | toBool -}}
 {{ $DISABLE_PROFILE := .Env.DISABLE_PROFILE | default "false" | toBool -}}
 
 
@@ -155,18 +157,18 @@ config.dropbox.redirectURI = '{{ .Env.DROPBOX_REDIRECT_URI }}';
 {{ end -}}
 {{ end -}}
 
-{{ if $ENABLE_FILE_RECORDING_SHARING -}}
 // Whether to show the possibility to share file recording with other people
 // (e.g. meeting participants), based on the actual implementation
 // on the backend.
-config.recordingService.sharingEnabled = true;
-{{ end -}}
+config.recordingService.sharingEnabled = $ENABLE_FILE_RECORDING_SHARING;
 {{ end -}}
 
 
 // Local recording configuration.
 if (!config.hasOwnProperty('localRecording')) config.localRecording = {};
 config.localRecording.disable = $DISABLE_LOCAL_RECORDING;
+config.localRecording.notifyAllParticipants = $ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT;
+config.localRecording.disableSelfRecording = $ENABLE_LOCAL_RECORDING_SELF_START;
 
 
 // Analytics.
