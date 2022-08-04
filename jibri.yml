@@ -10,9 +10,12 @@ services:
         cap_add:
             - SYS_ADMIN
         environment:
+            - ALL_MUTED_TIMEOUT
             - CHROMIUM_FLAGS
+            - DEFAULT_CALL_EMPTY_TIMEOUT
             - DISPLAY=:0
             - ENABLE_STATS_D
+            - ICE_CONNECTION_TIMEOUT
             - JIBRI_HTTP_API_EXTERNAL_PORT
             - JIBRI_HTTP_API_INTERNAL_PORT
             - JIBRI_RECORDING_RESOLUTION
@@ -25,6 +28,7 @@ services:
             - JIBRI_RECORDING_DIR
             - JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
             - JIBRI_STRIP_DOMAIN_JID
+            - NO_MEDIA_TIMEOUT
             - PUBLIC_URL
             - TZ
             - XMPP_AUTH_DOMAIN
