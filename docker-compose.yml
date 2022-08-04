@@ -40,8 +40,10 @@ services:
             - DISABLE_GRANT_MODERATOR
             - DISABLE_HTTPS
             - DISABLE_KICKOUT
+            - DISABLE_LOCAL_RECORDING
             - DISABLE_POLLS
             - DISABLE_PRIVATE_CHAT
+            - DISABLE_PROFILE
             - DISABLE_REACTIONS
             - DISABLE_REMOTE_VIDEO_MENU
             - DROPBOX_APPKEY
@@ -53,8 +55,7 @@ services:
             - ENABLE_CALENDAR
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_E2EPING
-            - ENABLE_FILE_RECORDING_SERVICE
-            - ENABLE_FILE_RECORDING_SERVICE_SHARING
+            - ENABLE_FILE_RECORDING_SHARING
             - ENABLE_GUESTS
             - ENABLE_HSTS
             - ENABLE_HTTP_REDIRECT
@@ -68,6 +69,8 @@ services:
             - ENABLE_P2P
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
+            - ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT
+            - ENABLE_LOCAL_RECORDING_SELF_START
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
