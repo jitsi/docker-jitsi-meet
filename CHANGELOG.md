@@ -1,3 +1,19 @@
+## stable-7577
+
+Based on stable release 7577.
+
+* b670959 prosody: simplify container build
+* e05a9c2 fixup: template syntax for newly added variables (#1355)
+* 164d28b web: migrate deprecated recordings options, add some more
+* f126f7a web: set config.videoQuality.maxBitratesVideo to null if no bitrates are specified
+* 0364d94 jibri: remove deprecated PulseAudio module
+* 1c93e1b web: add support for brandingDataUrl (#1346)
+* 4372717 web: add support for wav files to nginx default
+* d804ba4 misc: make ignore rule more generic
+* b224131 prosody: use ENABLE_IPV6 environment variable
+* be8c41f etherpad,jigasi: fix compose file version
+* d7cee00 misc: working on unstable
+
 ## stable-7439-2
 
 Based on stable release 7439-2.
