@@ -160,15 +160,15 @@ config.dropbox.redirectURI = '{{ .Env.DROPBOX_REDIRECT_URI }}';
 // Whether to show the possibility to share file recording with other people
 // (e.g. meeting participants), based on the actual implementation
 // on the backend.
-config.recordingService.sharingEnabled = $ENABLE_FILE_RECORDING_SHARING;
+config.recordingService.sharingEnabled = {{ $ENABLE_FILE_RECORDING_SHARING }};
 {{ end -}}
 
 
 // Local recording configuration.
 if (!config.hasOwnProperty('localRecording')) config.localRecording = {};
-config.localRecording.disable = $DISABLE_LOCAL_RECORDING;
-config.localRecording.notifyAllParticipants = $ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT;
-config.localRecording.disableSelfRecording = $ENABLE_LOCAL_RECORDING_SELF_START;
+config.localRecording.disable = {{ $DISABLE_LOCAL_RECORDING }};
+config.localRecording.notifyAllParticipants = {{ $ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT }};
+config.localRecording.disableSelfRecording = {{ $ENABLE_LOCAL_RECORDING_SELF_START }};
 
 
 // Analytics.
@@ -311,7 +311,7 @@ config.chromeExtensionBanner = {{ .Env.CHROME_EXTENSION_BANNER_JSON }};
 {{ end -}}
 
 // Disables profile and the edit of all fields from the profile settings (display name and email)
-config.disableProfile = $DISABLE_PROFILE;
+config.disableProfile = {{ $DISABLE_PROFILE }};
 
 // Advanced.
 //
