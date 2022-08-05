@@ -1,26 +1,6 @@
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 
-FROM ${JITSI_REPO}/base:${BASE_TAG} as builder
-
-RUN apt-dpkg-wrap apt-get update && \
-    apt-dpkg-wrap apt-get install -y \
-      build-essential \
-      lua5.4 \
-      liblua5.4-dev \
-      libsasl2-dev \
-      libssl-dev \
-      libreadline-dev \
-      git \
-      unzip \
-      wget && \
-    mkdir /tmp/luarocks && \
-    wget -qO - https://luarocks.github.io/luarocks/releases/luarocks-3.8.0.tar.gz | tar xfz - --strip-components 1 -C /tmp/luarocks && \
-    cd /tmp/luarocks && ./configure && make && make install && cd - && \
-    luarocks install cyrussasl 1.1.0-1 && \
-    luarocks install net-url 0.9-1 && \
-    luarocks install luajwtjitsi 3.0-0
-
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 LABEL org.opencontainers.image.title="Prosody IM"
@@ -42,14 +22,15 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
       sasl2-bin \
       libsasl2-modules-ldap \
       lua-basexx \
+      lua-cjson \
+      lua-cyrussasl \
       lua-ldap \
+      lua-luaossl \
       lua-sec \
       lua-unbound && \
     apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
     mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
-    rm -f /prosody-plugins/token/util.lib.lua && \
-    wget -qO /prosody-plugins/token/util.lib.lua https://raw.githubusercontent.com/jitsi/jitsi-meet/46dd88c91b63988f516114daee65ff8995c74c56/resources/prosody-plugins/token/util.lib.lua && \
     wget -qO /prosody-plugins/mod_auth_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/mod_auth_cyrus.lua && \
     wget -qO /prosody-plugins/sasl_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/sasl_cyrus.lua  && \
     apt-cleanup && \
@@ -62,9 +43,6 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     rm -rf prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz
 
 COPY rootfs/ /
-
-COPY --from=builder /usr/local/lib/lua /usr/local/lib/lua
-COPY --from=builder /usr/local/share/lua /usr/local/share/lua
 
 EXPOSE 5222 5280
 
