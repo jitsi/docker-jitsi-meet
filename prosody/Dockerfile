@@ -1,6 +1,23 @@
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 
+FROM ${JITSI_REPO}/base:${BASE_TAG} as builder
+
+RUN apt-dpkg-wrap apt-get update && \
+    apt-dpkg-wrap apt-get install -y \
+      build-essential \
+      lua5.4 \
+      liblua5.4-dev \
+      libreadline-dev \
+      git \
+      unzip \
+      wget && \
+    mkdir /tmp/luarocks && \
+    wget -qO - https://luarocks.github.io/luarocks/releases/luarocks-3.8.0.tar.gz | tar xfz - --strip-components 1 -C /tmp/luarocks && \
+    cd /tmp/luarocks && ./configure && make && make install && cd - && \
+    luarocks install basexx 0.4.1-1 && \
+    luarocks install lua-cjson 2.1.0-1
+
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 LABEL org.opencontainers.image.title="Prosody IM"
@@ -21,8 +38,6 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
       libldap-common \
       sasl2-bin \
       libsasl2-modules-ldap \
-      lua-basexx \
-      lua-cjson \
       lua-cyrussasl \
       lua-ldap \
       lua-luaossl \
@@ -43,6 +58,10 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     rm -rf prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz
 
 COPY rootfs/ /
+
+COPY --from=builder /usr/local/lib/lua/5.4/cjson.so /usr/local/lib/lua/5.4/
+COPY --from=builder /usr/local/share/lua/5.4/basexx.lua /usr/local/share/lua/5.4/
+COPY --from=builder /usr/local/share/lua/5.4/cjson /usr/local/share/lua/5.4/
 
 EXPOSE 5222 5280
 
