@@ -35,7 +35,6 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
       prosody \
-      libssl1.1 \
       libldap-common \
       sasl2-bin \
       libsasl2-modules-ldap \
