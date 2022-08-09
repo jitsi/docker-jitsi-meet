@@ -16,7 +16,8 @@ RUN apt-dpkg-wrap apt-get update && \
     wget -qO - https://luarocks.github.io/luarocks/releases/luarocks-3.8.0.tar.gz | tar xfz - --strip-components 1 -C /tmp/luarocks && \
     cd /tmp/luarocks && ./configure && make && make install && cd - && \
     luarocks install basexx 0.4.1-1 && \
-    luarocks install lua-cjson 2.1.0-1
+    luarocks install lua-cjson 2.1.0-1 && \
+    luarocks install net-url 0.9-1
 
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
@@ -59,9 +60,8 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
 
 COPY rootfs/ /
 
-COPY --from=builder /usr/local/lib/lua/5.4/cjson.so /usr/local/lib/lua/5.4/
-COPY --from=builder /usr/local/share/lua/5.4/basexx.lua /usr/local/share/lua/5.4/
-COPY --from=builder /usr/local/share/lua/5.4/cjson /usr/local/share/lua/5.4/
+COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
+COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
 
 EXPOSE 5222 5280
 
