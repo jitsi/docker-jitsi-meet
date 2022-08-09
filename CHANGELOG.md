@@ -1,3 +1,11 @@
+## stable-7577-1
+
+Based on stable release 7577-1.
+
+* 20eb991 prosody: clean build
+* 6fb422c prosody: fix not finding the basexx and cjsson modules
+* 1768164 misc: working on unstable
+
 ## stable-7577
 
 Based on stable release 7577.
