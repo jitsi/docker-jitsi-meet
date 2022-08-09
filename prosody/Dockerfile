@@ -42,15 +42,15 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
       lua-ldap \
       lua-luaossl \
       lua-sec \
-      lua-unbound && \
-    apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
-    dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
-    mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+      lua-unbound \
+      jitsi-meet-prosody && \
+    apt-cleanup && \
+    rm -rf /etc/prosody && \
+    mv /usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+    rm -rf /usr/lib/lua/{5.1,5.2,5.3} && \
+    rm -rf /usr/share/lua/{5.1,5.2,5.3} && \
     wget -qO /prosody-plugins/mod_auth_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/mod_auth_cyrus.lua && \
     wget -qO /prosody-plugins/sasl_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/sasl_cyrus.lua  && \
-    apt-cleanup && \
-    rm -rf /tmp/pkg /var/cache/apt && \
-    rm -rf /etc/prosody && \
     wget https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification/archive/refs/tags/v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     tar -xf v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_auth_matrix_user_verification.lua /prosody-plugins && \
