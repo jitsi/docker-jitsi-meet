@@ -1,3 +1,11 @@
+## stable-7577-2
+
+Based on stable release 7577-2.
+
+* 55e0eed prosody: remove explicit dependency
+* e0bc4e4 prosody: add missing net-url dependency
+* e811d7b misc: working on unstable
+
 ## stable-7577-1
 
 Based on stable release 7577-1.
