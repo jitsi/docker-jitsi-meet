@@ -10,7 +10,27 @@ services:
             - DEFAULT_PAD_TEXT=${ETHERPAD_DEFAULT_PAD_TEXT}
             - SKIN_NAME=${ETHERPAD_SKIN_NAME}
             - SKIN_VARIANTS=${ETHERPAD_SKIN_VARIANTS}
+            - ADMIN_PASSWORD=yourpassword
+            - USER_PASSWORD=yourpassword
+            - DB_TYPE=postgres
+            - DB_HOST=eatherpaddb
+            - DB_PORT=5432
+            - DB_NAME=etherpadb
+            - DB_USER=etherpad
+            - DB_PASS=yourpassword
         networks:
             meet.jitsi:
                 aliases:
                     - etherpad.meet.jitsi
+    eatherpaddb:
+        image: postgres:13
+        restart: always
+        command: postgres -c stats_temp_directory=/tmp & chown -R
+        environment:
+            - POSTGRES_DB=etherpadb
+            - POSTGRES_USER=etherpad
+            - POSTGRES_PASSWORD=yourpassword
+        volumes:
+            -  ${CONFIG}/etherpad/_data:/var/lib/postgresql/data/  
+        networks:
+            meet.jitsi:
