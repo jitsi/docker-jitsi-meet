@@ -1,3 +1,15 @@
+## stable-7648
+
+Based on stable release 7648.
+
+* 12941f5 web: turn on multi-stream by default
+* 1d4b265 web: add new flag for multi-stream
+* 4264f25 prosody: make enable_domain_verification configurable
+* 2a7db7c jigasi: fix Sentry test
+* 2d106d8 jigasi: adjust log formatter
+* 6c9e305 jigasi: temporarily disable G722
+* 9edecf2 misc: working on unstable
+
 ## stable-7577-2
 
 Based on stable release 7577-2.

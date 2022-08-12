@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
     jibri:
-        image: jitsi/jibri:${JITSI_IMAGE_VERSION:-unstable}
+        image: jitsi/jibri:${JITSI_IMAGE_VERSION:-stable-7648}
         restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ${CONFIG}/jibri:/config:Z
