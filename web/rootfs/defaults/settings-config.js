@@ -77,10 +77,12 @@ config.startBitrate = '{{ .Env.START_BITRATE }}';
 if (!config.hasOwnProperty('flags')) config.flags = {};
 config.flags.sourceNameSignaling = {{ $ENABLE_MULTI_STREAM }};
 config.flags.sendMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
+config.receiveMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
 
 
 // ScreenShare Configuration.
 //
+
 config.desktopSharingFrameRate = { min: {{ $DESKTOP_SHARING_FRAMERATE_MIN }}, max: {{ $DESKTOP_SHARING_FRAMERATE_MAX }} };
 
 // Audio configuration.
