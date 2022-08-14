@@ -55,6 +55,7 @@ services:
             - ENABLE_CALENDAR
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_E2EPING
+            - ENABLE_FEATURES_BASED_ON_TOKEN
             - ENABLE_FILE_RECORDING_SHARING
             - ENABLE_GUESTS
             - ENABLE_HSTS

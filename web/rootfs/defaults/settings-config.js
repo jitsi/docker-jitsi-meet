@@ -2,6 +2,7 @@
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
+{{ $ENABLE_FEATURES_BASED_ON_TOKEN := .Env.ENABLE_FEATURES_BASED_ON_TOKEN | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SHARING := .Env.ENABLE_FILE_RECORDING_SHARING | default "false" | toBool -}}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
 {{ $ENABLE_LIPSYNC := .Env.ENABLE_LIPSYNC | default "false" | toBool -}}
@@ -300,6 +301,9 @@ config.enableClosePage = {{ $ENABLE_CLOSE_PAGE }};
 {{ if .Env.DEFAULT_LANGUAGE -}}
 config.defaultLanguage = '{{ .Env.DEFAULT_LANGUAGE }}';
 {{ end -}}
+
+// Whether or not some features are checked based on token.
+config.enableFeaturesBasedOnToken = {{ $ENABLE_FEATURES_BASED_ON_TOKEN }};
 
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
