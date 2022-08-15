@@ -77,7 +77,7 @@ config.startBitrate = '{{ .Env.START_BITRATE }}';
 if (!config.hasOwnProperty('flags')) config.flags = {};
 config.flags.sourceNameSignaling = {{ $ENABLE_MULTI_STREAM }};
 config.flags.sendMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
-config.receiveMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
+config.flags.receiveMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
 
 
 // ScreenShare Configuration.
