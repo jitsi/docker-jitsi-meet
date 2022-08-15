@@ -22,7 +22,7 @@
 {{ $ENABLE_TCC := .Env.ENABLE_TCC | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "false" | toBool -}}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
-{{ $ENABLE_MULTI_STREAM := .Env.ENABLE_MULTI_STREAM | default "0" | toBool }}
+{{ $ENABLE_MULTI_STREAM := .Env.ENABLE_MULTI_STREAM | default "true" | toBool }}
 {{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
 {{ $RESOLUTION := .Env.RESOLUTION | default "720" -}}
@@ -78,10 +78,12 @@ config.startBitrate = '{{ .Env.START_BITRATE }}';
 if (!config.hasOwnProperty('flags')) config.flags = {};
 config.flags.sourceNameSignaling = {{ $ENABLE_MULTI_STREAM }};
 config.flags.sendMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
+config.receiveMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
 
 
 // ScreenShare Configuration.
 //
+
 config.desktopSharingFrameRate = { min: {{ $DESKTOP_SHARING_FRAMERATE_MIN }}, max: {{ $DESKTOP_SHARING_FRAMERATE_MAX }} };
 
 // Audio configuration.
@@ -161,15 +163,15 @@ config.dropbox.redirectURI = '{{ .Env.DROPBOX_REDIRECT_URI }}';
 // Whether to show the possibility to share file recording with other people
 // (e.g. meeting participants), based on the actual implementation
 // on the backend.
-config.recordingService.sharingEnabled = $ENABLE_FILE_RECORDING_SHARING;
+config.recordingService.sharingEnabled = {{ $ENABLE_FILE_RECORDING_SHARING }};
 {{ end -}}
 
 
 // Local recording configuration.
 if (!config.hasOwnProperty('localRecording')) config.localRecording = {};
-config.localRecording.disable = $DISABLE_LOCAL_RECORDING;
-config.localRecording.notifyAllParticipants = $ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT;
-config.localRecording.disableSelfRecording = $ENABLE_LOCAL_RECORDING_SELF_START;
+config.localRecording.disable = {{ $DISABLE_LOCAL_RECORDING }};
+config.localRecording.notifyAllParticipants = {{ $ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT }};
+config.localRecording.disableSelfRecording = {{ $ENABLE_LOCAL_RECORDING_SELF_START }};
 
 
 // Analytics.
@@ -315,7 +317,7 @@ config.chromeExtensionBanner = {{ .Env.CHROME_EXTENSION_BANNER_JSON }};
 {{ end -}}
 
 // Disables profile and the edit of all fields from the profile settings (display name and email)
-config.disableProfile = $DISABLE_PROFILE;
+config.disableProfile = {{ $DISABLE_PROFILE }};
 
 // Advanced.
 //

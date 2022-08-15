@@ -8,8 +8,6 @@ RUN apt-dpkg-wrap apt-get update && \
       build-essential \
       lua5.4 \
       liblua5.4-dev \
-      libsasl2-dev \
-      libssl-dev \
       libreadline-dev \
       git \
       unzip \
@@ -17,9 +15,9 @@ RUN apt-dpkg-wrap apt-get update && \
     mkdir /tmp/luarocks && \
     wget -qO - https://luarocks.github.io/luarocks/releases/luarocks-3.8.0.tar.gz | tar xfz - --strip-components 1 -C /tmp/luarocks && \
     cd /tmp/luarocks && ./configure && make && make install && cd - && \
-    luarocks install cyrussasl 1.1.0-1 && \
-    luarocks install net-url 0.9-1 && \
-    luarocks install luajwtjitsi 3.0-0
+    luarocks install basexx 0.4.1-1 && \
+    luarocks install lua-cjson 2.1.0-1 && \
+    luarocks install net-url 0.9-1
 
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
@@ -37,24 +35,22 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
       prosody \
-      libssl1.1 \
       libldap-common \
       sasl2-bin \
       libsasl2-modules-ldap \
-      lua-basexx \
+      lua-cyrussasl \
       lua-ldap \
+      lua-luaossl \
       lua-sec \
-      lua-unbound && \
-    apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
-    dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
-    mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
-    rm -f /prosody-plugins/token/util.lib.lua && \
-    wget -qO /prosody-plugins/token/util.lib.lua https://raw.githubusercontent.com/jitsi/jitsi-meet/46dd88c91b63988f516114daee65ff8995c74c56/resources/prosody-plugins/token/util.lib.lua && \
+      lua-unbound \
+      jitsi-meet-prosody && \
+    apt-cleanup && \
+    rm -rf /etc/prosody && \
+    mv /usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+    rm -rf /usr/lib/lua/{5.1,5.2,5.3} && \
+    rm -rf /usr/share/lua/{5.1,5.2,5.3} && \
     wget -qO /prosody-plugins/mod_auth_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/mod_auth_cyrus.lua && \
     wget -qO /prosody-plugins/sasl_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/sasl_cyrus.lua  && \
-    apt-cleanup && \
-    rm -rf /tmp/pkg /var/cache/apt && \
-    rm -rf /etc/prosody && \
     wget https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification/archive/refs/tags/v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     tar -xf v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_auth_matrix_user_verification.lua /prosody-plugins && \
@@ -63,8 +59,8 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
 
 COPY rootfs/ /
 
-COPY --from=builder /usr/local/lib/lua /usr/local/lib/lua
-COPY --from=builder /usr/local/share/lua /usr/local/share/lua
+COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
+COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
 
 EXPOSE 5222 5280
 
