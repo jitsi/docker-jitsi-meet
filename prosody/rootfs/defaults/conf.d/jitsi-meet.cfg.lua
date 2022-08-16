@@ -4,6 +4,7 @@
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
 {{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" -}}
 {{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
+{{ $JIBRI_RECORDER_USER := .Env.JIBRI_RECORDER_USER | default "recorder" -}}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
@@ -34,12 +35,18 @@
 
 admins = {
     "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
-    "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
+    "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    {{ if and $ENABLE_RECORDING $JWT_ENABLE_DOMAIN_VERIFICATION }}
+    "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}"
+    {{ end }}
 }
 
 unlimited_jids = {
     "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
-    "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
+    "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    {{ if and $ENABLE_RECORDING $JWT_ENABLE_DOMAIN_VERIFICATION }}
+    "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}"
+    {{ end }}
 }
 
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
