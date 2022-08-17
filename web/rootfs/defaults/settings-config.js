@@ -11,6 +11,7 @@
 {{ $ENABLE_WELCOME_PAGE := .Env.ENABLE_WELCOME_PAGE | default "true" | toBool -}}
 {{ $ENABLE_CLOSE_PAGE := .Env.ENABLE_CLOSE_PAGE | default "false" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
+{{ $ENABLE_LIVESTREAMING := .Env.ENABLE_LIVESTREAMING | default "false" | toBool -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
 {{ $ENABLE_SIMULCAST := .Env.ENABLE_SIMULCAST | default "true" | toBool -}}
@@ -135,17 +136,17 @@ config.etherpad_base = '{{ $PUBLIC_URL }}/etherpad/p/';
 // Recording.
 //
 
-{{ if $ENABLE_RECORDING -}}
+{{ if or $ENABLE_RECORDING .Env.DROPBOX_APPKEY $ENABLE_LIVESTREAMING  -}}
 
 config.hiddenDomain = '{{ $XMPP_RECORDER_DOMAIN }}';
 
 if (!config.hasOwnProperty('recordingService')) config.recordingService = {};
 
 // Whether to enable file recording or not
-config.recordingService.enabled = true;
+config.recordingService.enabled = {{ $ENABLE_RECORDING }};
 
 // Whether to enable live streaming or not.
-config.liveStreamingEnabled = true;
+config.liveStreamingEnabled = {{ $ENABLE_LIVESTREAMING }};
 
 {{ if .Env.DROPBOX_APPKEY -}}
 // Enable the dropbox integration.
