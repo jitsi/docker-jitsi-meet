@@ -69,6 +69,7 @@ services:
             - ENABLE_P2P
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
+            - ENABLE_LIVESTREAMING
             - ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT
             - ENABLE_LOCAL_RECORDING_SELF_START
             - ENABLE_RECORDING
