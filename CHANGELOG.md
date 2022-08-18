@@ -1,3 +1,15 @@
+## stable-7648-1
+
+Based on stable release 7648-1.
+
+* d9921a0 prosody: fix syntax error
+* bc6ce20 jibri: update Chrome to M104
+* 7c7a43a prosody: add ability to configure max occupants
+* 85a38d9 jibri: add ability to enable Dropbox recording without enabling "service recording"
+* f8b7037 jvb: enable multi-stream by default
+* eb0dd6b web: fix receiveMultipleVideoStreams flag
+* 674f134 misc: working on unstable
+
 ## stable-7648
 
 Based on stable release 7648.
