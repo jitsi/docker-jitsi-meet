@@ -1,3 +1,10 @@
+## stable-7648-2
+
+Based on stable release 7648-2.
+
+* 24b6adb feat: Adds room info http endpoint for jaas components.
+* 475be2a misc: working on unstable
+
 ## stable-7648-1
 
 Based on stable release 7648-1.
