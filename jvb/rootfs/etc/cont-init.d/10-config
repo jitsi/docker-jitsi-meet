@@ -31,3 +31,9 @@ tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/jvb.conf > /config/jvb.conf
 
 chown -R jvb:jitsi /config
+
+# Configuration checks
+if [[ (-z $ENABLE_COLIBRI_WEBSOCKET || $ENABLE_COLIBRI_WEBSOCKET == "0") && $ENABLE_OCTO == "1"  ]]; then
+  echo "ERROR: In order to enable Octo relays (with ENABLE_OCTO=1), you MUST enable Colibri websockets (with ENABLE_COLIBRI_WEBSOCKET=1)";
+  exit 1;
+fi
