@@ -208,6 +208,7 @@ services:
             - LDAP_START_TLS
             - LDAP_URL
             - LDAP_USE_TLS
+            - MAX_PARTICIPANTS
             - PROSODY_RESERVATION_ENABLED
             - PROSODY_RESERVATION_REST_BASE_URL
             - PUBLIC_URL

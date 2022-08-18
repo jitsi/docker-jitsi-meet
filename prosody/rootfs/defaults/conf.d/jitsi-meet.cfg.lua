@@ -241,6 +241,9 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if $ENABLE_SUBDOMAINS -}}
         "muc_domain_mapper";
         {{ end -}}
+        {{ if .Env.MAX_PARTICIPANTS }}
+        "muc_max_occupants";
+        {{ end }
     }
     muc_room_cache_size = 1000
     muc_room_locking = false
@@ -248,6 +251,10 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     {{ if .Env.XMPP_MUC_CONFIGURATION -}}
     {{ join "\n" (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}
     {{ end -}}
+    {{ if .Env.MAX_PARTICIPANTS }}
+    muc_access_whitelist = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
+    muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
+    {{ end }}
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
     target_address = "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
