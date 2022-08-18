@@ -243,7 +243,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ end -}}
         {{ if .Env.MAX_PARTICIPANTS }}
         "muc_max_occupants";
-        {{ end }
+        {{ end }}
     }
     muc_room_cache_size = 1000
     muc_room_locking = false
