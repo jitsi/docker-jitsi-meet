@@ -75,6 +75,7 @@ services:
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
+            - ENABLE_SERVICE_RECORDING
             - ENABLE_SIMULCAST
             - ENABLE_STATS_ID
             - ENABLE_STEREO
