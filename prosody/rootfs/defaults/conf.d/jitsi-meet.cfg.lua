@@ -3,6 +3,7 @@
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool }}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
 {{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" -}}
+{{ $JIGASI_XMPP_USER := .Env.JIGASI_XMPP_USER | default "jigasi" -}}
 {{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
@@ -33,6 +34,10 @@
 {{ $PROSODY_RESERVATION_REST_BASE_URL := .Env.PROSODY_RESERVATION_REST_BASE_URL | default "" }}
 
 admins = {
+    {{ if .Env.JIGASI_XMPP_PASSWORD }}
+    "{{ $JIGASI_XMPP_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    {{ end }}
+
     "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
     "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
 }
