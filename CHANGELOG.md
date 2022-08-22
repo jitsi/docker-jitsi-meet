@@ -1,3 +1,11 @@
+## stable-7648-3
+
+Based on stable release 7648-3.
+
+* 7890183 jibri: fix ENABLE_RECORDING issue
+* a2b86a0 fix: Fixes undefined variable $ENABLE_JAAS_COMPONENTS. Fixes #1377.
+* 9f3c81f misc: working on unstable
+
 ## stable-7648-2
 
 Based on stable release 7648-2.
