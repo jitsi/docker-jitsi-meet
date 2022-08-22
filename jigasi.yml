@@ -21,6 +21,7 @@ services:
             - XMPP_PORT
             - XMPP_DOMAIN
             - PUBLIC_URL
+            - JIGASI_DISABLE_SIP
             - JIGASI_SIP_URI
             - JIGASI_SIP_PASSWORD
             - JIGASI_SIP_SERVER
