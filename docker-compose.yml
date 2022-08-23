@@ -17,6 +17,7 @@ services:
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
             - AUDIO_QUALITY_OPUS_BITRATE
+            - BRANDING_DATA_URL
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
             - CALLSTATS_SECRET
@@ -39,8 +40,10 @@ services:
             - DISABLE_GRANT_MODERATOR
             - DISABLE_HTTPS
             - DISABLE_KICKOUT
+            - DISABLE_LOCAL_RECORDING
             - DISABLE_POLLS
             - DISABLE_PRIVATE_CHAT
+            - DISABLE_PROFILE
             - DISABLE_REACTIONS
             - DISABLE_REMOTE_VIDEO_MENU
             - DROPBOX_APPKEY
@@ -52,8 +55,7 @@ services:
             - ENABLE_CALENDAR
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_E2EPING
-            - ENABLE_FILE_RECORDING_SERVICE
-            - ENABLE_FILE_RECORDING_SERVICE_SHARING
+            - ENABLE_FILE_RECORDING_SHARING
             - ENABLE_GUESTS
             - ENABLE_HSTS
             - ENABLE_HTTP_REDIRECT
@@ -68,9 +70,13 @@ services:
             - ENABLE_ENCODED_TRANSFORM_SUPPORT
             - ENABLE_WELCOME_PAGE
             - ENABLE_CLOSE_PAGE
+            - ENABLE_LIVESTREAMING
+            - ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT
+            - ENABLE_LOCAL_RECORDING_SELF_START
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
+            - ENABLE_SERVICE_RECORDING
             - ENABLE_SIMULCAST
             - ENABLE_STATS_ID
             - ENABLE_STEREO
@@ -160,6 +166,7 @@ services:
             - ENABLE_AV_MODERATION
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_GUESTS
+            - ENABLE_IPV6
             - ENABLE_LOBBY
             - ENABLE_RECORDING
             - ENABLE_XMPP_WEBSOCKET
@@ -203,6 +210,7 @@ services:
             - LDAP_START_TLS
             - LDAP_URL
             - LDAP_USE_TLS
+            - MAX_PARTICIPANTS
             - PROSODY_RESERVATION_ENABLED
             - PROSODY_RESERVATION_REST_BASE_URL
             - PUBLIC_URL
@@ -292,6 +300,7 @@ services:
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_OCTO
             - ENABLE_MULTI_STREAM
+            - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
