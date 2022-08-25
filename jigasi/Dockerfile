@@ -9,6 +9,7 @@ ENV RCLONE_VER=v1.59.1 \
     PARAMS=""
 RUN apt-get update    
 RUN apt-get -y install curl
+RUN apt-get install unzip
 RUN curl -O "https://downloads.rclone.org/v1.59.1/rclone-v1.59.1-linux-amd64.zip"
 RUN unzip rclone-v1.59.1-linux-amd64.zip
 RUN cd rclone-v1.59.1-linux-amd64
@@ -19,7 +20,7 @@ RUN mkdir -p /usr/share/man/man1
 RUN cp rclone-v1.59.1-linux-amd64/rclone.1 /usr/share/man/man1/
 RUN rm -f rclone-v1.59.1-linux-amd64.zip
 RUN rm -r rclone-v1.59.1-linux-amd64
-RUN apt install inotify-tools
+RUN apt-get install inotify-tools
 
 
 LABEL org.opencontainers.image.title="Jitsi Gateway to SIP (jigasi)"
