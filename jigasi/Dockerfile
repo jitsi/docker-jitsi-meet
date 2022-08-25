@@ -12,6 +12,25 @@ ENV GOOGLE_APPLICATION_CREDENTIALS /config/key.json
 
 # Jigasi doesn't yet work well with Java 11, let's ccontinue to use 8.
 
+
+ENV RCLONE_VER=v1.59.1 \
+    ARCH=amd64 \
+    SUBCMD="" \
+    CONFIG="--config /usr/src/app/rclone.conf" \
+    PARAMS=""
+
+RUN curl -O "https://downloads.rclone.org/v1.59.1/rclone-v1.59.1-linux-amd64.zip"
+RUN unzip rclone-v1.59.1-linux-amd64.zip
+RUN cd rclone-v1.59.1-linux-amd64
+RUN cp rclone-v1.59.1-linux-amd64/rclone /usr/bin/
+RUN chown root:root /usr/bin/rclone
+RUN chmod 755 /usr/bin/rclone
+RUN mkdir -p /usr/share/man/man1
+RUN cp rclone-v1.59.1-linux-amd64/rclone.1 /usr/share/man/man1/
+RUN rm -f rclone-v1.59.1-linux-amd64.zip
+RUN rm -r rclone-v1.59.1-linux-amd64
+RUN apt install inotify-tools
+
 RUN mkdir -p /usr/share/man/man1 && \
     wget -qO - https://adoptopenjdk.jfrog.io/adoptopenjdk/api/gpg/key/public | gpg --dearmour > /etc/apt/trusted.gpg.d/openjdk.gpg && \
     echo "deb https://adoptopenjdk.jfrog.io/adoptopenjdk/deb/ bullseye main" > /etc/apt/sources.list.d/openjdk.list && \

@@ -1,0 +1,6 @@
+inotifywait -m /tmp/transcripts/ -e create -e moved_to |
+    while read dir action file; do
+        echo "The file '$file' appeared in directory '$dir' via '$action'"
+        echo > /tmp/transcripts/text.txt
+        # do something with the file
+    done
