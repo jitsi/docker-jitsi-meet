@@ -6,10 +6,10 @@ NATIVE_ARCH ?= $(shell uname -m)
 
 ifeq ($(NATIVE_ARCH),x86_64)
 	TARGETPLATFORM := linux/amd64
-	JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
+	JITSI_SERVICES := base base-java jigasi
 else ifeq ($(NATIVE_ARCH),aarch64)
 	TARGETPLATFORM := linux/arm64
-	JITSI_SERVICES := base base-java web prosody jicofo jvb
+	JITSI_SERVICES := base base-java jigasi
 else
 	TARGETPLATFORM := unsupported
 	JITSI_SERVICES := dummy
