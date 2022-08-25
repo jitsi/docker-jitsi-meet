@@ -43,6 +43,7 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
       lua-luaossl \
       lua-sec \
       lua-unbound \
+      lua-inspect \
       jitsi-meet-prosody && \
     apt-cleanup && \
     rm -rf /etc/prosody && \
