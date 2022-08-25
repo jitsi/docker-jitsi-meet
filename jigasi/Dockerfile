@@ -7,7 +7,7 @@ ENV RCLONE_VER=v1.59.1 \
     SUBCMD="" \
     CONFIG="--config /usr/src/app/rclone.conf" \
     PARAMS=""
-
+RUN apt install curl
 RUN curl -O "https://downloads.rclone.org/v1.59.1/rclone-v1.59.1-linux-amd64.zip"
 RUN unzip rclone-v1.59.1-linux-amd64.zip
 RUN cd rclone-v1.59.1-linux-amd64
