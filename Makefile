@@ -4,7 +4,7 @@ JITSI_BUILD ?= unstable
 JITSI_REPO ?= jitsi
 NATIVE_ARCH ?= $(shell uname -m)
 
-JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
+JITSI_SERVICES := base base-java jigasi
 
 ifeq ($(NATIVE_ARCH),x86_64)
 	TARGETPLATFORM := linux/amd64
