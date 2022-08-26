@@ -1,64 +1,92 @@
 #!/bin/bash
-echo "qweqewqeqweqwe"
 
 RECORDINGS_DIR=$1
-echo "1"
-METADATA_JSON="$RECORDINGS_DIR/metadata.json"
-echo "2"
+echo $RECORDINGS_DIR
+transcriptfilename=$(find $RECORDINGS_DIR -type f -name '*.txt')
 
-[[ -z "$REFRESH_TOKEN" ]] && REFRESH_TOKEN=$(cat $METADATA_JSON | jq -r ".upload_credentials.r_token")
-[[ "$REFRESH_TOKEN" == "null" ]] && REFRESH_TOKEN=""
+transcriptaudiofilename=$(find $RECORDINGS_DIR -type f -name '*.wav')
 
-[[ -z "$APP_KEY" ]] && APP_KEY=$(cat $METADATA_JSON | jq -r ".upload_credentials.app_key")
-[[ "$APP_KEY" == "null" ]] && APP_KEY=""
 
-[[ -z "$TOKEN" ]] && TOKEN=$(cat $METADATA_JSON | jq -r ".upload_credentials.token")
-[[ "$TOKEN" == "null" ]] && TOKEN=""
+echo $transcriptfilename
+echo $transcriptaudiofilename
+input=$transcriptfilename
 
-[[ -z "$UPLOAD_TYPE" ]] && UPLOAD_TYPE=$(cat $METADATA_JSON | jq -r ".upload_credentials.service_name")
-[[ "$UPLOAD_TYPE" == "null" ]] && UPLOAD_TYPE=""
-echo "3"
+sum=0
+roomname=""
+ownerid=""
 
-URL=$(cat $METADATA_JSON | jq -r ".meeting_url")
-[[ "$URL" == "null" ]] && URL=""
-URL="https://ww.sariska.io/&room"
-URL_NAME="${URL##*/}"
+while IFS= read -r line
+do
 
-echo $URL
-echo $METADATA_JSON
-cd $RECORDINGS_DIR
+if [ $sum -eq 0 ]
+    then
+    lastword=`echo $line | awk '{ print $NF }'`
+    roomname=`echo $lastword | cut -d'@' -f1` # output is 1
+fi
 
-cat $METADATA_JSON
-echo "4"
-filenameWithoutRoom=$(find . -type f -name '*.mp4')
-echo "5555555"
+str=$line
+substr="("
 
-roomWithout="${filenameWithoutRoom:2}"
-echo "444"
-echo "445"
+prefix=${str%%$substr*}
+index=${#prefix}
 
-echo "4456"
+if [ "$ownerid" == "" ]
+  then
+    if [ $sum -ge 2 ]
+    then
 
-metadata="_metadata.json"
-echo "5"
-echo $metadata
-mv $filenameWithoutRoom $filename
-mv metadata.json $metadata
-     echo "6"
+      if [[ index -eq ${#str} ]];
+      then
+         echo "Substring is not present in string."
+      else
+        for (( i=$index; i<${#line}; i++ )); do
+            index1=`expr $i + 1`
+            if [ "${line:$index1:1}" == ")" ]
+            then
 
-ownerId=`jq -r .participants[].group $RECORDINGS_DIR/${metadata}`
+                break
+            fi
+            ownerid="${ownerid}${line:$index1:1}"
+      done
+fi
 
-echo "ownerId"
-echo $ownerId
-     echo "7"
+fi
+fi
 
-response=`curl -s  https://api.sariska.io/api/v1/account/storage-credentials/1  -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaWF0IjoxNjU0NTM1NjI0LCJleHAiOjE2ODYwOTI1NzZ9.p8u8fhiEF1pPL3ncrAN7XI46D2PmbDfhCik2pWHlg8Q"`
+sum=`expr 1 + $sum`
+done < "$input"
+
+echo $roomname
+echo $ownerid
+
+
+
+current_time=$(date "+%Y.%m.%d-%H.%M.%S")
+prefixaudio="audio"
+prefixtranscription="transcription"
+
+echo "Current Time : $current_time"
+
+extaudio=".wav"
+exttranscription=".txt"
+new_fileName_audio=$prefixaudio-$roomname-$current_time$extaudio
+new_fileName_text=$prefixtranscription-$roomname-$current_time$exttranscription
+
+echo $transcriptfilename
+
+FETCH_S3_CREDENTIALS_URL="https://api.sariska.io/api/v1/account/storage-credentials/"
+SERVICE_TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MCwiaWF0IjoxNjU0NTM1NjI0LCJleHAiOjE2ODYwOTI1NzZ9.p8u8fhiEF1pPL3ncrAN7XI46D2PmbDfhCik2pWHlg8Q"
+
+mv $transcriptfilename $RECORDINGS_DIR$new_fileName_text
+mv $transcriptaudiofilename $RECORDINGS_DIR$new_fileName_audio
+
+echo $FETCH_S3_CREDENTIALS_URL
+echo $SERVICE_TOKEN
+response=`curl -s  $FETCH_S3_CREDENTIALS_URL$ownerid   -H "Content-Type: application/json" -H "Authorization: Bearer $SERVICE_TOKEN"`
 echo $response
-provider=$( jq -r  '.provider' <<< "${response}" )
-     
-echo "8"
 
-echo $provider
+provider=$( jq -r  '.provider' <<< "${response}" )
+
 if [[ $UPLOAD_TYPE == "dropbox" ]]
 then
   FINAL_UPLOAD_PATH="/Recordings/"
@@ -81,36 +109,23 @@ then
   rclone sync -i  $RECORDINGS_DIR gcp:$( jq -r  '.endpoint' <<< "${response}" )
 else
   export RCLONE_S3_PROVIDER=$( jq -r  '.provider' <<< "${response}" )
-  echo "provider in else"
-  echo $RCLONE_S3_PROVIDER
   export RCLONE_S3_ENV_AUTH=true
   export RCLONE_S3_REGION=$( jq -r  '.region' <<< "${response}" )
   export RCLONE_S3_ACCESS_KEY_ID=$( jq -r  '.accessKeyId' <<< "${response}" )
   export RCLONE_S3_SECRET_ACCESS_KEY=$( jq -r  '.secretKey' <<< "${response}" )
-  export CONIFG=/usr/src/app/rclone.conf
-  filename="/usr/src/app/rclone.sh"
-  touch test.sh
-  rclone copy test.sh  s3:$( jq -r  '.endpoint' <<< "${response}" )
-   /usr/src/app/gst-meet  |& tee ~/outputfile.txt
-  
-  cat err.log 
-  cat out.log
-  echo "Hello $(usr/bin/rclone), happy to see you again"
+  rclone copy $RECORDINGS_DIR/$new_fileName_text   s3:$( jq -r  '.endpoint' <<< "${response}" )
+  rclone copy $RECORDINGS_DIR/$new_fileName_audio  s3:$( jq -r  '.endpoint' <<< "${response}" )
 fi
 
 webhookUrl=$( jq -r  '.webhookUrl' <<< "${response}" )
 webhookToken=$( jq -r  '.webhookToken' <<< "${response}" )
-metadataFile=$RECORDINGS_DIR/${metadata}
 
-
-jq --arg e "$filename" --arg r "${roomName[1]}" --arg m "$metadataFile"  '. += { "filename": $e , "room_name": $r}' $metadata > payload.json
 
 response=`curl --header "Authorization: Bearer $webhookToken" --header "Content-Type: application/json" \
   --request POST \
-  --data @payload.json \
+  --data '{"roomname":"$roomname","audiofilename":"new_fileName_audio", "transcriptionfilename": "$new_fileName_text"}' \
   $webhookUrl`
-
+rm -rf $RECORDINGS_DIR
 echo "Copying done!!!!!"
 echo "Deleting Video from Host..."
-#rm -rf $RECORDINGS_DIR
-echo "Deleted Video from Host..."
+

@@ -1,3 +1,166 @@
+## stable-7648-4
+
+Based on stable release 7648-4.
+
+* 6449c60 prosody: fix installation of lua inspect module
+* 6664c89 prosody: add missing lua-inspect dependency
+* 755bd3f prosody: add jigasi and jibri users as admins
+* 8c5fba1 jigasi: add ability to disable SIP
+* 4fa0a2f jvb: allow configuration of videobridge.ice.advertise-private-candidates
+* 74e5942 misc: working on unstable
+
+## stable-7648-3
+
+Based on stable release 7648-3.
+
+* 7890183 jibri: fix ENABLE_RECORDING issue
+* a2b86a0 fix: Fixes undefined variable $ENABLE_JAAS_COMPONENTS. Fixes #1377.
+* 9f3c81f misc: working on unstable
+
+## stable-7648-2
+
+Based on stable release 7648-2.
+
+* 24b6adb feat: Adds room info http endpoint for jaas components.
+* 475be2a misc: working on unstable
+
+## stable-7648-1
+
+Based on stable release 7648-1.
+
+* d9921a0 prosody: fix syntax error
+* bc6ce20 jibri: update Chrome to M104
+* 7c7a43a prosody: add ability to configure max occupants
+* 85a38d9 jibri: add ability to enable Dropbox recording without enabling "service recording"
+* f8b7037 jvb: enable multi-stream by default
+* eb0dd6b web: fix receiveMultipleVideoStreams flag
+* 674f134 misc: working on unstable
+
+## stable-7648
+
+Based on stable release 7648.
+
+* 12941f5 web: turn on multi-stream by default
+* 1d4b265 web: add new flag for multi-stream
+* 4264f25 prosody: make enable_domain_verification configurable
+* 2a7db7c jigasi: fix Sentry test
+* 2d106d8 jigasi: adjust log formatter
+* 6c9e305 jigasi: temporarily disable G722
+* 9edecf2 misc: working on unstable
+
+## stable-7577-2
+
+Based on stable release 7577-2.
+
+* 55e0eed prosody: remove explicit dependency
+* e0bc4e4 prosody: add missing net-url dependency
+* e811d7b misc: working on unstable
+
+## stable-7577-1
+
+Based on stable release 7577-1.
+
+* 20eb991 prosody: clean build
+* 6fb422c prosody: fix not finding the basexx and cjsson modules
+* 1768164 misc: working on unstable
+
+## stable-7577
+
+Based on stable release 7577.
+
+* b670959 prosody: simplify container build
+* e05a9c2 fixup: template syntax for newly added variables (#1355)
+* 164d28b web: migrate deprecated recordings options, add some more
+* f126f7a web: set config.videoQuality.maxBitratesVideo to null if no bitrates are specified
+* 0364d94 jibri: remove deprecated PulseAudio module
+* 1c93e1b web: add support for brandingDataUrl (#1346)
+* 4372717 web: add support for wav files to nginx default
+* d804ba4 misc: make ignore rule more generic
+* b224131 prosody: use ENABLE_IPV6 environment variable
+* be8c41f etherpad,jigasi: fix compose file version
+* d7cee00 misc: working on unstable
+
+## stable-7439-2
+
+Based on stable release 7439-2.
+
+* b2f704a misc: working on unstable
+* 62655d8 release: stable-7439-1
+* 22dc822 prosody: fix XMPP_MUC_CONFIGURATION
+* 11de38f fix: properly use default SIP config
+* 82a5382 fix: add missing $ to JIGASI_XMPP_USER
+* 76ff646 misc: working on unstable
+
+## stable-7439-1
+
+Based on stable release 7439-1.
+
+* 76ff646 misc: working on unstable
+
+## stable-7439
+
+Based on stable release 7439.
+
+* ea37859 prosody: add ability to configure MUC modules through ENV variables
+* 5ff69fd jvb: fix jvb.conf parsing error
+* 8f38fe6 web,jvb: add option to enable multi-stream
+* 701dadf jvb: add ability to disable STUN
+* 264a3d8 web: add prejoin config options
+* fec78e4 jigasi: build on arm
+* c04f658 web,jvb: allow underscore in JVB_WS_SERVER_ID
+* 55a4591 prosody: configure unbound resolver
+* 576e5a9 web: start with clean config.js
+* a7f260e web,etherpad: fix default public URL
+* 0cbfbfd web: don't proxy HTTP traffic to WS endpoints
+* 7ed5063 jibri,compose: avoid mounting /dev/shm/
+* fbb8a2d jibri: switch to PulseAudio
+* e7533f8 jibri: simplify Dockerfile
+* 7e74308 jigasi: switch to Java 11
+* a9d1ed6 misc: working on unstable
+* b227b73 build: fix multiarch build
+
+## stable-7287-2
+
+Based on stable release 7287-2.
+
+* ab08247 build: make sure JITSI_RELEASE is passed when invoking make
+* 5109874 prosody: update to latest stable
+* 343ef56 doc: update README
+* 829841e jibri: add support for arm64
+* 8d5a9cf jvb: fix not setting WS server ID
+* cffab8f jibri: fix log location template
+* 94833b5 doc: update README
+* d3901ba build: also release a "stable" tag
+* 9217b0a misc: working on unstable
+
+## stable-7287-1
+
+Based on stable release 7287-1.
+
+* 22e727c build: adapt release process to multiarch builds
+* be422c7 jibri: update Chrome to M102
+* 1463df4 compose: add ability to override image versions
+* 7c29b57 prosody: fix reservations API
+* 8337c0b jicofo,prosody: migrate to new reservations system
+* 70c5cbf misc: update dialin numbers url setup (#1298)
+* 7790012 misc: define ENABLE_JAAS_COMPONENTS variable (#1297)
+* 62ad172 misc: update env.example
+* 74ef7de web,prosody: add support for JaaS components
+* 902a673 misc: move security options in sample file
+* 2a23095 misc: use the "unstable" tag between releases
+* 741ec4a build: add native arch building support
+* 68d97c8 ci: add GH action docker build caching
+* 8b02b8a build,ci: add initial arm64 support
+* 3b86df0 compose: add ability to change the JVB colibri REST API exposed port
+* 458515c env: add link to handbook
+* 261577c web: stop using the default config file
+* ed6ef89 web: remove config option to control FLoC
+* cb5a753 config: simplify configuration
+* b505d58 misc: add stalebot
+* 5ff2735 web: add e2eping support using env variables
+* 6284167 web: add more audio quality options
+* 515bd19 misc: working on latest
+
 ## stable-7287
 
 Based on stable release 7287.

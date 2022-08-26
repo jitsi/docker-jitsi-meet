@@ -1,0 +1,8 @@
+.include /etc/pulse/default.pa
+
+# Load the virtual sink and set it as default
+load-module module-virtual-sink sink_name=jibri-loop
+set-default-sink jibri-loop
+
+# set the monitor of the jibri-loop sink to be the default source
+set-default-source jibri-loop.monitor
