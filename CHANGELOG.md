@@ -1,3 +1,14 @@
+## stable-7648-4
+
+Based on stable release 7648-4.
+
+* 6449c60 prosody: fix installation of lua inspect module
+* 6664c89 prosody: add missing lua-inspect dependency
+* 755bd3f prosody: add jigasi and jibri users as admins
+* 8c5fba1 jigasi: add ability to disable SIP
+* 4fa0a2f jvb: allow configuration of videobridge.ice.advertise-private-candidates
+* 74e5942 misc: working on unstable
+
 ## stable-7648-3
 
 Based on stable release 7648-3.
