@@ -2,17 +2,21 @@
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool }}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
+{{ $JIBRI_XMPP_USER := .Env.JIBRI_XMPP_USER | default "jibri" -}}
 {{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" -}}
+{{ $JIGASI_XMPP_USER := .Env.JIGASI_XMPP_USER | default "jigasi" -}}
 {{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool }}
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" }}
+{{ $JWT_ENABLE_DOMAIN_VERIFICATION := .Env.JWT_ENABLE_DOMAIN_VERIFICATION | default "true" | toBool -}}
 {{ $MATRIX_UVS_ISSUER := .Env.MATRIX_UVS_ISSUER | default "issuer" }}
 {{ $MATRIX_UVS_SYNC_POWER_LEVELS := .Env.MATRIX_UVS_SYNC_POWER_LEVELS | default "0" | toBool }}
 {{ $JWT_TOKEN_AUTH_MODULE := .Env.JWT_TOKEN_AUTH_MODULE | default "token_verification" }}
 {{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool }}
 {{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool }}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool }}
+{{ $ENABLE_END_CONFERENCE := .Env.ENABLE_END_CONFERENCE | default "true" | toBool }}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
@@ -28,8 +32,18 @@
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
+{{ $PROSODY_RESERVATION_ENABLED := .Env.PROSODY_RESERVATION_ENABLED | default "false" | toBool }}
+{{ $PROSODY_RESERVATION_REST_BASE_URL := .Env.PROSODY_RESERVATION_REST_BASE_URL | default "" }}
 
 admins = {
+    {{ if .Env.JIGASI_XMPP_PASSWORD }}
+    "{{ $JIGASI_XMPP_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    {{ end }}
+
+    {{ if .Env.JIBRI_XMPP_PASSWORD }}
+    "{{ $JIBRI_XMPP_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    {{ end }}
+
     "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
     "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
 }
@@ -80,6 +94,7 @@ VirtualHost "jigasi.meet.jitsi"
     modules_enabled = {
       "ping";
       "bosh";
+      "muc_password_check";
     }
     authentication = "token"
     app_id = "jitsi";
@@ -98,6 +113,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ if $JWT_ASAP_KEYSERVER }}
     asap_key_server = "{{ .Env.JWT_ASAP_KEYSERVER }}"
     {{ end }}
+    enable_domain_verification = {{ $JWT_ENABLE_DOMAIN_VERIFICATION }}
   {{ else if eq $AUTH_TYPE "ldap" }}
     authentication = "cyrus"
     cyrus_application_name = "xmpp"
@@ -132,6 +148,9 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         "ping";
         "speakerstats";
         "conference_duration";
+        {{ if $ENABLE_END_CONFERENCE }}
+        "end_conference";
+        {{ end }}
         {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
         "external_services";
         {{ end }}
@@ -150,6 +169,9 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "ldap") }}
         "auth_cyrus";
         {{end}}
+        {{ if $PROSODY_RESERVATION_ENABLED }}
+        "reservations";
+        {{ end }}
     }
 
     main_muc = "{{ $XMPP_MUC_DOMAIN }}"
@@ -161,12 +183,20 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ end }}
     {{ end }}
 
+    {{ if $PROSODY_RESERVATION_ENABLED }}
+    reservations_api_prefix = "{{ $PROSODY_RESERVATION_REST_BASE_URL }}"
+    {{ end }}
+
     {{ if $ENABLE_BREAKOUT_ROOMS }}
     breakout_rooms_muc = "breakout.{{ $XMPP_DOMAIN }}"
     {{ end }}
 
     speakerstats_component = "speakerstats.{{ $XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ $XMPP_DOMAIN }}"
+
+    {{ if $ENABLE_END_CONFERENCE }}
+    end_conference_component = "endconference.{{ .Env.XMPP_DOMAIN }}"
+    {{ end }}
 
     {{ if $ENABLE_AV_MODERATION }}
     av_moderation_component = "avmoderation.{{ $XMPP_DOMAIN }}"
@@ -230,10 +260,20 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if $ENABLE_SUBDOMAINS -}}
         "muc_domain_mapper";
         {{ end -}}
+        {{ if .Env.MAX_PARTICIPANTS }}
+        "muc_max_occupants";
+        {{ end }}
     }
     muc_room_cache_size = 1000
     muc_room_locking = false
     muc_room_default_public_jids = true
+    {{ if .Env.XMPP_MUC_CONFIGURATION -}}
+    {{ join "\n" (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}
+    {{ end -}}
+    {{ if .Env.MAX_PARTICIPANTS }}
+    muc_access_whitelist = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
+    muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
+    {{ end }}
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
     target_address = "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
@@ -243,6 +283,11 @@ Component "speakerstats.{{ $XMPP_DOMAIN }}" "speakerstats_component"
 
 Component "conferenceduration.{{ $XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
+
+{{ if $ENABLE_END_CONFERENCE }}
+Component "endconference.{{ .Env.XMPP_DOMAIN }}" "end_conference"
+    muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+{{ end }}
 
 {{ if $ENABLE_AV_MODERATION }}
 Component "avmoderation.{{ $XMPP_DOMAIN }}" "av_moderation_component"

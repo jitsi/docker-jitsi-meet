@@ -2,6 +2,7 @@ ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 FROM ${JITSI_REPO}/base-java:${BASE_TAG}
 
+<<<<<<< HEAD
 ENV RCLONE_VER=v1.59.1 \
     ARCH=amd64 \
     SUBCMD="" \
@@ -24,6 +25,8 @@ RUN apt-get -y install inotify-tools
 RUN apt-get -y install jq
 
 
+=======
+>>>>>>> upstream/master
 LABEL org.opencontainers.image.title="Jitsi Gateway to SIP (jigasi)"
 LABEL org.opencontainers.image.description="Server-side application that allows regular SIP clients to join conferences."
 LABEL org.opencontainers.image.url="https://github.com/jitsi/jigasi"

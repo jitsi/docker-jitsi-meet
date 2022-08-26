@@ -1,10 +1,15 @@
-version: '3'
+version: '3.5'
 
 services:
     # SIP gateway (audio)
     jigasi:
+<<<<<<< HEAD
         image: jitsi/jigasi:unstable
         restart: ${RESTART_POLICY}
+=======
+        image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
+        restart: ${RESTART_POLICY:-unless-stopped}
+>>>>>>> upstream/master
         ports:
             - '${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}:${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}/udp'
         volumes:
@@ -21,6 +26,7 @@ services:
             - XMPP_PORT
             - XMPP_DOMAIN
             - PUBLIC_URL
+            - JIGASI_DISABLE_SIP
             - JIGASI_SIP_URI
             - JIGASI_SIP_PASSWORD
             - JIGASI_SIP_SERVER

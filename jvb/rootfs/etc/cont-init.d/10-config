@@ -11,6 +11,8 @@ if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
     exit 1
 fi
 
+[ -z "${XMPP_SERVER}" ] && export XMPP_SERVER=xmpp.meet.jitsi
+
 # On environments like Swarm the IP address used by the default gateway need not be
 # the one used for inter-container traffic. Use that one for our fallback ID.
 XMPP_SERVER_IP=$(dig +short +search ${XMPP_SERVER})
