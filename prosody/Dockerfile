@@ -39,15 +39,16 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
       sasl2-bin \
       libsasl2-modules-ldap \
       lua-cyrussasl \
+      lua-inspect \
       lua-ldap \
       lua-luaossl \
       lua-sec \
       lua-unbound \
-      lua-inspect \
       jitsi-meet-prosody && \
     apt-cleanup && \
     rm -rf /etc/prosody && \
     mv /usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+    mv /usr/share/lua/5.3/inspect.lua /usr/share/lua/5.4/ && \
     rm -rf /usr/lib/lua/{5.1,5.2,5.3} && \
     rm -rf /usr/share/lua/{5.1,5.2,5.3} && \
     wget -qO /prosody-plugins/mod_auth_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/mod_auth_cyrus.lua && \
