@@ -16,6 +16,7 @@
 {{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool }}
 {{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool }}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool }}
+{{ $ENABLE_END_CONFERENCE := .Env.ENABLE_END_CONFERENCE | default "true" | toBool }}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool }}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
@@ -147,6 +148,9 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         "ping";
         "speakerstats";
         "conference_duration";
+        {{ if $ENABLE_END_CONFERENCE }}
+        "end_conference";
+        {{ end }}
         {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
         "external_services";
         {{ end }}
@@ -180,7 +184,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ end }}
 
     {{ if $PROSODY_RESERVATION_ENABLED }}
-    reservations_api_prefix = "{{ $PROSODY_RESERVATION_REST_BASE_URL }}" 
+    reservations_api_prefix = "{{ $PROSODY_RESERVATION_REST_BASE_URL }}"
     {{ end }}
 
     {{ if $ENABLE_BREAKOUT_ROOMS }}
@@ -189,6 +193,10 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
 
     speakerstats_component = "speakerstats.{{ $XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ $XMPP_DOMAIN }}"
+
+    {{ if $ENABLE_END_CONFERENCE }}
+    end_conference_component = "endconference.{{ .Env.XMPP_DOMAIN }}"
+    {{ end }}
 
     {{ if $ENABLE_AV_MODERATION }}
     av_moderation_component = "avmoderation.{{ $XMPP_DOMAIN }}"
@@ -275,6 +283,11 @@ Component "speakerstats.{{ $XMPP_DOMAIN }}" "speakerstats_component"
 
 Component "conferenceduration.{{ $XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
+
+{{ if $ENABLE_END_CONFERENCE }}
+Component "endconference.{{ .Env.XMPP_DOMAIN }}" "end_conference"
+    muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+{{ end }}
 
 {{ if $ENABLE_AV_MODERATION }}
 Component "avmoderation.{{ $XMPP_DOMAIN }}" "av_moderation_component"

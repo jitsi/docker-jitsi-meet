@@ -164,6 +164,7 @@ services:
             - ENABLE_AUTH
             - ENABLE_AV_MODERATION
             - ENABLE_BREAKOUT_ROOMS
+            - ENABLE_END_CONFERENCE
             - ENABLE_GUESTS
             - ENABLE_IPV6
             - ENABLE_LOBBY
