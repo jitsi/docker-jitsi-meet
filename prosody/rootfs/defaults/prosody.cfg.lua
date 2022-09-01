@@ -111,6 +111,8 @@ limits = {
   };
 }
 
+--Prosody garbage collection settings
+--For more information see https://prosody.im/doc/advanced_gc
 {{ if eq $GC_TYPE "generational" }}
 gc = {
     mode = "generational";
