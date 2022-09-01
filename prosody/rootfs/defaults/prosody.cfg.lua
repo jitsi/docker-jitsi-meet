@@ -113,7 +113,7 @@ limits = {
 
 {{ if eq $GC_TYPE "generational" }}
 gc = {
-    mode = "generational\";
+    mode = "generational";
     minor_threshold = {{ $GC_GEN_MIN_TH }};
     major_threshold = {{ $GC_GEN_MAX_TH }};
 }
