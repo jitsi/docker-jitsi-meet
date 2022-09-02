@@ -1,6 +1,12 @@
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
+{{ $GC_TYPE := .Env.GC_TYPE | default "incremental" -}}
+{{ $GC_INC_TH := .Env.GC_INC_TH | default 150 -}}
+{{ $GC_INC_SPEED := .Env.GC_INC_SPEED | default 250 -}}
+{{ $GC_INC_STEP_SIZE := .Env.GC_INC_STEP_SIZE | default 13 -}}
+{{ $GC_GEN_MIN_TH := .Env.GC_GEN_MIN_TH | default 20 -}}
+{{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
 
 -- Prosody Example Configuration File
 --
@@ -104,6 +110,23 @@ limits = {
     rate = "30kb/s";
   };
 }
+
+--Prosody garbage collector settings
+--For more information see https://prosody.im/doc/advanced_gc
+{{ if eq $GC_TYPE "generational" }}
+gc = {
+    mode = "generational";
+    minor_threshold = {{ $GC_GEN_MIN_TH }};
+    major_threshold = {{ $GC_GEN_MAX_TH }};
+}
+{{ else }}
+gc = {
+	mode = "incremental";
+	threshold = {{ $GC_INC_TH }};
+	speed = {{ $GC_INC_SPEED }};
+	step_size = {{ $GC_INC_STEP_SIZE }};
+}
+{{ end }}
 
 pidfile = "/config/data/prosody.pid";
 
