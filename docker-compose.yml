@@ -171,6 +171,12 @@ services:
             - ENABLE_RECORDING
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
+            - GC_TYPE
+            - GC_INC_TH
+            - GC_INC_SPEED
+            - GC_INC_STEP_SIZE
+            - GC_GEN_MIN_TH
+            - GC_GEN_MAX_TH
             - GLOBAL_CONFIG
             - GLOBAL_MODULES
             - JIBRI_RECORDER_USER
