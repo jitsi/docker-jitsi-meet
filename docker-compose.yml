@@ -197,6 +197,7 @@ services:
             - JWT_ASAP_KEYSERVER
             - JWT_ALLOW_EMPTY
             - JWT_AUTH_TYPE
+            - JWT_ENABLE_DOMAIN_VERIFICATION
             - JWT_TOKEN_AUTH_MODULE
             - MATRIX_UVS_URL
             - MATRIX_UVS_ISSUER
