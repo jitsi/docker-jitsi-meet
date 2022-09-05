@@ -1,0 +1,40 @@
+{{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
+  {{ if .Env.TURN_HOST }}
+    server {
+        listen      3478;
+        proxy_pass  eturnal:3478;
+        proxy_protocol on;
+    }
+
+    server {
+        listen      3478 udp;
+        proxy_pass  eturnal:3478;
+    }
+{{ end }}
+  {{ if .Env.TURNS_HOST }}
+    map $ssl_preread_server_name $name {
+        turndomainname    eturnaltls;
+    {{ if not (.Env.DISABLE_HTTPS | default "0" | toBool) }}  
+        default    web;
+    {{ end }}
+    }
+
+    upstream eturnaltls {
+        server eturnal:3478;
+    }
+
+    {{ if not (.Env.DISABLE_HTTPS | default "0" | toBool) }}
+    upstream web {
+        server 127.0.0.1:8443;
+    }
+    {{ end }}
+
+    server {
+        listen      443;
+        proxy_pass  $name;
+        ssl_preread on;
+        proxy_protocol on;
+        #include /config/nginx/ssl.conf;
+    }
+  {{ end }}
+{{ end }}
