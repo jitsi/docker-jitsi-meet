@@ -57,6 +57,7 @@
 {{ $ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT := .Env.ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT | default "false" | toBool -}}
 {{ $ENABLE_LOCAL_RECORDING_SELF_START := .Env.ENABLE_LOCAL_RECORDING_SELF_START | default "false" | toBool -}}
 {{ $DISABLE_PROFILE := .Env.DISABLE_PROFILE | default "false" | toBool -}}
+{{ $ROOM_PASSWORD_DIGITS := .Env.ROOM_PASSWORD_DIGITS | default "false" -}}
 
 
 // Video configuration.
@@ -308,7 +309,6 @@ config.defaultLanguage = '{{ .Env.DEFAULT_LANGUAGE }}';
 // Require users to always specify a display name.
 config.requireDisplayName = {{ $ENABLE_REQUIRE_DISPLAY_NAME }};
 
-
 // Chrome extension banner.
 {{ if .Env.CHROME_EXTENSION_BANNER_JSON -}}
 config.chromeExtensionBanner = {{ .Env.CHROME_EXTENSION_BANNER_JSON }};
@@ -316,6 +316,13 @@ config.chromeExtensionBanner = {{ .Env.CHROME_EXTENSION_BANNER_JSON }};
 
 // Disables profile and the edit of all fields from the profile settings (display name and email)
 config.disableProfile = {{ $DISABLE_PROFILE }};
+
+// Room password (false for anything, number for max digits)
+{{ if $ENABLE_JAAS_COMPONENTS -}}
+config.roomPasswordNumberOfDigits = 10;
+{{ else -}}
+config.roomPasswordNumberOfDigits = {{ $ROOM_PASSWORD_DIGITS }};
+{{ end -}}
 
 // Advanced.
 //
@@ -388,7 +395,7 @@ config.disableDeepLinking = {{ $DISABLE_DEEP_LINKING }};
 config.p2p.preferredCodec = '{{ .Env.P2P_PREFERRED_CODEC }}';
 {{ end -}}
 
-// enable preffered video Codec
+// Enable preferred video Codec
 if (!config.hasOwnProperty('videoQuality')) config.videoQuality = {};
 {{ if .Env.VIDEOQUALITY_PREFERRED_CODEC -}}
 config.videoQuality.preferredCodec = '{{ .Env.VIDEOQUALITY_PREFERRED_CODEC }}';
