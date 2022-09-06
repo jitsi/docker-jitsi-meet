@@ -5,11 +5,6 @@
         proxy_pass  eturnal:3478;
         proxy_protocol on;
     }
-
-    server {
-        listen      3478 udp;
-        proxy_pass  eturnal:3478;
-    }
 {{ end }}
   {{ if .Env.TURNS_HOST }}
     map $ssl_preread_server_name $name {
