@@ -35,9 +35,21 @@ RUN set -x \
     && ln -s $HOME/bin/stun /usr/sbin/stun \
     && chmod +x /usr/sbin/*
 
-FROM gcr.io/distroless/base-debian11 AS runtime
+FROM gcr.io/distroless/base-debian11 AS cleanup
 # BUILD: copy eturnal
 COPY --from=eturnal --chown=9000:9000 / /
+# remove libssl and openssl from distroless image
+# as they are statically built within eturnal binary
+RUN find -type f -name 'libcrypt*' -exec rm -rv {} + \
+    && find -type d -name 'libcrypt*' -exec rm -rv {} + \
+    && find -type f -name 'libssl*' -exec rm -rv {} + \
+    && find -type d -name 'libssl*' -exec rm -rv {} + \
+    && find -type f -name 'openssl*' -exec rm -rv {} + \
+    && find -type d -name 'openssl*' -exec rm -rv {} +
+
+FROM scratch AS runtime
+# BUILD: copy eturnal
+COPY --from=cleanup --chown=9000:9000 / /
 ARG HOME=/opt/eturnal
 # RUNTIME: define container runtime environment variables
 ENV ERL_DIST_PORT=3470 \
