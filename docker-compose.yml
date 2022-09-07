@@ -352,6 +352,7 @@ services:
             - TURN_CREDENTIALS
             - TURN_RELAY_MIN_PORT
             - TURN_RELAY_MAX_PORT
+            - TURNS_HOST
             - DOCKER_HOST_ADDRESS
             - JVB_DISABLE_STUN
         depends_on:

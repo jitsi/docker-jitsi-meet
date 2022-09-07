@@ -32,7 +32,34 @@ eturnal:
     #  port: 8081           # This is the default.
     #  tls: false           # This is the default.
     #  vm_metrics: true     # This is the default.
+
 EOF
+
+# tls certificates
+TLS_CERT_FILE=$(find /etc/ -name fullchain.pem)
+TLS_KEY_FILE=$(find /etc/ -name key.pem)
+if [ ! -z $TLS_CERT_FILE ] || [ ! -z $TLS_KEY_FILE ]; then
+  echo "  ## TLS certificate/key files (must be readable by 'eturnal' user!):" >> /opt/eturnal/etc/eturnal.yml
+  if [ ! -z $TLS_CERT_FILE ]; then
+    cp -p $TLS_CERT_FILE /opt/eturnal/tls
+    echo "  tls_crt_file: /opt/eturnal/tls/fullchain.pem" >> /opt/eturnal/etc/eturnal.yml
+  fi
+  if [ ! -z $TLS_KEY_FILE ]; then
+    cp -p $TLS_KEY_FILE /opt/eturnal/tls
+    echo "  tls_key_file: /opt/eturnal/tls/key.pem" >> /opt/eturnal/etc/eturnal.yml
+  fi
+fi
+
+# change file permissions
+chown 9000:9000 /opt/eturnal/etc/eturnal.yml
+chmod 640 /opt/eturnal/etc/eturnal.yml
+chown 9000:9000 /opt/eturnal/tls/*
+
+# start certificate renewal cronjob
+#if [ ! -z $TURNS_HOST ]
+#then
+#  crond -b -d
+#fi
 
 # TURN credentials
 if [ ! -z $TURN_CREDENTIALS ]

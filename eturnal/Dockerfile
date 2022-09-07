@@ -16,7 +16,7 @@ RUN set -x \
     && cp -r /opt/eturnal /rootfs/opt \
 # RUNTIME: install runtime init
     && ARCH=$(uname -m | sed -e 's/x86_64/amd64/;s/aarch64/arm64/;s/armv7l/arm/;s/s390x/s390x/;s/ppc64le/ppc64le/') \ 
-    && curl -fL -o /rootfs/tini https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$ARCH \ 
+    && curl -fL -o /rootfs/tini https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$ARCH \
     && chmod +x /rootfs/tini
 # RUNTIME: copy entrypoint script
 COPY rootfs /rootfs
