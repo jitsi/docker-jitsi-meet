@@ -11,10 +11,13 @@ RUN apt-dpkg-wrap apt-get update && \
       libreadline-dev \
       git \
       unzip \
+      openssl \
+      libssl-dev \
       wget && \
     mkdir /tmp/luarocks && \
     wget -qO - https://luarocks.github.io/luarocks/releases/luarocks-3.8.0.tar.gz | tar xfz - --strip-components 1 -C /tmp/luarocks && \
     cd /tmp/luarocks && ./configure && make && make install && cd - && \
+    luarocks install luajwtjitsi 3.0-0 && \
     luarocks install basexx 0.4.1-1 && \
     luarocks install lua-cjson 2.1.0-1 && \
     luarocks install net-url 0.9-1
