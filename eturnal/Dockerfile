@@ -5,7 +5,7 @@ ARG TINI_VERSION=0.19.0
 ARG S6_VERSION=v3.1.2.1
 
 RUN set -x \
-    && apt-get update && apt-get install apt-transport-https apt-utils ca-certificates curl wget xz-utils -y \ 
+    && apt-get update && apt-get install apt-transport-https apt-utils ca-certificates curl wget xz-utils libcap2-bin gcc -y \ 
 # RUNTIME: install eturnal binary with installer
     && ARCH=$(uname -m | sed -e 's/x86_64/x64/;s/aarch64/arm64/;s/armv7l/arm/;s/s390x/s390x/;s/ppc64le/ppc64le/') \ 
     && curl -O https://eturnal.net/download/linux/installer/eturnal-$ETURNAL_VERSION-linux-$ARCH.run \
@@ -18,7 +18,12 @@ RUN set -x \
 # RUNTIME: install runtime init
     && ARCH=$(uname -m) \
     && wget -qO - https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-noarch.tar.xz | tar xfJ - -C /rootfs \
-    && wget -qO - https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-$ARCH.tar.xz | tar xfJ - -C /rootfs
+    && wget -qO - https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-$ARCH.tar.xz | tar xfJ - -C /rootfs \
+# RUNTIME: copy libcap binaries and libraries
+    && gccMultiarch="$(gcc -print-multiarch)" \
+    && mkdir -p  /rootfs/sbin /rootfs/lib/$gccMultiarch/ \
+    && cp -r /sbin/capsh /sbin/getcap /sbin/getpcaps /sbin/setcap /rootfs/sbin \
+    && cp -r /lib/$gccMultiarch/libcap*.so.* /rootfs/lib/$gccMultiarch/ 
 # RUNTIME: copy s6 scripts
 COPY rootfs /rootfs
 
@@ -35,7 +40,8 @@ RUN set -x \
 # RUNTIME: create symbolic links, entrypoint script and minimal configuration file
     && ln -s $HOME/bin/eturnalctl /usr/sbin/eturnalctl \
     && ln -s $HOME/bin/stun /usr/sbin/stun \
-    && chmod +x /etc/cont-init.d/* /etc/services.d/*/run
+    && chmod +x /etc/cont-init.d/* /etc/services.d/*/run \
+    && setcap 'cap_net_bind_service=+ep' $(find $HOME -name beam.smp)
 
 # remove libssl and openssl from distroless image
 # as they are statically built within eturnal binary

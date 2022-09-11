@@ -6,6 +6,10 @@ eturnal:
   listen:
     -
       ip: "::"
+      port: 443
+      transport: udp
+    -
+      ip: "::"
       port: 3478
       transport: auto
       proxy_protocol: true

@@ -344,6 +344,7 @@ services:
         image: jitsi/eturnal:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
+            - 443:443/udp
             - '${TURN_RELAY_MIN_PORT:-50000}-${TURN_RELAY_MAX_PORT:-50500}:${TURN_RELAY_MIN_PORT:-50000}-${TURN_RELAY_MAX_PORT:-50500}/udp'
         security_opt:
             - no-new-privileges:true
