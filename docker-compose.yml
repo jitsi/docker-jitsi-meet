@@ -345,6 +345,8 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${TURN_RELAY_MIN_PORT:-50000}-${TURN_RELAY_MAX_PORT:-50500}:${TURN_RELAY_MIN_PORT:-50000}-${TURN_RELAY_MAX_PORT:-50500}/udp'
+        security_opt:
+            - no-new-privileges:true
         volumes:
             - ${CONFIG}/eturnal:/opt/eturnal/etc:Z
             - ${CONFIG}/web/acme-certs:/etc/eturnal/tls:Z

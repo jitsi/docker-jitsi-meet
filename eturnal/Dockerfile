@@ -2,9 +2,10 @@ FROM debian:bullseye-slim as prepare
 # BUILD: define image build arguments
 ARG ETURNAL_VERSION=1.10.1
 ARG TINI_VERSION=0.19.0
+ARG S6_VERSION=v3.1.2.1
 
 RUN set -x \
-    && apt-get update && apt-get install curl -y \ 
+    && apt-get update && apt-get install apt-transport-https apt-utils ca-certificates curl wget xz-utils -y \ 
 # RUNTIME: install eturnal binary with installer
     && ARCH=$(uname -m | sed -e 's/x86_64/x64/;s/aarch64/arm64/;s/armv7l/arm/;s/s390x/s390x/;s/ppc64le/ppc64le/') \ 
     && curl -O https://eturnal.net/download/linux/installer/eturnal-$ETURNAL_VERSION-linux-$ARCH.run \
@@ -15,15 +16,16 @@ RUN set -x \
     && mkdir -p /rootfs/opt/eturnal/log /rootfs/opt/eturnal/run /rootfs/opt/eturnal/tls \
     && cp -r /opt/eturnal /rootfs/opt \
 # RUNTIME: install runtime init
-    && ARCH=$(uname -m | sed -e 's/x86_64/amd64/;s/aarch64/arm64/;s/armv7l/arm/;s/s390x/s390x/;s/ppc64le/ppc64le/') \ 
-    && curl -fL -o /rootfs/tini https://github.com/krallin/tini/releases/download/v$TINI_VERSION/tini-$ARCH \
-    && chmod +x /rootfs/tini
-# RUNTIME: copy entrypoint script
+    && ARCH=$(uname -m) \
+    && wget -qO - https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-noarch.tar.xz | tar xfJ - -C /rootfs \
+    && wget -qO - https://github.com/just-containers/s6-overlay/releases/download/$S6_VERSION/s6-overlay-$ARCH.tar.xz | tar xfJ - -C /rootfs
+# RUNTIME: copy s6 scripts
 COPY rootfs /rootfs
 
-FROM busybox:stable-glibc AS eturnal
+FROM gcr.io/distroless/base-debian11 AS eturnal
 # BUILD: copy eturnal
 COPY --from=prepare --chown=9000:9000 /rootfs /
+COPY --from=busybox:stable-glibc /bin /bin
 ARG HOME=/opt/eturnal
 
 RUN set -x \
@@ -33,11 +35,8 @@ RUN set -x \
 # RUNTIME: create symbolic links, entrypoint script and minimal configuration file
     && ln -s $HOME/bin/eturnalctl /usr/sbin/eturnalctl \
     && ln -s $HOME/bin/stun /usr/sbin/stun \
-    && chmod +x /usr/sbin/*
+    && chmod +x /etc/cont-init.d/* /etc/services.d/*/run
 
-FROM gcr.io/distroless/base-debian11 AS cleanup
-# BUILD: copy eturnal
-COPY --from=eturnal --chown=9000:9000 / /
 # remove libssl and openssl from distroless image
 # as they are statically built within eturnal binary
 RUN find -type f -name 'libcrypt*' -exec rm -rv {} + \
@@ -49,10 +48,11 @@ RUN find -type f -name 'libcrypt*' -exec rm -rv {} + \
 
 FROM scratch AS runtime
 # BUILD: copy eturnal
-COPY --from=cleanup --chown=9000:9000 / /
+COPY --from=eturnal / /
 ARG HOME=/opt/eturnal
-# RUNTIME: define container runtime environment variables
-ENV ERL_DIST_PORT=3470 \
+# RUNTIME: define environment variables
+ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2 \
+    ERL_DIST_PORT=3470 \
     PIPE_DIR=$HOME/run/pipe/ \
     STUN_SERVICE="stun.conversations.im 3478"
 
@@ -61,5 +61,5 @@ WORKDIR $HOME
 #USER eturnal
 VOLUME ["$HOME"]
 EXPOSE 3478 3478/udp
-ENTRYPOINT ["/tini","--","run.sh"]
-CMD ["eturnalctl", "foreground"]
+ENTRYPOINT ["/init"]
+#CMD ["eturnalctl", "foreground"]

@@ -1,0 +1,43 @@
+#!/command/with-contenv /bin/sh
+
+# TURN credentials
+if [ ! -z $TURN_CREDENTIALS ]
+then
+export ETURNAL_SECRET=$TURN_CREDENTIALS
+fi
+
+# TURN relay port range
+if [ ! -z $TURN_RELAY_MIN_PORT ] || [ ! -z $TURN_RELAY_MAX_PORT ] 
+then
+  if [ ${TURN_RELAY_MIN_PORT-50000} \< ${TURN_RELAY_MAX_PORT-50500} ]
+  then
+    export ETURNAL_RELAY_MIN_PORT=${TURN_RELAY_MIN_PORT-50000}
+    export ETURNAL_RELAY_MAX_PORT=${TURN_RELAY_MAX_PORT-50500}
+  else
+    echo ""
+    echo " $(date) [INFO] Configuration check:"
+    echo ""
+    echo " $(date) [WARNING] Defined TURN range minimum port -> ${TURN_RELAY_MIN_PORT-50000} is greater or equal than maximum port -> ${TURN_RELAY_MAX_PORT-50500}"
+    echo " $(date) [INFO] Starting eturnal with relay port range 50000 - 50500"
+    echo ""
+    export ETURNAL_RELAY_MIN_PORT=50000
+    export ETURNAL_RELAY_MAX_PORT=50500
+  fi
+else
+  export ETURNAL_RELAY_MIN_PORT=50000
+  export ETURNAL_RELAY_MAX_PORT=50500 
+fi
+
+# discover public IP addresses
+if [ ! -z $DOCKER_HOST_ADDRESS ]
+then
+  export ETURNAL_RELAY_IPV4_ADDR=$DOCKER_HOST_ADDRESS
+else 
+  if [ -z "$JVB_DISABLE_STUN" ]
+  then
+    export ETURNAL_RELAY_IPV4_ADDR=${ETURNAL_RELAY_IPV4_ADDR-$(stun -4 $STUN_SERVICE)}
+    export ETURNAL_RELAY_IPV6_ADDR=${ETURNAL_RELAY_IPV6_ADDR-$(stun -6 $STUN_SERVICE)}
+  fi
+fi
+
+exec eturnalctl foreground

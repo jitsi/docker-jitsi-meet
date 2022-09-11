@@ -1,0 +1,47 @@
+#!/command/with-contenv /bin/sh
+
+# only run the script if TURNS is enabled (and if acme.sh is used in web container)
+if [ ! -z $TURNS_HOST ] || ([ ! -z $TURNS_HOST ] && [ $ENABLE_LETSENCRYPT -eq 1 ]); then
+
+    while true; do
+        # sleep a sufficient time to give the web container's acme.sh script a chance to obtain certificates
+        sleep 60s
+
+        # mounted certs from web container
+        TLS_CERT_FILE=$(find /etc/ -name fullchain.pem)
+        TLS_KEY_FILE=$(find /etc/ -name key.pem)
+
+        # check if files have changed
+        if [ ! -z $TLS_CERT_FILE ] || [ ! -z $TLS_KEY_FILE ]; then
+            current=$(md5sum /opt/eturnal/tls/fullchain.pem | awk '{ print $1 }')
+            last_modified=$(md5sum $TLS_CERT_FILE | awk '{ print $1 }')
+
+        # copy certs to eturnal, adjust configuration file
+            if [ "$current" != "$last_modified" ]; then 
+                echo " $(date) [Info] TLS certificates have been renewed, copy certs to eturnal and reload"
+
+                if [ ! -z $TLS_CERT_FILE ]; then
+                    cp -p $TLS_CERT_FILE /opt/eturnal/tls
+                    sed -i -e "s|#tls_crt_file:|tls_crt_file:|g" /opt/eturnal/etc/eturnal.yml
+                fi
+
+                if [ ! -z $TLS_KEY_FILE ]; then
+                    cp -p $TLS_KEY_FILE /opt/eturnal/tls
+                    sed -i -e "s|#tls_key_file:|tls_key_file:|g" /opt/eturnal/etc/eturnal.yml
+                fi
+
+        #  fix ownership and reload the service (reloading eturnal does not stop/break any active sessions)
+                chown 9000:9000 /opt/eturnal/tls/* 
+                eturnalctl reload
+
+            else
+                echo " $(date) [Info] CronJob: TLS certificates have not been renewed, check again in 5 minutes"
+            fi
+        sleep 240s    
+        fi
+    done
+
+# don't repeatedly run the cron job, if eturnal does not serve TURNS
+else
+    s6-svc -O /var/run/s6/legacy-services/cron
+fi
