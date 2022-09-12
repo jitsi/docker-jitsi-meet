@@ -20,11 +20,15 @@ config.hosts.domain = '{{ $XMPP_DOMAIN }}';
 config.focusUserJid = '{{$JICOFO_AUTH_USER}}@{{$XMPP_AUTH_DOMAIN}}';
 
 {{ if $ENABLE_SUBDOMAINS -}}
+var subdir = '<!--# echo var="subdir" default="" -->';
 var subdomain = "<!--# echo var="subdomain" default="" -->";
+if (subdir.startsWith('<!--')) {
+    subdir = '';
+}
 if (subdomain) {
     subdomain = subdomain.substr(0,subdomain.length-1).split('.').join('_').toLowerCase() + '.';
 }
-config.hosts.muc = '{{ $XMPP_MUC_DOMAIN_PREFIX }}.'+subdomain+'{{ $XMPP_DOMAIN }}';
+config.hosts.muc = '{{ $XMPP_MUC_DOMAIN_PREFIX }}.' + subdomain + '{{ $XMPP_DOMAIN }}';
 {{ else -}}
 config.hosts.muc = '{{ $XMPP_MUC_DOMAIN }}';
 {{ end -}}
@@ -38,14 +42,23 @@ config.hosts.anonymousdomain = '{{ $XMPP_GUEST_DOMAIN }}';
 config.hosts.authdomain = '{{ $XMPP_DOMAIN }}';
 {{ end -}}
 
+{{ if $ENABLE_SUBDOMAINS -}}
+config.bosh = '/' + subdir + 'http-bind';
+{{ else -}}
 config.bosh = '/http-bind';
+{{ end -}}
+
 {{ if $ENABLE_XMPP_WEBSOCKET -}}
+{{ if $ENABLE_SUBDOMAINS -}}
+config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/' + subdir + 'xmpp-websocket';
+{{ else -}}
 config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
+{{ end -}}
 {{ end -}}
 
 {{ if $CONFIG_EXTERNAL_CONNECT -}}
 {{ if $ENABLE_SUBDOMAINS -}}
-config.externalConnectUrl = '/<!--# echo var="subdir" default="" -->http-pre-bind';
+config.externalConnectUrl = '/' + subdir + 'http-pre-bind';
 {{ else -}}
 config.externalConnectUrl = '/http-pre-bind';
 {{ end -}}
