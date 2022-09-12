@@ -28,7 +28,7 @@ if (subdir.startsWith('<!--')) {
 if (subdomain) {
     subdomain = subdomain.substr(0,subdomain.length-1).split('.').join('_').toLowerCase() + '.';
 }
-config.hosts.muc = '{{ $XMPP_MUC_DOMAIN_PREFIX }}.'+subdomain+'{{ $XMPP_DOMAIN }}';
+config.hosts.muc = '{{ $XMPP_MUC_DOMAIN_PREFIX }}. ' + subdomain + '{{ $XMPP_DOMAIN }}';
 {{ else -}}
 config.hosts.muc = '{{ $XMPP_MUC_DOMAIN }}';
 {{ end -}}
@@ -43,14 +43,14 @@ config.hosts.authdomain = '{{ $XMPP_DOMAIN }}';
 {{ end -}}
 
 {{ if $ENABLE_SUBDOMAINS -}}
-config.bosh = '/'+subdir+'http-bind';
+config.bosh = '/' + subdir + 'http-bind';
 {{ else -}}
 config.bosh = '/http-bind';
 {{ end -}}
 
 {{ if $ENABLE_XMPP_WEBSOCKET -}}
 {{ if $ENABLE_SUBDOMAINS -}}
-config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/'+subdir+'xmpp-websocket';
+config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/' + subdir + 'xmpp-websocket';
 {{ else -}}
 config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
 {{ end -}}
@@ -58,7 +58,7 @@ config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
 
 {{ if $CONFIG_EXTERNAL_CONNECT -}}
 {{ if $ENABLE_SUBDOMAINS -}}
-config.externalConnectUrl = '/'+subdir+'http-pre-bind';
+config.externalConnectUrl = '/' + subdir + 'http-pre-bind';
 {{ else -}}
 config.externalConnectUrl = '/http-pre-bind';
 {{ end -}}
