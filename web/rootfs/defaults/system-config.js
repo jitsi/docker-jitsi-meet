@@ -28,7 +28,7 @@ if (subdir.startsWith('<!--')) {
 if (subdomain) {
     subdomain = subdomain.substr(0,subdomain.length-1).split('.').join('_').toLowerCase() + '.';
 }
-config.hosts.muc = '{{ $XMPP_MUC_DOMAIN_PREFIX }}. ' + subdomain + '{{ $XMPP_DOMAIN }}';
+config.hosts.muc = '{{ $XMPP_MUC_DOMAIN_PREFIX }}.' + subdomain + '{{ $XMPP_DOMAIN }}';
 {{ else -}}
 config.hosts.muc = '{{ $XMPP_MUC_DOMAIN }}';
 {{ end -}}
