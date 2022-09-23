@@ -202,6 +202,10 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     av_moderation_component = "avmoderation.{{ $XMPP_DOMAIN }}"
     {{ end }}
 
+    {{ if .Env.XMPP_OPTIONS }}
+    {{ join "\n" (splitList "," .Env.XMPP_OPTIONS) }}
+    {{ end }}
+
     c2s_require_encryption = false
 
 {{ if $ENABLE_GUEST_DOMAIN }}
@@ -273,6 +277,9 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     {{ if .Env.MAX_PARTICIPANTS }}
     muc_access_whitelist = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
     muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
+    {{ end }}
+    {{ if .Env.XMPP_MUC_OPTIONS }}
+    {{ join "\n" (splitList "," .Env.XMPP_MUC_OPTIONS) }}
     {{ end }}
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"

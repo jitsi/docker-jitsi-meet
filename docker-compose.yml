@@ -233,6 +233,8 @@ services:
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_OPTIONS
+            - XMPP_MUC_OPTIONS
             - XMPP_MODULES
             - XMPP_MUC_MODULES
             - XMPP_MUC_CONFIGURATION
