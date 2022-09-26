@@ -308,6 +308,7 @@ services:
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_OCTO
             - ENABLE_MULTI_STREAM
+            - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
