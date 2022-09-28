@@ -1,3 +1,21 @@
+## stable-7830
+
+Based on stable release 7830.
+
+* dd95b3d prosody: fix arm64 build
+* acb2f4e misc: update stale.yml
+* 02e32e5 jibri: update Chrome to M105
+* c53de72 jvb: add JVB_ADVERTISE_IPS, deprecating DOCKER_HOST_ADDRESS
+* 723acc2 web: add ability to configure the room password digit size
+* a1e82ea jvb: migrate config to secure octo
+* 91043c5 prosody: upgrade UVS module to be compatible with Prosody 0.12 and luajwtjitsi 3.0
+* dc5b6a1 fix: multi tenant setup (#1401)
+* 47804d0 prosody: add JWT_ENABLE_DOMAIN_VERIFICATION to compose file
+* 832b178 prosody: make GC options configurable
+* bf6a68b web: fix setting prefix for subdomains
+* 5fabec9 prosody: add end conference
+* 7f7a9b4 misc: working on unstable
+
 ## stable-7648-4
 
 Based on stable release 7648-4.
