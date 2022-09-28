@@ -43,11 +43,13 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
       lua-ldap \
       lua-luaossl \
       lua-sec \
-      lua-unbound \
-      jitsi-meet-prosody && \
+      lua-unbound && \
+    apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
+    dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
+    mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+    rm -rf /tmp/pkg /var/cache/apt && \
     apt-cleanup && \
     rm -rf /etc/prosody && \
-    mv /usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
     mv /usr/share/lua/5.3/inspect.lua /usr/share/lua/5.4/ && \
     rm -rf /usr/lib/lua/{5.1,5.2,5.3} && \
     rm -rf /usr/share/lua/{5.1,5.2,5.3} && \
