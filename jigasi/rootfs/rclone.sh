@@ -123,9 +123,10 @@ webhookToken=$( jq -r  '.webhookToken' <<< "${response}" )
 
 response=`curl --header "Authorization: Bearer $webhookToken" --header "Content-Type: application/json" \
   --request POST \
-  --data '{"roomname": $roomname ,"audiofilename": $new_fileName_audio, "transcriptionfilename": $new_fileName_text}' \
+  --data '{"roomname": "'"$roomname"'" ,"audiofilename": "'"$new_fileName_audio"'", "transcriptionfilename": "'"$new_fileName_text"'"}' \
   $webhookUrl`
+
+  
 rm -rf $RECORDINGS_DIR
 echo "Copying done!!!!!"
 echo "Deleting Video from Host..."
-
