@@ -17,6 +17,7 @@ services:
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
             - AUDIO_QUALITY_OPUS_BITRATE
+            - AUTO_CAPTION_ON_RECORD
             - BRANDING_DATA_URL
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
@@ -46,6 +47,7 @@ services:
             - DISABLE_PROFILE
             - DISABLE_REACTIONS
             - DISABLE_REMOTE_VIDEO_MENU
+            - DISABLE_START_FOR_ALL
             - DROPBOX_APPKEY
             - DROPBOX_REDIRECT_URI
             - DYNAMIC_BRANDING_URL
@@ -109,6 +111,7 @@ services:
             - NGINX_WORKER_PROCESSES
             - NGINX_WORKER_CONNECTIONS
             - PEOPLE_SEARCH_URL
+            - PREFERRED_LANGUAGE
             - PUBLIC_URL
             - P2P_PREFERRED_CODEC
             - RESOLUTION
@@ -126,7 +129,10 @@ services:
             - TESTING_OCTO_PROBABILITY
             - TOKEN_AUTH_URL
             - TOOLBAR_BUTTONS
+            - TRANSLATION_LANGUAGES
+            - TRANSLATION_LANGUAGES_HEAD
             - TZ
+            - USE_APP_LANGUAGE
             - VIDEOQUALITY_BITRATE_H264_LOW
             - VIDEOQUALITY_BITRATE_H264_STANDARD
             - VIDEOQUALITY_BITRATE_H264_HIGH
