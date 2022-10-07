@@ -1,3 +1,10 @@
+## stable-7882
+
+Based on stable release 7882.
+
+* 4fcba2c jibri: update Chrome to M106
+* 957a225 misc: working on unstable
+
 ## stable-7830
 
 Based on stable release 7830.
