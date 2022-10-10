@@ -27,7 +27,7 @@ LABEL org.opencontainers.image.url="https://prosody.im/"
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
-ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.7.0"
+ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
 
 RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
     echo "deb http://packages.prosody.im/debian bullseye main" > /etc/apt/sources.list.d/prosody.list && \
@@ -43,11 +43,13 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
       lua-ldap \
       lua-luaossl \
       lua-sec \
-      lua-unbound \
-      jitsi-meet-prosody && \
+      lua-unbound && \
+    apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
+    dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
+    mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+    rm -rf /tmp/pkg /var/cache/apt && \
     apt-cleanup && \
     rm -rf /etc/prosody && \
-    mv /usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
     mv /usr/share/lua/5.3/inspect.lua /usr/share/lua/5.4/ && \
     rm -rf /usr/lib/lua/{5.1,5.2,5.3} && \
     rm -rf /usr/share/lua/{5.1,5.2,5.3} && \

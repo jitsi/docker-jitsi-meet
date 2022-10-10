@@ -13,6 +13,14 @@ fi
 
 [ -z "${XMPP_SERVER}" ] && export XMPP_SERVER=xmpp.meet.jitsi
 
+# Migration from DOCKER_HOST_ADDRESS to JVB_ADVERTISE_IPS
+if [[ -z "${JVB_ADVERTISE_IPS}" ]]; then
+    if [[ ! -z "${DOCKER_HOST_ADDRESS}" ]]; then
+        echo "WARNING: DOCKER_HOST_ADDRESS is deprecated, migrate to JVB_ADVERTISE_IPS"
+        export JVB_ADVERTISE_IPS=${DOCKER_HOST_ADDRESS}
+    fi
+fi
+
 # On environments like Swarm the IP address used by the default gateway need not be
 # the one used for inter-container traffic. Use that one for our fallback ID.
 XMPP_SERVER_IP=$(dig +short +search ${XMPP_SERVER})
@@ -31,3 +39,9 @@ tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/jvb.conf > /config/jvb.conf
 
 chown -R jvb:jitsi /config
+
+# Configuration checks
+if [[ (-z $ENABLE_COLIBRI_WEBSOCKET || $ENABLE_COLIBRI_WEBSOCKET == "0") && $ENABLE_OCTO == "1"  ]]; then
+  echo "ERROR: In order to enable Octo relays (with ENABLE_OCTO=1), you MUST enable Colibri websockets (with ENABLE_COLIBRI_WEBSOCKET=1)";
+  exit 1;
+fi

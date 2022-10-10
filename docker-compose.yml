@@ -65,6 +65,7 @@ services:
             - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
             - ENABLE_NOISY_MIC_DETECTION
+            - ENABLE_OCTO
             - ENABLE_OPUS_RED
             - ENABLE_PREJOIN_PAGE
             - ENABLE_P2P
@@ -200,6 +201,7 @@ services:
             - JWT_ASAP_KEYSERVER
             - JWT_ALLOW_EMPTY
             - JWT_AUTH_TYPE
+            - JWT_ENABLE_DOMAIN_VERIFICATION
             - JWT_TOKEN_AUTH_MODULE
             - MATRIX_UVS_URL
             - MATRIX_UVS_ISSUER
@@ -309,6 +311,7 @@ services:
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_OCTO
             - ENABLE_MULTI_STREAM
+            - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
@@ -318,9 +321,8 @@ services:
             - JVB_MUC_NICKNAME
             - JVB_STUN_SERVERS
             - JVB_OCTO_BIND_ADDRESS
-            - JVB_OCTO_PUBLIC_ADDRESS
-            - JVB_OCTO_BIND_PORT
             - JVB_OCTO_REGION
+            - JVB_OCTO_RELAY_ID
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
             - PUBLIC_URL
