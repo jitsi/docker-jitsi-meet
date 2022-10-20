@@ -1,0 +1,17 @@
+version: "3.5"
+
+services:
+  vosk-en:
+    image: alphacep/kaldi-en:latest
+    restart: ${RESTART_POLICY:-unless-stopped}
+    ports:
+      - "2700:2700"
+    networks:
+      meet.jitsi:
+  vosk-fr:
+    image: alphacep/kaldi-fr:latest
+    restart: ${RESTART_POLICY:-unless-stopped}
+    ports:
+      - "2710:2700"
+    networks:
+      meet.jitsi:
