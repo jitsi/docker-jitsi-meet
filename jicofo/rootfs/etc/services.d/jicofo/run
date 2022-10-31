@@ -1,14 +1,7 @@
 #!/usr/bin/with-contenv bash
 
-# Defaults
-[ -z "${JICOFO_AUTH_USER}" ] && export JICOFO_AUTH_USER=focus
-[ -z "${XMPP_AUTH_DOMAIN}" ] && export XMPP_AUTH_DOMAIN=auth.meet.jitsi
-[ -z "${XMPP_DOMAIN}" ] && export XMPP_DOMAIN=meet.jitsi
-[ -z "${XMPP_SERVER}" ] && export XMPP_SERVER=xmpp.meet.jitsi
-
 JAVA_SYS_PROPS="-Djava.util.logging.config.file=/config/logging.properties -Dconfig.file=/config/jicofo.conf"
 DAEMON=/usr/share/jicofo/jicofo.sh
 DAEMON_DIR=/usr/share/jicofo/
-DAEMON_OPTS="--domain=\"$XMPP_DOMAIN\" --host=\"$XMPP_SERVER\" --user_name=\"$JICOFO_AUTH_USER\" --user_domain=\"$XMPP_AUTH_DOMAIN\" --user_password=\"$JICOFO_AUTH_PASSWORD\""
 
-exec s6-setuidgid jicofo /bin/bash -c "cd $DAEMON_DIR; JAVA_SYS_PROPS=\"$JAVA_SYS_PROPS\" exec $DAEMON $DAEMON_OPTS"
+exec s6-setuidgid jicofo /bin/bash -c "cd $DAEMON_DIR; JAVA_SYS_PROPS=\"$JAVA_SYS_PROPS\" exec $DAEMON"
