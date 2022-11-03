@@ -63,6 +63,13 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
     fi
 fi
 
+# Detect nameserver for Nginx, if not specified.
+if [[ -z "$NGINX_RESOLVER" ]]; then
+    export NGINX_RESOLVER=$(grep nameserver /etc/resolv.conf | cut -d" " -f2 | tr "\n" " " | sed -e "s/[[:space:]]*$//")
+fi
+
+echo "Using Nginx resolver: =$NGINX_RESOLVER="
+
 # copy config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
 
