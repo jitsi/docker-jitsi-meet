@@ -1,3 +1,15 @@
+## stable-8044
+
+Based on stable release 8044.
+
+* b212dca web: fix parsing IPv6 reolver addresses
+* 53b2654 web: auto-detect nginx resolver
+* 9fbb5bd jicofo: fix XMPP config (all moved to jicofo.conf)
+* a2333b3 jicofo: remove JICOFO_SHORT_ID (removed upstream)
+* d764db9 doc: update README
+* c694a9e web: set charset as utf-8
+* 8660089 misc: working on unstable
+
 ## stable-7882
 
 Based on stable release 7882.
