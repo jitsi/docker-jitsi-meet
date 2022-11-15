@@ -65,7 +65,25 @@ fi
 
 # Detect nameserver for Nginx, if not specified.
 if [[ -z "$NGINX_RESOLVER" ]]; then
-    export NGINX_RESOLVER=$(grep nameserver /etc/resolv.conf | cut -d" " -f2 | tr "\n" " " | sed -e "s/[[:space:]]*$//")
+    IP_LIST=""
+
+    # Parse IPs in /etc/resolv.conf, taking into account IPv6 addresses need to be
+    # enclosed in square brackets for the Nginx config file.
+    while read -r line; do
+        if [[ $line =~ ^nameserver.* ]]; then
+            IP=$(echo $line | cut -d" " -f2)
+            COLONS=$(echo $IP | tr -dc ":" | awk '{ print length '})
+            if [[ $COLONS -ge 2 ]]; then
+                IP="[$IP]"
+            fi
+            if [[ ! "$IP_LIST" = "" ]]; then
+                IP_LIST+=" "
+            fi
+            IP_LIST+="$IP"
+        fi
+    done < <(cat /etc/resolv.conf)
+
+    export NGINX_RESOLVER=$IP_LIST
 fi
 
 echo "Using Nginx resolver: =$NGINX_RESOLVER="
