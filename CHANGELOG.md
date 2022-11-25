@@ -1,3 +1,11 @@
+## stable-8044-1
+
+Based on stable release 8044-1.
+
+* fd70f04 env: add note about JaaS account creation
+* 046bb79 jaas: register JaaS account automatically
+* c44c59e misc: working on unstable
+
 ## stable-8044
 
 Based on stable release 8044.
