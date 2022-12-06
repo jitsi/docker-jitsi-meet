@@ -23,6 +23,7 @@
 {{ $PUBLIC_URL_DOMAIN := $PUBLIC_URL | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
+{{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -67,7 +68,7 @@ external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
 {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
 external_services = {
   {{ if .Env.TURN_HOST }}
-     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "udp", secret = true, ttl = 86400, algorithm = "turn" }
+     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ $TURN_TRANSPORT }}", secret = true, ttl = 86400, algorithm = "turn" }
   {{ end }}
   {{ if and .Env.TURN_HOST .Env.TURNS_HOST }}
   ,

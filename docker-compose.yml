@@ -227,6 +227,7 @@ services:
             - TURNS_HOST
             - TURN_PORT
             - TURNS_PORT
+            - TURN_TRANSPORT
             - TZ
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
