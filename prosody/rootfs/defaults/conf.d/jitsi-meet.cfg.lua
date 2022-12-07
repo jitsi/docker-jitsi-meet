@@ -24,6 +24,7 @@
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
 {{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
+{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -68,7 +69,11 @@ external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
 {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
 external_services = {
   {{ if .Env.TURN_HOST }}
-     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ $TURN_TRANSPORT }}", secret = true, ttl = 86400, algorithm = "turn" }
+     { type = "turn", host = "{{.Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ index $TURN_TRANSPORTS 0 }}", secret = true, ttl = 86400, algorithm = "turn" }
+     {{ if gt (len $TURN_TRANSPORTS) 1 }}
+  ,
+     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ index $TURN_TRANSPORTS 1 }}", secret = true, ttl = 86400, algorithm = "turn" }
+    {{ end }}
   {{ end }}
   {{ if and .Env.TURN_HOST .Env.TURNS_HOST }}
   ,
