@@ -36,6 +36,7 @@
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $PROSODY_RESERVATION_ENABLED := .Env.PROSODY_RESERVATION_ENABLED | default "false" | toBool }}
 {{ $PROSODY_RESERVATION_REST_BASE_URL := .Env.PROSODY_RESERVATION_REST_BASE_URL | default "" }}
+{{ $ENV := .Env -}}
 
 admins = {
     {{ if .Env.JIGASI_XMPP_PASSWORD }}
@@ -69,10 +70,11 @@ external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
 {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
 external_services = {
   {{ if .Env.TURN_HOST }}
-     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ index $TURN_TRANSPORTS 0 }}", secret = true, ttl = 86400, algorithm = "turn" }
-     {{ if gt (len $TURN_TRANSPORTS) 1 }}
+    {{ range $index, $transport := $TURN_TRANSPORTS }}
+      {{ if gt $index 0 }}
   ,
-     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ index $TURN_TRANSPORTS 1 }}", secret = true, ttl = 86400, algorithm = "turn" }
+      {{ end }}
+     { type = "turn", host = "{{ $ENV.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = 86400, algorithm = "turn" }
     {{ end }}
   {{ end }}
   {{ if and .Env.TURN_HOST .Env.TURNS_HOST }}
