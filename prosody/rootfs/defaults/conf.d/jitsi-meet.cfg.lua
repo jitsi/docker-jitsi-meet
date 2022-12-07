@@ -69,7 +69,7 @@ external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
 {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
 external_services = {
   {{ if .Env.TURN_HOST }}
-     { type = "turn", host = "{{.Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ index $TURN_TRANSPORTS 0 }}", secret = true, ttl = 86400, algorithm = "turn" }
+     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ index $TURN_TRANSPORTS 0 }}", secret = true, ttl = 86400, algorithm = "turn" }
      {{ if gt (len $TURN_TRANSPORTS) 1 }}
   ,
      { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ index $TURN_TRANSPORTS 1 }}", secret = true, ttl = 86400, algorithm = "turn" }
