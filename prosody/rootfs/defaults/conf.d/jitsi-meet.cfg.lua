@@ -23,6 +23,8 @@
 {{ $PUBLIC_URL_DOMAIN := $PUBLIC_URL | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" }}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" }}
+{{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
+{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -34,6 +36,7 @@
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $PROSODY_RESERVATION_ENABLED := .Env.PROSODY_RESERVATION_ENABLED | default "false" | toBool }}
 {{ $PROSODY_RESERVATION_REST_BASE_URL := .Env.PROSODY_RESERVATION_REST_BASE_URL | default "" }}
+{{ $ENV := .Env -}}
 
 admins = {
     {{ if .Env.JIGASI_XMPP_PASSWORD }}
@@ -67,7 +70,12 @@ external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
 {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
 external_services = {
   {{ if .Env.TURN_HOST }}
-     { type = "turn", host = "{{ .Env.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
+    {{ range $index, $transport := $TURN_TRANSPORTS }}
+      {{ if gt $index 0 }}
+  ,
+      {{ end }}
+     { type = "turn", host = "{{ $ENV.TURN_HOST }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = 86400, algorithm = "turn" }
+    {{ end }}
   {{ end }}
   {{ if and .Env.TURN_HOST .Env.TURNS_HOST }}
   ,
