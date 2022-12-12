@@ -29,7 +29,6 @@
 {{ $DISABLE_START_FOR_ALL := .Env.DISABLE_START_FOR_ALL | default "false" | toBool -}}
 {{ $AUTO_CAPTION_ON_RECORD := .Env.AUTO_CAPTION_ON_RECORD | default "false" | toBool -}}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
-{{ $ENABLE_MULTI_STREAM := .Env.ENABLE_MULTI_STREAM | default "true" | toBool }}
 {{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
 {{ $RESOLUTION := .Env.RESOLUTION | default "720" -}}
@@ -84,9 +83,9 @@ config.startBitrate = '{{ .Env.START_BITRATE }}';
 {{ end -}}
 
 if (!config.hasOwnProperty('flags')) config.flags = {};
-config.flags.sourceNameSignaling = {{ $ENABLE_MULTI_STREAM }};
-config.flags.sendMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
-config.flags.receiveMultipleVideoStreams = {{ $ENABLE_MULTI_STREAM }};
+config.flags.sourceNameSignaling = true;
+config.flags.sendMultipleVideoStreams = true;
+config.flags.receiveMultipleVideoStreams = true;
 
 
 // ScreenShare Configuration.

@@ -88,7 +88,6 @@ services:
             - ENABLE_TRANSCRIPTIONS
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
-            - ENABLE_MULTI_STREAM
             - ETHERPAD_PUBLIC_URL
             - ETHERPAD_URL_BASE
             - E2EPING_NUM_REQUESTS
@@ -313,7 +312,6 @@ services:
             - DOCKER_HOST_ADDRESS
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_OCTO
-            - ENABLE_MULTI_STREAM
             - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER
