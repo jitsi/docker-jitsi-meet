@@ -1,3 +1,14 @@
+## stable-8138
+
+Based on stable release 8138.
+
+* 1e49d65 web: simplify build
+* dd399fe web,jvb: remove ENABLE_MULTISTREAM
+* 723d661 jibri: add single-use-mode config option
+* ca14c52 web: add more transcription config env vars
+* ccc5746 prosody: add ability to configure TURN server transports
+* 17d047a misc: working on unstable
+
 ## stable-8044-1
 
 Based on stable release 8044-1.
