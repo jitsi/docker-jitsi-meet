@@ -346,7 +346,7 @@ config.transcription = { enabled: {{ $ENABLE_TRANSCRIPTIONS }} };
 config.transcription.translationLanguages = {{ $TRANSLATION_LANGUAGES }};
 config.transcription.translationLanguagesHead = {{ $TRANSLATION_LANGUAGES_HEAD }};
 config.transcription.useAppLanguage = {{ $USE_APP_LANGUAGE }};
-config.transcription.preferredLanguage = {{ $PREFERRED_LANGUAGE }};
+config.transcription.preferredLanguage = '{{ $PREFERRED_LANGUAGE }}';
 config.transcription.disableStartForAll = {{ $DISABLE_START_FOR_ALL }};
 config.transcription.autoCaptionOnRecord = {{ $AUTO_CAPTION_ON_RECORD }};
 
