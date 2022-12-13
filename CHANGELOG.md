@@ -1,3 +1,10 @@
+## stable-8138-1
+
+Based on stable release 8138-1.
+
+* 8923b72 web: fix missing quotes on config.js string
+* 6b11a89 misc: working on unstable
+
 ## stable-8138
 
 Based on stable release 8138.
