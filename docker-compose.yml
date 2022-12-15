@@ -150,6 +150,8 @@ services:
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
             - XMPP_PORT
+            - WHITEBOARD_ENABLED
+            - WHITEBOARD_COLLAB_SERVER_BASE_URL
         networks:
             meet.jitsi:
 
