@@ -156,6 +156,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         "ping";
         "speakerstats";
         "conference_duration";
+        "room_metadata";
         {{ if $ENABLE_END_CONFERENCE }}
         "end_conference";
         {{ end }}
