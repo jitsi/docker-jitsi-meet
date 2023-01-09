@@ -5,6 +5,7 @@ set -e
 EMAIL=$LETSENCRYPT_EMAIL
 DOMAIN=$LETSENCRYPT_DOMAIN
 
+JITSI_INSTALLATION="DOCKER"
 JAAS_ENDPOINT="https://account-provisioning.cloudflare.jitsi.net/operations"
 CHALLENGE_DIR="/usr/share/jitsi-meet/.well-known"
 CHALLENGE_FILE="$CHALLENGE_DIR/jitsi-challenge.txt"
@@ -47,7 +48,7 @@ while $KEEP_WAITING; do
 done
 
 create_error=0
-create_data=$(curl -s -f -X 'POST' "${JAAS_ENDPOINT}" -H 'Content-Type: application/json' -H 'accept: */*' -d "{ \"domain\": \"${DOMAIN}\", \"email\": \"${EMAIL}\" }") || create_error=$?
+create_data=$(curl -s -f -X 'POST' "${JAAS_ENDPOINT}" -H 'Content-Type: application/json' -H 'accept: */*' -d "{ \"domain\": \"${DOMAIN}\", \"email\": \"${EMAIL}\", \"jitsiInstallation\": \"${JITSI_INSTALLATION}\" }") || create_error=$?
 if [ ${create_error} -ne 0 ]; then
     echo "JaaS account creation failed. Status: ${create_error}, response: ${create_data}"
     stop_service
