@@ -198,10 +198,6 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
 
     {{ if $ENABLE_BREAKOUT_ROOMS }}
     breakout_rooms_muc = "breakout.{{ $XMPP_DOMAIN }}"
-
-    Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
-        muc_component = "{{ $XMPP_MUC_DOMAIN }}"
-        breakout_rooms_component = "breakout.{{ $XMPP_DOMAIN }}"
     {{ end }}
 
     speakerstats_component = "speakerstats.{{ $XMPP_DOMAIN }}"
@@ -331,3 +327,7 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ end -}}
     }
 {{ end }}
+
+Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
+    muc_component = "{{ $XMPP_MUC_DOMAIN }}"
+    breakout_rooms_component = "breakout.{{ $XMPP_DOMAIN }}"
