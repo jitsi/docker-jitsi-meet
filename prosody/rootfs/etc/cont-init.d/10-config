@@ -38,15 +38,14 @@ fi
 # Defaults
 [ -z "${JIBRI_RECORDER_USER}" ] && export JIBRI_RECORDER_USER=recorder
 [ -z "${JIBRI_XMPP_USER}" ] && export JIBRI_XMPP_USER=jibri
-[ -z "${JICOFO_AUTH_USER}" ] && export JICOFO_AUTH_USER=focus
 [ -z "${JIGASI_XMPP_USER}" ] && export JIGASI_XMPP_USER=jigasi
 [ -z "${JVB_AUTH_USER}" ] && export JVB_AUTH_USER=jvb
 [ -z "${XMPP_DOMAIN}" ] && export XMPP_DOMAIN=meet.jitsi
 [ -z "${XMPP_AUTH_DOMAIN}" ] && export XMPP_AUTH_DOMAIN=auth.meet.jitsi
 [ -z "${XMPP_RECORDER_DOMAIN}" ] && export XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
 
-prosodyctl --config $PROSODY_CFG register $JICOFO_AUTH_USER $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
-prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN $JICOFO_AUTH_USER@$XMPP_AUTH_DOMAIN
+prosodyctl --config $PROSODY_CFG register focus $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
+prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN focus@$XMPP_AUTH_DOMAIN
 
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'

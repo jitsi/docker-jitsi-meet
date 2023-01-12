@@ -3,7 +3,6 @@
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool }}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" }}
 {{ $JIBRI_XMPP_USER := .Env.JIBRI_XMPP_USER | default "jibri" -}}
-{{ $JICOFO_AUTH_USER := .Env.JICOFO_AUTH_USER | default "focus" -}}
 {{ $JIGASI_XMPP_USER := .Env.JIGASI_XMPP_USER | default "jigasi" -}}
 {{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
 {{ $JWT_ASAP_KEYSERVER := .Env.JWT_ASAP_KEYSERVER | default "" }}
@@ -47,12 +46,12 @@ admins = {
     "{{ $JIBRI_XMPP_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
     {{ end }}
 
-    "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    "focus@{{ $XMPP_AUTH_DOMAIN }}",
     "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
 }
 
 unlimited_jids = {
-    "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    "focus@{{ $XMPP_AUTH_DOMAIN }}",
     "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
 }
 
@@ -280,12 +279,12 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     {{ join "\n" (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}
     {{ end -}}
     {{ if .Env.MAX_PARTICIPANTS }}
-    muc_access_whitelist = { "{{ .Env.JICOFO_AUTH_USER }}@{{ .Env.XMPP_AUTH_DOMAIN }}" }
+    muc_access_whitelist = { "focus@{{ .Env.XMPP_AUTH_DOMAIN }}" }
     muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
     {{ end }}
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
-    target_address = "{{ $JICOFO_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
+    target_address = "focus@{{ $XMPP_AUTH_DOMAIN }}"
 
 Component "speakerstats.{{ $XMPP_DOMAIN }}" "speakerstats_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"

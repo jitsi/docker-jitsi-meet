@@ -99,7 +99,6 @@ services:
             - HIDE_PREJOIN_DISPLAY_NAME
             - HIDE_PREJOIN_EXTRA_BUTTONS
             - INVITE_SERVICE_URL
-            - JICOFO_AUTH_USER
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
             - LETSENCRYPT_USE_STAGING
@@ -191,7 +190,6 @@ services:
             - JIBRI_RECORDER_PASSWORD
             - JIBRI_XMPP_USER
             - JIBRI_XMPP_PASSWORD
-            - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
             - JICOFO_COMPONENT_SECRET
             - JIGASI_XMPP_USER
@@ -271,7 +269,6 @@ services:
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - ENABLE_AUTO_LOGIN
-            - JICOFO_AUTH_USER
             - JICOFO_AUTH_PASSWORD
             - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
             - JICOFO_CONF_INITIAL_PARTICIPANT_WAIT_TIMEOUT
