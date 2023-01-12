@@ -327,3 +327,7 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ end -}}
     }
 {{ end }}
+
+Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
+    muc_component = "{{ $XMPP_MUC_DOMAIN }}"
+    breakout_rooms_component = "breakout.{{ $XMPP_DOMAIN }}"
