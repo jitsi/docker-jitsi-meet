@@ -1,3 +1,14 @@
+## stable-8218
+
+Based on stable release 8218.
+
+* 8d7728b jibri: update Chrome to M108
+* 9cfbaf2 misc: drop JICOFO_AUTH_USER
+* 68751c2 prosody: add metadata component
+* 07f7054 jaas: pass the jitsi installation type at provisioning (#1456)
+* e219bcf web: add ability to configure whiteboard
+* ac12313 misc: working on unstable
+
 ## stable-8138-1
 
 Based on stable release 8138-1.
