@@ -1,4 +1,4 @@
-# Jitsi Meet on Docker
+# Jitsi Meet on Docker (with whiteboard support)
 
 ![](resources/jitsi-docker.png)
 
