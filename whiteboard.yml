@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  whiteboard:
+        image: tgrl/excalidraw-backend:latest
+        container_name: whiteboard
+        restart: ${RESTART_POLICY:-unless-stopped}
+        #expose:
+        #    - 9090
+        depends_on:
+            - web
+        networks:
+            meet.jitsi:
+              aliases:
+                    - ${WHITEBOARD_DOMAIN:-whiteboard.meet.jitsi}

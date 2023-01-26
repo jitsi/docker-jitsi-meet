@@ -3,7 +3,7 @@ version: '3.5'
 services:
     # Frontend
     web:
-        image: jitsi/web:${JITSI_IMAGE_VERSION:-unstable}
+        image: tgrl/jitsi-web:stable-8218
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${HTTP_PORT}:80'
@@ -151,6 +151,8 @@ services:
             - XMPP_PORT
             - WHITEBOARD_ENABLED
             - WHITEBOARD_COLLAB_SERVER_BASE_URL
+            - WHITEBOARD_DOMAIN
+            - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
         networks:
             meet.jitsi:
 
