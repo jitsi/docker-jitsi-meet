@@ -16,7 +16,7 @@ RUN case ${TARGETPLATFORM} in \
     esac && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y apt-transport-https apt-utils ca-certificates gnupg wget && \
-    wget -qO /usr/bin/tpl https://github.com/jitsi/tpl/releases/download/v1.0.2/tpl-linux-${TPL_ARCH} && \
+    wget -qO /usr/bin/tpl https://github.com/jitsi/tpl/releases/download/v1.0.4/tpl-linux-${TPL_ARCH} && \
     wget -qO - https://github.com/just-containers/s6-overlay/releases/download/v1.22.1.0/s6-overlay-${S6_ARCH}.tar.gz | tar xfz - -C / && \
     wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | gpg --dearmour > /etc/apt/trusted.gpg.d/jitsi.gpg && \
     echo "deb https://download.jitsi.org $JITSI_RELEASE/" > /etc/apt/sources.list.d/jitsi.list && \

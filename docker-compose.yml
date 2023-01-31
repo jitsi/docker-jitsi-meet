@@ -3,7 +3,7 @@ version: '3.5'
 services:
     # Frontend
     web:
-        image: tgrl/jitsi-web:stable-8218
+        image: tgrl/jitsi-web:stable-8252
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${HTTP_PORT}:80'
@@ -150,7 +150,6 @@ services:
             - XMPP_RECORDER_DOMAIN
             - XMPP_PORT
             - WHITEBOARD_ENABLED
-            - WHITEBOARD_COLLAB_SERVER_BASE_URL
             - WHITEBOARD_DOMAIN
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
         networks:
@@ -158,7 +157,7 @@ services:
 
     # XMPP server
     prosody:
-        image: jitsi/prosody:${JITSI_IMAGE_VERSION:-unstable}
+        image: jitsi/prosody:${JITSI_IMAGE_VERSION:-stable-8252}
         restart: ${RESTART_POLICY:-unless-stopped}
         expose:
             - '${XMPP_PORT:-5222}'
@@ -254,7 +253,7 @@ services:
 
     # Focus component
     jicofo:
-        image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-unstable}
+        image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-stable-8252}
         restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ${CONFIG}/jicofo:/config:Z
@@ -302,7 +301,7 @@ services:
 
     # Video bridge
     jvb:
-        image: jitsi/jvb:${JITSI_IMAGE_VERSION:-unstable}
+        image: jitsi/jvb:${JITSI_IMAGE_VERSION:-stable-8252}
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${JVB_PORT:-10000}:${JVB_PORT:-10000}/udp'

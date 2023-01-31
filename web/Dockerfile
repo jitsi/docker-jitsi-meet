@@ -1,5 +1,5 @@
 ARG JITSI_REPO=jitsi
-ARG BASE_TAG=stable-8218
+ARG BASE_TAG=stable-8252
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 LABEL org.opencontainers.image.title="Jitsi Meet"
