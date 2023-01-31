@@ -1,3 +1,15 @@
+## stable-8252
+
+Based on stable release 8252.
+
+* 076dbf7 jibri: fix downloading new (>= 109) ChromeDriver
+* 8f40804 jibri: update Chrome to M109
+* 1cf8638 compose: fix whiteboard collab server variable name
+* 9e0305b prosody: set JWT_ENABLE_DOMAIN_VERIFICATION to false by default
+* ac551c3 base: update tpl
+* ec972ee base: update tpl
+* 8684b0b misc: working on unstable
+
 ## stable-8218
 
 Based on stable release 8218.
