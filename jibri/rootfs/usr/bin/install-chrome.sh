@@ -13,8 +13,10 @@ else
         apt-dpkg-wrap apt-get update
         apt-dpkg-wrap apt-get install -y google-chrome-stable
     else
-        curl -4so "/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb" "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
-        apt-dpkg-wrap apt-get install -y "/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
+        CHROME_DEB="/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
+        curl -4so ${CHROME_DEB} "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
+        apt-dpkg-wrap apt-get install -y ${CHROME_DEB}
+        rm -f ${CHROME_DEB}
     fi
 
     google-chrome --version
@@ -25,8 +27,12 @@ else
         CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
     fi
 
-    curl -4Ls "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_RELEASE}/chromedriver_linux64.zip"  | zcat >> /usr/bin/chromedriver
+    CHROMEDRIVER_ZIP="/tmp/chromedriver_linux64.zip"
+    curl -4Lso ${CHROMEDRIVER_ZIP} "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_RELEASE}/chromedriver_linux64.zip"
+    unzip ${CHROMEDRIVER_ZIP} -d /tmp/chromedriver
+    mv /tmp/chromedriver/chromedriver /usr/bin/
     chmod +x /usr/bin/chromedriver
+    rm -rf /tmp/chromedriver*
 fi
 
 chromedriver --version
