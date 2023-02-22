@@ -10,6 +10,7 @@ services:
             - DEFAULT_PAD_TEXT=${ETHERPAD_DEFAULT_PAD_TEXT}
             - SKIN_NAME=${ETHERPAD_SKIN_NAME}
             - SKIN_VARIANTS=${ETHERPAD_SKIN_VARIANTS}
+            - SUPPRESS_ERRORS_IN_PAD_TEXT=true
         networks:
             meet.jitsi:
                 aliases:
