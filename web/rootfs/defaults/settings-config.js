@@ -468,4 +468,8 @@ config.e2eping.maxMessagePerSecond = {{ .Env.E2EPING_MAX_MESSAGE_PER_SECOND }};
 // Settings for the Excalidraw whiteboard integration.
 if (!config.hasOwnProperty('whiteboard')) config.whiteboard = {};
 config.whiteboard.enabled = {{ $WHITEBOARD_ENABLED }};
+{{ if .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL -}}
 config.whiteboard.collabServerBaseUrl = '{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}';
+{{ else if .Env.WHITEBOARD_URL_BASE -}}
+config.whiteboard.collabServerBaseUrl = '{{ $PUBLIC_URL }}/socket.io/';
+{{ end -}}
