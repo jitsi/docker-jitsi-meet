@@ -1,4 +1,4 @@
-# Jitsi Meet on Docker (with whiteboard support)
+# Jitsi Meet on Docker
 
 ![](resources/jitsi-docker.png)
 
@@ -29,14 +29,6 @@ Tag | Description
 ## Installation
 
 The installation manual is available [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker).
-
-If you want to enable whiteboard, configure it and run Docker Compose as follows:
-
-``` docker-compose -f docker-compose.yml -f whiteboard.yml up -d ```
-
-or to use jibri too:
-
-:star: ``` docker-compose -f docker-compose.yml -f jibri.yml -f whiteboard.yml up -d ```
 
 ### Kubernetes
 

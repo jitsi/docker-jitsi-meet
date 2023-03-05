@@ -9,4 +9,4 @@ services:
         networks:
             meet.jitsi:
               aliases:
-                    - ${WHITEBOARD_DOMAIN:-whiteboard.meet.jitsi}
+                    - ${WHITEBOARD_URL_BASE:-whiteboard.meet.jitsi}
