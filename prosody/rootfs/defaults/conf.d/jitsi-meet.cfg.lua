@@ -203,7 +203,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     conference_duration_component = "conferenceduration.{{ $XMPP_DOMAIN }}"
 
     {{ if $ENABLE_END_CONFERENCE }}
-    end_conference_component = "endconference.{{ .Env.XMPP_DOMAIN }}"
+    end_conference_component = "endconference.{{ $XMPP_DOMAIN }}"
     {{ end }}
 
     {{ if $ENABLE_AV_MODERATION }}
@@ -293,8 +293,8 @@ Component "conferenceduration.{{ $XMPP_DOMAIN }}" "conference_duration_component
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
 
 {{ if $ENABLE_END_CONFERENCE }}
-Component "endconference.{{ .Env.XMPP_DOMAIN }}" "end_conference"
-    muc_component = "{{ .Env.XMPP_MUC_DOMAIN }}"
+Component "endconference.{{ $XMPP_DOMAIN }}" "end_conference"
+    muc_component = "{{ $XMPP_MUC_DOMAIN }}"
 {{ end }}
 
 {{ if $ENABLE_AV_MODERATION }}
