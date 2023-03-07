@@ -10,6 +10,8 @@ ifeq ($(NATIVE_ARCH),x86_64)
 	TARGETPLATFORM := linux/amd64
 else ifeq ($(NATIVE_ARCH),aarch64)
 	TARGETPLATFORM := linux/arm64
+else ifeq ($(NATIVE_ARCH),arm64)
+	TARGETPLATFORM := linux/arm64
 else
 	TARGETPLATFORM := unsupported
 endif
