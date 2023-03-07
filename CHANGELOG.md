@@ -1,3 +1,12 @@
+## stable-8319
+
+Based on stable release 8319.
+
+* 57e852f build: fix native build on M1 macs
+* 1cdf970 prosody: fix "<no value>" issue in prosody config
+* 4a0b48c etherpad: suppress errors in pad
+* 15335c0 misc: working on unstable
+
 ## stable-8252
 
 Based on stable release 8252.
