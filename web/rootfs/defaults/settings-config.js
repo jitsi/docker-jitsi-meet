@@ -471,5 +471,5 @@ config.whiteboard.enabled = {{ $WHITEBOARD_ENABLED }};
 {{ if .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL -}}
 config.whiteboard.collabServerBaseUrl = '{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}';
 {{ else if .Env.WHITEBOARD_URL_BASE -}}
-config.whiteboard.collabServerBaseUrl = '{{ $PUBLIC_URL }}/socket.io/';
+config.whiteboard.collabServerBaseUrl = '{{ $PUBLIC_URL }}';
 {{ end -}}
