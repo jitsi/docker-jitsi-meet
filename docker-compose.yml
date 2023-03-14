@@ -23,6 +23,7 @@ services:
             - CALLSTATS_ID
             - CALLSTATS_SECRET
             - CHROME_EXTENSION_BANNER_JSON
+            - COLIBRI_WEBSOCKET_PORT
             - CONFCODE_URL
             - CONFIG_EXTERNAL_CONNECT
             - DEFAULT_LANGUAGE
