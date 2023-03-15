@@ -255,6 +255,8 @@ services:
     jicofo:
         image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
+        ports:
+            - '127.0.0.1:8888:8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
         environment:
@@ -275,6 +277,7 @@ services:
             - JICOFO_CONF_INITIAL_PARTICIPANT_WAIT_TIMEOUT
             - JICOFO_CONF_SINGLE_PARTICIPANT_TIMEOUT
             - JICOFO_ENABLE_HEALTH_CHECKS
+            - JICOFO_ENABLE_REST
             - JIBRI_BREWERY_MUC
             - JIBRI_REQUEST_RETRIES
             - JIBRI_PENDING_TIMEOUT
