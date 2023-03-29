@@ -35,6 +35,8 @@
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
 {{ $RESOLUTION_WIDTH_MIN := .Env.RESOLUTION_WIDTH_MIN | default "320" -}}
+{{ $FRAME_RATE_MAX := .Env.FRAME_RATE_MAX | default "30" -}}
+{{ $FRAME_RATE_MIN := .Env.FRAME_RATE_MIN | default "15" -}}
 {{ $START_AUDIO_ONLY := .Env.START_AUDIO_ONLY | default "false" | toBool -}}
 {{ $START_AUDIO_MUTED := .Env.START_AUDIO_MUTED | default 10 -}}
 {{ $START_WITH_AUDIO_MUTED := .Env.START_WITH_AUDIO_MUTED | default "false" | toBool -}}
@@ -71,10 +73,13 @@
 
 if (!config.hasOwnProperty('constraints')) config.constraints = {};
 if (!config.constraints.hasOwnProperty('video')) config.constraints.video = {};
+if (!config.constraints.hasOwnProperty('frameRate')) config.constraints.frameRate = {};
 
 config.resolution = {{ $RESOLUTION }};
 config.constraints.video.height = { ideal: {{ $RESOLUTION }}, max: {{ $RESOLUTION }}, min: {{ $RESOLUTION_MIN }} };
 config.constraints.video.width = { ideal: {{ $RESOLUTION_WIDTH }}, max: {{ $RESOLUTION_WIDTH }}, min: {{ $RESOLUTION_WIDTH_MIN }}};
+config.constraints.frameRate = { max: {{ $FRAME_RATE_MAX }}, min: {{ $FRAME_RATE_MIN }}};
+
 config.disableSimulcast = {{ not $ENABLE_SIMULCAST }};
 config.startVideoMuted = {{ $START_VIDEO_MUTED }};
 config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};
@@ -88,6 +93,10 @@ config.flags.sourceNameSignaling = true;
 config.flags.sendMultipleVideoStreams = true;
 config.flags.receiveMultipleVideoStreams = true;
 
+{{ if .Env.BRIDGE_CHANNEL_PREFER_SCTP | bool -}}
+if (!config.hasOwnProperty('bridgeChannel')) config.bridgeChannel = {};
+config.bridgeChannel.preferSctp =true;
+{{ end -}}
 
 // ScreenShare Configuration.
 //
