@@ -41,11 +41,7 @@ config.hosts.anonymousdomain = '{{ $XMPP_GUEST_DOMAIN }}';
 config.hosts.authdomain = '{{ $XMPP_DOMAIN }}';
 {{ end -}}
 
-{{ if $ENABLE_SUBDOMAINS -}}
-config.bosh = '/' + subdir + 'http-bind';
-{{ else -}}
 config.bosh = '/http-bind';
-{{ end -}}
 
 {{ if $ENABLE_XMPP_WEBSOCKET -}}
 {{ if $ENABLE_SUBDOMAINS -}}
