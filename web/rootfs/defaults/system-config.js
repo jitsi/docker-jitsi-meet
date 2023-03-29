@@ -53,6 +53,9 @@ config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/' + subdir + 'xmpp-websocket'
 {{ else -}}
 config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
 {{ end -}}
+{{ if .Env.WEBSOCKET_KEEPALIVE_URL -}}
+config.websocketKeepAliveUrl = '{{ .Env.WEBSOCKET_KEEPALIVE_URL }}';
+{{ end -}}
 {{ end -}}
 
 {{ if $CONFIG_EXTERNAL_CONNECT -}}
