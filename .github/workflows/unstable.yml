@@ -20,6 +20,9 @@ jobs:
       - name: Get current date
         id: date
         run: echo "date=$(date +%F)">> $GITHUB_OUTPUT
+      - name: Prosody gpg key
+        id: prosody_gpg_key
+        run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | dd of=/etc/apt/trusted.gpg.d/prosody.gpg
       - name: Prosody repo
         uses: myci-actions/add-deb-repo@11
         with:
