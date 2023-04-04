@@ -16,6 +16,8 @@ jobs:
       jicofo_version: jicofo-${{ steps.jicofo_version.outputs.version }}
       web_version: web-${{ steps.web_version.outputs.version }}
       jvb_version: jvb-${{ steps.jvb_version.outputs.version }}
+      jibri_version: jibri-${{ steps.jibri_version.outputs.version }}
+      jigasi_version: jigasi-${{ steps.jigasi_version.outputs.version }}
     steps:
       - name: Get current date
         id: date
@@ -47,6 +49,12 @@ jobs:
       - name: Get current prosody versions
         id: prosody_version
         run: echo "version=$( apt-cache madison prosody | awk '{print $3;}' | head -1 |  cut -d'-' -f1 )" >> $GITHUB_OUTPUT
+      - name: Get current jibri version
+        id: jibri_version
+        run: echo "version=$( apt-cache show jibri | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
+      - name: Get current jigasi version
+        id: jigasi_version
+        run: echo "version=$( apt-cache show jigasi | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
 
   base:
     runs-on: ubuntu-latest
@@ -169,6 +177,7 @@ jobs:
           tags: |
             ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.jibri_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -183,6 +192,7 @@ jobs:
           tags: |
             jitsi/jibri:${{ needs.version.outputs.base }}
             jitsi/jibri:${{ needs.version.outputs.date }}
+            jitsi/jibri:${{ needs.version.outputs.jibri_version }}
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -267,6 +277,7 @@ jobs:
           tags: |
             ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.jigasi_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -281,6 +292,7 @@ jobs:
           tags: |
             jitsi/jigasi:${{ needs.version.outputs.base }}
             jitsi/jigasi:${{ needs.version.outputs.date }}
+            jitsi/jigasi:${{ needs.version.outputs.jigasi_version }}
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
