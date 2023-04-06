@@ -12,10 +12,49 @@ jobs:
     outputs:
       base: unstable
       date: unstable-${{ steps.date.outputs.date }}
+      prosody_version: prosody-${{ steps.prosody_version.outputs.version }}
+      jicofo_version: jicofo-${{ steps.jicofo_version.outputs.version }}
+      web_version: web-${{ steps.web_version.outputs.version }}
+      jvb_version: jvb-${{ steps.jvb_version.outputs.version }}
+      jibri_version: jibri-${{ steps.jibri_version.outputs.version }}
+      jigasi_version: jigasi-${{ steps.jigasi_version.outputs.version }}
     steps:
       - name: Get current date
         id: date
-        run: echo "::set-output name=date::$(date +%F)"
+        run: echo "date=$(date +%F)">> $GITHUB_OUTPUT
+      - name: Prosody gpg key
+        id: prosody_gpg_key
+        run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/trusted.gpg.d/prosody.gpg
+      - name: Prosody repo
+        uses: myci-actions/add-deb-repo@11
+        with:
+          repo: deb https://packages.prosody.im/debian bullseye main
+          repo-name: prosody
+          keys-asc: https://prosody.im/files/prosody-debian-packages.key
+      - name: Jitsi repo
+        uses: myci-actions/add-deb-repo@11
+        with:
+          repo: deb https://download.jitsi.org/ unstable/
+          repo-name: jitsi
+          keys-asc: https://download.jitsi.org/jitsi-key.gpg.key
+      - name: Get current jicofo versions
+        id: jicofo_version
+        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Depends:' | tr ',' '\n' | grep jicofo | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
+      - name: Get current jitsi-meet-web versions
+        id: web_version
+        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Depends:' | tr ',' '\n' | grep 'jitsi-meet-web ' | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
+      - name: Get current jvb versions
+        id: jvb_version
+        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Pre-Depends:'| tr ',' '\n' | grep 'jitsi-videobridge2' | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
+      - name: Get current prosody versions
+        id: prosody_version
+        run: echo "version=$( apt-cache madison prosody | awk '{print $3;}' | head -1 |  cut -d'-' -f1 )" >> $GITHUB_OUTPUT
+      - name: Get current jibri version
+        id: jibri_version
+        run: echo "version=$( apt-cache show jibri | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
+      - name: Get current jigasi version
+        id: jigasi_version
+        run: echo "version=$( apt-cache show jigasi | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
 
   base:
     runs-on: ubuntu-latest
@@ -138,6 +177,7 @@ jobs:
           tags: |
             ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.jibri_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -152,6 +192,7 @@ jobs:
           tags: |
             jitsi/jibri:${{ needs.version.outputs.base }}
             jitsi/jibri:${{ needs.version.outputs.date }}
+            jitsi/jibri:${{ needs.version.outputs.jibri_version }}
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -186,6 +227,7 @@ jobs:
           tags: |
             ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.jicofo_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -200,6 +242,7 @@ jobs:
           tags: |
             jitsi/jicofo:${{ needs.version.outputs.base }}
             jitsi/jicofo:${{ needs.version.outputs.date }}
+            jitsi/jicofo:${{ needs.version.outputs.jicofo_version }}
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -234,6 +277,7 @@ jobs:
           tags: |
             ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.jigasi_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -248,6 +292,7 @@ jobs:
           tags: |
             jitsi/jigasi:${{ needs.version.outputs.base }}
             jitsi/jigasi:${{ needs.version.outputs.date }}
+            jitsi/jigasi:${{ needs.version.outputs.jigasi_version }}
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -282,6 +327,7 @@ jobs:
           tags: |
             ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.jvb_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -296,6 +342,7 @@ jobs:
           tags: |
             jitsi/jvb:${{ needs.version.outputs.base }}
             jitsi/jvb:${{ needs.version.outputs.date }}
+            jitsi/jvb:${{ needs.version.outputs.jvb_version }}
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -330,6 +377,7 @@ jobs:
           tags: |
             ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.prosody_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -344,6 +392,7 @@ jobs:
           tags: |
             jitsi/prosody:${{ needs.version.outputs.base }}
             jitsi/prosody:${{ needs.version.outputs.date }}
+            jitsi/prosody:${{ needs.version.outputs.prosody_version }}
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -378,6 +427,7 @@ jobs:
           tags: |
             ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.web_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
@@ -392,6 +442,7 @@ jobs:
           tags: |
             jitsi/web:${{ needs.version.outputs.base }}
             jitsi/web:${{ needs.version.outputs.date }}
+            jitsi/web:${{ needs.version.outputs.web_version }}
           build-args: |
             JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}

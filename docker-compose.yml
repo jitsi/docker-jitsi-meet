@@ -23,6 +23,7 @@ services:
             - CALLSTATS_ID
             - CALLSTATS_SECRET
             - CHROME_EXTENSION_BANNER_JSON
+            - COLIBRI_WEBSOCKET_PORT
             - CONFCODE_URL
             - CONFIG_EXTERNAL_CONNECT
             - DEFAULT_LANGUAGE
@@ -255,6 +256,8 @@ services:
     jicofo:
         image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
+        ports:
+            - '127.0.0.1:8888:8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
         environment:
@@ -266,21 +269,37 @@ services:
             - ENABLE_CODEC_VP8
             - ENABLE_CODEC_VP9
             - ENABLE_CODEC_H264
+            - ENABLE_CODEC_OPUS_RED
+            - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_PASSWORD
+            - JICOFO_BRIDGE_REGION_GROUPS
             - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
             - JICOFO_CONF_INITIAL_PARTICIPANT_WAIT_TIMEOUT
             - JICOFO_CONF_SINGLE_PARTICIPANT_TIMEOUT
+            - JICOFO_CONF_SOURCE_SIGNALING_DELAYS
+            - JICOFO_CONF_MAX_AUDIO_SENDERS
+            - JICOFO_CONF_MAX_VIDEO_SENDERS
+            - JICOFO_CONF_STRIP_SIMULCAST
+            - JICOFO_CONF_SSRC_REWRITING
             - JICOFO_ENABLE_HEALTH_CHECKS
+            - JICOFO_ENABLE_REST
+            - JICOFO_HEALTH_CHECKS_USE_PRESENCE
+            - JICOFO_MULTI_STREAM_BACKWARD_COMPAT
+            - JICOFO_OCTO_REGION
             - JIBRI_BREWERY_MUC
             - JIBRI_REQUEST_RETRIES
             - JIBRI_PENDING_TIMEOUT
             - JIGASI_BREWERY_MUC
             - JIGASI_SIP_URI
             - JVB_BREWERY_MUC
+            - JVB_XMPP_AUTH_DOMAIN
+            - JVB_XMPP_INTERNAL_MUC_DOMAIN
+            - JVB_XMPP_PORT
+            - JVB_XMPP_SERVER
             - MAX_BRIDGE_PARTICIPANTS
             - OCTO_BRIDGE_SELECTION_STRATEGY
             - SENTRY_DSN="${JICOFO_SENTRY_DSN:-0}"
@@ -311,6 +330,7 @@ services:
         environment:
             - DOCKER_HOST_ADDRESS
             - ENABLE_COLIBRI_WEBSOCKET
+            - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
             - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
@@ -326,6 +346,10 @@ services:
             - JVB_OCTO_RELAY_ID
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
+            - JVB_XMPP_AUTH_DOMAIN
+            - JVB_XMPP_INTERNAL_MUC_DOMAIN
+            - JVB_XMPP_PORT
+            - JVB_XMPP_SERVER
             - PUBLIC_URL
             - SENTRY_DSN="${JVB_SENTRY_DSN:-0}"
             - SENTRY_ENVIRONMENT
