@@ -191,7 +191,7 @@ authentication = "internal_hashed"
 --  Logs info and higher to /var/log
 --  Logs errors to syslog also
 log = {
-	{ levels = {min = "{{ $LOG_LEVEL }}"}, to = "console"};
+	{ levels = {min = "{{ $LOG_LEVEL }}"}, timestamps = "%Y-%m-%d %X", to = "console"};
 }
 
 {{ if .Env.GLOBAL_CONFIG }}
