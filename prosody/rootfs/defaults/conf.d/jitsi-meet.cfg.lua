@@ -41,7 +41,7 @@
 {{ $RATE_LIMIT_LOGIN_RATE := .Env.PROSODY_RATE_LIMIT_LOGIN_RATE | default "3" }}
 {{ $RATE_LIMIT_SESSION_RATE := .Env.PROSODY_RATE_LIMIT_SESSION_RATE | default "200" }}
 {{ $RATE_LIMIT_TIMEOUT := .Env.PROSODY_RATE_LIMIT_TIMEOUT | default "60" }}
-{{ $RATE_LIMIT_ALLOW_RANGES := (splitList "," .Env.PROSODY_RATE_LIMIT_ALLOW_RANGES) | default (splitList "," "10.0.0.0/8") }}
+{{ $RATE_LIMIT_ALLOW_RANGES := .Env.PROSODY_RATE_LIMIT_ALLOW_RANGES | default "10.0.0.0/8" }}
 {{ $RATE_LIMIT_CACHE_SIZE := .Env.PROSODY_RATE_LIMIT_CACHE_SIZE | default "10000" }}
 {{ $ENV := .Env -}}
 
@@ -295,7 +295,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
 	-- List of regular expressions for IP addresses that are not limited by this module.
 	rate_limit_whitelist = {
       "127.0.0.1";
-      {{ range $index, $cidr := $RATE_LIMIT_ALLOW_RANGES -}}
+      {{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES) -}}
       "{{ $cidr }}";
       {{ end -}}
     };
