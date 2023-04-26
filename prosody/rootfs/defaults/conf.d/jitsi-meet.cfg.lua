@@ -258,6 +258,7 @@ Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     muc_room_default_public_jids = true
 
 Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
+    restrict_room_creation = true
     storage = "memory"
     modules_enabled = {
         "muc_meeting_id";
@@ -283,6 +284,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if .Env.MAX_PARTICIPANTS }}
         "muc_max_occupants";
         {{ end }}
+        "muc_password_whitelist";
     }
 
     {{ if $ENABLE_RATE_LIMITS -}}
@@ -319,6 +321,9 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     muc_access_whitelist = { "focus@{{ .Env.XMPP_AUTH_DOMAIN }}" }
     muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
     {{ end }}
+    muc_password_whitelist = {
+        "focus@{{ .Env.XMPP_AUTH_DOMAIN }}"
+    }
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
     target_address = "focus@{{ $XMPP_AUTH_DOMAIN }}"
