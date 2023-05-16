@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  whiteboard:
+        image: tgrl/excalidraw-backend:latest
+        restart: ${RESTART_POLICY:-unless-stopped}
+        depends_on:
+            - web
+        networks:
+            meet.jitsi:
+              aliases:
+                    - ${WHITEBOARD_URL_BASE:-whiteboard.meet.jitsi}
