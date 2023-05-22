@@ -13,6 +13,10 @@
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "false" | toBool -}}
 {{ $ENABLE_SERVICE_RECORDING := .Env.ENABLE_SERVICE_RECORDING | default ($ENABLE_RECORDING | printf "%t") | toBool -}}
 {{ $ENABLE_LIVESTREAMING := .Env.ENABLE_LIVESTREAMING | default "false" | toBool -}}
+{{ $ENABLE_LIVESTREAMING_DATA_PRIVACY_LINK := .Env.ENABLE_LIVESTREAMING_DATA_PRIVACY_LINK | default "https://policies.google.com/privacy" -}}
+{{ $ENABLE_LIVESTREAMING_HELP_LINK := .Env.ENABLE_LIVESTREAMING_HELP_LINK | default "https://jitsi.org/live" -}}
+{{ $ENABLE_LIVESTREAMING_TERMS_LINK := .Env.ENABLE_LIVESTREAMING_TERMS_LINK | default "https://www.youtube.com/t/terms" -}}
+{{ $ENABLE_LIVESTREAMING_VALIDATOR_REGEXP_STRING := .Env.ENABLE_LIVESTREAMING_VALIDATOR_REGEXP_STRING | default "^(?:[a-zA-Z0-9]{4}(?:-(?!$)|$)){4}" -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
 {{ $ENABLE_SIMULCAST := .Env.ENABLE_SIMULCAST | default "true" | toBool -}}
@@ -153,8 +157,18 @@ if (!config.hasOwnProperty('recordingService')) config.recordingService = {};
 // Whether to enable file recording or not using the "service" defined by the finalizer in Jibri
 config.recordingService.enabled = {{ $ENABLE_SERVICE_RECORDING }};
 
-// Whether to enable live streaming or not.
-config.liveStreamingEnabled = {{ $ENABLE_LIVESTREAMING }};
+// Whether to show the possibility to share file recording with other people
+// (e.g. meeting participants), based on the actual implementation
+// on the backend.
+config.recordingService.sharingEnabled = {{ $ENABLE_FILE_RECORDING_SHARING }};
+
+// Live streaming configuration.
+if (!config.hasOwnProperty('liveStreaming')) config.liveStreaming = {};
+config.liveStreaming.enabled = {{ $ENABLE_LIVESTREAMING }};
+config.liveStreaming.dataPrivacyLink= '{{ $ENABLE_LIVESTREAMING_DATA_PRIVACY_LINK }}';
+config.liveStreaming.helpLink= '{{ $ENABLE_LIVESTREAMING_HELP_LINK }}';
+config.liveStreaming.termsLink= '{{ $ENABLE_LIVESTREAMING_TERMS_LINK }}';
+config.liveStreaming.validatorRegExpString= '{{ $ENABLE_LIVESTREAMING_VALIDATOR_REGEXP_STRING }}';
 
 {{ if .Env.DROPBOX_APPKEY -}}
 // Enable the dropbox integration.
@@ -167,11 +181,6 @@ config.dropbox.appKey = '{{ .Env.DROPBOX_APPKEY }}';
 config.dropbox.redirectURI = '{{ .Env.DROPBOX_REDIRECT_URI }}';
 {{ end -}}
 {{ end -}}
-
-// Whether to show the possibility to share file recording with other people
-// (e.g. meeting participants), based on the actual implementation
-// on the backend.
-config.recordingService.sharingEnabled = {{ $ENABLE_FILE_RECORDING_SHARING }};
 {{ end -}}
 
 
