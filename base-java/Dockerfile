@@ -1,5 +1,5 @@
 ARG JITSI_REPO=jitsi
-ARG BASE_TAG=latest
+ARG BASE_TAG=stable
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 RUN mkdir -p /usr/share/man/man1 && \
