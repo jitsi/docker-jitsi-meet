@@ -79,23 +79,20 @@ external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
 {{- end }}
 
 {{ if or .Env.TURN_HOST .Env.TURNS_HOST -}}
-{{- $comma := "" -}}
 external_services = {
   {{ if $TURN_HOST -}}
     {{- range $idx1, $host := $TURN_HOSTS -}}
       {{- range $idx2, $transport := $TURN_TRANSPORTS -}}
-        {{- $comma }}
+        {{- if or $idx1 $idx2 -}},{{- end }}
         { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = 86400, algorithm = "turn" }
-        {{- $comma = "," -}}
       {{- end -}}
     {{- end -}}
   {{- end -}}
 
   {{- if $TURNS_HOST -}}
     {{- range $idx, $host := $TURNS_HOSTS -}}
-        {{- $comma }}
+        {{- if or $TURN_HOST $idx -}},{{- end }}
         { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
-        {{- $comma = "," -}}
     {{- end }}
   {{- end }}
 };
