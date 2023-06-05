@@ -274,6 +274,7 @@ services:
             - BRIDGE_AVG_PARTICIPANT_STRESS
             - BRIDGE_STRESS_THRESHOLD
             - ENABLE_AUTH
+            - JICOFO_ENABLE_AUTH
             - ENABLE_AUTO_OWNER
             - ENABLE_CODEC_VP8
             - ENABLE_CODEC_VP9
