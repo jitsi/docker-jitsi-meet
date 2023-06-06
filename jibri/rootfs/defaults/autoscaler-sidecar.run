@@ -1,5 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-DAEMON="/usr/bin/node /usr/share/jitsi-autoscaler-sidecar/app.js"
-exec s6-setuidgid autoscaler-sidecar /bin/bash -c ". /etc/jitsi/autoscaler-sidecar/config && exec $DAEMON"
-

@@ -54,9 +54,6 @@ if [ -n "$AUTOSCALER_URL" ]; then
 
         mkdir -p /etc/jitsi/autoscaler-sidecar
         tpl /defaults/autoscaler-sidecar.config > /etc/jitsi/autoscaler-sidecar/config
-        mkdir -p /etc/services.d/50-autoscaler-sidecar
-        cp /defaults/autoscaler-sidecar.run /etc/services.d/50-autoscaler-sidecar/run
-        chmod +x /etc/services.d/50-autoscaler-sidecar/run
     else
         echo "No key file at $AUTOSCALER_SIDECAR_KEY_FILE, leaving autoscaler sidecar disabled"
     fi
