@@ -10,9 +10,17 @@ services:
         cap_add:
             - SYS_ADMIN
         environment:
+            - AUTOSCALER_SIDECAR_KEY_FILE
+            - AUTOSCALER_SIDECAR_KEY_ID
+            - AUTOSCALER_SIDECAR_GROUP_NAME
+            - AUTOSCALER_SIDECAR_INSTANCE_ID
+            - AUTOSCALER_SIDECAR_PORT
+            - AUTOSCALER_SIDECAR_REGION
+            - AUTOSCALER_URL
             - CHROMIUM_FLAGS
             - DISPLAY=:0
             - ENABLE_STATS_D
+            - JIBRI_WEBHOOK_SUBSCRIBERS
             - JIBRI_HTTP_API_EXTERNAL_PORT
             - JIBRI_HTTP_API_INTERNAL_PORT
             - JIBRI_RECORDING_RESOLUTION
@@ -25,6 +33,7 @@ services:
             - JIBRI_RECORDING_DIR
             - JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
             - JIBRI_STRIP_DOMAIN_JID
+            - LOCAL_ADDRESS
             - PUBLIC_URL
             - TZ
             - XMPP_AUTH_DOMAIN
