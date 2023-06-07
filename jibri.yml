@@ -33,6 +33,8 @@ services:
             - JIBRI_RECORDING_DIR
             - JIBRI_FINALIZE_RECORDING_SCRIPT_PATH
             - JIBRI_STRIP_DOMAIN_JID
+            - JIBRI_STATSD_HOST
+            - JIBRI_STATSD_PORT
             - LOCAL_ADDRESS
             - PUBLIC_URL
             - TZ
