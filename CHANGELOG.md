@@ -1,3 +1,19 @@
+## stable-8719
+
+Based on stable release 8719.
+
+* 6f72293 jibri: bump Chrome version
+* 94c7060 jibri: params to override statsd host and port
+* 0569bce jibri: add autoscaler-sidecar service support (#1562)
+* 57a7c22 jicofo: add ability to disable auth
+* a41578c prosody: update the comma logic while listing TURNs
+* 9776714 prosody: allow multiple TURN (#1559)
+* ce59d1e jibri: upgrade chrome to 113 (#1555)
+* c2f01f3 web: update livestreaming settings according to new config.js
+* e4c8c2a jibri: pre-warm chrome first before starting jibri (#1549)
+* 809f63c compose: add ability to configure the Jicofo REST port in the host
+* b81bd5c misc: working on unstable
+
 ## stable-8615
 
 Based on stable release 8615.
