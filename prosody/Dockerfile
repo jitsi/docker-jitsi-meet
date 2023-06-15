@@ -4,7 +4,7 @@ ARG BASE_TAG=latest
 FROM ${JITSI_REPO}/base:${BASE_TAG} as builder
 
 RUN <<-EOF
-    set -x
+    set -xe
     apt-dpkg-wrap apt-get update
     apt-dpkg-wrap apt-get install -y \
       build-essential \

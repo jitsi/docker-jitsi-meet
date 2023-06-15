@@ -3,7 +3,7 @@ ARG BASE_TAG=latest
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 RUN <<-EOF
-    set -x
+    set -xe
     mkdir -p /usr/share/man/man1
     mkdir -p /etc/apt/keyrings
     wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public > /etc/apt/keyrings/adoptium.asc
