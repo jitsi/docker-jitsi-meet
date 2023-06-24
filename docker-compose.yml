@@ -229,6 +229,7 @@ services:
             - LDAP_URL
             - LDAP_USE_TLS
             - MAX_PARTICIPANTS
+            - PROSODY_AUTH_TYPE
             - PROSODY_RESERVATION_ENABLED
             - PROSODY_RESERVATION_REST_BASE_URL
             - PROSODY_ENABLE_RATE_LIMITS
