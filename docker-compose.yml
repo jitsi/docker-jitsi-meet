@@ -285,6 +285,7 @@ services:
             - ENABLE_SCTP
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_PASSWORD
+            - JICOFO_AUTH_TYPE
             - JICOFO_BRIDGE_REGION_GROUPS
             - JICOFO_ENABLE_AUTH
             - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS
