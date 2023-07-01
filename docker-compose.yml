@@ -229,6 +229,7 @@ services:
             - LDAP_URL
             - LDAP_USE_TLS
             - MAX_PARTICIPANTS
+            - PROSODY_AUTH_TYPE
             - PROSODY_RESERVATION_ENABLED
             - PROSODY_RESERVATION_REST_BASE_URL
             - PROSODY_ENABLE_RATE_LIMITS
@@ -285,6 +286,7 @@ services:
             - ENABLE_SCTP
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_PASSWORD
+            - JICOFO_AUTH_TYPE
             - JICOFO_BRIDGE_REGION_GROUPS
             - JICOFO_ENABLE_AUTH
             - JICOFO_ENABLE_BRIDGE_HEALTH_CHECKS

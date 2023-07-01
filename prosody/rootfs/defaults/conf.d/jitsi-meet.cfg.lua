@@ -1,7 +1,8 @@
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
-{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool)}}
-{{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool -}}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" -}}
+{{ $PROSODY_AUTH_TYPE := .Env.PROSODY_AUTH_TYPE | default $AUTH_TYPE -}}
+{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
+{{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool -}}
 {{ $JIBRI_XMPP_USER := .Env.JIBRI_XMPP_USER | default "jibri" -}}
 {{ $JIGASI_XMPP_USER := .Env.JIGASI_XMPP_USER | default "jigasi" -}}
 {{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
@@ -98,11 +99,11 @@ external_services = {
 };
 {{- end }}
 
-{{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
+{{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
 {{ end }}
 
-{{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_AUDIENCES }}
+{{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_AUDIENCES }}
 asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES) }}" }
 {{ end }}
 
@@ -125,7 +126,7 @@ VirtualHost "jigasi.meet.jitsi"
 
 VirtualHost "{{ $XMPP_DOMAIN }}"
 {{ if $ENABLE_AUTH }}
-  {{ if eq $AUTH_TYPE "jwt" }}
+  {{ if eq $PROSODY_AUTH_TYPE "jwt" }}
     authentication = "{{ $JWT_AUTH_TYPE }}"
     app_id = "{{ .Env.JWT_APP_ID }}"
     app_secret = "{{ .Env.JWT_APP_SECRET }}"
@@ -134,11 +135,11 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     asap_key_server = "{{ .Env.JWT_ASAP_KEYSERVER }}"
     {{ end }}
     enable_domain_verification = {{ $JWT_ENABLE_DOMAIN_VERIFICATION }}
-  {{ else if eq $AUTH_TYPE "ldap" }}
+  {{ else if eq $PROSODY_AUTH_TYPE "ldap" }}
     authentication = "cyrus"
     cyrus_application_name = "xmpp"
     allow_unencrypted_plain_auth = true
-  {{ else if eq $AUTH_TYPE "matrix" }}
+  {{ else if eq $PROSODY_AUTH_TYPE "matrix" }}
     authentication = "matrix_user_verification"
     app_id = "{{ $MATRIX_UVS_ISSUER }}"
     uvs_base_url = "{{ .Env.MATRIX_UVS_URL }}"
@@ -148,7 +149,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ if $MATRIX_UVS_SYNC_POWER_LEVELS }}
     uvs_sync_power_levels = true
     {{ end }}
-  {{ else if eq $AUTH_TYPE "internal" }}
+  {{ else if eq $PROSODY_AUTH_TYPE "internal" }}
     authentication = "internal_hashed"
   {{ end }}
 {{ else }}
@@ -187,7 +188,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
         {{ end }}
-        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "ldap") }}
+        {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "ldap") }}
         "auth_cyrus";
         {{end}}
         {{ if $PROSODY_RESERVATION_ENABLED }}
@@ -270,10 +271,10 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end -}}
-        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "jwt") -}}
+        {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") -}}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
-        {{ if and $ENABLE_AUTH (eq $AUTH_TYPE "matrix") $MATRIX_UVS_SYNC_POWER_LEVELS -}}
+        {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "matrix") $MATRIX_UVS_SYNC_POWER_LEVELS -}}
         "matrix_power_sync";
         {{ end -}}
         {{ if not $DISABLE_POLLS -}}
