@@ -13,16 +13,12 @@ mkdir -p \
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
         mkdir -p /config/acme.sh
-        pushd /opt
-        sh ./acme.sh --install --home /config/acme.sh --accountemail $LETSENCRYPT_EMAIL
-        popd
+        curl https://get.acme.sh | sh -s email=$LETSENCRYPT_EMAIL
+        /config/acme.sh/acme.sh \
+            --register-account \
+            -m $LETSENCRYPT_EMAIL \
+            --server zerossl
 
-        STAGING=""
-        if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
-            STAGING="--staging"
-        fi
-        export LE_WORKING_DIR="/config/acme.sh"
-        # TODO: move away from standalone mode to webroot mode.
         if [ ! -z "$CF_Token" ]; then
             echo "Using dns validation"
             /config/acme.sh/acme.sh \
