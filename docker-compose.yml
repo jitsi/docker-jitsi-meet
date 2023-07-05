@@ -27,6 +27,7 @@ services:
             - CONFCODE_URL
             - CONFIG_EXTERNAL_CONNECT
             - CF_Token
+            - CF_Zone_ID
             - DEFAULT_LANGUAGE
             - DEPLOYMENTINFO_ENVIRONMENT
             - DEPLOYMENTINFO_ENVIRONMENT_TYPE

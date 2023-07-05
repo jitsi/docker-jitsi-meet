@@ -1,5 +1,7 @@
 #!/usr/bin/with-contenv bash
 
+set -x
+
 # make our folders
 mkdir -p \
     /config/{nginx/site-confs,keys} \
@@ -21,7 +23,8 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
         fi
         export LE_WORKING_DIR="/config/acme.sh"
         # TODO: move away from standalone mode to webroot mode.
-        if [[ -z "$CF_Token" ]]; then
+        if [ ! -z "$CF_Token" ]; then
+            echo "Using dns validation"
             /config/acme.sh/acme.sh \
                 $STAGING \
                 --issue \
@@ -30,6 +33,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
                 --dns dns_cf \
                 -d $LETSENCRYPT_DOMAIN
         else
+            echo "Using standalone validation"
             /config/acme.sh/acme.sh \
                 $STAGING \
                 --issue \
