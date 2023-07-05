@@ -26,6 +26,7 @@ services:
             - COLIBRI_WEBSOCKET_PORT
             - CONFCODE_URL
             - CONFIG_EXTERNAL_CONNECT
+            - CF_Token
             - DEFAULT_LANGUAGE
             - DEPLOYMENTINFO_ENVIRONMENT
             - DEPLOYMENTINFO_ENVIRONMENT_TYPE

@@ -21,13 +21,23 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
         fi
         export LE_WORKING_DIR="/config/acme.sh"
         # TODO: move away from standalone mode to webroot mode.
-        /config/acme.sh/acme.sh \
-            $STAGING \
-            --issue \
-            --standalone \
-            --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
-            --post-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
-            -d $LETSENCRYPT_DOMAIN
+        if [[ -z "$CF_Token" ]]; then
+            /config/acme.sh/acme.sh \
+                $STAGING \
+                --issue \
+                --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
+                --post-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
+                --dns dns_cf \
+                -d $LETSENCRYPT_DOMAIN
+        else
+            /config/acme.sh/acme.sh \
+                $STAGING \
+                --issue \
+    -           --standalone \
+                --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
+                --post-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
+                -d $LETSENCRYPT_DOMAIN
+        fi
         rc=$?
         if [[ $rc -eq 1 ]]; then
             echo "Failed to obtain a certificate from the Let's Encrypt CA."
