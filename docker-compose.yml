@@ -3,7 +3,7 @@ version: '3.5'
 services:
     # Frontend
     web:
-        image: kvaggelakos/jitsi-web:${JITSI_IMAGE_VERSION:-unstable}
+        image: jitsi/web:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${HTTP_PORT}:80'
