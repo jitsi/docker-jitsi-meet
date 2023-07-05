@@ -1,7 +1,5 @@
 #!/usr/bin/with-contenv bash
 
-set -x
-
 # make our folders
 mkdir -p \
     /config/{nginx/site-confs,keys} \
