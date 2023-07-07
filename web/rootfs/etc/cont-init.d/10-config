@@ -11,10 +11,10 @@ mkdir -p \
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
         mkdir -p /config/acme.sh
-        curl https://get.acme.sh | sh -s email=$LETSENCRYPT_EMAIL
-        /config/acme.sh/acme.sh \
+        sh /opt/acme.sh --install \
+            --home /config/acme.sh \
+            --accountemail $LETSENCRYPT_EMAIL \
             --register-account \
-            -m $LETSENCRYPT_EMAIL \
             --server zerossl
 
         if [ ! -z "$CF_Token" ]; then
