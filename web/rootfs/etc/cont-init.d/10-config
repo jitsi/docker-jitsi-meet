@@ -27,6 +27,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
                 --dns dns_cf \
                 -d $LETSENCRYPT_DOMAIN
         else
+            # TODO: move away from standalone mode to webroot mode.
             echo "Using standalone validation"
             /config/acme.sh/acme.sh \
                 $STAGING \
