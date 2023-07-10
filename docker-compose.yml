@@ -325,6 +325,8 @@ services:
             - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER
             - XMPP_PORT
+            - MAX-SSRCS-PER-USER
+            - MAX-SSRC-GROUPS-PER-USER
         depends_on:
             - prosody
         networks:
