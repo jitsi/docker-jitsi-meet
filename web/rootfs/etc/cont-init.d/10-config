@@ -10,8 +10,12 @@ mkdir -p \
 # generate keys (maybe)
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
-        mkdir -p /config/acme.sh
-        sh /opt/acme.sh --install \
+        mkdir -p /config
+        cd /config/
+        git clone git@github.com:acmesh-official/acme.sh.git
+        git checkout 3.0.6
+        cd acme.sh
+        sh ./acme.sh --install \
             --home /config/acme.sh \
             --accountemail $LETSENCRYPT_EMAIL \
             --register-account \
