@@ -285,6 +285,7 @@ services:
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - ENABLE_AUTO_LOGIN
+            - JICOFO_AUTH_LIFETIME
             - JICOFO_AUTH_PASSWORD
             - JICOFO_AUTH_TYPE
             - JICOFO_BRIDGE_REGION_GROUPS
