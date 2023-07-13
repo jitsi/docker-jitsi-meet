@@ -10,37 +10,30 @@ mkdir -p \
 # generate keys (maybe)
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
-        mkdir -p /config
-        cd /config/
-        git clone git@github.com:acmesh-official/acme.sh.git
-        git checkout 3.0.6
+        ACME_VERSION=3.0.6
+        validation=${LETSENCRYPT_VALIDATION:-"--standalone"}
+        echo "Using validation method: $validation"
+        mkdir -p /config/acme.sh
+        cd /tmp/
+        wget https://github.com/acmesh-official/acme.sh/archive/refs/tags/$ACME_VERSION.tar.gz
+        tar xzvf acme.sh-$ACME_VERSION.tar.gz
+        rm acme.sh-$ACME_VERSION.tar.gz
+        mv acme.sh-$ACME_VERSION acme.sh
         cd acme.sh
         sh ./acme.sh --install \
             --home /config/acme.sh \
-            --accountemail $LETSENCRYPT_EMAIL \
-            --register-account \
-            --server zerossl
+            --accountemail $LETSENCRYPT_EMAIL
 
-        if [ ! -z "$CF_Token" ]; then
-            echo "Using dns validation"
-            /config/acme.sh/acme.sh \
-                $STAGING \
-                --issue \
-                --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
-                --post-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
-                --dns dns_cf \
-                -d $LETSENCRYPT_DOMAIN
-        else
-            # TODO: move away from standalone mode to webroot mode.
-            echo "Using standalone validation"
-            /config/acme.sh/acme.sh \
-                $STAGING \
-                --issue \
-    -           --standalone \
-                --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
-                --post-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
-                -d $LETSENCRYPT_DOMAIN
-        fi
+        export LE_WORKING_DIR="/config/acme.sh"
+        # TODO: move away from standalone mode to webroot mode.
+        /config/acme.sh/acme.sh \
+            $STAGING \
+            --issue \
+            --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
+            --post-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
+            $validation \
+            -d $LETSENCRYPT_DOMAIN
+
         rc=$?
         if [[ $rc -eq 1 ]]; then
             echo "Failed to obtain a certificate from the Let's Encrypt CA."

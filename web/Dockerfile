@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 COPY rootfs/ /
 
 RUN apt-dpkg-wrap apt-get update && \
-    apt-dpkg-wrap apt-get install -y cron nginx-extras jitsi-meet-web socat curl jq git && \
+    apt-dpkg-wrap apt-get install -y cron nginx-extras jitsi-meet-web socat curl jq && \
     mv /usr/share/jitsi-meet/interface_config.js /defaults && \
     rm -f /etc/nginx/conf.d/default.conf && \
     apt-cleanup
