@@ -14,16 +14,16 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
         validation=${LETSENCRYPT_VALIDATION:-"--standalone"}
         echo "Using validation method: $validation"
         mkdir -p /config/acme.sh
-        cd /tmp/
-        wget https://github.com/acmesh-official/acme.sh/archive/refs/tags/$ACME_VERSION.tar.gz
-        tar xzvf acme.sh-$ACME_VERSION.tar.gz
-        rm acme.sh-$ACME_VERSION.tar.gz
-        mv acme.sh-$ACME_VERSION acme.sh
-        cd acme.sh
-        sh ./acme.sh --install \
+        wget -o /tmp/acme.sh.tar.gz https://github.com/acmesh-official/acme.sh/archive/refs/tags/$ACME_VERSION.tar.gz
+        tar xvf /tmp/acme.sh.tar.gz -C /tmp && rm /tmp/acme.sh.tar.gz
+        sh /tmp/acme.sh-$ACME_VERSION/acme.sh --install \
             --home /config/acme.sh \
             --accountemail $LETSENCRYPT_EMAIL
 
+        STAGING=""
+        if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
+            STAGING="--staging"
+        fi
         export LE_WORKING_DIR="/config/acme.sh"
         # TODO: move away from standalone mode to webroot mode.
         /config/acme.sh/acme.sh \
