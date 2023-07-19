@@ -61,11 +61,13 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_matrix_power_sync.lua /prosody-plugins && \
     rm -rf prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
 
-COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
-COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
+COPY --chown=noroot:noroot --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
+COPY --chown=noroot:noroot --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
 
+RUN chown -R noroot:noroot /etc/cont-init.d
+RUN chown -R noroot:noroot /etc/services.d
 RUN chmod +x /etc/cont-init.d/*
 RUN chmod +x /etc/services.d/10-saslauthd/*
 RUN chmod +x /etc/services.d/prosody/*

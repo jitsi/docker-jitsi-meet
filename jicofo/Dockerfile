@@ -12,8 +12,10 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jicofo && \
     apt-cleanup
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
 
+RUN chown -R noroot:noroot /etc/cont-init.d
+RUN chown -R noroot:noroot /etc/services.d
 RUN chmod +x /etc/cont-init.d/*
 RUN chmod +x /etc/services.d/jicofo/*
 

@@ -15,7 +15,7 @@ ARG USE_CHROMIUM=0
 ARG CHROME_RELEASE=114.0.5735.90
 ARG CHROMEDRIVER_MAJOR_RELEASE=114
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" jibri libgl1-mesa-dri procps jitsi-upload-integrations jitsi-autoscaler-sidecar jq pulseaudio dbus dbus-x11 rtkit unzip && \
@@ -23,6 +23,8 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-cleanup && \
     adduser jibri rtkit
 
+RUN chown -R noroot:noroot /etc/cont-init.d
+RUN chown -R noroot:noroot /etc/services.d
 RUN chmod +x /etc/cont-init.d/*
 RUN chmod +x /etc/services.d/10-xorg/*
 RUN chmod +x /etc/services.d/20-icewm/*
