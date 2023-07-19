@@ -14,4 +14,7 @@ RUN apt-dpkg-wrap apt-get update && \
 
 COPY rootfs/ /
 
+RUN chmod +x /etc/cont-init.d/*
+RUN chmod +x /etc/services.d/jicofo/*
+
 VOLUME /config
