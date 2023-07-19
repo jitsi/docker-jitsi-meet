@@ -4,7 +4,9 @@ ARG JITSI_RELEASE=stable
 ARG TARGETPLATFORM
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
-COPY rootfs /
+RUN useradd -ms /bin/bash -u 1000 noroot
+
+COPY --chown=noroot:noroot rootfs /
 
 RUN case ${TARGETPLATFORM} in \
          "linux/amd64")  TPL_ARCH=amd64  ;; \
@@ -25,10 +27,11 @@ RUN case ${TARGETPLATFORM} in \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get dist-upgrade -y && \
     apt-cleanup && \
+    chown -R noroot:noroot /usr/bin/tpl && \
+    chown -R noroot:noroot /etc/cont-init.d && \
     chmod +x /usr/bin/tpl && \
     chmod +x /etc/cont-init.d/*
     
-
 RUN [ "$JITSI_RELEASE" = "unstable" ] && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jq procps curl vim iputils-ping net-tools && \
