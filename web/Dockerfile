@@ -17,6 +17,11 @@ RUN apt-dpkg-wrap apt-get update && \
     rm -f /etc/nginx/conf.d/default.conf && \
     apt-cleanup
 
+RUN chmod +x /etc/cont-init.d/*
+RUN chmod +x /etc/services.d/cron/*
+RUN chmod +x /etc/services.d/jaas-account/*
+RUN chmod +x /etc/services.d/nginx/*
+
 EXPOSE 80 443
 
 VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
