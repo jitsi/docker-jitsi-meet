@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'
