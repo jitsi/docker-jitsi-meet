@@ -29,6 +29,8 @@ RUN case ${TARGETPLATFORM} in \
     apt-cleanup && \
     chown -R noroot:noroot /usr/bin/tpl && \
     chown -R noroot:noroot /etc/cont-init.d && \
+    chown -R noroot:noroot /etc/services.d && \
+    chown -R noroot:noroot /etc/timezone && \
     chmod +x /usr/bin/tpl && \
     chmod +x /etc/cont-init.d/*
     
