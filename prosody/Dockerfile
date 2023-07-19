@@ -66,6 +66,10 @@ COPY rootfs/ /
 COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
 COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
 
+RUN chmod +x /etc/cont-init.d/*
+RUN chmod +x /etc/services.d/10-saslauthd/*
+RUN chmod +x /etc/services.d/prosody/*
+
 EXPOSE 5222 5280
 
 VOLUME ["/config", "/prosody-plugins-custom"]
