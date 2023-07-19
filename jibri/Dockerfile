@@ -23,4 +23,11 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-cleanup && \
     adduser jibri rtkit
 
+RUN chmod +x /etc/cont-init.d/*
+RUN chmod +x /etc/services.d/10-xorg/*
+RUN chmod +x /etc/services.d/20-icewm/*
+RUN chmod +x /etc/services.d/30-pulse/*
+RUN chmod +x /etc/services.d/40-jibri/*
+RUN chmod +x /etc/services.d/50-autoscaler-sidecar/*
+
 VOLUME /config
