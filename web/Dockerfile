@@ -19,11 +19,16 @@ RUN apt-dpkg-wrap apt-get update && \
 
 RUN chown -R noroot:noroot /etc/cont-init.d
 RUN chown -R noroot:noroot /etc/services.d
+RUN chown -R noroot:noroot /var
+RUN chown -R noroot:noroot /run
+RUN mkdir -p /config && chown -R noroot:noroot /config
 RUN chmod +x /etc/cont-init.d/*
 RUN chmod +x /etc/services.d/cron/*
 RUN chmod +x /etc/services.d/jaas-account/*
 RUN chmod +x /etc/services.d/nginx/*
 
 EXPOSE 80 443
+
+USER noroot
 
 VOLUME ["/config", "/usr/share/jitsi-meet/transcripts"]
