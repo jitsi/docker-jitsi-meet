@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 JAVA_SYS_PROPS="-Djava.util.logging.config.file=/config/logging.properties"
 
