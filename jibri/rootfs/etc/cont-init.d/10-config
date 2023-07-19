@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 if [[ -z $JIBRI_RECORDER_PASSWORD || -z $JIBRI_XMPP_PASSWORD ]]; then
     echo 'FATAL ERROR: Jibri recorder password and auth password must be set'

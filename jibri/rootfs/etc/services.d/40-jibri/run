@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 # we have to set it, otherwise chrome won't find ~/.asoundrc file
 HOME=/home/jibri
