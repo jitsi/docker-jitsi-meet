@@ -4,4 +4,4 @@ export JAVA_SYS_PROPS="-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/ -Dnet.
 
 DAEMON=/usr/share/jitsi-videobridge/jvb.sh
 
-exec s6-setuidgid jvb /bin/bash -c "exec $DAEMON"
+exec /bin/bash -c "exec $DAEMON"
