@@ -4,7 +4,8 @@ ARG JITSI_RELEASE=stable
 ARG TARGETPLATFORM
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
-RUN useradd -ms /bin/bash -u 1000 noroot
+RUN groupadd --gid 1000 noroot; \
+  useradd --uid 1000 --gid 1000 -m noroot
 
 COPY --chown=noroot:noroot rootfs /
 
