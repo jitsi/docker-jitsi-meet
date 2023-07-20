@@ -12,8 +12,3 @@ if [[ "$JICOFO_AUTH_PASSWORD" == "$OLD_JICOFO_AUTH_PASSWORD" ]]; then
     echo 'FATAL ERROR: Jicofo auth password must be changed, check the README'
     exit 1
 fi
-
-tpl /defaults/logging.properties > /config/logging.properties
-tpl /defaults/jicofo.conf > /config/jicofo.conf
-
-chown -R jicofo:jitsi /config
