@@ -21,11 +21,8 @@ RUN chown -R noroot:noroot /var
 RUN mkdir -p /config
 RUN chmod +x /etc/cont-init.d/*
 RUN chmod +x /etc/services.d/jvb/*
-
-RUN if [[ -f /config/custom-sip-communicator.properties ]]; then cat /config/custom-sip-communicator.properties > /config/sip-communicator.properties; fi
-RUN tpl /defaults/logging.properties > /config/logging.properties && \
-    tpl /defaults/jvb.conf > /config/jvb.conf && \
-    chown -R jvb:jitsi /config
+ 
+RUN chown -R noroot:noroot /config
 
 USER noroot
 
