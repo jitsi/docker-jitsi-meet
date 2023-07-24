@@ -22,9 +22,7 @@ RUN mkdir -p /config
 RUN chmod +x /etc/cont-init.d/*
 RUN chmod +x /etc/services.d/jicofo/*
 
-RUN tpl /defaults/logging.properties > /config/logging.properties
-RUN tpl /defaults/jicofo.conf > /config/jicofo.conf
-RUN chown -R jicofo:jitsi /config
+RUN chown -R noroot:noroot /config
 
 USER noroot
 
