@@ -79,18 +79,18 @@ RUN chmod +x /etc/services.d/10-saslauthd/*
 RUN chmod +x /etc/services.d/prosody/*
 
 RUN mkdir -pm777 /var/run/saslauthd
-RUN adduser prosody sasl
-RUN mkdir -pm 750 /config/data
+RUN mkdir -p /config/data
 
 RUN mkdir -p /config/certs
 RUN mkdir -p /config/conf.d
 
 RUN cp -r /defaults/* /config
 
-RUN chown -R noroot:noroot /prosody-plugins
-RUN mkdir -p /prosody-plugins-custom && chown -R noroot:noroot /prosody-plugins-custom
+RUN mkdir -p /prosody-plugins-custom
 
 RUN chown -R noroot:noroot /config
+RUN chown -R noroot:noroot /prosody-plugins
+RUN chown -R noroot:noroot /prosody-plugins-custom
 
 EXPOSE 5222 5280
 
