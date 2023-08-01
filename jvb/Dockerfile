@@ -12,6 +12,18 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jitsi-videobridge2 jq curl iproute2 dnsutils && \
     apt-cleanup
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
+
+RUN chown -R noroot:noroot /etc/cont-init.d
+RUN chown -R noroot:noroot /etc/services.d
+RUN chown -R noroot:noroot /run
+RUN chown -R noroot:noroot /var
+RUN mkdir -p /config
+RUN chmod +x /etc/cont-init.d/*
+RUN chmod +x /etc/services.d/jvb/*
+ 
+RUN chown -R noroot:noroot /config
+
+USER noroot
 
 VOLUME /config

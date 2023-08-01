@@ -1,2 +1,2 @@
-#!/usr/bin/with-contenv bash
-exec s6-setuidgid prosody prosody --config /config/prosody.cfg.lua -F
+#!/command/with-contenv bash
+exec prosody --config /config/prosody.cfg.lua -F

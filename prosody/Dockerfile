@@ -61,11 +61,38 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_matrix_power_sync.lua /prosody-plugins && \
     rm -rf prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz
 
-COPY rootfs/ /
+COPY --chown=noroot:noroot rootfs/ /
 
-COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
-COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
+COPY --chown=noroot:noroot --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
+COPY --chown=noroot:noroot --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
+
+RUN chown -R noroot:noroot /etc/cont-init.d
+RUN chown -R noroot:noroot /etc/services.d
+RUN touch /etc/saslauthd.conf && chown noroot:noroot /etc/saslauthd.conf
+RUN chown -R noroot:noroot /etc/ldap
+
+RUN chown -R noroot:noroot /run
+RUN chown -R noroot:noroot /var
+RUN chown -R noroot:noroot /defaults
+RUN chmod +x /etc/cont-init.d/*
+RUN chmod +x /etc/services.d/10-saslauthd/*
+RUN chmod +x /etc/services.d/prosody/*
+
+RUN mkdir -pm777 /var/run/saslauthd
+RUN mkdir -p /config/noroot_data
+RUN mkdir -p /config/certs
+RUN mkdir -p /config/conf.d
+
+RUN cp -r /defaults/* /config
+
+RUN mkdir -p /prosody-plugins-custom
+
+RUN chown -R noroot:noroot /config
+RUN chown -R noroot:noroot /prosody-plugins
+RUN chown -R noroot:noroot /prosody-plugins-custom
 
 EXPOSE 5222 5280
+
+USER noroot
 
 VOLUME ["/config", "/prosody-plugins-custom"]

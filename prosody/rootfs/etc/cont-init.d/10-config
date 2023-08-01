@@ -1,32 +1,12 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 if [[ ! -f /etc/saslauthd.conf ]]; then
   tpl /defaults/saslauthd.conf > /etc/saslauthd.conf
-  mkdir -pm777 /var/run/saslauthd
-  adduser prosody sasl
   echo >> /etc/ldap/ldap.conf "TLS_REQCERT allow"
 fi
 
 PROSODY_CFG="/config/prosody.cfg.lua"
 
-if [[ ! -d /config/data ]]; then
-    mkdir -pm 750 /config/data
-fi
-
-if [[ "$(stat -c %U /config)" != "prosody" ]]; then
-    chown -R prosody /config
-fi
-
-if [[ "$(stat -c %U /prosody-plugins)" != "prosody" ]]; then
-    chown -R prosody /prosody-plugins
-fi
-
-if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
-    chown -R prosody /prosody-plugins-custom
-fi
-
-mkdir /config/certs
-cp -r /defaults/* /config
 tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
 tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua
 
@@ -97,6 +77,6 @@ if [[ ! -f /config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
     echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_AUTH_DOMAIN
 fi
 
-# certs will be created in /config/data
-mv /config/data/*.{crt,key} /config/certs/ || true
-rm -f /config/data/*.cnf
+# certs will be created in /config/noroot_data/
+mv /config/noroot_data/*.{crt,key} /config/certs/ || true
+rm -f /config/noroot_data/*.cnf

@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jigasi | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
@@ -20,8 +20,6 @@ if [[ -f /config/custom-sip-communicator.properties ]]; then
     cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
 fi
 
-mkdir -pm777 /tmp/transcripts
-chown jigasi:jitsi /tmp/transcripts
 
 # Create Google Cloud Credentials
 if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || $ENABLE_TRANSCRIPTIONS == "true" ]]; then

@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'
@@ -32,13 +32,11 @@ export LOCAL_ADDRESS=$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jitsi-videobridge2 | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
 if [[ -f /config/custom-sip-communicator.properties ]]; then
-    cat /config/custom-sip-communicator.properties > /config/sip-communicator.properties
+  cat /config/custom-sip-communicator.properties > /config/sip-communicator.properties; 
 fi
 
 tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/jvb.conf > /config/jvb.conf
-
-chown -R jvb:jitsi /config
 
 # Configuration checks
 if [[ (-z $ENABLE_COLIBRI_WEBSOCKET || $ENABLE_COLIBRI_WEBSOCKET == "0") && $ENABLE_OCTO == "1"  ]]; then

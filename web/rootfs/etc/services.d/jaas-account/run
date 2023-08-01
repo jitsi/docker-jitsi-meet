@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 set -e
 
@@ -13,7 +13,7 @@ SUPPORT_MSG="Reach out to JaaS support at https://jaas.8x8.vc/#components"
 JAAS_ACCOUNT_FILE="/config/jaas-account-created.txt"
 
 function stop_service() {
-  s6-svc -O /var/run/s6/services/jaas-account
+  s6-svc -O /var/run/service/jaas-account
   exit 0
 }
 
@@ -30,7 +30,7 @@ MAX_TRIES=5
 SLEEP_INTERVAL=10
 # Waiting for nginx to start before creating the JaaS account
 while $KEEP_WAITING; do
-    s6-svwait -u /var/run/s6/services/nginx
+    s6-svwait -u /var/run/service/nginx
     NGINX_RESPONSE=$?
     if [ $NGINX_RESPONSE -eq 0 ]; then
         echo "Nginx started"
