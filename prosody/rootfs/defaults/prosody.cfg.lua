@@ -215,7 +215,7 @@ http_interfaces = { "*", "::" }
 http_interfaces = { "*" }
 {{ end }}
 
-data_path = "/config/data"
+data_path = "/config/noroot_data"
 
 smacks_max_unacked_stanzas = 5;
 smacks_hibernation_time = 60;

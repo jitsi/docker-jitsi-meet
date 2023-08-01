@@ -69,7 +69,7 @@ COPY --chown=noroot:noroot --from=builder /usr/local/share/lua/5.4 /usr/local/sh
 RUN chown -R noroot:noroot /etc/cont-init.d
 RUN chown -R noroot:noroot /etc/services.d
 RUN touch /etc/saslauthd.conf && chown noroot:noroot /etc/saslauthd.conf
-RUN chown -R noroot:noroot /etc/ldap/
+RUN chown -R noroot:noroot /etc/ldap
 
 RUN chown -R noroot:noroot /run
 RUN chown -R noroot:noroot /var
@@ -79,8 +79,7 @@ RUN chmod +x /etc/services.d/10-saslauthd/*
 RUN chmod +x /etc/services.d/prosody/*
 
 RUN mkdir -pm777 /var/run/saslauthd
-RUN mkdir -p /config/data
-
+RUN mkdir -p /config/noroot_data
 RUN mkdir -p /config/certs
 RUN mkdir -p /config/conf.d
 
