@@ -52,7 +52,6 @@ if [ -n "$AUTOSCALER_URL" ]; then
         [ -z "$AUTOSCALER_SIDECAR_GROUP_NAME" ] && export AUTOSCALER_SIDECAR_GROUP_NAME="docker-jibri"
         [ -z "$LOCAL_ADDRESS" ] && export LOCAL_ADDRESS="$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1 '})"
 
-        mkdir -p /etc/jitsi/autoscaler-sidecar
         tpl /defaults/autoscaler-sidecar.config > /etc/jitsi/autoscaler-sidecar/config
     else
         echo "No key file at $AUTOSCALER_SIDECAR_KEY_FILE, leaving autoscaler sidecar disabled"
@@ -66,12 +65,8 @@ tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
 tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
 tpl /defaults/xorg-video-dummy.conf > /etc/jitsi/jibri/xorg-video-dummy.conf
 
-# make recording dir
+# set recording dir
 [ -z "${JIBRI_RECORDING_DIR}" ] && export JIBRI_RECORDING_DIR=/config/recordings
-mkdir -p ${JIBRI_RECORDING_DIR}
-chown -R jibri ${JIBRI_RECORDING_DIR}
 
-# make logs dir
+# set logs dir
 JIBRI_LOGS_DIR=/config/logs
-mkdir -p ${JIBRI_LOGS_DIR}
-chown -R jibri ${JIBRI_LOGS_DIR}
