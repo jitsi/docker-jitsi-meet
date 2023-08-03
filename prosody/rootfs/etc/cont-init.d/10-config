@@ -1,7 +1,7 @@
 #!/command/with-contenv bash
 
-if [[ ! -f /etc/saslauthd.conf ]]; then
-  tpl /defaults/saslauthd.conf > /etc/saslauthd.conf
+if [[ ! -f /config/saslauthd/saslauthd.conf ]]; then
+  tpl /defaults/saslauthd.conf > /config/saslauthd/saslauthd.conf
   echo >> /etc/ldap/ldap.conf "TLS_REQCERT allow"
 fi
 

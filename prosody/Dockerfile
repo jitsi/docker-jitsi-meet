@@ -66,30 +66,28 @@ COPY --chown=noroot:noroot rootfs/ /
 COPY --chown=noroot:noroot --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
 COPY --chown=noroot:noroot --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
 
-RUN chown -R noroot:noroot /etc/cont-init.d
-RUN chown -R noroot:noroot /etc/services.d
-RUN touch /etc/saslauthd.conf && chown noroot:noroot /etc/saslauthd.conf
-RUN chown -R noroot:noroot /etc/ldap
+RUN mkdir -pm777 /var/run/saslauthd && \
+    mkdir -p /config/noroot_data && \
+    mkdir -p /config/certs && \
+    mkdir -p /config/conf.d && \
+    mkdir -p /prosody-plugins-custom
 
-RUN chown -R noroot:noroot /run
-RUN chown -R noroot:noroot /var
-RUN chown -R noroot:noroot /defaults
-RUN chmod +x /etc/cont-init.d/*
-RUN chmod +x /etc/services.d/10-saslauthd/*
-RUN chmod +x /etc/services.d/prosody/*
+RUN chown -R noroot:noroot /etc/cont-init.d && \
+    chown -R noroot:noroot /etc/services.d && \
+    chown -R noroot:noroot /etc/ldap && \
+    chown -R noroot:noroot /run && \
+    chown -R noroot:noroot /var && \
+    chown -R noroot:noroot /defaults && \
+    chown -R noroot:noroot /prosody-plugins && \
+    chown -R noroot:noroot /prosody-plugins-custom && \
+    mkdir -p /config/saslauthd
 
-RUN mkdir -pm777 /var/run/saslauthd
-RUN mkdir -p /config/noroot_data
-RUN mkdir -p /config/certs
-RUN mkdir -p /config/conf.d
+RUN chmod +x /etc/cont-init.d/* && \
+    chmod +x /etc/services.d/10-saslauthd/* && \
+    chmod +x /etc/services.d/prosody/*
 
 RUN cp -r /defaults/* /config
-
-RUN mkdir -p /prosody-plugins-custom
-
 RUN chown -R noroot:noroot /config
-RUN chown -R noroot:noroot /prosody-plugins
-RUN chown -R noroot:noroot /prosody-plugins-custom
 
 EXPOSE 5222 5280
 
