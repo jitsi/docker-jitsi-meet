@@ -16,21 +16,17 @@ RUN apt-dpkg-wrap apt-get update && \
 
 COPY --chown=noroot:noroot rootfs/ /
 
-RUN mkdir /config
-RUN mkdir -pm777 /tmp/transcripts
+RUN chown -R noroot:noroot /etc/cont-init.d && \
+    chown -R noroot:noroot /etc/services.d && \
+    chown -R noroot:noroot /usr/share && \
+    chown -R noroot:noroot /defaults && \
+    mkdir -pm777 /config/transcripts && \
+    mkdir -p /config && chown -R noroot:noroot /config
 
-RUN chown -R noroot:noroot /etc/cont-init.d
-RUN chown -R noroot:noroot /etc/services.d
-RUN chown -R noroot:noroot /tmp
-RUN chown -R noroot:noroot /run
-RUN chown -R noroot:noroot /config
-RUN chown -R noroot:noroot /var
-RUN chown -R noroot:noroot /usr/share
-RUN chown -R noroot:noroot /defaults
-RUN chmod +x /etc/cont-init.d/*
-RUN chmod +x /etc/services.d/jigasi/*
-RUN chmod +x /usr/share/jigasi/jigasi.sh
+RUN chmod +x /etc/cont-init.d/* && \
+    chmod +x /etc/services.d/jigasi/* && \
+    chmod +x /usr/share/jigasi/jigasi.sh
 
 USER noroot
 
-VOLUME ["/config", "/tmp/transcripts"]
+VOLUME /config
