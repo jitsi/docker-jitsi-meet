@@ -1,4 +1,4 @@
 #!/command/with-contenv bash
 
-HOME=/jibri
-exec s6-setuidgid /bin/bash -c "exec /usr/bin/pulseaudio"
+HOME=/home/jibri
+exec /bin/bash -c "exec /usr/bin/pulseaudio"

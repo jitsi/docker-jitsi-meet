@@ -1,10 +1,10 @@
 #!/command/with-contenv bash
 
 # we have to set it, otherwise chrome won't find ~/.asoundrc file
-HOME=/jibri
+HOME=/home/jibri
 
 DAEMON=/opt/jitsi/jibri/launch.sh
 # pre-warm google chrome before jibri launches to ensure fast chrome launch during recordings
-s6-setuidgid /usr/bin/google-chrome --timeout=1000 --headless about:blank
-exec s6-setuidgid /bin/bash -c "exec $DAEMON"
+/usr/bin/google-chrome --timeout=1000 --headless about:blank
+exec /bin/bash -c "exec $DAEMON"
 

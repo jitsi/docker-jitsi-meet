@@ -22,29 +22,30 @@ RUN apt-dpkg-wrap apt-get update && \
     /usr/bin/install-chrome.sh && \
     apt-cleanup
 
-RUN mkdir -p /etc/jitsi/autoscaler-sidecar
-RUN mkdir -p /config/logs
-RUN mkdir -p /config/recordings
-RUN mkdir -p /jibri
+RUN mkdir -p /etc/jitsi/autoscaler-sidecar && \
+    mkdir -p /config/logs && \
+    mkdir -p /config/recordings && \
+    mkdir -p /home/jibri && chown -R noroot:noroot /home/jibri
 
-RUN chown -R noroot:noroot /etc/cont-init.d
-RUN chown -R noroot:noroot /etc/services.d
-RUN chown -R noroot:noroot /etc/jitsi
-RUN chown -R noroot:noroot /run
-RUN chown -R noroot:noroot /jibri
-RUN chown -R noroot:noroot /config
-RUN chown -R noroot:noroot /var
-RUN chown -R noroot:noroot /opt/jitsi
-RUN chown -R noroot:noroot /tmp
-RUN chown -R noroot:noroot /defaults
-RUN chown -R noroot:noroot /usr/bin
-RUN chmod +x /etc/cont-init.d/*
-RUN chmod +x /etc/services.d/10-xorg/*
-RUN chmod +x /etc/services.d/20-icewm/*
-RUN chmod +x /etc/services.d/30-pulse/*
-RUN chmod +x /etc/services.d/40-jibri/*
-RUN chmod +x /etc/services.d/50-autoscaler-sidecar/*
-RUN chmod +x /opt/jitsi/jibri/launch.sh
+RUN chown -R noroot:noroot /etc/cont-init.d && \
+    chown -R noroot:noroot /etc/services.d && \
+    chown -R noroot:noroot /etc/jitsi && \
+    chown -R noroot:noroot /run && \
+    chown -R noroot:noroot /config && \
+    chown -R noroot:noroot /var && \
+    chown -R noroot:noroot /opt/jitsi && \
+    chown -R noroot:noroot /tmp && \
+    chown -R noroot:noroot /defaults && \
+    chown -R noroot:noroot /usr/bin
+
+RUN chmod +x /etc/cont-init.d/* && \
+    chmod +x /etc/services.d/10-xorg/* && \
+    chmod +x /etc/services.d/20-icewm/* && \
+    chmod +x /etc/services.d/30-pulse/* && \
+    chmod +x /etc/services.d/40-jibri/* && \
+    chmod +x /etc/services.d/50-autoscaler-sidecar/* && \
+    chmod +x /opt/jitsi/jibri/launch.sh
+
 
 USER noroot
 
