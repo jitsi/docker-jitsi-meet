@@ -99,11 +99,11 @@ external_services = {
 };
 {{- end }}
 
-{{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
+{{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
 {{ end }}
 
-{{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_AUDIENCES }}
+{{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_AUDIENCES }}
 asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES) }}" }
 {{ end }}
 
@@ -148,6 +148,20 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ end }}
     {{ if $MATRIX_UVS_SYNC_POWER_LEVELS }}
     uvs_sync_power_levels = true
+    {{ end }}
+  {{ else if eq $PROSODY_AUTH_TYPE "hybrid_matrix_token" }}
+    authentication = "hybrid_matrix_token"
+    app_id = "{{ .Env.JWT_APP_ID }}"
+    app_secret = "{{ .Env.JWT_APP_SECRET }}"
+    allow_empty_token = {{ $JWT_ALLOW_EMPTY }}
+    enable_domain_verification = {{ $JWT_ENABLE_DOMAIN_VERIFICATION }}
+
+    uvs_base_url = "{{ .Env.MATRIX_UVS_URL }}"
+    {{ if .Env.MATRIX_UVS_ISSUER }}
+    uvs_issuer = "{{ .Env.MATRIX_UVS_ISSUER }}"
+    {{ end }}
+    {{ if .Env.MATRIX_UVS_AUTH_TOKEN }}
+    uvs_auth_token = "{{ .Env.MATRIX_UVS_AUTH_TOKEN }}"
     {{ end }}
   {{ else if eq $PROSODY_AUTH_TYPE "internal" }}
     authentication = "internal_hashed"
@@ -271,11 +285,14 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end -}}
-        {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") -}}
+        {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) -}}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
         {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "matrix") $MATRIX_UVS_SYNC_POWER_LEVELS -}}
         "matrix_power_sync";
+        {{ end -}}
+        {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token") $MATRIX_UVS_SYNC_POWER_LEVELS -}}
+        "matrix_affiliation";
         {{ end -}}
         {{ if not $DISABLE_POLLS -}}
         "polls";
