@@ -1,3 +1,15 @@
+## stable-8922
+
+Based on stable release 8922.
+
+* 1cbb8f8 prosody: add hybrid_matrix_token as a new authentication method
+* b5b8ea2 jigasi: add toggle to enable REST shutdown
+* 6bb2455 jibri: add extra fonts
+* 497015b jicofo: add JICOFO_AUTH_LIFETIME as environment variable
+* f18acb4 jicofo, prosody: allow to set different AUTH_TYPE
+* dc1994a jicofo: remove shibboleth authentication options
+* 58d4736 misc: working on unstable
+
 ## stable-8719
 
 Based on stable release 8719.
