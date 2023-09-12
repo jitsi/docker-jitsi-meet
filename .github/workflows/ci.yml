@@ -20,6 +20,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./base
+          load: true
           tags: |
             jitsi/base:latest
           build-args: |
@@ -39,6 +40,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./base-java
+          load: true
           tags: |
             jitsi/base-java:latest
 
@@ -56,6 +58,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./jibri
+          load: true
           tags: |
             jitsi/jibri:latest
 
@@ -73,6 +76,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./jicofo
+          load: true
           tags: |
             jitsi/jicofo:latest
 
@@ -90,6 +94,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./jigasi
+          load: true
           tags: |
             jitsi/jigasi:latest
 
@@ -107,6 +112,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./jvb
+          load: true
           tags: |
             jitsi/jvb:latest
 
@@ -124,6 +130,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./prosody
+          load: true
           tags: |
             jitsi/prosody:latest
 
@@ -141,5 +148,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ./web
+          load: true
           tags: |
             jitsi/web:latest
