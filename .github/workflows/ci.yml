@@ -24,8 +24,6 @@ jobs:
             jitsi/base:latest
           build-args: |
             JITSI_RELEASE=unstable
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   base-java:
     runs-on: ubuntu-latest
@@ -43,8 +41,6 @@ jobs:
           context: ./base-java
           tags: |
             jitsi/base-java:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   jibri:
     runs-on: ubuntu-latest
@@ -62,8 +58,6 @@ jobs:
           context: ./jibri
           tags: |
             jitsi/jibri:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   jicofo:
     runs-on: ubuntu-latest
@@ -81,8 +75,6 @@ jobs:
           context: ./jicofo
           tags: |
             jitsi/jicofo:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   jigasi:
     runs-on: ubuntu-latest
@@ -100,8 +92,6 @@ jobs:
           context: ./jigasi
           tags: |
             jitsi/jigasi:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   jvb:
     runs-on: ubuntu-latest
@@ -119,8 +109,6 @@ jobs:
           context: ./jvb
           tags: |
             jitsi/jvb:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   prosody:
     runs-on: ubuntu-latest
@@ -138,8 +126,6 @@ jobs:
           context: ./prosody
           tags: |
             jitsi/prosody:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   web:
     runs-on: ubuntu-latest
@@ -157,5 +143,3 @@ jobs:
           context: ./web
           tags: |
             jitsi/web:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
