@@ -22,9 +22,9 @@ else
     google-chrome --version
 
     if [ "${CHROMEDRIVER_MAJOR_RELEASE}" = "latest" ]; then
-        CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE)"
+        CHROMEDRIVER_RELEASE="$(curl -4Ls https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_STABLE)"
     else
-        CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
+        CHROMEDRIVER_RELEASE="$(curl -4Ls https://googlechromelabs.github.io/chrome-for-testing/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
     fi
 
     CHROMEDRIVER_ZIP="/tmp/chromedriver_linux64.zip"
