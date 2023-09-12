@@ -11,9 +11,8 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 ARG TARGETPLATFORM
 ARG USE_CHROMIUM=0
 #ARG CHROME_RELEASE=latest
-#ARG CHROMEDRIVER_MAJOR_RELEASE=latest
+# https://googlechromelabs.github.io/chrome-for-testing/
 ARG CHROME_RELEASE=116.0.5845.96
-ARG CHROMEDRIVER_MAJOR_RELEASE=116
 
 COPY rootfs/ /
 
