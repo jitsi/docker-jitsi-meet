@@ -32,8 +32,8 @@ else
 
     CHROMEDRIVER_ZIP="/tmp/chromedriver_linux64.zip"
     curl -4Lso ${CHROMEDRIVER_ZIP} "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_RELEASE}/linux64/chromedriver-linux64.zip"
-    unzip ${CHROMEDRIVER_ZIP} -d /tmp/chromedriver
-    mv /tmp/chromedriver/chromedriver /usr/bin/
+    unzip ${CHROMEDRIVER_ZIP} -d /tmp/
+    mv /tmp/chromedriver-linux64/chromedriver /usr/bin/
     chmod +x /usr/bin/chromedriver
     rm -rf /tmp/chromedriver*
 fi
