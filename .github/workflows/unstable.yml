@@ -1,7 +1,6 @@
 name: Unstable Build
 
 on:
-  pull_request:
   schedule:
     - cron: "0 6 * * *"
   workflow_dispatch:
@@ -70,32 +69,17 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./base
           tags: |
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}
-          build-args: |
-            JITSI_RELEASE=unstable
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Dryrun
-        uses: docker/build-push-action@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          context: ./base
-          tags: |
-            jitsi/base:${{ needs.version.outputs.base }}
-            jitsi/base:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_RELEASE=unstable
           platforms: linux/amd64,linux/arm64
@@ -116,13 +100,11 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./base-java
@@ -131,20 +113,6 @@ jobs:
             ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.date }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Dryrun
-        uses: docker/build-push-action@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          context: ./base-java
-          tags: |
-            jitsi/base-java:${{ needs.version.outputs.base }}
-            jitsi/base-java:${{ needs.version.outputs.date }}
-          build-args: |
-            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -164,13 +132,11 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./jibri
@@ -180,21 +146,6 @@ jobs:
             ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.jibri_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Dryrun
-        uses: docker/build-push-action@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          context: ./jibri
-          tags: |
-            jitsi/jibri:${{ needs.version.outputs.base }}
-            jitsi/jibri:${{ needs.version.outputs.date }}
-            jitsi/jibri:${{ needs.version.outputs.jibri_version }}
-          build-args: |
-            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -214,13 +165,11 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./jicofo
@@ -230,21 +179,6 @@ jobs:
             ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.jicofo_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Dryrun
-        uses: docker/build-push-action@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          context: ./jicofo
-          tags: |
-            jitsi/jicofo:${{ needs.version.outputs.base }}
-            jitsi/jicofo:${{ needs.version.outputs.date }}
-            jitsi/jicofo:${{ needs.version.outputs.jicofo_version }}
-          build-args: |
-            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -264,13 +198,11 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./jigasi
@@ -280,21 +212,6 @@ jobs:
             ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.jigasi_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Dryrun
-        uses: docker/build-push-action@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          context: ./jigasi
-          tags: |
-            jitsi/jigasi:${{ needs.version.outputs.base }}
-            jitsi/jigasi:${{ needs.version.outputs.date }}
-            jitsi/jigasi:${{ needs.version.outputs.jigasi_version }}
-          build-args: |
-            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -314,13 +231,11 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./jvb
@@ -330,21 +245,6 @@ jobs:
             ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.jvb_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Dryrun
-        uses: docker/build-push-action@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          context: ./jvb
-          tags: |
-            jitsi/jvb:${{ needs.version.outputs.base }}
-            jitsi/jvb:${{ needs.version.outputs.date }}
-            jitsi/jvb:${{ needs.version.outputs.jvb_version }}
-          build-args: |
-            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -364,13 +264,11 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./prosody
@@ -380,21 +278,6 @@ jobs:
             ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.prosody_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Dryrun
-        uses: docker/build-push-action@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          context: ./prosody
-          tags: |
-            jitsi/prosody:${{ needs.version.outputs.base }}
-            jitsi/prosody:${{ needs.version.outputs.date }}
-            jitsi/prosody:${{ needs.version.outputs.prosody_version }}
-          build-args: |
-            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -414,13 +297,11 @@ jobs:
         uses: docker/setup-buildx-action@v1
       - name: Login to DockerHub
         uses: docker/login-action@v1
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        if: ${{ github.event_name != 'pull_request' }}
         with:
           push: true
           context: ./web
@@ -430,21 +311,6 @@ jobs:
             ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.web_version }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-      - name: Dryrun
-        uses: docker/build-push-action@v2
-        if: ${{ github.event_name == 'pull_request' }}
-        with:
-          context: ./web
-          tags: |
-            jitsi/web:${{ needs.version.outputs.base }}
-            jitsi/web:${{ needs.version.outputs.date }}
-            jitsi/web:${{ needs.version.outputs.web_version }}
-          build-args: |
-            JITSI_REPO=jitsi
             BASE_TAG=${{ needs.version.outputs.base }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
