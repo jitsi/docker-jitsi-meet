@@ -1,3 +1,15 @@
+## stable-8922-1
+
+Based on stable release 8922-1.
+
+* b3abfc0 ci: split unstable build and test workflows (#1601)
+* 603d461 jibri: adapt to new ChromeDriver zip file structure
+* a76b1f4 jibri: simplify ChromeDriver download
+* fd1c308 jibri: fix new ChromeDriver API endpoints
+* 2c0a793 jibri: update Chrome to 116
+* 916bccb jibri: autoscaler sidecar tuning parameters
+* 6e59319 misc: working on unstable
+
 ## stable-8922
 
 Based on stable release 8922.
