@@ -238,6 +238,7 @@ services:
             - PROSODY_ENABLE_RATE_LIMITS
             - PROSODY_ENABLE_S2S
             - PROSODY_HTTP_PORT
+            - PROSODY_MODE
             - PROSODY_RATE_LIMIT_LOGIN_RATE
             - PROSODY_RATE_LIMIT_SESSION_RATE
             - PROSODY_RATE_LIMIT_TIMEOUT
