@@ -59,7 +59,10 @@ fi
 [ -z "${XMPP_RECORDER_DOMAIN}" ] && export XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
 
 prosodyctl --config $PROSODY_CFG register focus $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
-prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN focus@$XMPP_AUTH_DOMAIN
+
+if [[ "$PROSODY_MODE" != "visitors" ]]; then
+    prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN focus@$XMPP_AUTH_DOMAIN
+fi
 
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'
@@ -102,8 +105,8 @@ if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
 fi
 
 if [[ "$PROSODY_MODE" == "visitors" ]]; then
-    [ -z "$VISITOR_INDEX" ] && VISITOR_INDEX=0
-    VISITOR_XMPP_DOMAIN="v$VISITOR_INDEX.$XMPP_DOMAIN"
+    [ -z "$PROSODY_VISITOR_INDEX" ] && PROSODY_VISITOR_INDEX=0
+    VISITOR_XMPP_DOMAIN="v$PROSODY_VISITOR_INDEX.$XMPP_DOMAIN"
     if [[ ! -f /config/certs/$VISITOR_XMPP_DOMAIN.crt ]]; then
         # echo for using all default values
         echo | prosodyctl --config $PROSODY_CFG cert generate $VISITOR_XMPP_DOMAIN

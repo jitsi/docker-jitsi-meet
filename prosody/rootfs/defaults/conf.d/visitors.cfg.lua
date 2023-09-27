@@ -29,9 +29,17 @@
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
+{{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 -}}
 {{ $XMPP_SERVER := .Env.XMPP_SERVER | default "xmpp.meet.jitsi" -}}
 {{ $XMPP_SERVER_S2S_PORT := .Env.XMPP_SERVER_S2S_PORT | default $S2S_PORT -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
+
+plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
+
+muc_mapper_domain_base = "{{ $XMPP_DOMAIN }}";
+muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
+
+http_default_host = "v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}"
 
 {{ if .Env.TURN_CREDENTIALS -}}
 external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
