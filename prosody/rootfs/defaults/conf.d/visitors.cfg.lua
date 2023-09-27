@@ -30,6 +30,7 @@
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_SERVER := .Env.XMPP_SERVER | default "xmpp.meet.jitsi" -}}
+{{ $XMPP_SERVER_S2S_PORT := .Env.XMPP_SERVER_S2S_PORT | default $S2S_PORT -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 
 {{ if .Env.TURN_CREDENTIALS -}}
@@ -88,11 +89,11 @@ trusted_proxies = {
 
 -- this is added to make certs_s2soutinjection work
 s2sout_override = {
-    ["{{ $XMPP_MUC_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $S2S_PORT }}"; -- needed for visitors to send messages to main room
-    ["{{ $XMPP_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $S2S_PORT }}";
-    ["visitors.{{ $XMPP_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $S2S_PORT }}";
+    ["{{ $XMPP_MUC_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}"; -- needed for visitors to send messages to main room
+    ["{{ $XMPP_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
+    ["visitors.{{ $XMPP_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
 {{ if $ENABLE_GUEST_DOMAIN -}}
-    ["{{ $XMPP_GUEST_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $S2S_PORT }}";
+    ["{{ $XMPP_GUEST_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
 {{ end -}}
 }
 
