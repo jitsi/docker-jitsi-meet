@@ -208,6 +208,9 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{ if $PROSODY_RESERVATION_ENABLED }}
         "reservations";
         {{ end }}
+        {{ if $ENABLE_VISITORS }}
+        "visitors";
+        {{ end }}
     }
 
     main_muc = "{{ $XMPP_MUC_DOMAIN }}"
@@ -240,11 +243,19 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
 
     c2s_require_encryption = false
 
+    {{ if $ENABLE_VISITORS }}
+    visitors_ignore_list = { "{{ $XMPP_RECORDER_DOMAIN }}" }
+    {{ end }}
+
 {{ if $ENABLE_GUEST_DOMAIN }}
 VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
     authentication = "jitsi-anonymous"
 
     c2s_require_encryption = false
+    {{ if $ENABLE_VISITORS }}
+    allow_anonymous_s2s = true
+    {{ end }}
+
 {{ end }}
 
 VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
@@ -404,3 +415,9 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
 Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
     breakout_rooms_component = "breakout.{{ $XMPP_DOMAIN }}"
+
+
+{{ if $ENABLE_VISITORS }}
+Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
+    auto_allow_visitor_promotion = true
+{{ end }}
