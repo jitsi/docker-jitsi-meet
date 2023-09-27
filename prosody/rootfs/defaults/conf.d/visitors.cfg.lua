@@ -104,8 +104,8 @@ muc_limit_messages_check_token = {{ $LIMIT_MESSAGES_CHECK_TOKEN }};
 VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}'
     authentication = 'jitsi-anonymous'
     ssl = {
-        key = "/config/certs/{{ $XMPP_DOMAIN }}.key";
-        certificate = "/config/certs/{{ $XMPP_DOMAIN }}.crt";
+        key = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}.key";
+        certificate = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}.crt";
     }
     modules_enabled = {
       'bosh';

@@ -101,9 +101,18 @@ if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
     prosodyctl --config $PROSODY_CFG register $JIGASI_XMPP_USER $XMPP_AUTH_DOMAIN $JIGASI_XMPP_PASSWORD
 fi
 
-if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
-    # echo for using all default values
-    echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_DOMAIN
+if [[ "$PROSODY_MODE" == "visitors" ]]; then
+    [ -z "$VISITOR_INDEX" ] && VISITOR_INDEX=0
+    VISITOR_XMPP_DOMAIN="v$VISITOR_INDEX.$XMPP_DOMAIN"
+    if [[ ! -f /config/certs/$VISITOR_XMPP_DOMAIN.crt ]]; then
+        # echo for using all default values
+        echo | prosodyctl --config $PROSODY_CFG cert generate $VISITOR_XMPP_DOMAIN
+    fi
+else
+    if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
+        # echo for using all default values
+        echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_DOMAIN
+    fi
 fi
 
 if [[ ! -f /config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
