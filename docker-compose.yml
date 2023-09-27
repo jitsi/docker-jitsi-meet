@@ -284,6 +284,7 @@ services:
             - ENABLE_OCTO
             - ENABLE_RECORDING
             - ENABLE_SCTP
+            - ENABLE_VISITORS
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_LIFETIME
             - JICOFO_AUTH_PASSWORD
@@ -319,6 +320,9 @@ services:
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
+            - VISITORS_MAX_PARTICIPANTS
+            - VISITORS_MAX_VISITORS_PER_NODE
+            - VISITORS_XMPP_SERVER
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
