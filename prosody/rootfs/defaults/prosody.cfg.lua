@@ -14,11 +14,13 @@
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
 {{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
 {{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" }}
+{{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
 {{ $VISITORS_XMPP_SERVER := .Env.VISITORS_XMPP_SERVER | default "" -}}
 {{ $VISITORS_XMPP_SERVERS := splitList "," $VISITORS_XMPP_SERVER -}}
 {{ $VISITORS_XMPP_PORT := .Env.VISITORS_XMPP_PORT | default "52220" }}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
+{{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
 
 -- Prosody Example Configuration File
@@ -171,7 +173,7 @@ s2s_ports = { {{ $S2S_PORT }} } -- Listen on specific s2s port
 
 s2s_whitelist = {
 	{{ if $ENABLE_VISITORS -}}
-    'conference.{{ $XMPP_DOMAIN }}'; -- needed for visitors to send messages to main room
+    '{{ $XMPP_MUC_DOMAIN }}'; -- needed for visitors to send messages to main room
     'visitors.{{ $XMPP_DOMAIN }}'; -- needed for sending promotion request to visitors.{{ $XMPP_DOMAIN }} component
     '{{ $XMPP_DOMAIN }}'; -- unavailable presences back to main room
 
@@ -188,13 +190,13 @@ s2sout_override = {
 {{ range $index, $element := $VISITORS_XMPP_SERVERS -}}
 {{ $SERVER := splitn ":" 2 $element }}
 {{ $DEFAULT_PORT := add $VISITORS_XMPP_PORT $index }}
-        ["conference.v{{ $index }}.{{ $XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
+        ["{{ $VISITORS_MUC_PREFIX }}.v{{ $index }}.{{ $XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
         ["v{{ $index }}.{{ $XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
 {{ end -}}
 };
 s2s_whitelist = {
 {{ range $index, $element := $VISITORS_XMPP_SERVERS -}}
-	"conference.v{{ $index }}.{{ $XMPP_DOMAIN }}";
+	"{{ $VISITORS_MUC_PREFIX }}.v{{ $index }}.{{ $XMPP_DOMAIN }}";
 {{ end -}}
 };
 {{ end -}}

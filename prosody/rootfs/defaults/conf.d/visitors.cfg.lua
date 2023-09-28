@@ -24,6 +24,7 @@
 {{ $TURNS_HOSTS := splitList "," $TURNS_HOST -}}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
 {{ $VISITOR_INDEX := .Env.PROSODY_VISITOR_INDEX | default "0" -}}
+{{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
 {{ $VISITORS_MAX_VISITORS_PER_NODE := .Env.VISITORS_MAX_VISITORS_PER_NODE | default "250" }}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
@@ -135,7 +136,7 @@ VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
     }
     authentication = 'internal_hashed'
 
-Component 'conference.v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}' 'muc'
+Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}' 'muc'
     storage = 'memory'
     muc_room_cache_size = 10000
     restrict_room_creation = true
