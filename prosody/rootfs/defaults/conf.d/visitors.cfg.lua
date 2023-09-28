@@ -27,6 +27,7 @@
 {{ $VISITOR_INDEX := .Env.PROSODY_VISITOR_INDEX | default "0" -}}
 {{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
 {{ $VISITORS_MAX_VISITORS_PER_NODE := .Env.VISITORS_MAX_VISITORS_PER_NODE | default "250" }}
+{{ $VISITORS_XMPP_DOMAIN := .Env.VISITORS_XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -41,7 +42,7 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 muc_mapper_domain_base = "{{ $XMPP_DOMAIN }}";
 muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
 
-http_default_host = "v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}"
+http_default_host = "v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}"
 
 {{ if .Env.TURN_CREDENTIALS -}}
 external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
@@ -67,7 +68,6 @@ external_services = {
 };
 {{- end }}
 
-muc_mapper_domain_base = 'v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}';
 main_domain = '{{ $XMPP_DOMAIN }}';
 
 -- https://prosody.im/doc/modules/mod_smacks
@@ -111,11 +111,11 @@ muc_limit_messages_count = 10;
 muc_limit_messages_check_token = {{ $LIMIT_MESSAGES_CHECK_TOKEN }};
 
 ----------- Virtual hosts -----------
-VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}'
+VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     authentication = 'jitsi-anonymous'
     ssl = {
-        key = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}.key";
-        certificate = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}.crt";
+        key = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.key";
+        certificate = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.crt";
     }
     modules_enabled = {
       'bosh';
@@ -126,7 +126,7 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}'
       "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
       {{ end }}
     }
-    main_muc = 'conference.v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}';
+    main_muc = '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}';
     shard_name = "{{ $SHARD_NAME }}"
     region_name = "{{ $REGION_NAME }}"
     release_number = "{{ $RELEASE_NUMBER }}"
@@ -139,7 +139,7 @@ VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
     }
     authentication = 'internal_hashed'
 
-Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}' 'muc'
+Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}' 'muc'
     storage = 'memory'
     muc_room_cache_size = 10000
     restrict_room_creation = true
