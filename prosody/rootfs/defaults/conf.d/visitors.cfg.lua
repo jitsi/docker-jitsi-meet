@@ -121,7 +121,9 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}'
       'ping';
       "external_services";
       "smacks";
-      "jiconop";
+      {{ if .Env.XMPP_MODULES }}
+      "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
+      {{ end }}
     }
     main_muc = 'conference.v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}';
     shard_name = "{{ $SHARD_NAME }}"
@@ -142,17 +144,24 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}' 
     restrict_room_creation = true
     modules_enabled = {
         "muc_hide_all";
-        "muc_domain_mapper";
-        "muc_rate_limit";
         "muc_meeting_id";
-        "rate_limit";
         'fmuc';
         's2s_bidi';
         's2s_whitelist';
         's2sout_override';
         'muc_max_occupants';
         "muc_limit_messages";
-    }
+        {{ if $ENABLE_SUBDOMAINS -}}
+        "muc_domain_mapper";
+        {{ end -}}
+        {{ if $ENABLE_RATE_LIMITS -}}
+        "muc_rate_limit";
+        "rate_limit";
+        {{ end -}}
+        {{ if .Env.XMPP_MUC_MODULES -}}
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
+        {{ end -}}
+      }
     muc_room_default_presence_broadcast = {
         visitor = false;
         participant = true;
@@ -190,3 +199,6 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $XMPP_DOMAIN }}' 
     rate_limit_cache_size = {{ $RATE_LIMIT_CACHE_SIZE }};
 
     muc_rate_joins = 30;
+    {{ if .Env.XMPP_MUC_CONFIGURATION -}}
+    {{ join "\n" (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}
+    {{ end -}}
