@@ -40,7 +40,7 @@
 
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 
-muc_mapper_domain_base = "{{ $XMPP_DOMAIN }}";
+muc_mapper_domain_base = "v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}";
 muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
 
 http_default_host = "v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}"
