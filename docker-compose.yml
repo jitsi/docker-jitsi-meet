@@ -165,8 +165,9 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         expose:
             - '${XMPP_PORT:-5222}'
+            - '${PROSODY_S2S_PORT:-5269}'
             - '5347'
-            - '5280'
+            - '${PROSODY_HTTP_PORT:-5280}'
         volumes:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
@@ -181,6 +182,8 @@ services:
             - ENABLE_IPV6
             - ENABLE_LOBBY
             - ENABLE_RECORDING
+            - ENABLE_S2S
+            - ENABLE_VISITORS
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
             - GC_TYPE
@@ -229,15 +232,23 @@ services:
             - LDAP_URL
             - LDAP_USE_TLS
             - MAX_PARTICIPANTS
+            - PROSODY_ADMINS
             - PROSODY_AUTH_TYPE
             - PROSODY_RESERVATION_ENABLED
             - PROSODY_RESERVATION_REST_BASE_URL
             - PROSODY_ENABLE_RATE_LIMITS
+            - PROSODY_ENABLE_S2S
+            - PROSODY_HTTP_PORT
+            - PROSODY_MODE
             - PROSODY_RATE_LIMIT_LOGIN_RATE
             - PROSODY_RATE_LIMIT_SESSION_RATE
             - PROSODY_RATE_LIMIT_TIMEOUT
             - PROSODY_RATE_LIMIT_ALLOW_RANGES
             - PROSODY_RATE_LIMIT_CACHE_SIZE
+            - PROSODY_S2S_PORT
+            - PROSODY_TRUSTED_PROXIES
+            - PROSODY_VISITOR_INDEX
+            - PROSODY_VISITORS_MUC_PREFIX
             - PUBLIC_URL
             - TURN_CREDENTIALS
             - TURN_HOST
@@ -246,6 +257,10 @@ services:
             - TURNS_PORT
             - TURN_TRANSPORT
             - TZ
+            - VISITORS_MAX_VISITORS_PER_NODE
+            - VISITORS_XMPP_DOMAIN
+            - VISITORS_XMPP_SERVER
+            - VISITORS_XMPP_PORT
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
@@ -257,6 +272,7 @@ services:
             - XMPP_INTERNAL_MUC_MODULES
             - XMPP_RECORDER_DOMAIN
             - XMPP_PORT
+            - XMPP_SERVER_S2S_PORT
         networks:
             meet.jitsi:
                 aliases:
@@ -316,6 +332,7 @@ services:
             - JVB_XMPP_SERVER
             - MAX_BRIDGE_PARTICIPANTS
             - OCTO_BRIDGE_SELECTION_STRATEGY
+            - PROSODY_VISITORS_MUC_PREFIX
             - SENTRY_DSN="${JICOFO_SENTRY_DSN:-0}"
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
@@ -323,6 +340,7 @@ services:
             - VISITORS_MAX_PARTICIPANTS
             - VISITORS_MAX_VISITORS_PER_NODE
             - VISITORS_XMPP_SERVER
+            - VISITORS_XMPP_DOMAIN
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
