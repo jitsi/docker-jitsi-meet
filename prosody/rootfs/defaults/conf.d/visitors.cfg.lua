@@ -135,6 +135,10 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     region_name = "{{ $REGION_NAME }}"
     release_number = "{{ $RELEASE_NUMBER }}"
 
+    {{ if .Env.XMPP_CONFIGURATION -}}
+    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
+    {{ end -}}
+
 
 VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
     modules_enabled = {
