@@ -215,7 +215,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     }
 
     main_muc = "{{ $XMPP_MUC_DOMAIN }}"
-
+    room_metadata_component = "metadata.{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_LOBBY }}
     lobby_muc = "lobby.{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_RECORDING }}
