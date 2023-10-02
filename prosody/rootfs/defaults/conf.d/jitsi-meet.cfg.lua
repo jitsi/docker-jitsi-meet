@@ -244,9 +244,13 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
 
     c2s_require_encryption = false
 
-    {{ if $ENABLE_VISITORS }}
+    {{ if $ENABLE_VISITORS -}}
     visitors_ignore_list = { "{{ $XMPP_RECORDER_DOMAIN }}" }
     {{ end }}
+
+    {{ if .Env.XMPP_CONFIGURATION -}}
+    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
+    {{ end -}}
 
 {{ if $ENABLE_GUEST_DOMAIN }}
 VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
