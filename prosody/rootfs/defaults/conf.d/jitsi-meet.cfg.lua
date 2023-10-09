@@ -393,6 +393,9 @@ Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
         {{ if $ENABLE_RATE_LIMITS -}}
         "muc_rate_limit";
         {{ end -}}
+        {{ if .Env.XMPP_LOBBY_MUC_MODULES -}}
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_LOBBY_MUC_MODULES) }}";
+        {{ end -}}
     }
 
     {{ end }}
@@ -413,6 +416,9 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ end -}}
         {{ if $ENABLE_RATE_LIMITS -}}
         "muc_rate_limit";
+        {{ end -}}
+        {{ if .Env.XMPP_BREAKOUT_MUC_MODULES -}}
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_BREAKOUT_MUC_MODULES) }}";
         {{ end -}}
     }
 {{ end }}

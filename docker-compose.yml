@@ -262,12 +262,14 @@ services:
             - VISITORS_XMPP_DOMAIN
             - VISITORS_XMPP_SERVER
             - VISITORS_XMPP_PORT
+            - XMPP_BREAKOUT_MUC_MODULES
             - XMPP_CONFIGURATION
             - XMPP_DOMAIN
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_LOBBY_MUC_MODULES
             - XMPP_MODULES
             - XMPP_MUC_MODULES
             - XMPP_MUC_CONFIGURATION
