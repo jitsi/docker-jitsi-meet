@@ -21,16 +21,19 @@ else
 
     google-chrome --version
 
-    if [ "${CHROMEDRIVER_MAJOR_RELEASE}" = "latest" ]; then
-        CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE)"
+    BASE_URL=https://googlechromelabs.github.io/chrome-for-testing
+
+    if [ "${CHROME_RELEASE}" = "latest" ]; then
+        CHROMEDRIVER_RELEASE="$(curl -4Ls ${BASE_URL}/LATEST_RELEASE_STABLE)"
     else
-        CHROMEDRIVER_RELEASE="$(curl -4Ls https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
+        CHROMEDRIVER_MAJOR_RELEASE=$(echo $CHROME_RELEASE | cut -d. -f1)
+        CHROMEDRIVER_RELEASE="$(curl -4Ls ${BASE_URL}/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
     fi
 
     CHROMEDRIVER_ZIP="/tmp/chromedriver_linux64.zip"
-    curl -4Lso ${CHROMEDRIVER_ZIP} "https://chromedriver.storage.googleapis.com/${CHROMEDRIVER_RELEASE}/chromedriver_linux64.zip"
-    unzip ${CHROMEDRIVER_ZIP} -d /tmp/chromedriver
-    mv /tmp/chromedriver/chromedriver /usr/bin/
+    curl -4Lso ${CHROMEDRIVER_ZIP} "https://edgedl.me.gvt1.com/edgedl/chrome/chrome-for-testing/${CHROMEDRIVER_RELEASE}/linux64/chromedriver-linux64.zip"
+    unzip ${CHROMEDRIVER_ZIP} -d /tmp/
+    mv /tmp/chromedriver-linux64/chromedriver /usr/bin/
     chmod +x /usr/bin/chromedriver
     rm -rf /tmp/chromedriver*
 fi

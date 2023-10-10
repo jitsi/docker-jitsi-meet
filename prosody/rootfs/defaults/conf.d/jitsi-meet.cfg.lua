@@ -1,4 +1,5 @@
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
+{{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" -}}
 {{ $PROSODY_AUTH_TYPE := .Env.PROSODY_AUTH_TYPE | default $AUTH_TYPE -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
@@ -99,11 +100,11 @@ external_services = {
 };
 {{- end }}
 
-{{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_ISSUERS }}
+{{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
 {{ end }}
 
-{{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") .Env.JWT_ACCEPTED_AUDIENCES }}
+{{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_AUDIENCES }}
 asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES) }}" }
 {{ end }}
 
@@ -148,6 +149,20 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ end }}
     {{ if $MATRIX_UVS_SYNC_POWER_LEVELS }}
     uvs_sync_power_levels = true
+    {{ end }}
+  {{ else if eq $PROSODY_AUTH_TYPE "hybrid_matrix_token" }}
+    authentication = "hybrid_matrix_token"
+    app_id = "{{ .Env.JWT_APP_ID }}"
+    app_secret = "{{ .Env.JWT_APP_SECRET }}"
+    allow_empty_token = {{ $JWT_ALLOW_EMPTY }}
+    enable_domain_verification = {{ $JWT_ENABLE_DOMAIN_VERIFICATION }}
+
+    uvs_base_url = "{{ .Env.MATRIX_UVS_URL }}"
+    {{ if .Env.MATRIX_UVS_ISSUER }}
+    uvs_issuer = "{{ .Env.MATRIX_UVS_ISSUER }}"
+    {{ end }}
+    {{ if .Env.MATRIX_UVS_AUTH_TOKEN }}
+    uvs_auth_token = "{{ .Env.MATRIX_UVS_AUTH_TOKEN }}"
     {{ end }}
   {{ else if eq $PROSODY_AUTH_TYPE "internal" }}
     authentication = "internal_hashed"
@@ -194,10 +209,13 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{ if $PROSODY_RESERVATION_ENABLED }}
         "reservations";
         {{ end }}
+        {{ if $ENABLE_VISITORS }}
+        "visitors";
+        {{ end }}
     }
 
     main_muc = "{{ $XMPP_MUC_DOMAIN }}"
-
+    room_metadata_component = "metadata.{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_LOBBY }}
     lobby_muc = "lobby.{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_RECORDING }}
@@ -226,11 +244,23 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
 
     c2s_require_encryption = false
 
+    {{ if $ENABLE_VISITORS -}}
+    visitors_ignore_list = { "{{ $XMPP_RECORDER_DOMAIN }}" }
+    {{ end }}
+
+    {{ if .Env.XMPP_CONFIGURATION -}}
+    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
+    {{ end -}}
+
 {{ if $ENABLE_GUEST_DOMAIN }}
 VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
     authentication = "jitsi-anonymous"
 
     c2s_require_encryption = false
+    {{ if $ENABLE_VISITORS }}
+    allow_anonymous_s2s = true
+    {{ end }}
+
 {{ end }}
 
 VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
@@ -271,11 +301,14 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
         {{ end -}}
-        {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") -}}
+        {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) -}}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
         {{ end }}
         {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "matrix") $MATRIX_UVS_SYNC_POWER_LEVELS -}}
         "matrix_power_sync";
+        {{ end -}}
+        {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token") $MATRIX_UVS_SYNC_POWER_LEVELS -}}
+        "matrix_affiliation";
         {{ end -}}
         {{ if not $DISABLE_POLLS -}}
         "polls";
@@ -360,6 +393,9 @@ Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
         {{ if $ENABLE_RATE_LIMITS -}}
         "muc_rate_limit";
         {{ end -}}
+        {{ if .Env.XMPP_LOBBY_MUC_MODULES -}}
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_LOBBY_MUC_MODULES) }}";
+        {{ end -}}
     }
 
     {{ end }}
@@ -381,9 +417,18 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ if $ENABLE_RATE_LIMITS -}}
         "muc_rate_limit";
         {{ end -}}
+        {{ if .Env.XMPP_BREAKOUT_MUC_MODULES -}}
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_BREAKOUT_MUC_MODULES) }}";
+        {{ end -}}
     }
 {{ end }}
 
 Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
     breakout_rooms_component = "breakout.{{ $XMPP_DOMAIN }}"
+
+
+{{ if $ENABLE_VISITORS }}
+Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
+    auto_allow_visitor_promotion = true
+{{ end }}

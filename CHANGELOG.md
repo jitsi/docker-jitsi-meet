@@ -1,3 +1,41 @@
+## stable-8960-1
+
+Based on stable release 8960-1.
+
+* 9bd3258 jibri: fix variable names
+* 807b7bf misc: working on unstable
+
+## stable-8960
+
+Based on stable release 8960.
+
+* 5c5575c jibri: make some ffmpeg arguments configurable via env variables
+* 09b0df4 misc: working on unstable
+
+## stable-8922-1
+
+Based on stable release 8922-1.
+
+* b3abfc0 ci: split unstable build and test workflows (#1601)
+* 603d461 jibri: adapt to new ChromeDriver zip file structure
+* a76b1f4 jibri: simplify ChromeDriver download
+* fd1c308 jibri: fix new ChromeDriver API endpoints
+* 2c0a793 jibri: update Chrome to 116
+* 916bccb jibri: autoscaler sidecar tuning parameters
+* 6e59319 misc: working on unstable
+
+## stable-8922
+
+Based on stable release 8922.
+
+* 1cbb8f8 prosody: add hybrid_matrix_token as a new authentication method
+* b5b8ea2 jigasi: add toggle to enable REST shutdown
+* 6bb2455 jibri: add extra fonts
+* 497015b jicofo: add JICOFO_AUTH_LIFETIME as environment variable
+* f18acb4 jicofo, prosody: allow to set different AUTH_TYPE
+* dc1994a jicofo: remove shibboleth authentication options
+* 58d4736 misc: working on unstable
+
 ## stable-8719
 
 Based on stable release 8719.

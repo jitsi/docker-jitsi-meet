@@ -25,10 +25,24 @@ if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
     chown -R prosody /prosody-plugins-custom
 fi
 
+
 mkdir /config/certs
 cp -r /defaults/* /config
+
+if [[ "$PROSODY_MODE" == "visitors" ]]; then
+    echo "Prosody visitor mode, using alternate config"
+    PROSODY_SITE_CFG="visitors.cfg.lua"
+    rm /config/conf.d/jitsi-meet.cfg.lua
+    # force jicofo into auth domain for visitor-mode prosody
+    [ -z "$XMPP_AUTH_DOMAIN" ] && XMPP_AUTH_DOMAIN="auth.meet.jitsi"
+    export PROSODY_ADMINS="focus@$XMPP_AUTH_DOMAIN"
+else
+    echo "Prosody normal mode, using default config"
+    PROSODY_SITE_CFG="jitsi-meet.cfg.lua"
+    rm /config/conf.d/visitors.cfg.lua
+fi
 tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
-tpl /defaults/conf.d/jitsi-meet.cfg.lua > /config/conf.d/jitsi-meet.cfg.lua
+tpl /defaults/conf.d/$PROSODY_SITE_CFG > /config/conf.d/$PROSODY_SITE_CFG
 
 if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: Jicofo auth password must be set'
@@ -45,7 +59,10 @@ fi
 [ -z "${XMPP_RECORDER_DOMAIN}" ] && export XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
 
 prosodyctl --config $PROSODY_CFG register focus $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
-prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN focus@$XMPP_AUTH_DOMAIN
+
+if [[ "$PROSODY_MODE" != "visitors" ]]; then
+    prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN focus@$XMPP_AUTH_DOMAIN
+fi
 
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'
@@ -87,9 +104,19 @@ if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
     prosodyctl --config $PROSODY_CFG register $JIGASI_XMPP_USER $XMPP_AUTH_DOMAIN $JIGASI_XMPP_PASSWORD
 fi
 
-if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
-    # echo for using all default values
-    echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_DOMAIN
+if [[ "$PROSODY_MODE" == "visitors" ]]; then
+    [ -z "$VISITORS_XMPP_DOMAIN" ] && VISITORS_XMPP_DOMAIN="meet.jitsi"
+    [ -z "$PROSODY_VISITOR_INDEX" ] && PROSODY_VISITOR_INDEX=0
+    FULL_VISITORS_XMPP_DOMAIN="v$PROSODY_VISITOR_INDEX.$VISITORS_XMPP_DOMAIN"
+    if [[ ! -f /config/certs/$FULL_VISITORS_XMPP_DOMAIN.crt ]]; then
+        # echo for using all default values
+        echo | prosodyctl --config $PROSODY_CFG cert generate $FULL_VISITORS_XMPP_DOMAIN
+    fi
+else
+    if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
+        # echo for using all default values
+        echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_DOMAIN
+    fi
 fi
 
 if [[ ! -f /config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
