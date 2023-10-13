@@ -165,7 +165,7 @@ pidfile = "/config/data/prosody.pid";
 -- Force clients to use encrypted connections? This option will
 -- prevent clients from authenticating unless they are using encryption.
 
-c2s_require_encryption = {{ if $C2S_REQUIRE_ENCRYPTION }}true{{ else }}false{{ end }}
+c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }};
 
 -- set c2s port
 c2s_ports = { {{ $XMPP_PORT }} } -- Listen on specific c2s port
