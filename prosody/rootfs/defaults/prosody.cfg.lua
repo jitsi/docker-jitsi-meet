@@ -179,6 +179,7 @@ c2s_interfaces = { "*" }
 -- set s2s port
 s2s_ports = { {{ $S2S_PORT }} } -- Listen on specific s2s port
 
+{{ if eq .Env.PROSODY_MODE "visitors" -}}
 s2s_whitelist = {
 	{{ if $ENABLE_VISITORS -}}
     '{{ $XMPP_MUC_DOMAIN }}'; -- needed for visitors to send messages to main room
@@ -192,6 +193,8 @@ s2s_whitelist = {
 }
 {{ end -}}
 
+{{ end -}}
+
 {{ if $ENABLE_VISITORS -}}
 {{ if $.Env.VISITORS_XMPP_SERVER -}}
 s2sout_override = {
@@ -202,11 +205,13 @@ s2sout_override = {
         ["v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
 {{ end -}}
 };
+{{ if ne .Env.PROSODY_MODE "visitors" -}}
 s2s_whitelist = {
 {{ range $index, $element := $VISITORS_XMPP_SERVERS -}}
 	"{{ $VISITORS_MUC_PREFIX }}.v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}";
 {{ end -}}
 };
+{{ end -}}
 {{ end -}}
 {{ end -}}
 
