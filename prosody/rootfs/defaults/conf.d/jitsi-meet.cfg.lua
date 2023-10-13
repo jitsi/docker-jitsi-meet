@@ -393,6 +393,8 @@ Component "avmoderation.{{ $XMPP_DOMAIN }}" "av_moderation_component"
 Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
     storage = "memory"
     restrict_room_creation = true
+    muc_room_allow_persistent = false
+    muc_room_cache_size = 10000
     muc_room_locking = false
     muc_room_default_public_jids = true
     modules_enabled = {
@@ -410,8 +412,10 @@ Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
 Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
     storage = "memory"
     restrict_room_creation = true
+    muc_room_cache_size = 10000
     muc_room_locking = false
     muc_room_default_public_jids = true
+    muc_room_allow_persistent = false
     modules_enabled = {
         "muc_meeting_id";
         {{ if $ENABLE_SUBDOMAINS -}}
