@@ -274,6 +274,7 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     }
     modules_enabled = {
         "limits_exception";
+        "ping";
     }
     authentication = "internal_hashed"
 
