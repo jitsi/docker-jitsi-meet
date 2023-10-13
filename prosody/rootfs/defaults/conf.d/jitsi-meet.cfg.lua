@@ -356,7 +356,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
 	-- The size of the cache that saves state for IP addresses
 	rate_limit_cache_size = {{ $RATE_LIMIT_CACHE_SIZE }};
 
-    muc_room_cache_size = 1000
+    muc_room_cache_size = 10000
     muc_room_locking = false
     muc_room_default_public_jids = true
     {{ if .Env.XMPP_MUC_CONFIGURATION -}}
