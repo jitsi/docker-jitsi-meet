@@ -282,6 +282,7 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
 VirtualHost "{{ $XMPP_RECORDER_DOMAIN }}"
     modules_enabled = {
       "ping";
+      "smacks";
     }
     authentication = "internal_hashed"
 {{ end }}
