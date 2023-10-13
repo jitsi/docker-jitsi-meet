@@ -1,3 +1,4 @@
+{{ $C2S_REQUIRE_ENCRYPTION := .Env.PROSODY_C2S_REQUIRE_ENCRYPTION | default "0" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
@@ -10,9 +11,11 @@
 {{ $GC_GEN_MIN_TH := .Env.GC_GEN_MIN_TH | default 20 -}}
 {{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
+{{ $PROSODY_C2S_LIMIT := .Env.PROSODY_C2S_LIMIT | default "10kb/s" -}}
 {{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
 {{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
+{{ $PROSODY_S2S_LIMIT := .Env.PROSODY_S2S_LIMIT | default "30kb/s" -}}
 {{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" }}
 {{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
 {{ $VISITORS_XMPP_DOMAIN := .Env.VISITORS_XMPP_DOMAIN | default "meet.jitsi" -}}
@@ -128,12 +131,16 @@ allow_registration = false;
 
 -- Enable rate limits for incoming client and server connections
 limits = {
+{{ if ne $PROSODY_C2S_LIMIT "" }}
   c2s = {
-    rate = "10kb/s";
+    rate = "{{ $PROSODY_C2S_LIMIT }}";
   };
+{{ end }}
+{{ if ne $PROSODY_S2S_LIMIT "" }}
   s2sin = {
-    rate = "30kb/s";
+    rate = "{{ $PROSODY_S2S_LIMIT }}";
   };
+{{ end }}
 }
 
 --Prosody garbage collector settings
@@ -158,7 +165,7 @@ pidfile = "/config/data/prosody.pid";
 -- Force clients to use encrypted connections? This option will
 -- prevent clients from authenticating unless they are using encryption.
 
-c2s_require_encryption = false
+c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }};
 
 -- set c2s port
 c2s_ports = { {{ $XMPP_PORT }} } -- Listen on specific c2s port
@@ -253,6 +260,9 @@ authentication = "internal_hashed"
 --  Logs errors to syslog also
 log = {
 	{ levels = {min = "{{ $LOG_LEVEL }}"}, timestamps = "%Y-%m-%d %X", to = "console"};
+{{ if .Env.PROSODY_LOG_CONFIG }}
+	{{ join "\n" (splitList "\\n" .Env.PROSODY_LOG_CONFIG) }}
+{{ end }}
 }
 
 {{ if .Env.GLOBAL_CONFIG }}
