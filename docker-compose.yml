@@ -241,6 +241,7 @@ services:
             - PROSODY_RESERVATION_REST_BASE_URL
             - PROSODY_ENABLE_RATE_LIMITS
             - PROSODY_ENABLE_S2S
+            - PROSODY_GUEST_AUTH_TYPE
             - PROSODY_HTTP_PORT
             - PROSODY_LOG_CONFIG
             - PROSODY_MODE
