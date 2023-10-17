@@ -1,0 +1,5 @@
+#!/usr/bin/with-contenv bash
+
+DAEMON="/usr/bin/icewm-session"
+exec s6-setuidgid jibri /bin/bash -c "exec $DAEMON"
+
