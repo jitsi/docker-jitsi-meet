@@ -1,13 +1,13 @@
 #!/usr/bin/with-contenv bash
 
-if [[ -z $JIBRI_RECORDER_PASSWORD || -z $JIBRI_XMPP_PASSWORD ]]; then
-    echo 'FATAL ERROR: Jibri recorder password and auth password must be set'
+if [[ -z $SIP_JIBRI_XMPP_PASSWORD || -z $JIBRI_XMPP_PASSWORD ]]; then
+    echo 'FATAL ERROR: Sip-Jibri XMPP password and auth password must be set'
     exit 1
 fi
 
-OLD_JIBRI_RECORDER_PASSWORD=passw0rd
-if [[ "$JIBRI_RECORDER_PASSWORD" == "$OLD_JIBRI_RECORDER_PASSWORD" ]]; then
-    echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
+OLD_SIP_JIBRI_XMPP_PASSWORD=passw0rd
+if [[ "$SIP_JIBRI_XMPP_PASSWORD" == "$OLD_SIP_JIBRI_XMPP_PASSWORD" ]]; then
+    echo 'FATAL ERROR: Sip-Jibri XMPP password must be changed, check the README'
     exit 1
 fi
 
@@ -21,14 +21,8 @@ fi
 [ -z "${DISPLAY}" ] \
 && ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
 
-# script for finalizing must have executing bit.
-[ ! -z "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
-&& [ -f "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
-&& [ ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
-&& chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}
-
 # set random jibri nickname for the instance if is not set
-[ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID="jibri-$(date +%N)"
+[ -z "${SIP_JIBRI_INSTANCE_ID}" ] && export SIP_JIBRI_INSTANCE_ID="sip-jibri-$(date +%N)"
 
 # check for AUTOSCALER_URL, AUTOSCALER_SIDECAR_KEY_FILE and AUTOSCALER_SIDECAR_KEY_ID as indicator that sidecar should be enabled
 if [ -n "$AUTOSCALER_URL" ]; then
@@ -47,9 +41,9 @@ if [ -n "$AUTOSCALER_URL" ]; then
 
         [ -z "$AUTOSCALER_SIDECAR_PORT" ] && export AUTOSCALER_SIDECAR_PORT="6000"
         [ -z "$JIBRI_WEBHOOK_SUBSCRIBERS" ] && export JIBRI_WEBHOOK_SUBSCRIBERS="http://localhost:$AUTOSCALER_SIDECAR_PORT/hook"
-        [ -z "$AUTOSCALER_SIDECAR_INSTANCE_ID" ] && export AUTOSCALER_SIDECAR_INSTANCE_ID="$JIBRI_INSTANCE_ID"
+        [ -z "$AUTOSCALER_SIDECAR_INSTANCE_ID" ] && export AUTOSCALER_SIDECAR_INSTANCE_ID="$SIP_JIBRI_INSTANCE_ID"
         [ -z "$AUTOSCALER_SIDECAR_REGION" ] && export AUTOSCALER_SIDECAR_REGION="docker"
-        [ -z "$AUTOSCALER_SIDECAR_GROUP_NAME" ] && export AUTOSCALER_SIDECAR_GROUP_NAME="docker-jibri"
+        [ -z "$AUTOSCALER_SIDECAR_GROUP_NAME" ] && export AUTOSCALER_SIDECAR_GROUP_NAME="docker-sip-jibri"
         [ -z "$LOCAL_ADDRESS" ] && export LOCAL_ADDRESS="$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1 '})"
 
         mkdir -p /etc/jitsi/autoscaler-sidecar
@@ -65,11 +59,6 @@ fi
 tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
 tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
 tpl /defaults/xorg-video-dummy.conf > /etc/jitsi/jibri/xorg-video-dummy.conf
-
-# make recording dir
-[ -z "${JIBRI_RECORDING_DIR}" ] && export JIBRI_RECORDING_DIR=/config/recordings
-mkdir -p ${JIBRI_RECORDING_DIR}
-chown -R jibri ${JIBRI_RECORDING_DIR}
 
 # make logs dir
 JIBRI_LOGS_DIR=/config/logs
