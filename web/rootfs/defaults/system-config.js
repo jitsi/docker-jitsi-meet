@@ -9,7 +9,7 @@
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0  -}}
-
+{{ $JVB_PREFER_SCTP := .Env.JVB_PREFER_SCTP | default "false" | toBool -}}
 // Jitsi Meet configuration.
 var config = {};
 
@@ -57,4 +57,9 @@ config.externalConnectUrl = '/' + subdir + 'http-pre-bind';
 {{ else -}}
 config.externalConnectUrl = '/http-pre-bind';
 {{ end -}}
+{{ end -}}
+
+{{ if $JVB_PREFER_SCTP -}}
+if (!config.hasOwnProperty('bridgeChannel')) config.bridgeChannel = {};
+config.bridgeChannel.preferSctp=true;
 {{ end -}}

@@ -1,5 +1,8 @@
-{{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
-{{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
+{{ $C2S_REQUIRE_ENCRYPTION := .Env.PROSODY_C2S_REQUIRE_ENCRYPTION | default "0" | toBool -}}
+{{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
+{{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
+{{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
+{{ $ENABLE_S2S := or $ENABLE_VISITORS ( .Env.PROSODY_ENABLE_S2S | default "0" | toBool ) }}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
 {{ $GC_TYPE := .Env.GC_TYPE | default "incremental" -}}
 {{ $GC_INC_TH := .Env.GC_INC_TH | default 150 -}}
@@ -7,6 +10,22 @@
 {{ $GC_INC_STEP_SIZE := .Env.GC_INC_STEP_SIZE | default 13 -}}
 {{ $GC_GEN_MIN_TH := .Env.GC_GEN_MIN_TH | default 20 -}}
 {{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
+{{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
+{{ $PROSODY_C2S_LIMIT := .Env.PROSODY_C2S_LIMIT | default "10kb/s" -}}
+{{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
+{{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
+{{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
+{{ $PROSODY_S2S_LIMIT := .Env.PROSODY_S2S_LIMIT | default "30kb/s" -}}
+{{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" }}
+{{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
+{{ $VISITORS_XMPP_DOMAIN := .Env.VISITORS_XMPP_DOMAIN | default "meet.jitsi" -}}
+{{ $VISITORS_XMPP_SERVER := .Env.VISITORS_XMPP_SERVER | default "" -}}
+{{ $VISITORS_XMPP_SERVERS := splitList "," $VISITORS_XMPP_SERVER -}}
+{{ $VISITORS_XMPP_PORT := .Env.VISITORS_XMPP_PORT | default "52220" }}
+{{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
+{{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
+{{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
+{{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
 
 -- Prosody Example Configuration File
 --
@@ -30,8 +49,7 @@
 -- for the server. Note that you must create the accounts separately
 -- (see http://prosody.im/doc/creating_accounts for info)
 -- Example: admins = { "user1@example.com", "user2@example.net" }
-admins = { }
-
+admins = { {{ if .Env.PROSODY_ADMINS }}{{ range $index, $element := $PROSODY_ADMIN_LIST -}}{{ if $index }}, {{ end }}"{{ $element }}"{{ end }}{{ end }} }
 -- Enable use of libevent for better performance under high load
 -- For more information see: http://prosody.im/doc/libevent
 --use_libevent = true;
@@ -81,7 +99,14 @@ modules_enabled = {
 		--"watchregistrations"; -- Alert admins of registrations
 		--"motd"; -- Send a message to users when they log in
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
-        {{ if .Env.GLOBAL_MODULES }}
+
+		{{ if $ENABLE_S2S -}}
+		"s2s_bidi";
+		"certs_s2soutinjection";
+		"s2sout_override";
+		"s2s_whitelist";
+		{{ end -}}
+		{{ if .Env.GLOBAL_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
         {{ end }}
 };
@@ -94,7 +119,10 @@ https_ports = { }
 modules_disabled = {
 	-- "offline"; -- Store offline messages
 	-- "c2s"; -- Handle client connections
+
+	{{ if not $ENABLE_S2S -}}
 	"s2s"; -- Handle server-to-server connections
+	{{ end -}}
 };
 
 -- Disable account creation by default, for security
@@ -103,12 +131,16 @@ allow_registration = false;
 
 -- Enable rate limits for incoming client and server connections
 limits = {
+{{ if ne $PROSODY_C2S_LIMIT "" }}
   c2s = {
-    rate = "10kb/s";
+    rate = "{{ $PROSODY_C2S_LIMIT }}";
   };
+{{ end }}
+{{ if ne $PROSODY_S2S_LIMIT "" }}
   s2sin = {
-    rate = "30kb/s";
+    rate = "{{ $PROSODY_S2S_LIMIT }}";
   };
+{{ end }}
 }
 
 --Prosody garbage collector settings
@@ -133,7 +165,7 @@ pidfile = "/config/data/prosody.pid";
 -- Force clients to use encrypted connections? This option will
 -- prevent clients from authenticating unless they are using encryption.
 
-c2s_require_encryption = false
+c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }};
 
 -- set c2s port
 c2s_ports = { {{ $XMPP_PORT }} } -- Listen on specific c2s port
@@ -142,6 +174,47 @@ c2s_interfaces = { "*", "::" }
 {{ else }}
 c2s_interfaces = { "*" }
 {{ end }}
+
+{{ if $ENABLE_S2S -}}
+-- set s2s port
+s2s_ports = { {{ $S2S_PORT }} } -- Listen on specific s2s port
+
+{{ if eq .Env.PROSODY_MODE "visitors" -}}
+s2s_whitelist = {
+	{{ if $ENABLE_VISITORS -}}
+    '{{ $XMPP_MUC_DOMAIN }}'; -- needed for visitors to send messages to main room
+    'visitors.{{ $XMPP_DOMAIN }}'; -- needed for sending promotion request to visitors.{{ $XMPP_DOMAIN }} component
+    '{{ $XMPP_DOMAIN }}'; -- unavailable presences back to main room
+
+	{{ end -}}
+	{{ if $ENABLE_GUEST_DOMAIN -}}
+    '{{ $XMPP_GUEST_DOMAIN }}';
+	{{ end -}}
+}
+{{ end -}}
+
+{{ end -}}
+
+{{ if $ENABLE_VISITORS -}}
+{{ if $.Env.VISITORS_XMPP_SERVER -}}
+s2sout_override = {
+{{ range $index, $element := $VISITORS_XMPP_SERVERS -}}
+{{ $SERVER := splitn ":" 2 $element }}
+{{ $DEFAULT_PORT := add $VISITORS_XMPP_PORT $index }}
+        ["{{ $VISITORS_MUC_PREFIX }}.v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
+        ["v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
+{{ end -}}
+};
+{{ if ne .Env.PROSODY_MODE "visitors" -}}
+s2s_whitelist = {
+{{ range $index, $element := $VISITORS_XMPP_SERVERS -}}
+	"{{ $VISITORS_MUC_PREFIX }}.v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}";
+{{ end -}}
+};
+{{ end -}}
+{{ end -}}
+{{ end -}}
+
 
 -- Force certificate authentication for server-to-server connections?
 -- This provides ideal security, but requires servers you communicate
@@ -192,6 +265,9 @@ authentication = "internal_hashed"
 --  Logs errors to syslog also
 log = {
 	{ levels = {min = "{{ $LOG_LEVEL }}"}, timestamps = "%Y-%m-%d %X", to = "console"};
+{{ if .Env.PROSODY_LOG_CONFIG }}
+	{{ join "\n" (splitList "\\n" .Env.PROSODY_LOG_CONFIG) }}
+{{ end }}
 }
 
 {{ if .Env.GLOBAL_CONFIG }}
@@ -208,7 +284,7 @@ unbound = {
     resolvconf = true
 }
 
-http_ports = { 5280 }
+http_ports = { {{ $PROSODY_HTTP_PORT }} }
 {{ if $ENABLE_IPV6 }}
 http_interfaces = { "*", "::" }
 {{ else }}
