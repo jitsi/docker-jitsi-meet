@@ -41,7 +41,9 @@
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
+{{ $XMPP_SIP_DOMAIN := .Env.XMPP_SIP_DOMAIN | default "sip.meet.jitsi" -}}
 {{ $JIBRI_RECORDER_USER := .Env.JIBRI_RECORDER_USER | default "recorder" -}}
+{{ $SIP_JIBRI_XMPP_USER := .Env.SIP_JIBRI_XMPP_USER | default "sip" -}}
 {{ $JIGASI_TRANSCRIBER_USER := .Env.JIGASI_TRANSCRIBER_USER | default "transcriber" -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
@@ -225,7 +227,9 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_LOBBY }}
     lobby_muc = "lobby.{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_RECORDING }}
-    muc_lobby_whitelist = { "{{ $XMPP_RECORDER_DOMAIN }}" }
+    muc_lobby_whitelist = { "{{ $XMPP_SIP_DOMAIN }}, {{ $XMPP_RECORDER_DOMAIN }}" }
+    {{ else }}
+    muc_lobby_whitelist = { "{{ $XMPP_SIP_DOMAIN }}" }
     {{ end }}
     {{ end }}
 
@@ -251,7 +255,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     c2s_require_encryption = false
 
     {{ if $ENABLE_VISITORS -}}
-    visitors_ignore_list = { "{{ $XMPP_RECORDER_DOMAIN }}" }
+    visitors_ignore_list = { "{{ $XMPP_SIP_DOMAIN }}, {{ $XMPP_RECORDER_DOMAIN }}" }
     {{ end }}
 
     {{ if .Env.XMPP_CONFIGURATION -}}
@@ -285,6 +289,15 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
 
 {{ if $ENABLE_RECORDING }}
 VirtualHost "{{ $XMPP_RECORDER_DOMAIN }}"
+    modules_enabled = {
+      "ping";
+      "smacks";
+    }
+    authentication = "internal_hashed"
+{{ end }}
+
+{{ if $XMPP_SIP_DOMAIN }}
+VirtualHost "{{ $XMPP_SIP_DOMAIN }}"
     modules_enabled = {
       "ping";
       "smacks";
@@ -354,7 +367,8 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
 
     rate_limit_whitelist_jids = {
         "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}",
-        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}"    
+        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}",
+        "{{ $SIP_JIBRI_XMPP_USER }}@{{ $XMPP_SIP_DOMAIN }}"
     }
     {{ end -}}
 
