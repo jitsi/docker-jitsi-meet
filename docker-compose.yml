@@ -310,6 +310,7 @@ services:
             - ENABLE_OCTO
             - ENABLE_RECORDING
             - ENABLE_SCTP
+            - ENABLE_SCTP_RELAY
             - ENABLE_VISITORS
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_LIFETIME
