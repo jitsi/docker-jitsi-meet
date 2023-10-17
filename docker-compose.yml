@@ -54,6 +54,7 @@ services:
             - DYNAMIC_BRANDING_URL
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUTH
+            - ENABLE_AUTH_DOMAIN
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_CALENDAR
             - ENABLE_COLIBRI_WEBSOCKET
