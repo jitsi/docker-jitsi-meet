@@ -3,7 +3,7 @@ ARG BASE_TAG=latest
 FROM ${JITSI_REPO}/base-java:${BASE_TAG}
 
 LABEL org.opencontainers.image.title="Jitsi Video-SIP-Gateway (sip-jibri)"
-LABEL org.opencontainers.image.description="Components for joining a conference from A SIP device."
+LABEL org.opencontainers.image.description="Components for joining a conference from a SIP device."
 LABEL org.opencontainers.image.url="https://github.com/jitsi/jibri"
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
