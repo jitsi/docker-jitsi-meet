@@ -17,9 +17,9 @@ if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
     exit 1
 fi
 
-# DISPLAY is necessary for start
-[ -z "${DISPLAY}" ] \
-&& ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
+# DISPLAY0 is necessary for start
+[ -z "${DISPLAY0}" ] \
+&& ( echo -e "\e[31mERROR: Please set DISPLAY0 variable.\e[39m"; kill 1; exit 1 )
 
 # set random jibri nickname for the instance if is not set
 [ -z "${SIP_JIBRI_INSTANCE_ID}" ] && export SIP_JIBRI_INSTANCE_ID="sip-jibri-$(date +%N)"
