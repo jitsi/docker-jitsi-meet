@@ -1,0 +1,77 @@
+#!/usr/bin/with-contenv bash
+
+if [[ -z $JIBRI_RECORDER_PASSWORD || -z $JIBRI_XMPP_PASSWORD ]]; then
+    echo 'FATAL ERROR: Jibri recorder password and auth password must be set'
+    exit 1
+fi
+
+OLD_JIBRI_RECORDER_PASSWORD=passw0rd
+if [[ "$JIBRI_RECORDER_PASSWORD" == "$OLD_JIBRI_RECORDER_PASSWORD" ]]; then
+    echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
+    exit 1
+fi
+
+OLD_JIBRI_XMPP_PASSWORD=passw0rd
+if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
+    echo 'FATAL ERROR: Jibri auth password must be changed, check the README'
+    exit 1
+fi
+
+# DISPLAY is necessary for start
+[ -z "${DISPLAY}" ] \
+&& ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
+
+# script for finalizing must have executing bit.
+[ ! -z "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
+&& [ -f "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
+&& [ ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
+&& chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}
+
+# set random jibri nickname for the instance if is not set
+[ -z "${JIBRI_INSTANCE_ID}" ] && export JIBRI_INSTANCE_ID="jibri-$(date +%N)"
+
+# check for AUTOSCALER_URL, AUTOSCALER_SIDECAR_KEY_FILE and AUTOSCALER_SIDECAR_KEY_ID as indicator that sidecar should be enabled
+if [ -n "$AUTOSCALER_URL" ]; then
+    if [ -z "$AUTOSCALER_SIDECAR_KEY_FILE" ]; then
+        export AUTOSCALER_SIDECAR_KEY_FILE="/etc/jitsi/autoscaler-sidecar/asap.pem"
+    fi
+    if [ -z "$AUTOSCALER_SIDECAR_KEY_ID" ]; then
+        # assume key id is equal to the base real path of the key file minus .pem
+        export AUTOSCALER_SIDECAR_KEY_ID="$(basename "$(realpath "$AUTOSCALER_SIDECAR_KEY_FILE")" | tr -d '.pem')"
+    fi
+
+    if [ -f "$AUTOSCALER_SIDECAR_KEY_FILE" ]; then
+        echo "AUTOSCALER_URL found, enabling autoscaler sidecar"
+
+        export JIBRI_VERSION="$(dpkg -s jibri | grep Version | awk '{print $2}' | sed 's/..$//')"
+
+        [ -z "$AUTOSCALER_SIDECAR_PORT" ] && export AUTOSCALER_SIDECAR_PORT="6000"
+        [ -z "$JIBRI_WEBHOOK_SUBSCRIBERS" ] && export JIBRI_WEBHOOK_SUBSCRIBERS="http://localhost:$AUTOSCALER_SIDECAR_PORT/hook"
+        [ -z "$AUTOSCALER_SIDECAR_INSTANCE_ID" ] && export AUTOSCALER_SIDECAR_INSTANCE_ID="$JIBRI_INSTANCE_ID"
+        [ -z "$AUTOSCALER_SIDECAR_REGION" ] && export AUTOSCALER_SIDECAR_REGION="docker"
+        [ -z "$AUTOSCALER_SIDECAR_GROUP_NAME" ] && export AUTOSCALER_SIDECAR_GROUP_NAME="docker-jibri"
+        [ -z "$LOCAL_ADDRESS" ] && export LOCAL_ADDRESS="$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1 '})"
+
+        mkdir -p /etc/jitsi/autoscaler-sidecar
+        tpl /defaults/autoscaler-sidecar.config > /etc/jitsi/autoscaler-sidecar/config
+    else
+        echo "No key file at $AUTOSCALER_SIDECAR_KEY_FILE, leaving autoscaler sidecar disabled"
+    fi
+else
+    echo "No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled"
+fi
+
+# always recreate configs
+tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
+tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
+tpl /defaults/xorg-video-dummy.conf > /etc/jitsi/jibri/xorg-video-dummy.conf
+
+# make recording dir
+[ -z "${JIBRI_RECORDING_DIR}" ] && export JIBRI_RECORDING_DIR=/config/recordings
+mkdir -p ${JIBRI_RECORDING_DIR}
+chown -R jibri ${JIBRI_RECORDING_DIR}
+
+# make logs dir
+JIBRI_LOGS_DIR=/config/logs
+mkdir -p ${JIBRI_LOGS_DIR}
+chown -R jibri ${JIBRI_LOGS_DIR}
