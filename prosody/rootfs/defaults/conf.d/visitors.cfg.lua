@@ -159,7 +159,6 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
         's2s_whitelist';
         's2sout_override';
         'muc_max_occupants';
-        "muc_limit_messages";
         {{ if $ENABLE_SUBDOMAINS -}}
         "muc_domain_mapper";
         {{ end -}}
