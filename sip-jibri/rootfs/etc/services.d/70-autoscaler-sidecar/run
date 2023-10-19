@@ -6,5 +6,5 @@ if [[ -n "$AUTOSCALER_URL" ]] && [[ -f "/etc/jitsi/autoscaler-sidecar/config" ]]
 else
     # if autoscaler-sidecar should not be started,
     # prevent s6 from restarting this script again and again
-    s6-svc -O /var/run/s6/services/50-autoscaler-sidecar
+    s6-svc -O /var/run/s6/services/70-autoscaler-sidecar
 fi
