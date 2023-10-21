@@ -21,6 +21,7 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" libv4l-0 && \
     /usr/bin/install-chrome.sh && \
     apt-cleanup && \
-    adduser jibri rtkit
+    adduser jibri rtkit && \
+    update-alternatives --install /usr/bin/google-chrome google-chrome /usr/local/bin/google-chrome 300
 
 VOLUME /config
