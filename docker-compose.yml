@@ -260,6 +260,8 @@ services:
             - PROSODY_VISITOR_INDEX
             - PROSODY_VISITORS_MUC_PREFIX
             - PUBLIC_URL
+            - SIP_JIBRI_XMPP_USER
+            - SIP_JIBRI_XMPP_PASSWORD
             - STUN_HOST
             - STUN_PORT
             - TURN_CREDENTIALS
