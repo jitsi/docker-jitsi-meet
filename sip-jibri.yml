@@ -10,6 +10,10 @@ services:
         shm_size: '2gb'
         cap_add:
             - SYS_ADMIN
+        devices:
+            - /dev/snd:/dev/snd
+            - /dev/video0:/dev/video0
+            - /dev/video1:/dev/video1
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
