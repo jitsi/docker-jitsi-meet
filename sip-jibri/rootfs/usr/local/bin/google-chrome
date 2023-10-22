@@ -5,8 +5,12 @@ ARGS=$@
 
 [[ "$(whoami)" != "jibri" ]] && exec /usr/bin/google-chrome-stable $ARGS
 
-# push display :1 view to virtual-camera-0
-ffmpeg -f x11grab -r 30 -i :1.0 -pix_fmt yuv420p -f v4l2 /dev/video0 &
-sleep 0.8
+# push display :1 view to virtual-camera-0 if it is not started yet.
+if pgrep -f "ffmpeg .* /dev/video0"; then
+    :
+else
+    ffmpeg -f x11grab -r 30 -i :1.0 -pix_fmt yuv420p -f v4l2 /dev/video0 &
+    sleep 0.8
+fi
 
 exec /usr/bin/google-chrome-stable $ARGS --alsa-input-device=chrome_capture
