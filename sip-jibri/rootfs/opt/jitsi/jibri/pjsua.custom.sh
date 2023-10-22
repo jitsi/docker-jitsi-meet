@@ -1,9 +1,13 @@
 #!/bin/bash
 set -e
 
-# push display :0 view to virtual-camera-1
-ffmpeg -f x11grab -r 30 -i :0.0 -pix_fmt yuv420p -f v4l2 /dev/video1 &
-sleep 0.8
+# push display :0 view to virtual-camera-1 if it is not started yet.
+if pgrep -f "ffmpeg .* /dev/video1"; then
+    :
+else
+    ffmpeg -f x11grab -r 30 -i :0.0 -pix_fmt yuv420p -f v4l2 /dev/video1 &
+    sleep 0.8
+fi
 
 REGISTRAR=$(echo "$@" | egrep -o "..registrar=sip:[^ ]" || true)
 AUTO_ANSWER=$(echo "$@" | egrep -o "..auto-answer-timer=[0-9]+" || true)
