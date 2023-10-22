@@ -12,8 +12,8 @@ services:
             - SYS_ADMIN
         devices:
             - /dev/snd:/dev/snd
-            - /dev/video100:/dev/video0
-            - /dev/video101:/dev/video1
+            - /dev/video2:/dev/video0
+            - /dev/video3:/dev/video1
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
