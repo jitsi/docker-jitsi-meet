@@ -20,6 +20,7 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" jibri libgl1-mesa-dri procps jitsi-autoscaler-sidecar jq pulseaudio dbus dbus-x11 rtkit unzip fonts-noto && \
     apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" libv4l-0 && \
     /usr/bin/install-chrome.sh && \
+    /usr/bin/install-pjsua.sh && \
     apt-cleanup && \
     adduser jibri rtkit && \
     update-alternatives --install /usr/bin/google-chrome google-chrome /usr/local/bin/google-chrome 300
