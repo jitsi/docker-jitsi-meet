@@ -1,6 +1,6 @@
 #!/bin/bash
 
-LOG_DIR_PATH="/var/log/jitsi/jibri"
+LOG_DIR_PATH="/config/logs"
 LATEST_PJSUA_LOG_FILE="$LOG_DIR_PATH/pjsua.log"
 AGGREGATED_PJSUA_LOG_FILE="$LOG_DIR_PATH/pjsua_all.log"
 
