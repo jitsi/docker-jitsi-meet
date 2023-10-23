@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv bash
+
+HOME="/home/jibri"
+DISPLAY="${DISPLAY0}"
+DAEMON="/usr/bin/icewm-session -d $DISPLAY"
+exec s6-setuidgid jibri /bin/bash -c "export HOME=$HOME DISPLAY=$DISPLAY; exec $DAEMON"
+
