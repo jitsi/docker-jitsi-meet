@@ -25,4 +25,6 @@ RUN apt-dpkg-wrap apt-get update && \
     adduser jibri rtkit && \
     update-alternatives --install /usr/bin/google-chrome google-chrome /usr/local/bin/google-chrome 300
 
+EXPOSE 5060
+
 VOLUME /config
