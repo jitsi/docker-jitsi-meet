@@ -2,8 +2,7 @@ version: '3.5'
 
 services:
     sip-jibri:
-        #image: jitsi/sip-jibri:${JITSI_IMAGE_VERSION:-unstable}
-        build: ./sip-jibri/
+        image: jitsi/sip-jibri:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${SIP_JIBRI_PORT:-5060}:5060/udp'
