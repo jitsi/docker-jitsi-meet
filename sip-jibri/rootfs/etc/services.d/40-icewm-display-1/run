@@ -1,5 +1,0 @@
-#!/usr/bin/with-contenv bash
-
-DAEMON="/usr/bin/icewm-session -d ${DISPLAY1}"
-exec s6-setuidgid jibri /bin/bash -c "exec $DAEMON"
-
