@@ -65,6 +65,7 @@ RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody
     tar -xf v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
     mv prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/auth_hybrid_matrix_token/mod_auth_hybrid_matrix_token.lua /prosody-plugins && \
     mv prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/auth_hybrid_matrix_token/mod_matrix_affiliation.lua /prosody-plugins && \
+    mv prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/event_sync/mod_event_sync_component.lua /prosody-plugins && \
     rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz
 
 COPY rootfs/ /
