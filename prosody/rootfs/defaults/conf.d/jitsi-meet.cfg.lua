@@ -51,6 +51,9 @@
 {{ $RATE_LIMIT_ALLOW_RANGES := .Env.PROSODY_RATE_LIMIT_ALLOW_RANGES | default "10.0.0.0/8" -}}
 {{ $RATE_LIMIT_CACHE_SIZE := .Env.PROSODY_RATE_LIMIT_CACHE_SIZE | default "10000" -}}
 {{ $ENV := .Env -}}
+{{ $PROSODY_ENABLE_PLUGIN_EVENT_SYNC := .Env.PROSODY_ENABLE_PLUGIN_EVENT_SYNC | default "false" | toBool -}}
+{{ $PROSODY_PLUGIN_EVENT_SYNC_API_PREFIX := .Env.PROSODY_PLUGIN_EVENT_SYNC_API_PREFIX | default "" - }}
+{{ $PROSODY_PLUGIN_EVENT_SYNC_API_TOKEN := .Env.PROSODY_PLUGIN_EVENT_SYNC_API_TOKEN | default "" - }}
 
 admins = {
     {{ if .Env.JIGASI_XMPP_PASSWORD }}
@@ -431,6 +434,29 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_BREAKOUT_MUC_MODULES) }}";
         {{ end -}}
     }
+{{ end }}
+
+{{ if $PROSODY_ENABLE_PLUGIN_EVENT_SYNC }}
+Component "event_sync.{{ $XMPP_DOMAIN }}" "event_sync_component"
+    muc_component = "{{ $XMPP_MUC_DOMAIN }}"
+    api_prefix = "{{ $PROSODY_PLUGIN_EVENT_SYNC_API_PREFIX }}"
+    
+    --- The following are all optional
+    api_headers = {
+        ["Authorization"] = "Bearer {{ $PROSODY_PLUGIN_EVENT_SYNC_API_TOKEN }}}}";
+    }
+
+    api_timeout = 10  -- timeout if API does not respond within 10s
+    api_retry_count = 5  -- retry up to 5 times
+    api_retry_delay = 1  -- wait 1s between retries
+    
+    -- change retry rules so we also retry if endpoint returns HTTP 408
+    api_should_retry_for_code = function (code)
+        return code >= 500 or code == 408
+    end
+    
+    -- Optionally include total_dominant_speaker_time (milliseconds) in payload for occupant-left and room-destroyed
+    include_speaker_stats = true
 {{ end }}
 
 Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
