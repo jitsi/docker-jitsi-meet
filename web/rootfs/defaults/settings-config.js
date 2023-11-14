@@ -437,6 +437,10 @@ config.videoQuality.maxBitratesVideo.VP8 = { low: {{ .Env.VIDEOQUALITY_BITRATE_V
 config.videoQuality.maxBitratesVideo = config.videoQuality.maxBitratesVideo || {}
 config.videoQuality.maxBitratesVideo.VP9 = { low: {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }} };
 {{ end -}}
+{{ if and .Env.VIDEOQUALITY_BITRATE_AV1_LOW .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD .Env.VIDEOQUALITY_BITRATE_AV1_HIGH -}}
+config.videoQuality.maxBitratesVideo = config.videoQuality.maxBitratesVideo || {}
+config.videoQuality.maxBitratesVideo.AV1 = { low: {{ .Env.VIDEOQUALITY_BITRATE_AV1_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_AV1_HIGH }} };
+{{ end -}}
 
  // Reactions
 config.disableReactions = {{ $DISABLE_REACTIONS }};
