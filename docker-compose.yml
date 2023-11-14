@@ -257,6 +257,8 @@ services:
             - PROSODY_VISITOR_INDEX
             - PROSODY_VISITORS_MUC_PREFIX
             - PUBLIC_URL
+            - STUN_HOST
+            - STUN_PORT
             - TURN_CREDENTIALS
             - TURN_HOST
             - TURNS_HOST
