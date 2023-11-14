@@ -373,6 +373,15 @@ services:
         volumes:
             - ${CONFIG}/jvb:/config:Z
         environment:
+            - AUTOSCALER_SIDECAR_KEY_FILE
+            - AUTOSCALER_SIDECAR_KEY_ID
+            - AUTOSCALER_SIDECAR_GROUP_NAME
+            - AUTOSCALER_SIDECAR_HOST_ID
+            - AUTOSCALER_SIDECAR_INSTANCE_ID
+            - AUTOSCALER_SIDECAR_PORT
+            - AUTOSCALER_SIDECAR_REGION
+            - AUTOSCALER_SIDECAR_SHUTDOWN_POLLING_INTERVAL
+            - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
             - DOCKER_HOST_ADDRESS
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_JVB_XMPP_SERVER
@@ -383,6 +392,7 @@ services:
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
             - JVB_DISABLE_STUN
+            - JVB_INSTANCE_ID
             - JVB_PORT
             - JVB_MUC_NICKNAME
             - JVB_STUN_SERVERS
