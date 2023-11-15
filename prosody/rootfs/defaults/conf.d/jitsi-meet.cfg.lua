@@ -24,6 +24,8 @@
 {{ $GUEST_AUTH_TYPE := .Env.PROSODY_GUEST_AUTH_TYPE | default "jitsi-anonymous" -}}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
 {{ $PUBLIC_URL_DOMAIN := $PUBLIC_URL | trimPrefix "https://" | trimSuffix "/" -}}
+{{ $STUN_HOST := .Env.STUN_HOST | default "" -}}
+{{ $STUN_PORT := .Env.STUN_PORT | default "443" -}}
 {{ $TURN_HOST := .Env.TURN_HOST | default "" -}}
 {{ $TURN_HOSTS := splitList "," $TURN_HOST -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
@@ -81,12 +83,15 @@ http_default_host = "{{ $XMPP_DOMAIN }}"
 external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
 {{- end }}
 
-{{ if or .Env.TURN_HOST .Env.TURNS_HOST -}}
+{{ if or .Env.STUN_HOST .Env.TURN_HOST .Env.TURNS_HOST -}}
 external_services = {
-  {{ if $TURN_HOST -}}
+  {{- if $STUN_HOST }}
+        { type = "stun", host = "{{ $STUN_HOST }}", port = {{ $STUN_PORT }}, transport = "udp" }
+  {{- end }}
+  {{- if $TURN_HOST -}}
     {{- range $idx1, $host := $TURN_HOSTS -}}
       {{- range $idx2, $transport := $TURN_TRANSPORTS -}}
-        {{- if or $idx1 $idx2 -}},{{- end }}
+        {{- if or $STUN_HOST $idx1 $idx2 -}},{{- end }}
         { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = 86400, algorithm = "turn" }
       {{- end -}}
     {{- end -}}
@@ -94,7 +99,7 @@ external_services = {
 
   {{- if $TURNS_HOST -}}
     {{- range $idx, $host := $TURNS_HOSTS -}}
-        {{- if or $TURN_HOST $idx -}},{{- end }}
+        {{- if or $STUN_HOST $TURN_HOST $idx -}},{{- end }}
         { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
     {{- end }}
   {{- end }}
