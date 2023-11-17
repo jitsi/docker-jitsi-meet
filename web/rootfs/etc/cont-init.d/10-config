@@ -88,6 +88,17 @@ fi
 
 echo "Using Nginx resolver: =$NGINX_RESOLVER="
 
+# colibri-ws settings
+COLIBRI_WEBSOCKET_UNSAFE_REGEX="[a-zA-Z0-9-\._]+"
+# use custom websocket regex if provided
+if [ -z "$COLIBRI_WEBSOCKET_REGEX" ]; then
+    # default to the previous unsafe behavior only if flag is set
+    if [[ "$ENABLE_COLIBRI_WEBSOCKET_UNSAFE_REGEX" == "1" ]]; then
+        export COLIBRI_WEBSOCKET_REGEX="$COLIBRI_WEBSOCKET_UNSAFE_REGEX"
+    fi
+    # otherwise value default to the static value in the template 'jvb.meet.jitsi'
+fi
+
 # copy config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
 

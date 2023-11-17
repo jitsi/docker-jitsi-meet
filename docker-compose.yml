@@ -24,6 +24,7 @@ services:
             - CALLSTATS_SECRET
             - CHROME_EXTENSION_BANNER_JSON
             - COLIBRI_WEBSOCKET_PORT
+            - COLIBRI_WEBSOCKET_REGEX
             - CONFCODE_URL
             - CONFIG_EXTERNAL_CONNECT
             - DEFAULT_LANGUAGE
@@ -58,6 +59,7 @@ services:
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_CALENDAR
             - ENABLE_COLIBRI_WEBSOCKET
+            - ENABLE_COLIBRI_WEBSOCKET_UNSAFE_REGEX
             - ENABLE_E2EPING
             - ENABLE_FILE_RECORDING_SHARING
             - ENABLE_GUESTS
