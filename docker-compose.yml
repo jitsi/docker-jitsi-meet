@@ -24,6 +24,8 @@ services:
             - CALLSTATS_SECRET
             - CHROME_EXTENSION_BANNER_JSON
             - COLIBRI_WEBSOCKET_PORT
+            - COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME
+            - COLIBRI_WEBSOCKET_REGEX
             - CONFCODE_URL
             - CONFIG_EXTERNAL_CONNECT
             - DEFAULT_LANGUAGE
@@ -38,6 +40,7 @@ services:
             - DIALOUT_AUTH_URL
             - DIALOUT_CODES_URL
             - DISABLE_AUDIO_LEVELS
+            - DISABLE_COLIBRI_WEBSOCKET_JVB_LOOKUP
             - DISABLE_DEEP_LINKING
             - DISABLE_GRANT_MODERATOR
             - DISABLE_HTTPS
@@ -58,6 +61,7 @@ services:
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_CALENDAR
             - ENABLE_COLIBRI_WEBSOCKET
+            - ENABLE_COLIBRI_WEBSOCKET_UNSAFE_REGEX
             - ENABLE_E2EPING
             - ENABLE_FILE_RECORDING_SHARING
             - ENABLE_GUESTS
