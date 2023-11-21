@@ -1,3 +1,12 @@
+## stable-9111
+
+Based on stable release 9111.
+
+* 825730d web: nginx ws-colibri proxy regex updates (#1645)
+* 54d3aca jicofo: add AV1 options
+* 0827186 prosody: stun in external services (#1644)
+* d67938c misc: working on unstable
+
 ## stable-9078
 
 Based on stable release 9078.
