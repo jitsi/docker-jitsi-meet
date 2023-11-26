@@ -338,6 +338,7 @@ services:
             - JICOFO_ENABLE_HEALTH_CHECKS
             - JICOFO_ENABLE_REST
             - JICOFO_HEALTH_CHECKS_USE_PRESENCE
+            - JICOFO_MAX_MEMORY
             - JICOFO_MULTI_STREAM_BACKWARD_COMPAT
             - JICOFO_OCTO_REGION
             - JIBRI_BREWERY_MUC
@@ -422,6 +423,7 @@ services:
             - COLIBRI_REST_ENABLED
             - SHUTDOWN_REST_ENABLED
             - TZ
+            - VIDEOBRIDGE_MAX_MEMORY
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
