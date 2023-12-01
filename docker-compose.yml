@@ -353,7 +353,7 @@ services:
             - MAX_BRIDGE_PARTICIPANTS
             - OCTO_BRIDGE_SELECTION_STRATEGY
             - PROSODY_VISITORS_MUC_PREFIX
-            - SENTRY_DSN="${JICOFO_SENTRY_DSN:-0}"
+            - SENTRY_DSN
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
@@ -416,7 +416,7 @@ services:
             - JVB_XMPP_PORT
             - JVB_XMPP_SERVER
             - PUBLIC_URL
-            - SENTRY_DSN="${JVB_SENTRY_DSN:-0}"
+            - SENTRY_DSN
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - COLIBRI_REST_ENABLED
