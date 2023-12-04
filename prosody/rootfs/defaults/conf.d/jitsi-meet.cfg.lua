@@ -263,6 +263,8 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
     authentication = "{{ $GUEST_AUTH_TYPE }}"
     modules_enabled = {
         "ping";
+        {{ if .Env.XMPP_GUEST_MUC_MODULES -}}
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_GUEST_MUC_MODULES) }}";
     }
 
     c2s_require_encryption = false
