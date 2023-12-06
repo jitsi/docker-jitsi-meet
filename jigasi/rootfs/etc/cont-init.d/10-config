@@ -51,3 +51,10 @@ if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || $ENABLE_TRANSCRIPTIONS == "true" ]]; then
         }' \
         > /config/key.json
 fi
+
+# check that no conflicting authentications are configured
+if [[ $ENABLE_AUTH -eq 1 && $JIGASI_TRANSCRIBER_AUTHENTICATION -eq 1 ]]; then
+    echo 'Conflicting authentications specified!'
+    exit 1
+fi
+
