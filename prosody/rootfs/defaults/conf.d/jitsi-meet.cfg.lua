@@ -263,6 +263,9 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
     authentication = "{{ $GUEST_AUTH_TYPE }}"
     modules_enabled = {
         "ping";
+        {{ if $ENABLE_XMPP_WEBSOCKET }}
+        "smacks"; -- XEP-0198: Stream Management
+        {{ end }}
     }
 
     c2s_require_encryption = false
