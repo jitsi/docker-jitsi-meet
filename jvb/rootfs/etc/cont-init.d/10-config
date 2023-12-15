@@ -51,7 +51,7 @@ if [ -n "$AUTOSCALER_URL" ]; then
     if [ -f "$AUTOSCALER_SIDECAR_KEY_FILE" ]; then
         echo "AUTOSCALER_URL found, enabling autoscaler sidecar"
 
-        export JVB_VERSION="dpkg -s jitsi-videobridge2 | grep Version | awk '{print $2}' | sed 's/..$//'"
+        export JVB_VERSION="$(dpkg -s jitsi-videobridge2 | grep Version | awk '{print $2}' | sed 's/..$//')"
 
         [ -z "$AUTOSCALER_SIDECAR_PORT" ] && export AUTOSCALER_SIDECAR_PORT="6000"
         [ -z "$JIBRI_WEBHOOK_SUBSCRIBERS" ] && export JIBRI_WEBHOOK_SUBSCRIBERS="http://localhost:$AUTOSCALER_SIDECAR_PORT/hook"
