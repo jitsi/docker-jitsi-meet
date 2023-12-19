@@ -408,6 +408,7 @@ services:
             - JVB_PORT
             - JVB_MUC_NICKNAME
             - JVB_STUN_SERVERS
+            - JVB_LOG_FILE
             - JVB_OCTO_BIND_ADDRESS
             - JVB_OCTO_REGION
             - JVB_OCTO_RELAY_ID
