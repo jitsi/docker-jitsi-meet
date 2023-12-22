@@ -21,12 +21,4 @@ else
     sleep 0.4
 fi
 
-# push display :0 view to virtual-camera-1 if it is not started yet.
-if pgrep -f "ffmpeg .* /dev/video1"; then
-    :
-else
-    ffmpeg -f x11grab -r 30 -i :0.0 -pix_fmt yuv420p -f v4l2 /dev/video1 &
-    sleep 0.4
-fi
-
 exec /usr/bin/google-chrome-stable $ARGS --alsa-input-device=chrome_capture
