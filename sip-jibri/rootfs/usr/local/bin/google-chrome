@@ -9,7 +9,7 @@ ARGS=$@
 if pgrep -f "ffmpeg .* /dev/video0"; then
     :
 else
-    ffmpeg -f x11grab -r 30 -i :1.0 -pix_fmt yuv420p -f v4l2 /dev/video0 &
+    s6-ftrig-notify /tmp/virtual-camera-0 run
     sleep 0.4
 fi
 
@@ -17,7 +17,7 @@ fi
 if pgrep -f "ffmpeg .* /dev/video1"; then
     :
 else
-    ffmpeg -f x11grab -r 30 -i :0.0 -pix_fmt yuv420p -f v4l2 /dev/video1 &
+    s6-ftrig-notify /tmp/virtual-camera-1 run
     sleep 0.4
 fi
 
