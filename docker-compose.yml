@@ -19,6 +19,7 @@ services:
             - AUDIO_QUALITY_OPUS_BITRATE
             - AUTO_CAPTION_ON_RECORD
             - BRANDING_DATA_URL
+            - BOSH_RELATIVE
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
             - CALLSTATS_SECRET

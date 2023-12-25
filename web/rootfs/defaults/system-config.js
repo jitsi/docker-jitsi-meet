@@ -1,3 +1,4 @@
+{{ $BOSH_RELATIVE := .Env.BOSH_RELATIVE | default "false" | toBool -}}
 {{ $CONFIG_EXTERNAL_CONNECT := .Env.CONFIG_EXTERNAL_CONNECT | default "false" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "false" | toBool -}}
 {{ $ENABLE_AUTH_DOMAIN := .Env.ENABLE_AUTH_DOMAIN | default "true" | toBool -}}
@@ -44,7 +45,19 @@ config.hosts.authdomain = '{{ $XMPP_DOMAIN }}';
 {{ end -}}
 {{ end -}}
 
+{{ if $BOSH_RELATIVE -}}
+{{ if $ENABLE_SUBDOMAINS -}}
+config.bosh = '/'+ subdir + 'http-bind';
+{{ else -}}
 config.bosh = '/http-bind';
+{{ end -}}
+{{ else -}}
+{{ if $ENABLE_SUBDOMAINS -}}
+config.bosh = 'https://{{ $PUBLIC_URL_DOMAIN}}/' + subdir + 'http-bind';
+{{ else -}}
+config.bosh = 'https://{{ $PUBLIC_URL_DOMAIN}}/http-bind';
+{{ end -}}
+{{ end -}}
 
 {{ if $ENABLE_XMPP_WEBSOCKET -}}
 {{ if $ENABLE_SUBDOMAINS -}}
