@@ -406,6 +406,7 @@ Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
     muc_room_locking = false
     muc_room_default_public_jids = true
     modules_enabled = {
+        "muc_meeting_id";
         {{ if $ENABLE_RATE_LIMITS -}}
         "muc_rate_limit";
         {{ end -}}
