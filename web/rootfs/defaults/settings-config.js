@@ -4,7 +4,6 @@
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SHARING := .Env.ENABLE_FILE_RECORDING_SHARING | default "false" | toBool -}}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
-{{ $ENABLE_LIPSYNC := .Env.ENABLE_LIPSYNC | default "false" | toBool -}}
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "true" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "true" | toBool -}}
@@ -50,8 +49,6 @@
 {{ $DESKTOP_SHARING_FRAMERATE_AUTO := .Env.DESKTOP_SHARING_FRAMERATE_AUTO | default "true" | toBool -}}
 {{ $DESKTOP_SHARING_FRAMERATE_MIN := .Env.DESKTOP_SHARING_FRAMERATE_MIN | default 5 -}}
 {{ $DESKTOP_SHARING_FRAMERATE_MAX := .Env.DESKTOP_SHARING_FRAMERATE_MAX | default 5 -}}
-{{ $TESTING_OCTO_PROBABILITY := .Env.TESTING_OCTO_PROBABILITY | default "0" -}}
-{{ $TESTING_CAP_SCREENSHARE_BITRATE := .Env.TESTING_CAP_SCREENSHARE_BITRATE | default "1" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
@@ -80,7 +77,10 @@ if (!config.constraints.hasOwnProperty('video')) config.constraints.video = {};
 config.resolution = {{ $RESOLUTION }};
 config.constraints.video.height = { ideal: {{ $RESOLUTION }}, max: {{ $RESOLUTION }}, min: {{ $RESOLUTION_MIN }} };
 config.constraints.video.width = { ideal: {{ $RESOLUTION_WIDTH }}, max: {{ $RESOLUTION_WIDTH }}, min: {{ $RESOLUTION_WIDTH_MIN }}};
-config.disableSimulcast = {{ not $ENABLE_SIMULCAST }};
+
+{{ if not $ENABLE_SIMULCAST -}}
+config.disableSimulcast = true;
+{{ end -}}
 config.startVideoMuted = {{ $START_VIDEO_MUTED }};
 config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};
 
@@ -119,7 +119,9 @@ config.startAudioMuted = {{ $START_AUDIO_MUTED }};
 config.startWithAudioMuted = {{ $START_WITH_AUDIO_MUTED }};
 config.startSilent = {{ $START_SILENT }};
 config.enableOpusRed = {{ $ENABLE_OPUS_RED }};
-config.disableAudioLevels = {{ $DISABLE_AUDIO_LEVELS }};
+{{ if $DISABLE_AUDIO_LEVELS -}}
+config.disableAudioLevels = true;
+{{ end -}}
 config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 
 
@@ -344,11 +346,12 @@ config.roomPasswordNumberOfDigits = {{ $ROOM_PASSWORD_DIGITS }};
 // Advanced.
 //
 
-// Lipsync hack in jicofo, may not be safe.
-config.enableLipSync = {{ $ENABLE_LIPSYNC }};
-
-config.enableRemb = {{ $ENABLE_REMB }};
-config.enableTcc = {{ $ENABLE_TCC }};
+{{ if not $ENABLE_REMB -}}
+config.enableRemb = false;
+{{ end -}}
+{{ if not $ENABLE_TCC -}}
+config.enableTcc = false;
+{{ end -}}
 
 // Enable IPv6 support.
 config.useIPv6 = {{ $ENABLE_IPV6 }};
@@ -399,16 +402,6 @@ config.deploymentInfo.region = '{{ .Env.DEPLOYMENTINFO_REGION }}';
 {{ if $DEPLOYMENTINFO_USERREGION -}}
 config.deploymentInfo.userRegion = '{{ $DEPLOYMENTINFO_USERREGION }}';
 {{ end -}}
-
-
-// Testing
-//
-
-if (!config.hasOwnProperty('testing')) config.testing = {};
-if (!config.testing.hasOwnProperty('octo')) config.testing.octo = {};
-
-config.testing.capScreenshareBitrate = {{ $TESTING_CAP_SCREENSHARE_BITRATE }};
-config.testing.octo.probability = {{ $TESTING_OCTO_PROBABILITY }};
 
 // Deep Linking
 config.disableDeepLinking = {{ $DISABLE_DEEP_LINKING }};
