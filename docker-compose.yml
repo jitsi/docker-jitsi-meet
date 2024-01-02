@@ -317,6 +317,7 @@ services:
             - ENABLE_CODEC_OPUS_RED
             - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
+            - ENABLE_OCTO_SCTP
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - ENABLE_VISITORS
