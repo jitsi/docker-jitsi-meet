@@ -341,6 +341,7 @@ services:
             - JICOFO_MAX_MEMORY
             - JICOFO_MULTI_STREAM_BACKWARD_COMPAT
             - JICOFO_OCTO_REGION
+            - JICOFO_TRUSTED_DOMAINS
             - JIBRI_BREWERY_MUC
             - JIBRI_REQUEST_RETRIES
             - JIBRI_PENDING_TIMEOUT
