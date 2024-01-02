@@ -71,7 +71,6 @@ services:
             - ENABLE_HTTP_REDIRECT
             - ENABLE_IPV6
             - ENABLE_LETSENCRYPT
-            - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
             - ENABLE_NOISY_MIC_DETECTION
             - ENABLE_OCTO
@@ -136,8 +135,6 @@ services:
             - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
             - START_WITH_VIDEO_MUTED
-            - TESTING_CAP_SCREENSHARE_BITRATE
-            - TESTING_OCTO_PROBABILITY
             - TOKEN_AUTH_URL
             - TOOLBAR_BUTTONS
             - TRANSLATION_LANGUAGES
