@@ -204,6 +204,7 @@ services:
             - GLOBAL_MODULES
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
+            - JIBRI_SIP_BREWERY_MUC
             - JIBRI_XMPP_USER
             - JIBRI_XMPP_PASSWORD
             - JICOFO_AUTH_PASSWORD
