@@ -359,6 +359,7 @@ services:
             - TZ
             - VISITORS_MAX_PARTICIPANTS
             - VISITORS_MAX_VISITORS_PER_NODE
+            - VISITORS_XMPP_AUTH_DOMAIN
             - VISITORS_XMPP_SERVER
             - VISITORS_XMPP_DOMAIN
             - XMPP_DOMAIN
