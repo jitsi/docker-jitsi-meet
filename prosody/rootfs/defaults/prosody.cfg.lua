@@ -139,6 +139,7 @@ modules_disabled = {
 -- For more information see http://prosody.im/doc/creating_accounts
 allow_registration = false;
 
+{{ if ne .Env.PROSODY_MODE "brewery" -}}
 -- Enable rate limits for incoming client and server connections
 limits = {
 {{ if ne $PROSODY_C2S_LIMIT "" }}
@@ -152,6 +153,7 @@ limits = {
   };
 {{ end }}
 }
+{{ end -}}
 
 --Prosody garbage collector settings
 --For more information see https://prosody.im/doc/advanced_gc
