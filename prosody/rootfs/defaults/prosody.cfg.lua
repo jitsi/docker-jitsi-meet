@@ -63,7 +63,6 @@ modules_enabled = {
 		"roster"; -- Allow users to have a roster. Recommended ;)
 		"saslauth"; -- Authentication for clients and servers. Recommended if you want to log in.
 		"tls"; -- Add support for secure TLS on c2s/s2s connections
-		"dialback"; -- s2s dialback support
 		"disco"; -- Service discovery
 
 	-- Not essential, but recommended
@@ -104,6 +103,7 @@ modules_enabled = {
 		"secure_interfaces";
 		{{ end -}}
 		{{ if $ENABLE_S2S -}}
+		"dialback"; -- s2s dialback support
 		"s2s_bidi";
 		"certs_s2soutinjection";
 		"s2sout_override";
