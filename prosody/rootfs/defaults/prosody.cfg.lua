@@ -63,12 +63,10 @@ modules_enabled = {
 		"roster"; -- Allow users to have a roster. Recommended ;)
 		"saslauth"; -- Authentication for clients and servers. Recommended if you want to log in.
 		"tls"; -- Add support for secure TLS on c2s/s2s connections
-		"dialback"; -- s2s dialback support
 		"disco"; -- Service discovery
 
 	-- Not essential, but recommended
 		"private"; -- Private XML storage (for room bookmarks, etc.)
-		"vcard"; -- Allow users to set vCards
 		"limits"; -- Enable bandwidth limiting for XMPP connections
 
 	-- These are commented by default as they have a performance impact
@@ -80,8 +78,6 @@ modules_enabled = {
 		"uptime"; -- Report how long server has been running
 		"time"; -- Let others know the time here on this server
 		"ping"; -- Replies to XMPP pings with pongs
-		"pep"; -- Enables users to publish their mood, activity, playing music and more
-		"register"; -- Allow users to register on this server using a client and change passwords
 
 	-- Admin interfaces
 		"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
@@ -104,6 +100,7 @@ modules_enabled = {
 		"secure_interfaces";
 		{{ end -}}
 		{{ if $ENABLE_S2S -}}
+		"dialback"; -- s2s dialback support
 		"s2s_bidi";
 		"certs_s2soutinjection";
 		"s2sout_override";
@@ -304,10 +301,5 @@ http_interfaces = { "*" }
 {{ end }}
 
 data_path = "/config/data"
-
-smacks_max_unacked_stanzas = 5;
-smacks_hibernation_time = 60;
-smacks_max_hibernated_sessions = 1;
-smacks_max_old_sessions = 1;
 
 Include "conf.d/*.cfg.lua"
