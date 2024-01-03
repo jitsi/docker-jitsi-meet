@@ -1,7 +1,6 @@
 {{ $C2S_REQUIRE_ENCRYPTION := .Env.PROSODY_C2S_REQUIRE_ENCRYPTION | default "0" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
-{{ $ENABLE_HTTP := ne .Env.PROSODY_MODE "brewery" -}}
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
 {{ $ENABLE_S2S := or $ENABLE_VISITORS ( .Env.PROSODY_ENABLE_S2S | default "0" | toBool ) }}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
@@ -294,13 +293,11 @@ unbound = {
     resolvconf = true
 }
 
-{{ if $ENABLE_HTTP }}
 http_ports = { {{ $PROSODY_HTTP_PORT }} }
 {{ if $ENABLE_IPV6 }}
 http_interfaces = { "*", "::" }
 {{ else }}
 http_interfaces = { "*" }
-{{ end }}
 {{ end }}
 
 data_path = "/config/data"
