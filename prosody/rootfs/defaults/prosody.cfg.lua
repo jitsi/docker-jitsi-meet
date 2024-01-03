@@ -99,7 +99,10 @@ modules_enabled = {
 		--"watchregistrations"; -- Alert admins of registrations
 		--"motd"; -- Send a message to users when they log in
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
-
+		{{ if eq .Env.PROSODY_MODE "brewery" -}}
+		"firewall"; -- Enable firewalling
+		"secure_interfaces";
+		{{ end -}}
 		{{ if $ENABLE_S2S -}}
 		"s2s_bidi";
 		"certs_s2soutinjection";
@@ -113,6 +116,13 @@ modules_enabled = {
 
 component_ports = { }
 https_ports = { }
+
+
+{{ if eq .Env.PROSODY_MODE "brewery" -}}
+firewall_scripts = {
+    "/config/rules.d/jvb_muc_presence_filter.pfw";
+};
+{{ end -}}
 
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
@@ -129,6 +139,7 @@ modules_disabled = {
 -- For more information see http://prosody.im/doc/creating_accounts
 allow_registration = false;
 
+{{ if ne .Env.PROSODY_MODE "brewery" -}}
 -- Enable rate limits for incoming client and server connections
 limits = {
 {{ if ne $PROSODY_C2S_LIMIT "" }}
@@ -142,6 +153,7 @@ limits = {
   };
 {{ end }}
 }
+{{ end -}}
 
 --Prosody garbage collector settings
 --For more information see https://prosody.im/doc/advanced_gc
