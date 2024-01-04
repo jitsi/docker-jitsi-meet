@@ -15,6 +15,8 @@
 {{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
 {{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
+{{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
+{{ $TRUSTED_PROXY_LIST := splitList "," $TRUSTED_PROXIES -}}
 {{ $PROSODY_S2S_LIMIT := .Env.PROSODY_S2S_LIMIT | default "30kb/s" -}}
 {{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" }}
 {{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
@@ -114,6 +116,11 @@ modules_enabled = {
 component_ports = { }
 https_ports = { }
 
+trusted_proxies = {
+{{ range $index, $proxy := $TRUSTED_PROXY_LIST }}
+  "{{ $proxy }}";
+{{ end }}
+}
 
 {{ if eq .Env.PROSODY_MODE "brewery" -}}
 firewall_scripts = {
