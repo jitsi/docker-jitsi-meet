@@ -129,8 +129,7 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
 
     {{ if .Env.XMPP_CONFIGURATION -}}
     {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
-    {{ end -}}
-
+    {{- end }}
 
 VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
     modules_enabled = {
