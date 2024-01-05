@@ -1,13 +1,16 @@
+{{ $LOOPBACK0 := .Env.LOOPBACK0 | default "Loopback" -}}
+{{ $LOOPBACK1 := .Env.LOOPBACK1 | default "Loopback_1" -}}
+
 pcm.amix {
   type dmix
   ipc_key 219345
-  slave.pcm "hw:Loopback,0,0"
+  slave.pcm "hw:{{ $LOOPBACK0 }},0,0"
 }
 
 pcm.asnoop {
   type dsnoop
   ipc_key 219346
-  slave.pcm "hw:Loopback_1,1,0"
+  slave.pcm "hw:{{ $LOOPBACK1 }},1,0"
 }
 
 pcm.aduplex {
@@ -19,13 +22,13 @@ pcm.aduplex {
 pcm.bmix {
   type dmix
   ipc_key 219347
-  slave.pcm "hw:Loopback_1,0,0"
+  slave.pcm "hw:{{ $LOOPBACK1 }},0,0"
 }
 
 pcm.bsnoop {
   type dsnoop
   ipc_key 219348
-  slave.pcm "hw:Loopback,1,0"
+  slave.pcm "hw:{{ $LOOPBACK0 }},1,0"
 }
 
 pcm.bduplex {
@@ -42,19 +45,19 @@ pcm.pjsua {
 # capture device for pjsua, --capture-dev=7 if there is no sound card
 pcm.pjsua_capture {
   type plug
-  slave.pcm "hw:Loopback,1,0"
+  slave.pcm "hw:{{ $LOOPBACK0 }},1,0"
 }
 
 # playback device for pjsua, --playback-dev=8 if there is no sound card
 pcm.pjsua_playback {
   type plug
-  slave.pcm "hw:Loopback_1,0,0"
+  slave.pcm "hw:{{ $LOOPBACK1 }},0,0"
 }
 
 # capture device for chrome
 pcm.chrome_capture {
   type plug
-  slave.pcm "hw:Loopback_1,1,0"
+  slave.pcm "hw:{{ $LOOPBACK1 }},1,0"
 }
 
 # playback device for chrome (since this is the default option)
