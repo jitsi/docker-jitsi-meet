@@ -135,6 +135,7 @@ services:
             - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
             - START_WITH_VIDEO_MUTED
+            - TESTING_AV1_SUPPORT
             - TOKEN_AUTH_URL
             - TOOLBAR_BUTTONS
             - TRANSLATION_LANGUAGES

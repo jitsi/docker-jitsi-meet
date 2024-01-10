@@ -67,6 +67,7 @@
 {{ $ROOM_PASSWORD_DIGITS := .Env.ROOM_PASSWORD_DIGITS | default "false" -}}
 {{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL := .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" -}}
 {{ $WHITEBOARD_ENABLED := .Env.WHITEBOARD_ENABLED | default "false" | toBool -}}
+{{ $TESTING_AV1_SUPPORT := .Env.TESTING_AV1_SUPPORT | default "false" | toBool -}}
 
 // Video configuration.
 //
@@ -477,3 +478,7 @@ config.e2eping.maxMessagePerSecond = {{ .Env.E2EPING_MAX_MESSAGE_PER_SECOND }};
 if (!config.hasOwnProperty('whiteboard')) config.whiteboard = {};
 config.whiteboard.enabled = {{ $WHITEBOARD_ENABLED }};
 config.whiteboard.collabServerBaseUrl = '{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}';
+
+// Testing
+if (!config.hasOwnProperty('testing')) config.testing = {};
+config.testing.enableAv1Support = {{ $TESTING_AV1_SUPPORT }};
