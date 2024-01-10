@@ -50,7 +50,6 @@
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
-{{ $VIDEOQUALITY_ENFORCE_PREFERRED_CODEC := .Env.VIDEOQUALITY_ENFORCE_PREFERRED_CODEC | default "false" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $DISABLE_REACTIONS := .Env.DISABLE_REACTIONS | default "false" | toBool -}}
 {{ $DISABLE_REMOTE_VIDEO_MENU := .Env.DISABLE_REMOTE_VIDEO_MENU | default "false" | toBool -}}
@@ -406,30 +405,56 @@ config.disableDeepLinking = {{ $DISABLE_DEEP_LINKING }};
 config.p2p.preferredCodec = '{{ .Env.P2P_PREFERRED_CODEC }}';
 {{ end -}}
 
-// Enable preferred video Codec
-if (!config.hasOwnProperty('videoQuality')) config.videoQuality = {};
+// Video quality settings.
+//
+
+config.videoQuality = {};
 {{ if .Env.VIDEOQUALITY_PREFERRED_CODEC -}}
 config.videoQuality.preferredCodec = '{{ .Env.VIDEOQUALITY_PREFERRED_CODEC }}';
 {{ end -}}
 
-config.videoQuality.enforcePreferredCodec = {{ $VIDEOQUALITY_ENFORCE_PREFERRED_CODEC }};
+{{ if and .Env.VIDEOQUALITY_BITRATE_AV1_LOW .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD .Env.VIDEOQUALITY_BITRATE_AV1_HIGH .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH -}}
+config.videoQuality.av1 = {
+    maxBitratesVideo: {
+        low: {{ .Env.VIDEOQUALITY_BITRATE_AV1_LOW }},
+        standard: {{ .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }},
+        high: {{ .Env.VIDEOQUALITY_BITRATE_AV1_HIG }},
+        ssHigh: {{ .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH }}
+    }
+}
+{{ end -}}
 
-if (!config.videoQuality.hasOwnProperty('maxBitratesVideo')) config.videoQuality.maxBitratesVideo = null;
-{{ if and .Env.VIDEOQUALITY_BITRATE_H264_LOW .Env.VIDEOQUALITY_BITRATE_H264_STANDARD .Env.VIDEOQUALITY_BITRATE_H264_HIGH -}}
-config.videoQuality.maxBitratesVideo = config.videoQuality.maxBitratesVideo || {}
-config.videoQuality.maxBitratesVideo.H264 = { low: {{ .Env.VIDEOQUALITY_BITRATE_H264_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_H264_HIGH }} };
+{{ if and .Env.VIDEOQUALITY_BITRATE_H264_LOW .Env.VIDEOQUALITY_BITRATE_H264_STANDARD .Env.VIDEOQUALITY_BITRATE_H264_HIGH .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH -}}
+config.videoQuality.h264 = {
+    maxBitratesVideo: {
+        low: {{ .Env.VIDEOQUALITY_BITRATE_H264_LOW }},
+        standard: {{ .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }},
+        high: {{ .Env.VIDEOQUALITY_BITRATE_H264_HIGH }},
+        ssHigh: {{ .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }}
+    }
+}
 {{ end -}}
-{{ if and .Env.VIDEOQUALITY_BITRATE_VP8_LOW .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD .Env.VIDEOQUALITY_BITRATE_VP8_HIGH -}}
-config.videoQuality.maxBitratesVideo = config.videoQuality.maxBitratesVideo || {}
-config.videoQuality.maxBitratesVideo.VP8 = { low: {{ .Env.VIDEOQUALITY_BITRATE_VP8_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }} };
+
+{{ if and .Env.VIDEOQUALITY_BITRATE_VP8_LOW .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD .Env.VIDEOQUALITY_BITRATE_VP8_HIGH .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH -}}
+config.videoQuality.vp8 = {
+    maxBitratesVideo: {
+        low: {{ .Env.VIDEOQUALITY_BITRATE_VP8_LOW }},
+        standard: {{ .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }},
+        high: {{ .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }},
+        ssHigh: {{ .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH }}
+    }
+}
 {{ end -}}
-{{ if and .Env.VIDEOQUALITY_BITRATE_VP9_LOW .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD .Env.VIDEOQUALITY_BITRATE_VP9_HIGH -}}
-config.videoQuality.maxBitratesVideo = config.videoQuality.maxBitratesVideo || {}
-config.videoQuality.maxBitratesVideo.VP9 = { low: {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }} };
-{{ end -}}
-{{ if and .Env.VIDEOQUALITY_BITRATE_AV1_LOW .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD .Env.VIDEOQUALITY_BITRATE_AV1_HIGH -}}
-config.videoQuality.maxBitratesVideo = config.videoQuality.maxBitratesVideo || {}
-config.videoQuality.maxBitratesVideo.AV1 = { low: {{ .Env.VIDEOQUALITY_BITRATE_AV1_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_AV1_HIGH }} };
+
+{{ if and .Env.VIDEOQUALITY_BITRATE_VP9_LOW .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD .Env.VIDEOQUALITY_BITRATE_VP9_HIGH .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH -}}
+config.videoQuality.vp9 = {
+    maxBitratesVideo: {
+        low: {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }},
+        standard: {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }},
+        high: {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }},
+        ssHigh: {{ .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }}
+    }
+}
 {{ end -}}
 
  // Reactions
