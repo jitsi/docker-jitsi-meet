@@ -1,5 +1,4 @@
 {{ $BOSH_RELATIVE := .Env.BOSH_RELATIVE | default "false" | toBool -}}
-{{ $CONFIG_EXTERNAL_CONNECT := .Env.CONFIG_EXTERNAL_CONNECT | default "false" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "false" | toBool -}}
 {{ $ENABLE_AUTH_DOMAIN := .Env.ENABLE_AUTH_DOMAIN | default "true" | toBool -}}
 {{ $ENABLE_GUESTS := .Env.ENABLE_GUESTS | default "false" | toBool -}}
@@ -12,10 +11,11 @@
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0  -}}
 {{ $JVB_PREFER_SCTP := .Env.JVB_PREFER_SCTP | default "false" | toBool -}}
+
 // Jitsi Meet configuration.
 var config = {};
 
-if (!config.hasOwnProperty('hosts')) config.hosts = {};
+config.hosts = {};
 
 config.hosts.domain = '{{ $XMPP_DOMAIN }}';
 config.focusUserJid = 'focus@{{$XMPP_AUTH_DOMAIN}}';
@@ -67,15 +67,8 @@ config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
 {{ end -}}
 {{ end -}}
 
-{{ if $CONFIG_EXTERNAL_CONNECT -}}
-{{ if $ENABLE_SUBDOMAINS -}}
-config.externalConnectUrl = '/' + subdir + 'http-pre-bind';
-{{ else -}}
-config.externalConnectUrl = '/http-pre-bind';
-{{ end -}}
-{{ end -}}
-
 {{ if $JVB_PREFER_SCTP -}}
-if (!config.hasOwnProperty('bridgeChannel')) config.bridgeChannel = {};
-config.bridgeChannel.preferSctp=true;
+config.bridgeChannel = {
+    preferSctp: true
+};
 {{ end -}}
