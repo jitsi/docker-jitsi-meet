@@ -1,0 +1,13 @@
+{{ $JVB_XMPP_AUTH_DOMAIN := .Env.JVB_XMPP_AUTH_DOMAIN | default "auth.jvb.meet.jitsi" -}}
+{{ $JVB_XMPP_INTERNAL_MUC_DOMAIN := .Env.JVB_XMPP_INTERNAL_MUC_DOMAIN | default "muc.jvb.meet.jitsi" -}}
+{{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
+{{ $JVB_BREWERY_MUC := .Env.JVB_BREWERY_MUC | default "jvbbrewery" -}}
+# Drop all presence from a jvb in a MUC to a jvb
+FROM: {{ $JVB_BREWERY_MUC }}@{{ $JVB_XMPP_INTERNAL_MUC_DOMAIN }}
+TO: {{ $JVB_AUTH_USER }}@{{ $JVB_XMPP_AUTH_DOMAIN }}
+KIND: presence
+# Seems safer to allow all "unavailable" to pass
+TYPE: available
+# Allow self-presence (code=110)
+NOT INSPECT: {http://jabber.org/protocol/muc#user}x/status@code=110
+DROP.
