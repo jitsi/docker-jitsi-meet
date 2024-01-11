@@ -1,3 +1,36 @@
+## stable-9111
+
+Based on stable release 9111.
+
+* 825730d web: nginx ws-colibri proxy regex updates (#1645)
+* 54d3aca jicofo: add AV1 options
+* 0827186 prosody: stun in external services (#1644)
+* d67938c misc: working on unstable
+
+## stable-9078
+
+Based on stable release 9078.
+
+* 3b9afe4 release: build images before comitting the changelog
+* 54d422b jvb: autoscaler sidecar support
+* 9f0658d sample: escape/encapsulate string
+* 5d05ba2 jicofo: support jicofo log file for tailing (#1632)
+* 8555fe1 web: param to control config.hosts.authDomain (#1627)
+* cd1c9fb prosody: remove muc limit messages from visitors (#1626)
+* af50dde prosody: s2s whitelist duplicate param fix (#1625)
+* eb91893 prosody: add ping module to auth domain (#1624)
+* 261caa3 prosody: guest ping module, var for auth type (#1623)
+* 7fb1026 prosody: params for limits (#1622)
+* cf894ce prosody: variables for lobby and breakout modules
+* a827437 prosody: param to link room metadata to main vhost (#1616)
+* 5120595 prosody: var for config in main vhost (#1615)
+* bebd748 web: flag to control sctp bridge channel choice (#1613)
+* 6bfa830 prosody: visitor mode support (#1611)
+* 7bfc5c1 prosody: update version of prosody-plugings package
+* 3a77aac jicofo: support visitors in jicofo configuration (#1610)
+* f860c5d jvb: don’t send Jetty server version
+* 63380fa misc: working on unstable
+
 ## stable-8960-1
 
 Based on stable release 8960-1.

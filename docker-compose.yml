@@ -19,11 +19,14 @@ services:
             - AUDIO_QUALITY_OPUS_BITRATE
             - AUTO_CAPTION_ON_RECORD
             - BRANDING_DATA_URL
+            - BOSH_RELATIVE
             - CALLSTATS_CUSTOM_SCRIPT_URL
             - CALLSTATS_ID
             - CALLSTATS_SECRET
             - CHROME_EXTENSION_BANNER_JSON
             - COLIBRI_WEBSOCKET_PORT
+            - COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME
+            - COLIBRI_WEBSOCKET_REGEX
             - CONFCODE_URL
             - CONFIG_EXTERNAL_CONNECT
             - DEFAULT_LANGUAGE
@@ -32,12 +35,14 @@ services:
             - DEPLOYMENTINFO_REGION
             - DEPLOYMENTINFO_SHARD
             - DEPLOYMENTINFO_USERREGION
+            - DESKTOP_SHARING_FRAMERATE_AUTO
             - DESKTOP_SHARING_FRAMERATE_MIN
             - DESKTOP_SHARING_FRAMERATE_MAX
             - DIALIN_NUMBERS_URL
             - DIALOUT_AUTH_URL
             - DIALOUT_CODES_URL
             - DISABLE_AUDIO_LEVELS
+            - DISABLE_COLIBRI_WEBSOCKET_JVB_LOOKUP
             - DISABLE_DEEP_LINKING
             - DISABLE_GRANT_MODERATOR
             - DISABLE_HTTPS
@@ -54,9 +59,11 @@ services:
             - DYNAMIC_BRANDING_URL
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUTH
+            - ENABLE_AUTH_DOMAIN
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_CALENDAR
             - ENABLE_COLIBRI_WEBSOCKET
+            - ENABLE_COLIBRI_WEBSOCKET_UNSAFE_REGEX
             - ENABLE_E2EPING
             - ENABLE_FILE_RECORDING_SHARING
             - ENABLE_GUESTS
@@ -64,7 +71,6 @@ services:
             - ENABLE_HTTP_REDIRECT
             - ENABLE_IPV6
             - ENABLE_LETSENCRYPT
-            - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
             - ENABLE_NOISY_MIC_DETECTION
             - ENABLE_OCTO
@@ -129,8 +135,7 @@ services:
             - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
             - START_WITH_VIDEO_MUTED
-            - TESTING_CAP_SCREENSHARE_BITRATE
-            - TESTING_OCTO_PROBABILITY
+            - TESTING_AV1_SUPPORT
             - TOKEN_AUTH_URL
             - TOOLBAR_BUTTONS
             - TRANSLATION_LANGUAGES
@@ -146,6 +151,9 @@ services:
             - VIDEOQUALITY_BITRATE_VP9_LOW
             - VIDEOQUALITY_BITRATE_VP9_STANDARD
             - VIDEOQUALITY_BITRATE_VP9_HIGH
+            - VIDEOQUALITY_BITRATE_AV1_LOW
+            - VIDEOQUALITY_BITRATE_AV1_STANDARD
+            - VIDEOQUALITY_BITRATE_AV1_HIGH
             - VIDEOQUALITY_ENFORCE_PREFERRED_CODEC
             - VIDEOQUALITY_PREFERRED_CODEC
             - XMPP_AUTH_DOMAIN
@@ -197,6 +205,7 @@ services:
             - GLOBAL_MODULES
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
+            - JIBRI_SIP_BREWERY_MUC
             - JIBRI_XMPP_USER
             - JIBRI_XMPP_PASSWORD
             - JICOFO_AUTH_PASSWORD
@@ -235,22 +244,29 @@ services:
             - MAX_PARTICIPANTS
             - PROSODY_ADMINS
             - PROSODY_AUTH_TYPE
+            - PROSODY_C2S_LIMIT
+            - PROSODY_C2S_REQUIRE_ENCRYPTION
             - PROSODY_RESERVATION_ENABLED
             - PROSODY_RESERVATION_REST_BASE_URL
             - PROSODY_ENABLE_RATE_LIMITS
             - PROSODY_ENABLE_S2S
+            - PROSODY_GUEST_AUTH_TYPE
             - PROSODY_HTTP_PORT
+            - PROSODY_LOG_CONFIG
             - PROSODY_MODE
             - PROSODY_RATE_LIMIT_LOGIN_RATE
             - PROSODY_RATE_LIMIT_SESSION_RATE
             - PROSODY_RATE_LIMIT_TIMEOUT
             - PROSODY_RATE_LIMIT_ALLOW_RANGES
             - PROSODY_RATE_LIMIT_CACHE_SIZE
+            - PROSODY_S2S_LIMIT
             - PROSODY_S2S_PORT
             - PROSODY_TRUSTED_PROXIES
             - PROSODY_VISITOR_INDEX
             - PROSODY_VISITORS_MUC_PREFIX
             - PUBLIC_URL
+            - STUN_HOST
+            - STUN_PORT
             - TURN_CREDENTIALS
             - TURN_HOST
             - TURNS_HOST
@@ -298,10 +314,12 @@ services:
             - ENABLE_AUTO_OWNER
             - ENABLE_CODEC_VP8
             - ENABLE_CODEC_VP9
+            - ENABLE_CODEC_AV1
             - ENABLE_CODEC_H264
             - ENABLE_CODEC_OPUS_RED
             - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
+            - ENABLE_OCTO_SCTP
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - ENABLE_VISITORS
@@ -322,8 +340,10 @@ services:
             - JICOFO_ENABLE_HEALTH_CHECKS
             - JICOFO_ENABLE_REST
             - JICOFO_HEALTH_CHECKS_USE_PRESENCE
+            - JICOFO_MAX_MEMORY
             - JICOFO_MULTI_STREAM_BACKWARD_COMPAT
             - JICOFO_OCTO_REGION
+            - JICOFO_TRUSTED_DOMAINS
             - JIBRI_BREWERY_MUC
             - JIBRI_REQUEST_RETRIES
             - JIBRI_PENDING_TIMEOUT
@@ -343,6 +363,7 @@ services:
             - TZ
             - VISITORS_MAX_PARTICIPANTS
             - VISITORS_MAX_VISITORS_PER_NODE
+            - VISITORS_XMPP_AUTH_DOMAIN
             - VISITORS_XMPP_SERVER
             - VISITORS_XMPP_DOMAIN
             - XMPP_DOMAIN
@@ -369,6 +390,15 @@ services:
         volumes:
             - ${CONFIG}/jvb:/config:Z
         environment:
+            - AUTOSCALER_SIDECAR_KEY_FILE
+            - AUTOSCALER_SIDECAR_KEY_ID
+            - AUTOSCALER_SIDECAR_GROUP_NAME
+            - AUTOSCALER_SIDECAR_HOST_ID
+            - AUTOSCALER_SIDECAR_INSTANCE_ID
+            - AUTOSCALER_SIDECAR_PORT
+            - AUTOSCALER_SIDECAR_REGION
+            - AUTOSCALER_SIDECAR_SHUTDOWN_POLLING_INTERVAL
+            - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
             - DOCKER_HOST_ADDRESS
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_JVB_XMPP_SERVER
@@ -379,9 +409,11 @@ services:
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
             - JVB_DISABLE_STUN
+            - JVB_INSTANCE_ID
             - JVB_PORT
             - JVB_MUC_NICKNAME
             - JVB_STUN_SERVERS
+            - JVB_LOG_FILE
             - JVB_OCTO_BIND_ADDRESS
             - JVB_OCTO_REGION
             - JVB_OCTO_RELAY_ID
@@ -398,6 +430,7 @@ services:
             - COLIBRI_REST_ENABLED
             - SHUTDOWN_REST_ENABLED
             - TZ
+            - VIDEOBRIDGE_MAX_MEMORY
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER

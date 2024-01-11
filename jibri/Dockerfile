@@ -20,6 +20,12 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" jibri libgl1-mesa-dri procps jitsi-upload-integrations jitsi-autoscaler-sidecar jq pulseaudio dbus dbus-x11 rtkit unzip fonts-noto && \
     /usr/bin/install-chrome.sh && \
     apt-cleanup && \
-    adduser jibri rtkit
+    adduser jibri rtkit && \
+    case ${TARGETPLATFORM} in \
+        "linux/amd64")  SC_ARCH=x86_64  ;; \
+        "linux/arm64")  SC_ARCH=aarch64  ;; \
+    esac && \
+    wget -qO /usr/bin/shm-check https://github.com/saghul/shm-check/releases/download/v1.0.0/shm-check-${SC_ARCH} && \
+    chmod +x /usr/bin/shm-check
 
 VOLUME /config

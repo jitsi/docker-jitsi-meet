@@ -4,7 +4,6 @@
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SHARING := .Env.ENABLE_FILE_RECORDING_SHARING | default "false" | toBool -}}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
-{{ $ENABLE_LIPSYNC := .Env.ENABLE_LIPSYNC | default "false" | toBool -}}
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "true" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "true" | toBool -}}
@@ -47,10 +46,9 @@
 {{ $ENABLE_NOISY_MIC_DETECTION := .Env.ENABLE_NOISY_MIC_DETECTION | default "true" | toBool -}}
 {{ $START_VIDEO_MUTED := .Env.START_VIDEO_MUTED | default 10 -}}
 {{ $START_WITH_VIDEO_MUTED := .Env.START_WITH_VIDEO_MUTED | default "false" | toBool -}}
+{{ $DESKTOP_SHARING_FRAMERATE_AUTO := .Env.DESKTOP_SHARING_FRAMERATE_AUTO | default "true" | toBool -}}
 {{ $DESKTOP_SHARING_FRAMERATE_MIN := .Env.DESKTOP_SHARING_FRAMERATE_MIN | default 5 -}}
 {{ $DESKTOP_SHARING_FRAMERATE_MAX := .Env.DESKTOP_SHARING_FRAMERATE_MAX | default 5 -}}
-{{ $TESTING_OCTO_PROBABILITY := .Env.TESTING_OCTO_PROBABILITY | default "0" -}}
-{{ $TESTING_CAP_SCREENSHARE_BITRATE := .Env.TESTING_CAP_SCREENSHARE_BITRATE | default "1" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
@@ -69,6 +67,7 @@
 {{ $ROOM_PASSWORD_DIGITS := .Env.ROOM_PASSWORD_DIGITS | default "false" -}}
 {{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL := .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" -}}
 {{ $WHITEBOARD_ENABLED := .Env.WHITEBOARD_ENABLED | default "false" | toBool -}}
+{{ $TESTING_AV1_SUPPORT := .Env.TESTING_AV1_SUPPORT | default "false" | toBool -}}
 
 // Video configuration.
 //
@@ -79,7 +78,10 @@ if (!config.constraints.hasOwnProperty('video')) config.constraints.video = {};
 config.resolution = {{ $RESOLUTION }};
 config.constraints.video.height = { ideal: {{ $RESOLUTION }}, max: {{ $RESOLUTION }}, min: {{ $RESOLUTION_MIN }} };
 config.constraints.video.width = { ideal: {{ $RESOLUTION_WIDTH }}, max: {{ $RESOLUTION_WIDTH }}, min: {{ $RESOLUTION_WIDTH_MIN }}};
-config.disableSimulcast = {{ not $ENABLE_SIMULCAST }};
+
+{{ if not $ENABLE_SIMULCAST -}}
+config.disableSimulcast = true;
+{{ end -}}
 config.startVideoMuted = {{ $START_VIDEO_MUTED }};
 config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};
 
@@ -92,11 +94,12 @@ config.flags.sourceNameSignaling = true;
 config.flags.sendMultipleVideoStreams = true;
 config.flags.receiveMultipleVideoStreams = true;
 
-
+{{ if not $DESKTOP_SHARING_FRAMERATE_AUTO }}
 // ScreenShare Configuration.
 //
 
 config.desktopSharingFrameRate = { min: {{ $DESKTOP_SHARING_FRAMERATE_MIN }}, max: {{ $DESKTOP_SHARING_FRAMERATE_MAX }} };
+{{ end }}
 
 // Audio configuration.
 //
@@ -117,7 +120,9 @@ config.startAudioMuted = {{ $START_AUDIO_MUTED }};
 config.startWithAudioMuted = {{ $START_WITH_AUDIO_MUTED }};
 config.startSilent = {{ $START_SILENT }};
 config.enableOpusRed = {{ $ENABLE_OPUS_RED }};
-config.disableAudioLevels = {{ $DISABLE_AUDIO_LEVELS }};
+{{ if $DISABLE_AUDIO_LEVELS -}}
+config.disableAudioLevels = true;
+{{ end -}}
 config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 
 
@@ -342,11 +347,12 @@ config.roomPasswordNumberOfDigits = {{ $ROOM_PASSWORD_DIGITS }};
 // Advanced.
 //
 
-// Lipsync hack in jicofo, may not be safe.
-config.enableLipSync = {{ $ENABLE_LIPSYNC }};
-
-config.enableRemb = {{ $ENABLE_REMB }};
-config.enableTcc = {{ $ENABLE_TCC }};
+{{ if not $ENABLE_REMB -}}
+config.enableRemb = false;
+{{ end -}}
+{{ if not $ENABLE_TCC -}}
+config.enableTcc = false;
+{{ end -}}
 
 // Enable IPv6 support.
 config.useIPv6 = {{ $ENABLE_IPV6 }};
@@ -398,16 +404,6 @@ config.deploymentInfo.region = '{{ .Env.DEPLOYMENTINFO_REGION }}';
 config.deploymentInfo.userRegion = '{{ $DEPLOYMENTINFO_USERREGION }}';
 {{ end -}}
 
-
-// Testing
-//
-
-if (!config.hasOwnProperty('testing')) config.testing = {};
-if (!config.testing.hasOwnProperty('octo')) config.testing.octo = {};
-
-config.testing.capScreenshareBitrate = {{ $TESTING_CAP_SCREENSHARE_BITRATE }};
-config.testing.octo.probability = {{ $TESTING_OCTO_PROBABILITY }};
-
 // Deep Linking
 config.disableDeepLinking = {{ $DISABLE_DEEP_LINKING }};
 
@@ -436,6 +432,10 @@ config.videoQuality.maxBitratesVideo.VP8 = { low: {{ .Env.VIDEOQUALITY_BITRATE_V
 {{ if and .Env.VIDEOQUALITY_BITRATE_VP9_LOW .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD .Env.VIDEOQUALITY_BITRATE_VP9_HIGH -}}
 config.videoQuality.maxBitratesVideo = config.videoQuality.maxBitratesVideo || {}
 config.videoQuality.maxBitratesVideo.VP9 = { low: {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }} };
+{{ end -}}
+{{ if and .Env.VIDEOQUALITY_BITRATE_AV1_LOW .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD .Env.VIDEOQUALITY_BITRATE_AV1_HIGH -}}
+config.videoQuality.maxBitratesVideo = config.videoQuality.maxBitratesVideo || {}
+config.videoQuality.maxBitratesVideo.AV1 = { low: {{ .Env.VIDEOQUALITY_BITRATE_AV1_LOW }}, standard: {{ .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }}, high: {{ .Env.VIDEOQUALITY_BITRATE_AV1_HIGH }} };
 {{ end -}}
 
  // Reactions
@@ -478,3 +478,7 @@ config.e2eping.maxMessagePerSecond = {{ .Env.E2EPING_MAX_MESSAGE_PER_SECOND }};
 if (!config.hasOwnProperty('whiteboard')) config.whiteboard = {};
 config.whiteboard.enabled = {{ $WHITEBOARD_ENABLED }};
 config.whiteboard.collabServerBaseUrl = '{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}';
+
+// Testing
+if (!config.hasOwnProperty('testing')) config.testing = {};
+config.testing.enableAv1Support = {{ $TESTING_AV1_SUPPORT }};

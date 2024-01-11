@@ -88,6 +88,25 @@ fi
 
 echo "Using Nginx resolver: =$NGINX_RESOLVER="
 
+# colibri-ws settings
+COLIBRI_WEBSOCKET_UNSAFE_REGEX="[a-zA-Z0-9-\._]+"
+# use custom websocket regex if provided
+if [ -z "$COLIBRI_WEBSOCKET_REGEX" ]; then
+    # default to the previous unsafe behavior only if flag is set
+    if [[ "$ENABLE_COLIBRI_WEBSOCKET_UNSAFE_REGEX" == "1" ]]; then
+        export COLIBRI_WEBSOCKET_REGEX="$COLIBRI_WEBSOCKET_UNSAFE_REGEX"
+    else
+        # default value to the JVB IP, works in compose and anywhere a dns lookup of the JVB reveals the correct IP for proxying
+        [ -z "$COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME" ] && export COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME="jvb"
+        if [[ "$DISABLE_COLIBRI_WEBSOCKET_JVB_LOOKUP" == "1" ]]; then
+            # otherwise value default to the static value in the template 'jvb'
+            echo "WARNING: DISABLE_COLIBRI_WEBSOCKET_JVB_LOOKUP is set and no value for COLIBRI_WEBSOCKET_REGEX was provided, using static value 'jvb' for COLIBRI_WEBSOCKET_REGEX"
+        else
+            export COLIBRI_WEBSOCKET_REGEX="$(dig +short +search $COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME)"
+        fi
+    fi
+fi
+
 # copy config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
 
