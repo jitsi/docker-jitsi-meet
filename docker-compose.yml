@@ -126,7 +126,6 @@ services:
             - RESOLUTION_WIDTH_MIN
             - START_AUDIO_MUTED
             - START_AUDIO_ONLY
-            - START_BITRATE
             - START_SILENT
             - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
