@@ -83,16 +83,11 @@ config.disableSimulcast = true;
 config.startVideoMuted = {{ $START_VIDEO_MUTED }};
 config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};
 
-{{ if .Env.START_BITRATE -}}
-config.startBitrate = '{{ .Env.START_BITRATE }}';
-{{ end -}}
-
 config.flags = {
-    sourceNameSignaling: true
+    sourceNameSignaling: true,
     sendMultipleVideoStreams: true,
     receiveMultipleVideoStreams: true
 };
-
 
 // ScreenShare Configuration.
 //
