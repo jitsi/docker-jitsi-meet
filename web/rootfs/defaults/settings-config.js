@@ -302,7 +302,7 @@ config.prejoinConfig.hideExtraJoinButtons = [ '{{ join "','" (splitList "," .Env
 
 // Welcome page.
 config.welcomePage = {
-    disabled = {{ not $ENABLE_WELCOME_PAGE }};
+    disabled: {{ not $ENABLE_WELCOME_PAGE }}
 };
 
 // Close page.
