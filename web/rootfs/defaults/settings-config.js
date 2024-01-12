@@ -302,7 +302,7 @@ config.prejoinConfig.hideExtraJoinButtons = [ '{{ join "','" (splitList "," .Env
 
 // Welcome page.
 config.welcomePage = {
-    disabled = {{ not $ENABLE_WELCOME_PAGE }};
+    disabled: {{ not $ENABLE_WELCOME_PAGE }}
 };
 
 // Close page.
@@ -345,12 +345,12 @@ config.enableTcc = false;
 // Transcriptions (subtitles and buttons can be configured in interface_config)
 config.transcription = {
     enabled: {{ $ENABLE_TRANSCRIPTIONS }},
-    translationLanguages = {{ $TRANSLATION_LANGUAGES }},
-    translationLanguagesHead = {{ $TRANSLATION_LANGUAGES_HEAD }},
-    useAppLanguage = {{ $USE_APP_LANGUAGE }},
-    preferredLanguage = '{{ $PREFERRED_LANGUAGE }}',
-    disableStartForAll = {{ $DISABLE_START_FOR_ALL }},
-    autoCaptionOnRecord = {{ $AUTO_CAPTION_ON_RECORD }},
+    translationLanguages: {{ $TRANSLATION_LANGUAGES }},
+    translationLanguagesHead: {{ $TRANSLATION_LANGUAGES_HEAD }},
+    useAppLanguage: {{ $USE_APP_LANGUAGE }},
+    preferredLanguage: '{{ $PREFERRED_LANGUAGE }}',
+    disableStartForAll: {{ $DISABLE_START_FOR_ALL }},
+    autoCaptionOnRecord: {{ $AUTO_CAPTION_ON_RECORD }},
 };
 
 // Dynamic branding
