@@ -193,7 +193,6 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         "websocket";
         "smacks"; -- XEP-0198: Stream Management
         {{ end }}
-        "pubsub";
         "ping";
         "speakerstats";
         "conference_duration";
