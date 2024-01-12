@@ -177,7 +177,7 @@ config.liveStreaming = {
 {{ if .Env.DROPBOX_APPKEY -}}
 // Enable the dropbox integration.
 config.dropbox = {
-    appKey = '{{ .Env.DROPBOX_APPKEY }}'
+    appKey: '{{ .Env.DROPBOX_APPKEY }}'
 };
 
 {{ if .Env.DROPBOX_REDIRECT_URI -}}
