@@ -2,19 +2,8 @@ FORCE_REBUILD ?= 0
 JITSI_RELEASE ?= stable
 JITSI_BUILD ?= unstable
 JITSI_REPO ?= jitsi
-NATIVE_ARCH ?= $(shell uname -m)
 
 JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
-
-ifeq ($(NATIVE_ARCH),x86_64)
-	TARGETPLATFORM := linux/amd64
-else ifeq ($(NATIVE_ARCH),aarch64)
-	TARGETPLATFORM := linux/arm64
-else ifeq ($(NATIVE_ARCH),arm64)
-	TARGETPLATFORM := linux/arm64
-else
-	TARGETPLATFORM := unsupported
-endif
 
 BUILD_ARGS := \
 	--build-arg JITSI_REPO=$(JITSI_REPO) \
@@ -43,19 +32,12 @@ buildx:
 $(addprefix buildx_,$(JITSI_SERVICES)):
 	$(MAKE) --no-print-directory JITSI_SERVICE=$(patsubst buildx_%,%,$@) buildx
 
-ifeq ($(TARGETPLATFORM), unsupported)
 build:
-	@echo "Unsupported native architecture"
-	@exit 1
-else
-build:
-	@echo "Building for $(TARGETPLATFORM)"
 	docker build \
-		$(BUILD_ARGS) --build-arg TARGETPLATFORM=$(TARGETPLATFORM) \
+		$(BUILD_ARGS) \
 		--progress plain \
 		--tag $(JITSI_REPO)/$(JITSI_SERVICE) \
 		$(JITSI_SERVICE)
-endif
 
 $(addprefix build_,$(JITSI_SERVICES)):
 	$(MAKE) --no-print-directory JITSI_SERVICE=$(patsubst build_%,%,$@) build
