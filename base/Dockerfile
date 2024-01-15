@@ -1,18 +1,16 @@
 FROM docker.io/library/debian:bullseye-slim
 
 ARG JITSI_RELEASE=stable
-ARG TARGETPLATFORM
 ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 
 COPY rootfs /
 
-RUN case ${TARGETPLATFORM} in \
-         "linux/amd64")  TPL_ARCH=amd64  ;; \
-         "linux/arm64")  TPL_ARCH=arm64  ;; \
-    esac && \
-    case ${TARGETPLATFORM} in \
-         "linux/amd64")  S6_ARCH=amd64  ;; \
-         "linux/arm64")  S6_ARCH=aarch64  ;; \
+RUN \
+    dpkgArch="$(dpkg --print-architecture)" && \
+    case "${dpkgArch##*-}" in \
+        "amd64") TPL_ARCH=amd64; S6_ARCH=amd64 ;; \
+        "arm64") TPL_ARCH=arm64; S6_ARCH=aarch64 ;; \
+        *) echo "unsupported architecture"; exit 1 ;; \
     esac && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y apt-transport-https apt-utils ca-certificates gnupg wget && \

@@ -2,7 +2,9 @@
 
 set -o pipefail -xeu
 
-if [ "${USE_CHROMIUM}" = 1 -o "${TARGETPLATFORM}" = "linux/arm64" ]; then
+dpkgArch="$(dpkg --print-architecture)"
+
+if [ "${USE_CHROMIUM}" = 1 -o "${dpkgArch##*-}" = "arm64" ]; then
     echo "Using Debian's Chromium"
     apt-dpkg-wrap apt-get install -y chromium chromium-driver chromium-sandbox
     chromium --version
