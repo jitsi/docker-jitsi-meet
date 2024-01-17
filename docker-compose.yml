@@ -20,15 +20,11 @@ services:
             - AUTO_CAPTION_ON_RECORD
             - BRANDING_DATA_URL
             - BOSH_RELATIVE
-            - CALLSTATS_CUSTOM_SCRIPT_URL
-            - CALLSTATS_ID
-            - CALLSTATS_SECRET
             - CHROME_EXTENSION_BANNER_JSON
             - COLIBRI_WEBSOCKET_PORT
             - COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME
             - COLIBRI_WEBSOCKET_REGEX
             - CONFCODE_URL
-            - CONFIG_EXTERNAL_CONNECT
             - DEFAULT_LANGUAGE
             - DEPLOYMENTINFO_ENVIRONMENT
             - DEPLOYMENTINFO_ENVIRONMENT_TYPE
@@ -71,7 +67,6 @@ services:
             - ENABLE_HTTP_REDIRECT
             - ENABLE_IPV6
             - ENABLE_LETSENCRYPT
-            - ENABLE_LIPSYNC
             - ENABLE_NO_AUDIO_DETECTION
             - ENABLE_NOISY_MIC_DETECTION
             - ENABLE_OCTO
@@ -131,13 +126,11 @@ services:
             - RESOLUTION_WIDTH_MIN
             - START_AUDIO_MUTED
             - START_AUDIO_ONLY
-            - START_BITRATE
             - START_SILENT
             - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
             - START_WITH_VIDEO_MUTED
-            - TESTING_CAP_SCREENSHARE_BITRATE
-            - TESTING_OCTO_PROBABILITY
+            - TESTING_AV1_SUPPORT
             - TOKEN_AUTH_URL
             - TOOLBAR_BUTTONS
             - TRANSLATION_LANGUAGES
@@ -147,16 +140,19 @@ services:
             - VIDEOQUALITY_BITRATE_H264_LOW
             - VIDEOQUALITY_BITRATE_H264_STANDARD
             - VIDEOQUALITY_BITRATE_H264_HIGH
+            - VIDEOQUALITY_BITRATE_H264_SS_HIGH
             - VIDEOQUALITY_BITRATE_VP8_LOW
             - VIDEOQUALITY_BITRATE_VP8_STANDARD
             - VIDEOQUALITY_BITRATE_VP8_HIGH
+            - VIDEOQUALITY_BITRATE_VP8_SS_HIGH
             - VIDEOQUALITY_BITRATE_VP9_LOW
             - VIDEOQUALITY_BITRATE_VP9_STANDARD
             - VIDEOQUALITY_BITRATE_VP9_HIGH
+            - VIDEOQUALITY_BITRATE_VP9_SS_HIGH
             - VIDEOQUALITY_BITRATE_AV1_LOW
             - VIDEOQUALITY_BITRATE_AV1_STANDARD
             - VIDEOQUALITY_BITRATE_AV1_HIGH
-            - VIDEOQUALITY_ENFORCE_PREFERRED_CODEC
+            - VIDEOQUALITY_BITRATE_AV1_SS_HIGH
             - VIDEOQUALITY_PREFERRED_CODEC
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
@@ -207,6 +203,7 @@ services:
             - GLOBAL_MODULES
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
+            - JIBRI_SIP_BREWERY_MUC
             - JIBRI_XMPP_USER
             - JIBRI_XMPP_PASSWORD
             - JICOFO_AUTH_PASSWORD
@@ -320,6 +317,7 @@ services:
             - ENABLE_CODEC_OPUS_RED
             - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
+            - ENABLE_OCTO_SCTP
             - ENABLE_RECORDING
             - ENABLE_SCTP
             - ENABLE_VISITORS
@@ -343,6 +341,7 @@ services:
             - JICOFO_MAX_MEMORY
             - JICOFO_MULTI_STREAM_BACKWARD_COMPAT
             - JICOFO_OCTO_REGION
+            - JICOFO_TRUSTED_DOMAINS
             - JIBRI_BREWERY_MUC
             - JIBRI_REQUEST_RETRIES
             - JIBRI_PENDING_TIMEOUT
@@ -362,6 +361,7 @@ services:
             - TZ
             - VISITORS_MAX_PARTICIPANTS
             - VISITORS_MAX_VISITORS_PER_NODE
+            - VISITORS_XMPP_AUTH_DOMAIN
             - VISITORS_XMPP_SERVER
             - VISITORS_XMPP_DOMAIN
             - XMPP_DOMAIN
@@ -371,6 +371,8 @@ services:
             - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER
             - XMPP_PORT
+            - MAX_SSRCS_PER_USER
+            - MAX_SSRC_GROUPS_PER_USER
         depends_on:
             - prosody
         networks:

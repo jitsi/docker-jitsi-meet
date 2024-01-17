@@ -15,8 +15,6 @@
 {{ $RELEASE_NUMBER := .Env.RELEASE_NUMBER | default "" -}}
 {{ $SHARD_NAME := .Env.SHARD | default "default" -}}
 {{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" -}}
-{{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
-{{ $TRUSTED_PROXY_LIST := splitList "," $TRUSTED_PROXIES -}}
 {{ $TURN_HOST := .Env.TURN_HOST | default "" -}}
 {{ $TURN_HOSTS := splitList "," $TURN_HOST -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
@@ -92,12 +90,6 @@ consider_websocket_secure = true;
 consider_bosh_secure = true;
 bosh_max_inactivity = 60;
 
-trusted_proxies = {
-{{ range $index, $proxy := $TRUSTED_PROXY_LIST }}
-  "{{ $proxy }}";
-{{ end }}
-}
-
 -- this is added to make certs_s2soutinjection work
 s2sout_override = {
     ["{{ $XMPP_MUC_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}"; -- needed for visitors to send messages to main room
@@ -137,8 +129,7 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
 
     {{ if .Env.XMPP_CONFIGURATION -}}
     {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
-    {{ end -}}
-
+    {{- end }}
 
 VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
     modules_enabled = {
