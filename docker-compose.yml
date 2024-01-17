@@ -225,6 +225,7 @@ services:
             - MATRIX_UVS_ISSUER
             - MATRIX_UVS_AUTH_TOKEN
             - MATRIX_UVS_SYNC_POWER_LEVELS
+            - MATRIX_LOBBY_BYPASS
             - LOG_LEVEL
             - LDAP_AUTH_METHOD
             - LDAP_BASE
