@@ -436,9 +436,6 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
     muc_room_allow_persistent = false
     modules_enabled = {
         "muc_meeting_id";
-        {{ if $ENABLE_SUBDOMAINS -}}
-        "muc_domain_mapper";
-        {{ end -}}
         {{ if not $DISABLE_POLLS -}}
         "polls";
         {{ end -}}
