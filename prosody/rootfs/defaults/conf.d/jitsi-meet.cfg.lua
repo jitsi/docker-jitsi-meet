@@ -314,7 +314,7 @@ Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     muc_filter_whitelist="{{ $XMPP_AUTH_DOMAIN }}"
     muc_room_locking = false
     muc_room_default_public_jids = true
-    muc_room_cache_size = 10000
+    muc_room_cache_size = 1000
 
 Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     restrict_room_creation = true
