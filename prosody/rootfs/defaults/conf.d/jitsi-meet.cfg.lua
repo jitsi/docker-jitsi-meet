@@ -1,3 +1,4 @@
+{{ $C2S_REQUIRE_ENCRYPTION := .Env.PROSODY_C2S_REQUIRE_ENCRYPTION | default "1" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
 {{ $AUTH_TYPE := .Env.AUTH_TYPE | default "internal" -}}
@@ -256,7 +257,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     av_moderation_component = "avmoderation.{{ $XMPP_DOMAIN }}"
     {{ end }}
 
-    c2s_require_encryption = false
+    c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }}
 
     {{ if $ENABLE_VISITORS -}}
     visitors_ignore_list = { "{{ $XMPP_RECORDER_DOMAIN }}" }
@@ -276,7 +277,7 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
         {{ end }}
     }
 
-    c2s_require_encryption = false
+    c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }}
     {{ if $ENABLE_VISITORS }}
     allow_anonymous_s2s = true
     {{ end }}
