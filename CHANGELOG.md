@@ -1,3 +1,62 @@
+## stable-9220
+
+Based on stable release 9220.
+
+* 4eb5575 prosody: c2s encryption flag from environment
+* cc34823 prosody: tune internal muc settings
+* f512116 prosody: jibri and jigasi skip muc passwords (#1718)
+* 6c1f384 Add flag for require-muc-config-flag. (#1717)
+* 6e6dd96 web: nginx config for load-test client if present (#1715)
+* 11d7d75 fix: Do not load domain_mapper under breakout component (#1714)
+* 4ca5763 prosody: the new version of contrib-prosody-plugins (#1713)
+* d31e164 build: simplify detection of the target platform
+* 21f04ea base: update tpl
+* 9b686c6 prosody: Drops unused module.
+* 1365d7f base-java: include jdk package
+* 4584779 jicofo: fix enable sctp octo defaults (#1708)
+* 2a3f8fd web: fix config.js syntax
+* df88c7c Fix/web settings prop syntax (#1706)
+* d64ae1c web: remove 'startBitrate' that is no longer supported.
+* 1cba0b5 web: Fix the maxbitrates config setting. Also, remove the 'enforcePreferredCodec' setting which is no longer supported.
+* 1dbe5cd web: cleanup config
+* 3a888fd jicofo: add support for max-ssrcs-per-user config
+* 5093efb feat: Add testing flag for Av1
+* 7f86006 prosody: remove muc_meeting_id from lobby
+* c21a598 prosody: visitors config whitespace fix (#1694)
+* 8845606 Move trusted_proxies from visitors to main prosody config file. (#1699)
+* e41e4f4 Require tls by default. (#1698)
+* 80e4ee6 Remove unnecessary modules and properties (#1697)
+* 2915176 prosody: skip recorder account unless in client mode
+* 46b98b5 prosody: brewery mode for jvb/jicofo discovery muc
+* 52eef2e feat: Add an option to set jibri-sip brewery jid. (#1689)
+* ab30f56 prosody: enable muc_meeting_id in lobby component
+* 5cc0ef0 jicofo: fix duplicate line
+* 2a67885 jicofo: trusted domain list
+* 78fb030 fix: Fix typo in var name. (#1690)
+* 1ad045e feat: Add an option to enable sctp for relays. (#1688)
+* aa898e4 jicofo: fix visitors auth domain (#1687)
+* ec8615a fix: Fix default JIBRI_PENDING_TIMEOUT. (#1686)
+* 483bbde web: trim deprecated options and defaults
+* 11cbfcc web: provide bosh URL as relative only if flagged (#1682)
+* 60100d6 jvb: expose public IP in autoscaler sidecar config (#1679)
+* b8a9080 task: fix shutdown script
+* 2e3c272 jvb: fix terminate script for autoscaler sidecar
+* 3519113 jvb: finish script for graceful shutdown (#1676)
+* 4fba8b5 task: support logging to file in JVB container (#1675)
+* 431cdcc web: allow desktop framerate to be automatically determined by the browser
+* 4c009ad jvb: fix version for autoscaler config
+* 4531615 prosody: add smacks to guest vhost
+* b4428bf prosody: use mod_smacks.lua from prosody since 0.12.4
+* ee2f3c9 docker-compose.yml: expose jicofo and jvb env vars for defining max memory.
+* 940cd97 env.example: add jicofo and jvb env vars for defining max memory.
+* 71b3892 jicofo,jvb,jigasi: fix SENTRY_DSN cannot be defined
+* e6a0c04 jibri: add check for /dev/shm size
+* dbffba1 Revert "jicofo, jigasi, jvb: fix SENTRY_DSN not being read"
+* 073f85d Revert "logging: fix reference to old variable"
+* 8415c84 logging: fix reference to old variable
+* fa2b4db jicofo, jigasi, jvb: fix SENTRY_DSN not being read
+* 42a2153 misc: working on unstable
+
 ## stable-9111
 
 Based on stable release 9111.
