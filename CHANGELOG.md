@@ -1,3 +1,14 @@
+## stable-9220-1
+
+Based on stable release 9220-1.
+
+* 1e97277 jibri: update Chrome to version 121
+* 310b80d jvb: add env var to control require-valid-address
+* b0092bc jicofo,jigasi,jvb: fix accidentally enabling Sentry
+* 102281e base: update tpl
+* bf237da etherpad: update etherpad image to etherpad/etherpad:1.9.6 (#1725)
+* 7381471 misc: working on unstable
+
 ## stable-9220
 
 Based on stable release 9220.
