@@ -131,7 +131,8 @@ firewall_scripts = {
 -- These modules are auto-loaded, but should you want
 -- to disable them then uncomment them here:
 modules_disabled = {
-	-- "offline"; -- Store offline messages
+    "offline"; -- Store offline messages
+    "register";
 	-- "c2s"; -- Handle client connections
 
 	{{ if not $ENABLE_S2S -}}
