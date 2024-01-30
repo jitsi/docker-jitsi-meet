@@ -417,6 +417,7 @@ services:
             - JVB_OCTO_BIND_ADDRESS
             - JVB_OCTO_REGION
             - JVB_OCTO_RELAY_ID
+            - JVB_REQUIRE_VALID_ADDRESS
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
             - JVB_XMPP_AUTH_DOMAIN
