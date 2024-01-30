@@ -3,7 +3,7 @@ version: '3.5'
 services:
     # Etherpad: real-time collaborative document editing
     etherpad:
-        image: etherpad/etherpad:1.8.6
+        image: etherpad/etherpad:1.9.6
         restart: ${RESTART_POLICY:-unless-stopped}
         environment:
             - TITLE=${ETHERPAD_TITLE}
