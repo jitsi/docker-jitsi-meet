@@ -13,9 +13,6 @@ admins = {
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 
 VirtualHost "{{ $JVB_XMPP_AUTH_DOMAIN }}"
-    modules_enabled = {
-      "ping";
-    }
     authentication = "internal_hashed"
     ssl = {
         key = "/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.key";
@@ -24,7 +21,6 @@ VirtualHost "{{ $JVB_XMPP_AUTH_DOMAIN }}"
 
 Component "{{ $JVB_XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     modules_enabled = {
-      "ping",
       "muc_hide_all";
       "muc_filter_access";
     }

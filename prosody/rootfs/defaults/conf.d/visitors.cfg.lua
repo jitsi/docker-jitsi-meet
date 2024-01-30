@@ -112,7 +112,6 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     }
     modules_enabled = {
       'bosh';
-      'ping';
       "external_services";
       {{ if $ENABLE_XMPP_WEBSOCKET -}}
       "websocket";
@@ -134,7 +133,6 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
 VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
     modules_enabled = {
       'limits_exception';
-      'ping';
     }
     authentication = 'internal_hashed'
 
