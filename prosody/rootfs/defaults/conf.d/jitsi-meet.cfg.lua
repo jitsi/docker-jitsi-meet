@@ -130,7 +130,6 @@ smacks_max_old_sessions = 1;
 {{ if $ENABLE_JAAS_COMPONENTS }}
 VirtualHost "jigasi.meet.jitsi"
     modules_enabled = {
-      "ping";
       "bosh";
       "muc_password_check";
     }
@@ -196,7 +195,6 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         "websocket";
         "smacks"; -- XEP-0198: Stream Management
         {{ end }}
-        "ping";
         "speakerstats";
         "conference_duration";
         "room_metadata";
@@ -271,7 +269,6 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
 VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
     authentication = "{{ $GUEST_AUTH_TYPE }}"
     modules_enabled = {
-        "ping";
         {{ if $ENABLE_XMPP_WEBSOCKET }}
         "smacks"; -- XEP-0198: Stream Management
         {{ end }}
@@ -291,14 +288,12 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     }
     modules_enabled = {
         "limits_exception";
-        "ping";
     }
     authentication = "internal_hashed"
 
 {{ if $ENABLE_RECORDING }}
 VirtualHost "{{ $XMPP_RECORDER_DOMAIN }}"
     modules_enabled = {
-      "ping";
       "smacks";
     }
     authentication = "internal_hashed"
@@ -307,7 +302,6 @@ VirtualHost "{{ $XMPP_RECORDER_DOMAIN }}"
 Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
-        "ping";
         {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
         {{ end -}}
