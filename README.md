@@ -12,7 +12,7 @@ All our images are published on [DockerHub](https://hub.docker.com/u/jitsi/).
 
 ## Supported architectures
 
-Starting with `stable-7289-1` the published images are available for `amd64` and `arm64` with the exception of `jigasi`.
+Starting with `stable-7439` the published images are available for `amd64` and `arm64`.
 
 ## Tags
 

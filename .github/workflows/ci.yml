@@ -1,0 +1,84 @@
+name: CI Test Build
+
+on:
+  pull_request:
+  push:
+    branches:
+    - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v3
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          driver: docker
+
+      - name: Build base
+        uses: docker/build-push-action@v2
+        with:
+          context: ./base
+          load: true
+          tags: |
+            jitsi/base:latest
+          build-args: |
+            JITSI_RELEASE=unstable
+
+      - name: Build base-java
+        uses: docker/build-push-action@v2
+        with:
+          context: ./base-java
+          load: true
+          tags: |
+            jitsi/base-java:latest
+
+      - name: Build jibri
+        uses: docker/build-push-action@v2
+        with:
+          context: ./jibri
+          load: true
+          tags: |
+            jitsi/jibri:latest
+
+      - name: Build jicofo
+        uses: docker/build-push-action@v2
+        with:
+          context: ./jicofo
+          load: true
+          tags: |
+            jitsi/jicofo:latest
+
+      - name: Build jigasi
+        uses: docker/build-push-action@v2
+        with:
+          context: ./jigasi
+          load: true
+          tags: |
+            jitsi/jigasi:latest
+
+      - name: Build jvb
+        uses: docker/build-push-action@v2
+        with:
+          context: ./jvb
+          load: true
+          tags: |
+            jitsi/jvb:latest
+
+      - name: Build prosody
+        uses: docker/build-push-action@v2
+        with:
+          context: ./prosody
+          load: true
+          tags: |
+            jitsi/prosody:latest
+
+      - name: Build web
+        uses: docker/build-push-action@v2
+        with:
+          context: ./web
+          load: true
+          tags: |
+            jitsi/web:latest

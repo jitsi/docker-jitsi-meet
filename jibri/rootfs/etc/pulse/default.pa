@@ -43,10 +43,6 @@ load-module module-native-protocol-unix
 ### that look up the default sink/source get the right value
 load-module module-default-device-restore
 
-### Automatically move streams to the default sink if the sink they are
-### connected to dies, similar for sources
-load-module module-rescue-streams
-
 ### Make sure we always have a sink around, even if it is a null sink.
 load-module module-always-sink
 

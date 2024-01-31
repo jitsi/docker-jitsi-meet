@@ -25,8 +25,8 @@ VERSION="${RELEASE}-${V}"
 echo "Releasing ${VERSION}"
 
 if git rev-parse "${VERSION}" >/dev/null 2>&1; then
-	echo "Tag for such version already exists!"
-	exit 1
+    echo "Tag for such version already exists!"
+    exit 1
 fi
 
 # Prepare changelog
@@ -37,6 +37,14 @@ CHANGES=$(git log --oneline --no-decorate --no-merges ${LAST_VERSION}..HEAD --pr
 
 echo "Changelog:"
 echo "$CHANGES"
+
+# Tag Docker images and push them to DockerHub
+#
+
+JITSI_BUILD=${VERSION} JITSI_RELEASE=${RELEASE} make release
+
+# Changelog
+#
 
 echo -e "## ${VERSION}\n\nBased on ${RELEASE} release ${V}.\n\n${CHANGES}\n" > tmp
 cat CHANGELOG.md >> tmp
@@ -52,11 +60,6 @@ sed -i "" -e "s/unstable/${VERSION}/" *.yml
 
 git commit -a -m "release: ${VERSION}" -m "${CHANGES}"
 git tag -a "${VERSION}" -m "release" -m "${CHANGES}"
-
-# Tag Docker images and push them to DockerHub
-#
-
-JITSI_BUILD=${VERSION} JITSI_RELEASE=${RELEASE} make release
 
 # Revert back to "unstable" for development
 #

@@ -4,5 +4,7 @@
 HOME=/home/jibri
 
 DAEMON=/opt/jitsi/jibri/launch.sh
+# pre-warm google chrome before jibri launches to ensure fast chrome launch during recordings
+s6-setuidgid jibri /usr/bin/google-chrome --timeout=1000 --headless about:blank
 exec s6-setuidgid jibri /bin/bash -c "exec $DAEMON"
 

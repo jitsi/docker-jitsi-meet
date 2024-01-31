@@ -1,0 +1,122 @@
+#!/usr/bin/with-contenv bash
+
+set -e
+
+EMAIL=$LETSENCRYPT_EMAIL
+DOMAIN=$LETSENCRYPT_DOMAIN
+
+JITSI_INSTALLATION="DOCKER"
+JAAS_ENDPOINT="https://account-provisioning.cloudflare.jitsi.net/operations"
+CHALLENGE_DIR="/usr/share/jitsi-meet/.well-known"
+CHALLENGE_FILE="$CHALLENGE_DIR/jitsi-challenge.txt"
+SUPPORT_MSG="Reach out to JaaS support at https://jaas.8x8.vc/#components"
+JAAS_ACCOUNT_FILE="/config/jaas-account-created.txt"
+
+function stop_service() {
+  s6-svc -O /var/run/s6/services/jaas-account
+  exit 0
+}
+
+if [[ $DISABLE_HTTPS -ne 1 ]] && [[ $ENABLE_LETSENCRYPT -eq 1 ]] && [[ $ENABLE_JAAS_COMPONENTS -eq 1 ]]  && [[ ! -z $EMAIL ]] && [[ ! -z $DOMAIN ]]; then
+
+if [ -f $JAAS_ACCOUNT_FILE ]; then
+    echo "JaaS account already exists"
+    stop_service
+fi
+
+KEEP_WAITING=true
+RETRIES=0
+MAX_TRIES=5
+SLEEP_INTERVAL=10
+# Waiting for nginx to start before creating the JaaS account
+while $KEEP_WAITING; do
+    s6-svwait -u /var/run/s6/services/nginx
+    NGINX_RESPONSE=$?
+    if [ $NGINX_RESPONSE -eq 0 ]; then
+        echo "Nginx started"
+        KEEP_WAITING=false
+    else
+        RETRIES=$((RETRIES + 1))
+        if [ $RETRIES -ge $MAX_TRIES ]; then
+            echo "Nginx did not start, exiting..."
+            KEEP_WAITING=false
+        else
+            echo "Waiting for nginx to start, retrying in $SLEEP_INTERVAL seconds... $RETRIES/$MAX_TRIES"
+            sleep $SLEEP_INTERVAL
+        fi
+    fi
+done
+
+create_error=0
+create_data=$(curl -s -f -X 'POST' "${JAAS_ENDPOINT}" -H 'Content-Type: application/json' -H 'accept: */*' -d "{ \"domain\": \"${DOMAIN}\", \"email\": \"${EMAIL}\", \"jitsiInstallation\": \"${JITSI_INSTALLATION}\" }") || create_error=$?
+if [ ${create_error} -ne 0 ]; then
+    echo "JaaS account creation failed. Status: ${create_error}, response: ${create_data}"
+    stop_service
+fi
+
+echo "${create_data}"
+
+# Creating the challenge dir
+mkdir -p ${CHALLENGE_DIR}
+# Creating the challenge file
+echo "${create_data}" | jq -r .challenge > ${CHALLENGE_FILE}
+
+op_id=$(echo "${create_data}" | jq -r .operationId)
+ready_error=0
+ready_data=$(curl -s -f -X 'PUT' "${JAAS_ENDPOINT}/${op_id}/ready") || ready_error=$?
+if [ ${ready_error} -ne 0 ]; then
+    echo "Jitsi domain validation failed. Status: ${ready_error}"
+    echo "Response: "
+    echo "${ready_data}" | jq -r
+    echo "${SUPPORT_MSG}"
+    echo
+    stop_service
+fi
+
+SLEEP_TIME=0
+WAIT_BEFORE_CHECK=5
+TIMEOUT=60
+echo -n "Creating the JaaS account..."
+(while true; do
+    provisioned_data=$(curl -s -f "${JAAS_ENDPOINT}/${op_id}")
+
+    status=$(echo "${provisioned_data}" | jq -r .status)
+
+    if [ "${status}" == "PROVISIONED" ]; then
+        echo ""
+        echo "=================="
+        echo ""
+        echo "A JaaS account was created. Please check your email for more details."
+        echo ""
+        echo "=================="
+        # Creating the jaas-account file
+        touch ${JAAS_ACCOUNT_FILE}
+        stop_service
+    elif  [ "${status}" == "FAILED" ]; then
+        echo ""
+        echo "=================="
+        echo ""
+        echo "JaaS account creation failed:${provisioned_data}"
+        echo ""
+        echo "=================="
+        stop_service
+    fi
+
+    if [ ${SLEEP_TIME} -ge ${TIMEOUT} ]; then
+        echo ""
+        echo "=================="
+        echo ""
+        echo "Timeout creating the JaaS account. ${SUPPORT_MSG}"
+        echo ""
+        echo "=================="
+        stop_service
+    fi
+
+    echo -n "Waiting for the JaaS account to be created..."
+    sleep ${WAIT_BEFORE_CHECK}
+    SLEEP_TIME=$((SLEEP_TIME+WAIT_BEFORE_CHECK))
+done)
+rm ${CHALLENGE_FILE} || true
+
+fi
+stop_service
