@@ -225,6 +225,10 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{ if $ENABLE_VISITORS }}
         "visitors";
         {{ end }}
+        {{- if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
+        "jibri_session";
+        {{- end }}
+
     }
 
     main_muc = "{{ $XMPP_MUC_DOMAIN }}"
@@ -288,6 +292,9 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     }
     modules_enabled = {
         "limits_exception";
+        {{- if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
+        "jibri_session";
+        {{- end }}
     }
     authentication = "internal_hashed"
 
