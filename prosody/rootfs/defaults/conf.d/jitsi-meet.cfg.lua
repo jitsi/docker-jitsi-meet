@@ -397,6 +397,11 @@ Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
 
 Component "speakerstats.{{ $XMPP_DOMAIN }}" "speakerstats_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
+    {{- if .Env.XMPP_SPEAKERSTATS_MODULES }}
+    modules_enabled = {
+        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_SPEAKERSTATS_MODULES) }}";
+    }
+    {{- end }}
 
 Component "conferenceduration.{{ $XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
