@@ -74,6 +74,7 @@ fi
 [ -z "${JIBRI_RECORDER_USER}" ] && export JIBRI_RECORDER_USER=recorder
 [ -z "${JIBRI_XMPP_USER}" ] && export JIBRI_XMPP_USER=jibri
 [ -z "${JIGASI_XMPP_USER}" ] && export JIGASI_XMPP_USER=jigasi
+[ -z "${JIGASI_TRANSCRIBER_USER}" ] && export JIGASI_TRANSCRIBER_USER=transcriber
 [ -z "${JVB_AUTH_USER}" ] && export JVB_AUTH_USER=jvb
 [ -z "${XMPP_DOMAIN}" ] && export XMPP_DOMAIN=meet.jitsi
 [ -z "${XMPP_AUTH_DOMAIN}" ] && export XMPP_AUTH_DOMAIN=auth.meet.jitsi
@@ -126,6 +127,10 @@ if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
         exit 1
     fi
     prosodyctl --config $PROSODY_CFG register $JIGASI_XMPP_USER $XMPP_AUTH_DOMAIN $JIGASI_XMPP_PASSWORD
+fi
+
+if [[ ! -z $JIGASI_TRANSCRIBER_PASSWORD ]]; then
+    prosodyctl --config $PROSODY_CFG register $JIGASI_TRANSCRIBER_USER $XMPP_HIDDEN_PARTICIPANT_DOMAIN $JIGASI_TRANSCRIBER_PASSWORD
 fi
 
 if [[ "$PROSODY_MODE" == "visitors" ]]; then
