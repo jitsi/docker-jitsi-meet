@@ -168,7 +168,7 @@ services:
             - XMPP_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_PARTICIPANT_DOMAIN
             - XMPP_PORT
             - WHITEBOARD_ENABLED
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
@@ -219,6 +219,8 @@ services:
             - JICOFO_COMPONENT_SECRET
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
+            - JIGASI_TRANSCRIBER_USER
+            - JIGASI_TRANSCRIBER_PASSWORD
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JWT_APP_ID
@@ -298,7 +300,7 @@ services:
             - XMPP_MUC_MODULES
             - XMPP_MUC_CONFIGURATION
             - XMPP_INTERNAL_MUC_MODULES
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_PARTICIPANT_DOMAIN
             - XMPP_PORT
             - XMPP_SERVER_S2S_PORT
             - XMPP_SPEAKERSTATS_MODULES
@@ -379,7 +381,7 @@ services:
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_MUC_DOMAIN
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_PARTICIPANT_DOMAIN
             - XMPP_SERVER
             - XMPP_PORT
             - MAX_SSRCS_PER_USER
