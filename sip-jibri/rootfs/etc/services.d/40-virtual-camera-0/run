@@ -1,0 +1,8 @@
+#!/usr/bin/with-contenv bash
+
+DISPLAY="${DISPLAY1}"
+DAEMON="ffmpeg -f x11grab -r 30 -i $DISPLAY -pix_fmt yuv420p -f v4l2 /dev/video0 >/config/logs/camera-0 2>&1"
+
+s6-setuidgid jibri /bin/bash -c "s6-mkfifodir /tmp/virtual-camera-0"
+s6-setuidgid jibri /bin/bash -c "s6-ftrig-wait /tmp/virtual-camera-0 run"
+exec s6-setuidgid jibri /bin/bash -c "exec $DAEMON"

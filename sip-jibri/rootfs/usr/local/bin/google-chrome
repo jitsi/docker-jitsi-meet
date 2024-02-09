@@ -1,0 +1,24 @@
+#!/bin/bash
+set -e
+
+ARGS=$@
+
+[[ "$(whoami)" != "jibri" ]] && exec /usr/bin/google-chrome-stable $ARGS
+
+# push display :1 view to virtual-camera-0 if it is not started yet.
+if pgrep -f "ffmpeg .* /dev/video0"; then
+    :
+else
+    s6-ftrig-notify /tmp/virtual-camera-0 run
+    sleep 0.4
+fi
+
+# push display :0 view to virtual-camera-1 if it is not started yet.
+if pgrep -f "ffmpeg .* /dev/video1"; then
+    :
+else
+    s6-ftrig-notify /tmp/virtual-camera-1 run
+    sleep 0.4
+fi
+
+exec /usr/bin/google-chrome-stable $ARGS --alsa-input-device=chrome_capture

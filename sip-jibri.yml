@@ -1,0 +1,66 @@
+version: '3.5'
+
+services:
+    sip-jibri:
+        image: jitsi/sip-jibri:${JITSI_IMAGE_VERSION:-unstable}
+        restart: ${RESTART_POLICY:-unless-stopped}
+        ports:
+            - '${SIP_JIBRI_PORT:-5060}:5060/udp'
+            - '${SIP_JIBRI_PORT:-5060}:5060'
+        volumes:
+            - ${CONFIG}/sip-jibri:/config:Z
+        shm_size: '2gb'
+        cap_add:
+            - SYS_ADMIN
+        devices:
+            - /dev/snd:/dev/snd
+            - /dev/video2:/dev/video0
+            - /dev/video3:/dev/video1
+        environment:
+            - AUTOSCALER_SIDECAR_KEY_FILE
+            - AUTOSCALER_SIDECAR_KEY_ID
+            - AUTOSCALER_SIDECAR_GROUP_NAME
+            - AUTOSCALER_SIDECAR_HOST_ID
+            - AUTOSCALER_SIDECAR_INSTANCE_ID
+            - AUTOSCALER_SIDECAR_PORT
+            - AUTOSCALER_SIDECAR_REGION
+            - AUTOSCALER_SIDECAR_SHUTDOWN_POLLING_INTERVAL
+            - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
+            - AUTOSCALER_URL
+            - CHROMIUM_FLAGS
+            - DISPLAY0=:0
+            - DISPLAY1=:1
+            - ENABLE_STATS_D
+            - JIBRI_WEBHOOK_SUBSCRIBERS
+            - JIBRI_HTTP_API_EXTERNAL_PORT
+            - JIBRI_HTTP_API_INTERNAL_PORT
+            - JIBRI_USAGE_TIMEOUT
+            - JIBRI_XMPP_USER
+            - JIBRI_XMPP_PASSWORD
+            - JIBRI_BREWERY_MUC
+            - JIBRI_STRIP_DOMAIN_JID
+            - JIBRI_STATSD_HOST
+            - JIBRI_STATSD_PORT
+            - LOCAL_ADDRESS
+            - PUBLIC_URL
+            - SIP_JIBRI_BREWERY_MUC
+            - SIP_JIBRI_BREWERY_MUC_DUMMY
+            - SIP_JIBRI_RESOLUTION
+            - SIP_JIBRI_USAGE_TIMEOUT
+            - SIP_JIBRI_XMPP_USER
+            - SIP_JIBRI_XMPP_PASSWORD
+            - SIP_JIBRI_SINGLE_USE_MODE
+            - SIP_JIBRI_STRIP_DOMAIN_JID
+            - TZ
+            - XMPP_AUTH_DOMAIN
+            - XMPP_DOMAIN
+            - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_MUC_DOMAIN
+            - XMPP_SERVER
+            - XMPP_SIP_DOMAIN
+            - XMPP_PORT
+            - XMPP_TRUST_ALL_CERTS
+        depends_on:
+            - jicofo
+        networks:
+            meet.jitsi:

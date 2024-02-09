@@ -3,7 +3,7 @@ JITSI_RELEASE ?= stable
 JITSI_BUILD ?= unstable
 JITSI_REPO ?= jitsi
 
-JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
+JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri sip-jibri
 
 BUILD_ARGS := \
 	--build-arg JITSI_REPO=$(JITSI_REPO) \

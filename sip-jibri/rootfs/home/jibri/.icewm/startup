@@ -1,0 +1,3 @@
+#!/bin/bash
+
+unclutter -root -idle 0.1 &
