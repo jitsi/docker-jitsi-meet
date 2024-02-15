@@ -186,10 +186,6 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
       {{ end -}}
     };
 
-    rate_limit_whitelist_jids = {
-        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}",
-        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}"    
-    }
     {{ end -}}
 
 	-- The size of the cache that saves state for IP addresses
