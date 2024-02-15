@@ -364,7 +364,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     };
 
     rate_limit_whitelist_hosts = {
-        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}",
+        "{ $XMPP_RECORDER_DOMAIN }}";
         "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}"    
     }
     {{ end -}}
