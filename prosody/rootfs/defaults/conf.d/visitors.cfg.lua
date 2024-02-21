@@ -130,7 +130,7 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
     {{- end }}
 
-VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
+VirtualHost '{{ $XMPP_AUTH_DOMAIN }}'
     modules_enabled = {
       'limits_exception';
     }
