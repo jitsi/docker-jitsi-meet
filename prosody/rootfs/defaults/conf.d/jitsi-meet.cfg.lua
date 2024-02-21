@@ -378,11 +378,11 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     {{ join "\n    " (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}
     {{ end -}}
     {{ if .Env.MAX_PARTICIPANTS }}
-    muc_access_whitelist = { "focus@{{ .Env.XMPP_AUTH_DOMAIN }}" }
+    muc_access_whitelist = { "focus@{{ $XMPP_AUTH_DOMAIN }}" }
     muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
     {{ end }}
     muc_password_whitelist = {
-        "focus@{{ .Env.XMPP_AUTH_DOMAIN }}";
+        "focus@{{ $XMPP_AUTH_DOMAIN }}";
 {{- if $ENABLE_RECORDING }}
         "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}";
 {{- end }}
