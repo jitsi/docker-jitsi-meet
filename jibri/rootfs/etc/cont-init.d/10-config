@@ -69,6 +69,7 @@ fi
 
 # always recreate configs
 tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
+tpl /defaults/xmpp.conf > /etc/jitsi/jibri/xmpp.conf
 tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
 tpl /defaults/xorg-video-dummy.conf > /etc/jitsi/jibri/xorg-video-dummy.conf
 
