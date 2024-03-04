@@ -464,4 +464,5 @@ Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
 {{ if $ENABLE_VISITORS }}
 Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
     auto_allow_visitor_promotion = true
+    always_visitors_enabled = true
 {{ end }}
