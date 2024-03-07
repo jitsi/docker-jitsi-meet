@@ -112,7 +112,6 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     }
     modules_enabled = {
       'bosh';
-      'ping';
       "external_services";
       {{ if $ENABLE_XMPP_WEBSOCKET -}}
       "websocket";
@@ -131,10 +130,9 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
     {{- end }}
 
-VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
+VirtualHost '{{ $XMPP_AUTH_DOMAIN }}'
     modules_enabled = {
       'limits_exception';
-      'ping';
     }
     authentication = 'internal_hashed'
 
@@ -188,10 +186,6 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
       {{ end -}}
     };
 
-    rate_limit_whitelist_jids = {
-        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}",
-        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}"    
-    }
     {{ end -}}
 
 	-- The size of the cache that saves state for IP addresses

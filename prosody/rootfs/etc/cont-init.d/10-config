@@ -49,7 +49,7 @@ elif [[ "$PROSODY_MODE" == "brewery" ]]; then
     # ensure proper certs are generated
     export XMPP_AUTH_DOMAIN="$JVB_XMPP_AUTH_DOMAIN"
     # brewery mode requires C2S encryption
-    export C2S_REQUIRE_ENCRYPTION="true"
+    export PROSODY_C2S_REQUIRE_ENCRYPTION="true"
 
     mkdir -p /config/rules.d
     tpl /defaults/rules.d/jvb_muc_presence_filter.pfw > /config/rules.d/jvb_muc_presence_filter.pfw

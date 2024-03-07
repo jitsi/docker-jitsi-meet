@@ -408,48 +408,108 @@ config.videoQuality = {};
 config.videoQuality.preferredCodec = '{{ .Env.VIDEOQUALITY_PREFERRED_CODEC }}';
 {{ end -}}
 
-{{ if and .Env.VIDEOQUALITY_BITRATE_AV1_LOW .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD .Env.VIDEOQUALITY_BITRATE_AV1_HIGH .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH -}}
-config.videoQuality.av1 = {
-    maxBitratesVideo: {
-        low: {{ .Env.VIDEOQUALITY_BITRATE_AV1_LOW }},
-        standard: {{ .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }},
-        high: {{ .Env.VIDEOQUALITY_BITRATE_AV1_HIG }},
-        ssHigh: {{ .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH }}
-    }
-}
+config.videoQuality.av1 = {};
+
+{{ if .Env.VIDEOQUALITY_BITRATE_AV1_LOW }}
+config.videoQuality.av1.low = {{ .Env.VIDEOQUALITY_BITRATE_AV1_LOW }};
 {{ end -}}
 
-{{ if and .Env.VIDEOQUALITY_BITRATE_H264_LOW .Env.VIDEOQUALITY_BITRATE_H264_STANDARD .Env.VIDEOQUALITY_BITRATE_H264_HIGH .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH -}}
-config.videoQuality.h264 = {
-    maxBitratesVideo: {
-        low: {{ .Env.VIDEOQUALITY_BITRATE_H264_LOW }},
-        standard: {{ .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }},
-        high: {{ .Env.VIDEOQUALITY_BITRATE_H264_HIGH }},
-        ssHigh: {{ .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }}
-    }
-}
+{{ if .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }}
+config.videoQuality.av1.standard = {{ .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }};
 {{ end -}}
 
-{{ if and .Env.VIDEOQUALITY_BITRATE_VP8_LOW .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD .Env.VIDEOQUALITY_BITRATE_VP8_HIGH .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH -}}
-config.videoQuality.vp8 = {
-    maxBitratesVideo: {
-        low: {{ .Env.VIDEOQUALITY_BITRATE_VP8_LOW }},
-        standard: {{ .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }},
-        high: {{ .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }},
-        ssHigh: {{ .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH }}
-    }
-}
+{{ if .Env.VIDEOQUALITY_BITRATE_AV1_HIGH }}
+config.videoQuality.av1.high = {{ .Env.VIDEOQUALITY_BITRATE_AV1_HIGH }};
 {{ end -}}
 
-{{ if and .Env.VIDEOQUALITY_BITRATE_VP9_LOW .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD .Env.VIDEOQUALITY_BITRATE_VP9_HIGH .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH -}}
-config.videoQuality.vp9 = {
-    maxBitratesVideo: {
-        low: {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }},
-        standard: {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }},
-        high: {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }},
-        ssHigh: {{ .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }}
-    }
-}
+{{ if .Env.VIDEOQUALITY_BITRATE_AV1_FULL }}
+config.videoQuality.av1.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_AV1_FULL }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_AV1_ULTRA }}
+config.videoQuality.av1.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_AV1_ULTRA }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH }}
+config.videoQuality.av1.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH }};
+{{ end -}}
+
+config.videoQuality.h264 = {};
+
+{{ if .Env.VIDEOQUALITY_BITRATE_H264_LOW }}
+config.videoQuality.h264.low = {{ .Env.VIDEOQUALITY_BITRATE_H264_LOW }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }}
+config.videoQuality.h264.standard = {{ .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_H264_HIGH }}
+config.videoQuality.h264.high = {{ .Env.VIDEOQUALITY_BITRATE_H264_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_H264_FULL }}
+config.videoQuality.h264.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_H264_FULL }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_H264_ULTRA }}
+config.videoQuality.h264.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_H264_ULTRA }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }}
+config.videoQuality.h264.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }};
+{{ end -}}
+
+config.videoQuality.vp8 = {};
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP8_LOW }}
+config.videoQuality.vp8.low = {{ .Env.VIDEOQUALITY_BITRATE_VP8_LOW }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }}
+config.videoQuality.vp8.standard = {{ .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }}
+config.videoQuality.vp8.high = {{ .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP8_FULL }}
+config.videoQuality.vp8.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_VP8_FULL }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP8_ULTRA }}
+config.videoQuality.vp8.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_VP8_ULTRA }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH }}
+config.videoQuality.vp8.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH }};
+{{ end -}}
+
+config.videoQuality.vp9 = {};
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP9_LOW }}
+config.videoQuality.vp9.low = {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }}
+config.videoQuality.vp9.standard = {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }}
+config.videoQuality.vp9.high = {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP9_FULL }}
+config.videoQuality.vp9.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_VP9_FULL }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP9_ULTRA }}
+config.videoQuality.vp9.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_VP9_ULTRA }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }}
+config.videoQuality.vp9.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }};
 {{ end -}}
 
  // Reactions
