@@ -1,3 +1,18 @@
+## stable-9364
+
+Based on stable release 9364.
+
+* ca61ea2 jibri: add ability to ignore certificate errors
+* 615396e java: use Java 17
+* 140db22 jibri: check for chrome bin before pre-warm (#1757)
+* 648612f feat(prosody): Always report visitors support when enabled.
+* 28f3cf8 jvb: lipcap from apt to allow for pcap dumps (#1747)
+* 33350c3 prosody: fix env var default value
+* d6dc1e3 base-java: install nodejs 20 from nodesource
+* 8f84f2f jibri: use storage.googleapis.com location for chromedriver
+* 1bbb4ab fix(prosody): Updates a rate whitelist config that changed in jitsi-meet. (#1741)
+* eccf68e misc: working on unstable
+
 ## stable-9258
 
 Based on stable release 9258.
