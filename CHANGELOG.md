@@ -1,3 +1,14 @@
+## stable-9258
+
+Based on stable release 9258.
+
+* a198d56 compose: add jvb dependency to web container (#1739)
+* 5c5742b prosody: var for speakerstats modules
+* a1d1f2c web: Add env vars for setting 1080p and 4k bitrates.
+* bb69407 Remove "ping" in ViarualHosts (#1728)
+* 14efd9c prosody: disable "offline" and "register" modules. (#1727)
+* 8e28256 misc: working on unstable
+
 ## stable-9220-1
 
 Based on stable release 9220-1.

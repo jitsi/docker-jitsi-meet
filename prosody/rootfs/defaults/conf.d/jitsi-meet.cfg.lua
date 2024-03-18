@@ -363,9 +363,8 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
 {{ end }}
     };
 
-    rate_limit_whitelist_jids = {
-        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}",
-        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}"    
+    rate_limit_whitelist_hosts = {
+        "{{ $XMPP_RECORDER_DOMAIN }}";
     }
     {{ end -}}
 
@@ -379,11 +378,11 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     {{ join "\n    " (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}
     {{ end -}}
     {{ if .Env.MAX_PARTICIPANTS }}
-    muc_access_whitelist = { "focus@{{ .Env.XMPP_AUTH_DOMAIN }}" }
+    muc_access_whitelist = { "focus@{{ $XMPP_AUTH_DOMAIN }}" }
     muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
     {{ end }}
     muc_password_whitelist = {
-        "focus@{{ .Env.XMPP_AUTH_DOMAIN }}";
+        "focus@{{ $XMPP_AUTH_DOMAIN }}";
 {{- if $ENABLE_RECORDING }}
         "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}";
 {{- end }}
@@ -397,6 +396,11 @@ Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
 
 Component "speakerstats.{{ $XMPP_DOMAIN }}" "speakerstats_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
+    {{- if .Env.XMPP_SPEAKERSTATS_MODULES }}
+    modules_enabled = {
+        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_SPEAKERSTATS_MODULES) }}";
+    }
+    {{- end }}
 
 Component "conferenceduration.{{ $XMPP_DOMAIN }}" "conference_duration_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
@@ -460,4 +464,5 @@ Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
 {{ if $ENABLE_VISITORS }}
 Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
     auto_allow_visitor_promotion = true
+    always_visitors_enabled = true
 {{ end }}
