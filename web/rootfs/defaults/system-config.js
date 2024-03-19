@@ -22,7 +22,7 @@ config.focusUserJid = 'focus@{{$XMPP_AUTH_DOMAIN}}';
 
 {{ if $ENABLE_SUBDOMAINS -}}
 var subdir = '<!--# echo var="subdir" default="" -->';
-var subdomain = "<!--# echo var="subdomain" default="" -->";
+var subdomain = '<!--# echo var="subdomain" default="" -->';
 if (subdir.startsWith('<!--')) {
     subdir = '';
 }
