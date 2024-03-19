@@ -13,9 +13,6 @@ if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
     exit 1
 fi
 
-# Local IP for autoscaler sidecar reporting
-export LOCAL_ADDRESS=$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1 '})
-
 # set random jigasi nickname for the instance if is not set
 [ -z "${JIGASI_INSTANCE_ID}" ] && export JIGASI_INSTANCE_ID="jigasi-$(date +%N)"
 
