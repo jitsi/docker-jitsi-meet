@@ -311,6 +311,8 @@ Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     muc_room_locking = false
     muc_room_default_public_jids = true
     muc_room_cache_size = 1000
+    muc_tombstones = false
+    muc_room_allow_persistent = false
 
 Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     restrict_room_creation = true
@@ -390,6 +392,8 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}";
 {{- end }}
     }
+    muc_tombstones = false
+    muc_room_allow_persistent = false
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
     target_address = "focus@{{ $XMPP_AUTH_DOMAIN }}"
@@ -419,6 +423,7 @@ Component "avmoderation.{{ $XMPP_DOMAIN }}" "av_moderation_component"
 Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
     storage = "memory"
     restrict_room_creation = true
+    muc_tombstones = false
     muc_room_allow_persistent = false
     muc_room_cache_size = 10000
     muc_room_locking = false
@@ -441,6 +446,7 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
     muc_room_cache_size = 10000
     muc_room_locking = false
     muc_room_default_public_jids = true
+    muc_tombstones = false
     muc_room_allow_persistent = false
     modules_enabled = {
         "muc_meeting_id";
