@@ -36,6 +36,12 @@
 {{ $XMPP_SERVER_S2S_PORT := .Env.XMPP_SERVER_S2S_PORT | default $S2S_PORT -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 
+gc = {
+    mode = "generational";
+    minor_threshold = 40;
+    major_threshold = 200;
+}
+
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 
 muc_mapper_domain_base = "v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}";

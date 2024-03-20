@@ -47,6 +47,12 @@
 -- Settings in this section apply to the whole server and are the default settings
 -- for any virtual hosts
 
+gc = {
+    mode = "generational";
+    minor_threshold = 40;
+    major_threshold = 200;
+}
+
 -- This is a (by default, empty) list of accounts that are admins
 -- for the server. Note that you must create the accounts separately
 -- (see http://prosody.im/doc/creating_accounts for info)
