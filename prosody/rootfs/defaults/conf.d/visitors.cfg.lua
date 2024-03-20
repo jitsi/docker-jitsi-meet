@@ -170,6 +170,8 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
     muc_access_whitelist = {
         "{{ $XMPP_DOMAIN }}";
     }
+    muc_tombstones = false
+    muc_room_allow_persistent = false
 
     {{ if $ENABLE_RATE_LIMITS -}}
     -- Max allowed join/login rate in events per second.
