@@ -5,30 +5,6 @@
 {{ $JVB_XMPP_INTERNAL_MUC_DOMAIN := .Env.JVB_XMPP_INTERNAL_MUC_DOMAIN | default "muc.jvb.meet.jitsi" -}}
 {{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
 
-{{ $GC_TYPE := .Env.GC_TYPE | default "generational" -}}
-{{ $GC_INC_TH := .Env.GC_INC_TH | default 150 -}}
-{{ $GC_INC_SPEED := .Env.GC_INC_SPEED | default 250 -}}
-{{ $GC_INC_STEP_SIZE := .Env.GC_INC_STEP_SIZE | default 13 -}}
-{{ $GC_GEN_MIN_TH := .Env.GC_GEN_MIN_TH | default 20 -}}
-{{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
-
---Prosody garbage collector settings
---For more information see https://prosody.im/doc/advanced_gc
-{{ if eq $GC_TYPE "generational" }}
-gc = {
-    mode = "generational";
-    minor_threshold = {{ $GC_GEN_MIN_TH }};
-    major_threshold = {{ $GC_GEN_MAX_TH }};
-}
-{{ else }}
-gc = {
-	mode = "incremental";
-	threshold = {{ $GC_INC_TH }};
-	speed = {{ $GC_INC_SPEED }};
-	step_size = {{ $GC_INC_STEP_SIZE }};
-}
-{{ end }}
-
 admins = {
     "focus@{{ $JVB_XMPP_AUTH_DOMAIN }}",
     "{{ $JVB_AUTH_USER }}@{{ $JVB_XMPP_AUTH_DOMAIN }}"
