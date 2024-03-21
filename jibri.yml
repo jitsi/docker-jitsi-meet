@@ -22,6 +22,7 @@ services:
             - AUTOSCALER_URL
             - CHROMIUM_FLAGS
             - DISPLAY=:0
+            - ENABLE_PROMETHEUS
             - ENABLE_STATS_D
             - IGNORE_CERTIFICATE_ERRORS
             - JIBRI_WEBHOOK_SUBSCRIBERS
