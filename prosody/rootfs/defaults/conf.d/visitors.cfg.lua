@@ -3,6 +3,12 @@
 {{ $ENABLE_RATE_LIMITS := .Env.PROSODY_ENABLE_RATE_LIMITS | default "0" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool -}}
+{{ $GC_TYPE := .Env.GC_TYPE | default "generational" -}}
+{{ $GC_INC_TH := .Env.GC_INC_TH | default 150 -}}
+{{ $GC_INC_SPEED := .Env.GC_INC_SPEED | default 250 -}}
+{{ $GC_INC_STEP_SIZE := .Env.GC_INC_STEP_SIZE | default 13 -}}
+{{ $GC_GEN_MIN_TH := .Env.GC_GEN_MIN_TH | default 20 -}}
+{{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
 {{ $JIBRI_RECORDER_USER := .Env.JIBRI_RECORDER_USER | default "recorder" -}}
 {{ $JIGASI_TRANSCRIBER_USER := .Env.JIGASI_TRANSCRIBER_USER | default "transcriber" -}}
 {{ $LIMIT_MESSAGES_CHECK_TOKEN := .Env.PROSODY_LIMIT_MESSAGES_CHECK_TOKEN | default "0" | toBool -}}
@@ -35,6 +41,23 @@
 {{ $XMPP_SERVER := .Env.XMPP_SERVER | default "xmpp.meet.jitsi" -}}
 {{ $XMPP_SERVER_S2S_PORT := .Env.XMPP_SERVER_S2S_PORT | default $S2S_PORT -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
+
+--Prosody garbage collector settings
+--For more information see https://prosody.im/doc/advanced_gc
+{{ if eq $GC_TYPE "generational" }}
+gc = {
+    mode = "generational";
+    minor_threshold = {{ $GC_GEN_MIN_TH }};
+    major_threshold = {{ $GC_GEN_MAX_TH }};
+}
+{{ else }}
+gc = {
+	mode = "incremental";
+	threshold = {{ $GC_INC_TH }};
+	speed = {{ $GC_INC_SPEED }};
+	step_size = {{ $GC_INC_STEP_SIZE }};
+}
+{{ end }}
 
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
 
