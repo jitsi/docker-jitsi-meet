@@ -252,7 +252,6 @@ services:
             - LDAP_URL
             - LDAP_USE_TLS
             - MAX_PARTICIPANTS
-            - PROSODY_ADMINS
             - PROSODY_AUTH_TYPE
             - PROSODY_C2S_LIMIT
             - PROSODY_C2S_REQUIRE_ENCRYPTION

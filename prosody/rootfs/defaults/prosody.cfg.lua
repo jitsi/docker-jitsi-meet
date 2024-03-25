@@ -13,8 +13,6 @@
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
 {{ $PROSODY_C2S_LIMIT := .Env.PROSODY_C2S_LIMIT | default "10kb/s" -}}
 {{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
-{{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
-{{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
 {{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
 {{ $TRUSTED_PROXY_LIST := splitList "," $TRUSTED_PROXIES -}}
 {{ $PROSODY_S2S_LIMIT := .Env.PROSODY_S2S_LIMIT | default "30kb/s" -}}
@@ -47,11 +45,6 @@
 -- Settings in this section apply to the whole server and are the default settings
 -- for any virtual hosts
 
--- This is a (by default, empty) list of accounts that are admins
--- for the server. Note that you must create the accounts separately
--- (see http://prosody.im/doc/creating_accounts for info)
--- Example: admins = { "user1@example.com", "user2@example.net" }
-admins = { {{ if .Env.PROSODY_ADMINS }}{{ range $index, $element := $PROSODY_ADMIN_LIST -}}{{ if $index }}, {{ end }}"{{ $element }}"{{ end }}{{ end }} }
 -- Enable use of libevent for better performance under high load
 -- For more information see: http://prosody.im/doc/libevent
 --use_libevent = true;

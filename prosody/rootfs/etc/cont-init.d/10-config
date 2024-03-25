@@ -36,9 +36,6 @@ if [[ "$PROSODY_MODE" == "visitors" ]]; then
     PROSODY_SITE_CFG="visitors.cfg.lua"
     rm /config/conf.d/jitsi-meet.cfg.lua
     rm /config/conf.d/brewery.cfg.lua
-    # force jicofo into auth domain for visitor-mode prosody
-    [ -z "$XMPP_AUTH_DOMAIN" ] && XMPP_AUTH_DOMAIN="auth.meet.jitsi"
-    export PROSODY_ADMINS="focus@$XMPP_AUTH_DOMAIN"
 elif [[ "$PROSODY_MODE" == "brewery" ]]; then
     echo "Prosody brewery mode, using alternate config"
     PROSODY_SITE_CFG="brewery.cfg.lua"
