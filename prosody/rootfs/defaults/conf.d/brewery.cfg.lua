@@ -10,7 +10,7 @@ admins = {
     "{{ $JVB_AUTH_USER }}@{{ $JVB_XMPP_AUTH_DOMAIN }}"
 }
 
-plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
+plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/prosody-plugins-contrib" }
 
 VirtualHost "{{ $JVB_XMPP_AUTH_DOMAIN }}"
     authentication = "internal_hashed"

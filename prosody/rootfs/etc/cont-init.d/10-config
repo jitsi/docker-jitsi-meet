@@ -25,6 +25,9 @@ if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
     chown -R prosody /prosody-plugins-custom
 fi
 
+if [[ "$(stat -c %U /prosody-plugins-contrib)" != "prosody" ]]; then
+    chown -R prosody /prosody-plugins-contrib
+fi
 
 mkdir /config/certs
 cp -r /defaults/* /config
