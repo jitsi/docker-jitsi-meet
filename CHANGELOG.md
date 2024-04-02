@@ -1,3 +1,18 @@
+## stable-9364-1
+
+Based on stable release 9364-1.
+
+* a5ebb99 jibri: flag to support prometheus-style metrics (#1768)
+* 80fc10e feat(prosody): Cleans up gc settings.
+* 69bba17 feat(prosody): Adjusts lua to use generational GC for brewery.cfg.lua.
+* 2798426 feat(prosody): Adjusts lua to use generational GC.
+* 28d2b32 feat(prosody): Make sure muc tumbstones is disabled.
+* d5df19d jigasi: autoscaler sidecar support (#1738)
+* 0953ca0 jigasi: skip SIP configuration when configured as a transcriber
+* ca1d670 fix: :bug: wrong quote in default config (#1761)
+* 360361e jibri: move xmpp config for easier override (#1748)
+* 452f5ba misc: working on unstable
+
 ## stable-9364
 
 Based on stable release 9364.
