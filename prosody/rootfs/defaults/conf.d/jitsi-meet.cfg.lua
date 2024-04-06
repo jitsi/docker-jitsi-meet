@@ -13,7 +13,7 @@
 {{ $JWT_ALLOW_EMPTY := .Env.JWT_ALLOW_EMPTY | default "0" | toBool -}}
 {{ $JWT_AUTH_TYPE := .Env.JWT_AUTH_TYPE | default "token" -}}
 {{ $JWT_ENABLE_DOMAIN_VERIFICATION := .Env.JWT_ENABLE_DOMAIN_VERIFICATION | default "false" | toBool -}}
-{{ $JWT_SIGN_TYPE := .Env.JWT_SIGN_TYPE | default "null" -}}
+{{ $JWT_SIGN_TYPE := .Env.JWT_SIGN_TYPE | default "RS256" -}}
 {{ $MATRIX_UVS_ISSUER := .Env.MATRIX_UVS_ISSUER | default "issuer" -}}
 {{ $MATRIX_UVS_SYNC_POWER_LEVELS := .Env.MATRIX_UVS_SYNC_POWER_LEVELS | default "0" | toBool -}}
 {{ $MATRIX_LOBBY_BYPASS := .Env.MATRIX_LOBBY_BYPASS | default "0" | toBool -}}
