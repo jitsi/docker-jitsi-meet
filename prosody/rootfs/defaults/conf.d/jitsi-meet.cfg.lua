@@ -136,7 +136,7 @@ VirtualHost "jigasi.meet.jitsi"
     authentication = "token"
     {{ if .Env.JWT_SIGN_TYPE }}
        signature_algorithm = "{{ .Env.JWT_SIGN_TYPE }}"
-       {{ end }}
+   {{ end -}}
     app_id = "jitsi";
     
     asap_key_server = "https://jaas-public-keys.jitsi.net/jitsi-components/prod-8x8"
