@@ -232,6 +232,7 @@ services:
             - JWT_ALLOW_EMPTY
             - JWT_AUTH_TYPE
             - JWT_ENABLE_DOMAIN_VERIFICATION
+            - JWT_SIGN_TYPE
             - JWT_TOKEN_AUTH_MODULE
             - MATRIX_UVS_URL
             - MATRIX_UVS_ISSUER
