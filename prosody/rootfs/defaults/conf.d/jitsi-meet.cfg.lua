@@ -138,7 +138,6 @@ VirtualHost "jigasi.meet.jitsi"
        signature_algorithm = "{{ .Env.JWT_SIGN_TYPE }}"
     {{ end -}}
     app_id = "jitsi";
-    
     asap_key_server = "https://jaas-public-keys.jitsi.net/jitsi-components/prod-8x8"
     asap_accepted_issuers = { "jaas-components" }
     asap_accepted_audiences = { "jigasi.{{ $PUBLIC_URL_DOMAIN }}" }
