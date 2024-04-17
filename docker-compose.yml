@@ -362,6 +362,7 @@ services:
             - JIBRI_PENDING_TIMEOUT
             - JIGASI_BREWERY_MUC
             - JIGASI_SIP_URI
+            - JIGASI_TRUSTED_DOMAINS
             - JVB_BREWERY_MUC
             - JVB_XMPP_AUTH_DOMAIN
             - JVB_XMPP_INTERNAL_MUC_DOMAIN
