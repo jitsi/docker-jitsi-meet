@@ -4,8 +4,8 @@
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
 {{ $ENABLE_S2S := or $ENABLE_VISITORS ( .Env.PROSODY_ENABLE_S2S | default "0" | toBool ) }}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
-{{ $GC_TYPE := .Env.GC_TYPE | default "generational" -}}
-{{ $GC_INC_TH := .Env.GC_INC_TH | default 150 -}}
+{{ $GC_TYPE := .Env.GC_TYPE | default "incremental" -}}
+{{ $GC_INC_TH := .Env.GC_INC_TH | default 400 -}}
 {{ $GC_INC_SPEED := .Env.GC_INC_SPEED | default 250 -}}
 {{ $GC_INC_STEP_SIZE := .Env.GC_INC_STEP_SIZE | default 13 -}}
 {{ $GC_GEN_MIN_TH := .Env.GC_GEN_MIN_TH | default 20 -}}

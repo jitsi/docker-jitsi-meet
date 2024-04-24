@@ -232,6 +232,7 @@ services:
             - JWT_ALLOW_EMPTY
             - JWT_AUTH_TYPE
             - JWT_ENABLE_DOMAIN_VERIFICATION
+            - JWT_SIGN_TYPE
             - JWT_TOKEN_AUTH_MODULE
             - MATRIX_UVS_URL
             - MATRIX_UVS_ISSUER
@@ -361,6 +362,7 @@ services:
             - JIBRI_PENDING_TIMEOUT
             - JIGASI_BREWERY_MUC
             - JIGASI_SIP_URI
+            - JIGASI_TRUSTED_DOMAINS
             - JVB_BREWERY_MUC
             - JVB_XMPP_AUTH_DOMAIN
             - JVB_XMPP_INTERNAL_MUC_DOMAIN
