@@ -34,6 +34,7 @@
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
 {{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
 {{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT -}}
+{{ $TURN_TTL := .Env.TURN_TTL | default "86400" -}}
 {{ $TURNS_HOST := .Env.TURNS_HOST | default "" -}}
 {{ $TURNS_HOSTS := splitList "," $TURNS_HOST -}}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
@@ -95,7 +96,7 @@ external_services = {
     {{- range $idx1, $host := $TURN_HOSTS -}}
       {{- range $idx2, $transport := $TURN_TRANSPORTS -}}
         {{- if or $STUN_HOST $idx1 $idx2 -}},{{- end }}
-        { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = 86400, algorithm = "turn" }
+        { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -103,7 +104,7 @@ external_services = {
   {{- if $TURNS_HOST -}}
     {{- range $idx, $host := $TURNS_HOSTS -}}
         {{- if or $STUN_HOST $TURN_HOST $idx -}},{{- end }}
-        { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
+        { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
     {{- end }}
   {{- end }}
 };
