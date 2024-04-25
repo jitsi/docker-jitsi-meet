@@ -554,7 +554,11 @@ config.e2eping.maxMessagePerSecond = {{ .Env.E2EPING_MAX_MESSAGE_PER_SECOND }};
 // Settings for the Excalidraw whiteboard integration.
 config.whiteboard = {
     enabled: {{ $WHITEBOARD_ENABLED }},
-    collabServerBaseUrl: '{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}'
+{{ if .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL -}}
+    collabServerBaseUrl: '{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}';
+{{ else }}
+    collabServerBaseUrl: '{{ $PUBLIC_URL }}'
+{{ end }}
 };
 
 // Testing
