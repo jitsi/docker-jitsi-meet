@@ -142,11 +142,11 @@ VirtualHost "jigasi.meet.jitsi"
 {{ end }}
 
 VirtualHost "{{ $XMPP_DOMAIN }}"
-{{ if .Env.JWT_SIGN_TYPE }}
-       signature_algorithm = "{{ .Env.JWT_SIGN_TYPE }}"
-    {{ end -}}
 {{ if $ENABLE_AUTH }}
   {{ if eq $PROSODY_AUTH_TYPE "jwt" }}
+  {{ if .Env.JWT_SIGN_TYPE }}
+       signature_algorithm = "{{ .Env.JWT_SIGN_TYPE }}"
+    {{ end -}}
     authentication = "{{ $JWT_AUTH_TYPE }}"
     app_id = "{{ .Env.JWT_APP_ID }}"
     app_secret = "{{ .Env.JWT_APP_SECRET }}"
