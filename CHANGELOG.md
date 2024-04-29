@@ -1,3 +1,11 @@
+## stable-9457-2
+
+Based on stable release 9457-2.
+
+* fed87fb web: update acme.sh version to 3.0.7
+* 11285cd prosody: Fixed the wrong position of the JWT_SIGN_TYPE setting in the file (#1796)
+* f9ff2a4 misc: working on unstable
+
 ## stable-9457-1
 
 Based on stable release 9457-1.
