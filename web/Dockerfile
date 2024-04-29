@@ -8,7 +8,7 @@ LABEL org.opencontainers.image.url="https://jitsi.org/jitsi-meet/"
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
-ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/2.8.8/acme.sh /opt
+ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/3.0.7/acme.sh /opt
 COPY rootfs/ /
 
 RUN apt-dpkg-wrap apt-get update && \
