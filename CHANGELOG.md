@@ -1,3 +1,35 @@
+## stable-9457-2
+
+Based on stable release 9457-2.
+
+* fed87fb web: update acme.sh version to 3.0.7
+* 11285cd prosody: Fixed the wrong position of the JWT_SIGN_TYPE setting in the file (#1796)
+* f9ff2a4 misc: working on unstable
+
+## stable-9457-1
+
+Based on stable release 9457-1.
+
+* 09bbfaf misc: working on unstable
+
+## stable-9457
+
+Based on stable release 9457.
+
+* 6f98bbe prosody: add ability to customize TURN TTL value
+* 8fe3139 jvb: fix autoscaler sidecar config (#1785)
+* 48d803c jigasi: fix autoscaler sidecar config for shutdown url (#1784)
+* c951116 jibri: fix autoscaler sidecar config (#1783)
+* cae1e40 feat(jigasi): Adds trusted domains option.
+* e939230 prosody: add ability to customize JWT signature type
+* b0f9eb2 prosody: integrate prosody-plugins-contrib
+* 604ba22 prosody: Switches lua gc back to incremental. (#1777)
+* 68d4b1a jibri: fix xorg modeline for 1280x720 (#1778)
+* 8094a17 web: add ability to change CORS header value
+* 03b6ca2 web: remove no longer needed mime type definition
+* 70ba4cb base: update to Debian Bookworm
+* dc5cbae misc: working on unstable
+
 ## stable-9364-1
 
 Based on stable release 9364-1.

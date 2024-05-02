@@ -135,9 +135,6 @@ VirtualHost "jigasi.meet.jitsi"
       "muc_password_check";
     }
     authentication = "token"
-    {{ if .Env.JWT_SIGN_TYPE }}
-       signature_algorithm = "{{ .Env.JWT_SIGN_TYPE }}"
-    {{ end -}}
     app_id = "jitsi";
     asap_key_server = "https://jaas-public-keys.jitsi.net/jitsi-components/prod-8x8"
     asap_accepted_issuers = { "jaas-components" }
@@ -147,6 +144,9 @@ VirtualHost "jigasi.meet.jitsi"
 VirtualHost "{{ $XMPP_DOMAIN }}"
 {{ if $ENABLE_AUTH }}
   {{ if eq $PROSODY_AUTH_TYPE "jwt" }}
+  {{ if .Env.JWT_SIGN_TYPE }}
+       signature_algorithm = "{{ .Env.JWT_SIGN_TYPE }}"
+    {{ end -}}
     authentication = "{{ $JWT_AUTH_TYPE }}"
     app_id = "{{ .Env.JWT_APP_ID }}"
     app_secret = "{{ .Env.JWT_APP_SECRET }}"
