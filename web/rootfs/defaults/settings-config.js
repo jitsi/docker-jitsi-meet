@@ -65,6 +65,7 @@
 {{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL := .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" -}}
 {{ $WHITEBOARD_ENABLED := .Env.WHITEBOARD_ENABLED | default "false" | toBool -}}
 {{ $TESTING_AV1_SUPPORT := .Env.TESTING_AV1_SUPPORT | default "false" | toBool -}}
+{{ $DEFAULT_LOGO_URL := .ENV.DEFAULT_LOGO_URL | default "images/watermark.svg" }}
 
 // Video configuration.
 //
@@ -556,6 +557,9 @@ config.whiteboard = {
     enabled: {{ $WHITEBOARD_ENABLED }},
     collabServerBaseUrl: '{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}'
 };
+
+// Configure application logo url
+config.defaultLogoUrl = {{ $DEFAULT_LOGO_URL }}
 
 // Testing
 config.testing = {

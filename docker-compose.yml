@@ -173,6 +173,7 @@ services:
             - XMPP_PORT
             - WHITEBOARD_ENABLED
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
+            - DEFAULT_LOGO_URL
         networks:
             meet.jitsi:
         depends_on:
