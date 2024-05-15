@@ -436,6 +436,7 @@ services:
             - JVB_REQUIRE_VALID_ADDRESS
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
+            - JVB_WS_TLS
             - JVB_XMPP_AUTH_DOMAIN
             - JVB_XMPP_INTERNAL_MUC_DOMAIN
             - JVB_XMPP_PORT
