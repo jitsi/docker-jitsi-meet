@@ -3,7 +3,7 @@ version: '3.5'
 services:
     # Frontend
     web:
-        image: jitsi/web:${JITSI_IMAGE_VERSION:-stable-9364}
+        image: jitsi/web:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${HTTP_PORT}:80'
@@ -25,6 +25,7 @@ services:
             - COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME
             - COLIBRI_WEBSOCKET_REGEX
             - CONFCODE_URL
+            - CORS_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN
             - DEFAULT_LANGUAGE
             - DEPLOYMENTINFO_ENVIRONMENT
             - DEPLOYMENTINFO_ENVIRONMENT_TYPE
@@ -179,7 +180,7 @@ services:
 
     # XMPP server
     prosody:
-        image: jitsi/prosody:${JITSI_IMAGE_VERSION:-stable-9364}
+        image: jitsi/prosody:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         expose:
             - '${XMPP_PORT:-5222}'
@@ -231,6 +232,7 @@ services:
             - JWT_ALLOW_EMPTY
             - JWT_AUTH_TYPE
             - JWT_ENABLE_DOMAIN_VERIFICATION
+            - JWT_SIGN_TYPE
             - JWT_TOKEN_AUTH_MODULE
             - MATRIX_UVS_URL
             - MATRIX_UVS_ISSUER
@@ -311,7 +313,7 @@ services:
 
     # Focus component
     jicofo:
-        image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-stable-9364}
+        image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
@@ -360,6 +362,7 @@ services:
             - JIBRI_PENDING_TIMEOUT
             - JIGASI_BREWERY_MUC
             - JIGASI_SIP_URI
+            - JIGASI_TRUSTED_DOMAINS
             - JVB_BREWERY_MUC
             - JVB_XMPP_AUTH_DOMAIN
             - JVB_XMPP_INTERNAL_MUC_DOMAIN
@@ -393,7 +396,7 @@ services:
 
     # Video bridge
     jvb:
-        image: jitsi/jvb:${JITSI_IMAGE_VERSION:-stable-9364}
+        image: jitsi/jvb:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '${JVB_PORT:-10000}:${JVB_PORT:-10000}/udp'
@@ -414,12 +417,14 @@ services:
             - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
+            - ENABLE_SCTP
             - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
             - JVB_DISABLE_STUN
+            - JVB_DISABLE_XMPP
             - JVB_INSTANCE_ID
             - JVB_PORT
             - JVB_MUC_NICKNAME
@@ -431,6 +436,7 @@ services:
             - JVB_REQUIRE_VALID_ADDRESS
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
+            - JVB_WS_TLS
             - JVB_XMPP_AUTH_DOMAIN
             - JVB_XMPP_INTERNAL_MUC_DOMAIN
             - JVB_XMPP_PORT

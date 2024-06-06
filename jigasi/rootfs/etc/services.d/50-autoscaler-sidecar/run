@@ -1,0 +1,10 @@
+#!/usr/bin/with-contenv bash
+
+if [[ -n "$AUTOSCALER_URL" ]] && [[ -f "/etc/jitsi/autoscaler-sidecar/config" ]]; then
+    DAEMON="/usr/bin/node /usr/share/jitsi-autoscaler-sidecar/app.js"
+    exec s6-setuidgid autoscaler-sidecar /bin/bash -c ". /etc/jitsi/autoscaler-sidecar/config && exec $DAEMON"
+else
+    # if autoscaler-sidecar should not be started,
+    # prevent s6 from restarting this script again and again
+    s6-svc -O /var/run/s6/services/50-autoscaler-sidecar
+fi
