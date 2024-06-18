@@ -44,7 +44,7 @@
 {{ $XMPP_INTERNAL_MUC_DOMAIN := .Env.XMPP_INTERNAL_MUC_DOMAIN | default "internal-muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 -}}
-{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN := .Env.XMPP_HIDDEN_PARTICIPANT_DOMAIN | default "hiddenpart.meet.jitsi" -}}
+{{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
 {{ $JIBRI_RECORDER_USER := .Env.JIBRI_RECORDER_USER | default "recorder" -}}
 {{ $JIGASI_TRANSCRIBER_USER := .Env.JIGASI_TRANSCRIBER_USER | default "transcriber" -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
@@ -236,7 +236,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_LOBBY }}
     lobby_muc = "lobby.{{ $XMPP_DOMAIN }}"
     {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS }}
-    muc_lobby_whitelist = { "{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN }}" }
+    muc_lobby_whitelist = { "{{ $XMPP_HIDDEN_DOMAIN }}" }
     {{ end }}
     {{ end }}
 
@@ -262,7 +262,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }}
 
     {{ if $ENABLE_VISITORS -}}
-    visitors_ignore_list = { "{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN }}" }
+    visitors_ignore_list = { "{{ $XMPP_HIDDEN_DOMAIN }}" }
     {{ end }}
 
     {{ if .Env.XMPP_CONFIGURATION -}}
@@ -296,7 +296,7 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     authentication = "internal_hashed"
 
 {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS }}
-VirtualHost "{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN }}"
+VirtualHost "{{ $XMPP_HIDDEN_DOMAIN }}"
     modules_enabled = {
       "smacks";
     }
@@ -370,7 +370,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     };
 
     rate_limit_whitelist_hosts = {
-        "{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN }}";
+        "{{ $XMPP_HIDDEN_DOMAIN }}";
     }
     {{ end -}}
 
@@ -390,10 +390,10 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     muc_password_whitelist = {
         "focus@{{ $XMPP_AUTH_DOMAIN }}";
 {{- if $ENABLE_RECORDING }}
-        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN }}";
+        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
 {{- end }}
 {{- if $ENABLE_TRANSCRIPTIONS }}
-        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN }}";
+        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
 {{- end }}
     }
     muc_tombstones = false

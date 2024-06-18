@@ -78,7 +78,7 @@ fi
 [ -z "${JVB_AUTH_USER}" ] && export JVB_AUTH_USER=jvb
 [ -z "${XMPP_DOMAIN}" ] && export XMPP_DOMAIN=meet.jitsi
 [ -z "${XMPP_AUTH_DOMAIN}" ] && export XMPP_AUTH_DOMAIN=auth.meet.jitsi
-[ -z "${XMPP_HIDDEN_PARTICIPANT_DOMAIN}" ] && export XMPP_HIDDEN_PARTICIPANT_DOMAIN=hiddenpart.meet.jitsi
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN=hidden.meet.jitsi
 
 prosodyctl --config $PROSODY_CFG register focus $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
 
@@ -116,7 +116,7 @@ if [[ "$PROSODY_MODE" == "client" ]]; then
             echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
             exit 1
         fi
-        prosodyctl --config $PROSODY_CFG register $JIBRI_RECORDER_USER $XMPP_HIDDEN_PARTICIPANT_DOMAIN $JIBRI_RECORDER_PASSWORD
+        prosodyctl --config $PROSODY_CFG register $JIBRI_RECORDER_USER $XMPP_HIDDEN_DOMAIN $JIBRI_RECORDER_PASSWORD
     fi
 fi
 
@@ -130,7 +130,7 @@ if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
 fi
 
 if [[ ! -z $JIGASI_TRANSCRIBER_PASSWORD ]]; then
-    prosodyctl --config $PROSODY_CFG register $JIGASI_TRANSCRIBER_USER $XMPP_HIDDEN_PARTICIPANT_DOMAIN $JIGASI_TRANSCRIBER_PASSWORD
+    prosodyctl --config $PROSODY_CFG register $JIGASI_TRANSCRIBER_USER $XMPP_HIDDEN_DOMAIN $JIGASI_TRANSCRIBER_PASSWORD
 fi
 
 if [[ "$PROSODY_MODE" == "visitors" ]]; then

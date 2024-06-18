@@ -48,7 +48,7 @@
 {{ $DESKTOP_SHARING_FRAMERATE_MIN := .Env.DESKTOP_SHARING_FRAMERATE_MIN | default 5 -}}
 {{ $DESKTOP_SHARING_FRAMERATE_MAX := .Env.DESKTOP_SHARING_FRAMERATE_MAX | default 5 -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
-{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN := .Env.XMPP_HIDDEN_PARTICIPANT_DOMAIN | default "hiddenpart.meet.jitsi" -}}
+{{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $DISABLE_REACTIONS := .Env.DISABLE_REACTIONS | default "false" | toBool -}}
@@ -150,7 +150,7 @@ config.etherpad_base = '{{ $PUBLIC_URL }}/etherpad/p/';
 //
 {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS -}}
 
-config.hiddenDomain = '{{ $XMPP_HIDDEN_PARTICIPANT_DOMAIN }}';
+config.hiddenDomain = '{{ $XMPP_HIDDEN_DOMAIN }}';
 
 {{ end -}}
 
