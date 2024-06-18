@@ -148,11 +148,9 @@ config.etherpad_base = '{{ $PUBLIC_URL }}/etherpad/p/';
 
 // Hidden domain usage
 //
-{{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS -}}
 
 config.hiddenDomain = '{{ $XMPP_HIDDEN_DOMAIN }}';
 
-{{ end -}}
 
 // Recording.
 //

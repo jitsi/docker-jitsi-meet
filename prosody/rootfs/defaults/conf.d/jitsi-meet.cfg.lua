@@ -295,13 +295,11 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     }
     authentication = "internal_hashed"
 
-{{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS }}
 VirtualHost "{{ $XMPP_HIDDEN_DOMAIN }}"
     modules_enabled = {
       "smacks";
     }
     authentication = "internal_hashed"
-{{ end }}
 
 Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     storage = "memory"
