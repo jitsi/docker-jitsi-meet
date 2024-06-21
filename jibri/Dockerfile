@@ -29,6 +29,7 @@ RUN apt-dpkg-wrap apt-get update && \
         rtkit \
         unzip \
         fonts-noto \
+        fonts-noto-cjk \
         libcap2-bin && \
     /usr/bin/install-chrome.sh && \
     apt-cleanup && \
