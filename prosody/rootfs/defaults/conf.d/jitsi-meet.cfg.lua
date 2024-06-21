@@ -124,7 +124,6 @@ consider_websocket_secure = true;
 {{ if $ENABLE_XMPP_WEBSOCKET }}
 smacks_max_unacked_stanzas = 5;
 smacks_hibernation_time = 60;
-smacks_max_hibernated_sessions = 1;
 smacks_max_old_sessions = 1;
 {{ end }}
 
