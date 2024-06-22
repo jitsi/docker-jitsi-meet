@@ -28,6 +28,7 @@
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
+{{ $PROSODY_ENABLE_METRICS := .Env.PROSODY_ENABLE_METRICS | default "false" | toBool -}}
 
 -- Prosody Example Configuration File
 --
@@ -108,6 +109,12 @@ modules_enabled = {
 		"s2sout_override";
 		"s2s_whitelist";
 		{{ end -}}
+
+		-- metrics collection functionality
+		{{ if $PROSODY_ENABLE_METRICS }}
+		"http_openmetrics";
+		{{ end }}
+
 		{{ if .Env.GLOBAL_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
         {{ end }}
@@ -286,6 +293,13 @@ log = {
 	{{ join "\n" (splitList "\\n" .Env.PROSODY_LOG_CONFIG) }}
 {{ end }}
 }
+
+-- Statistics Provider and 
+{{ if $PROSODY_ENABLE_METRICS }}
+statistics = "internal"
+statistics_interval = "manual"
+openmetrics_allow_cidr = "172.18.0.0/16"
+{{ end }}
 
 {{ if .Env.GLOBAL_CONFIG }}
 {{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG) }}
