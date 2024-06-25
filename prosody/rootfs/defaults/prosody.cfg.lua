@@ -113,7 +113,7 @@ modules_enabled = {
 		-- metrics collection functionality
 		{{ if $PROSODY_ENABLE_METRICS }}
 		"http_openmetrics";
-		{{ end }}
+		{{ end -}}
 
 		{{ if .Env.GLOBAL_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
