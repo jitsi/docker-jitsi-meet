@@ -222,8 +222,6 @@ services:
             - JICOFO_COMPONENT_SECRET
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
-            - JIGASI_TRANSCRIBER_USER
-            - JIGASI_TRANSCRIBER_PASSWORD
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JWT_APP_ID
