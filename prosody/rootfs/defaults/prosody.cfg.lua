@@ -12,7 +12,9 @@
 {{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
 {{ $PROSODY_C2S_LIMIT := .Env.PROSODY_C2S_LIMIT | default "10kb/s" -}}
+{{ $PROSODY_METRICS_ALLOWED_CIDR := .Env.PROSODY_METRICS_ALLOWED_CIDR | default "172.16.0.0/12" | toString -}}
 {{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
+{{ $PROSODY_ENABLE_METRICS := .Env.PROSODY_ENABLE_METRICS | default "false" | toBool -}}
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
 {{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
 {{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
@@ -28,7 +30,6 @@
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
-{{ $PROSODY_ENABLE_METRICS := .Env.PROSODY_ENABLE_METRICS | default "false" | toBool -}}
 
 -- Prosody Example Configuration File
 --
@@ -298,7 +299,7 @@ log = {
 {{ if $PROSODY_ENABLE_METRICS }}
 statistics = "internal"
 statistics_interval = "manual"
-openmetrics_allow_cidr = "172.18.0.0/16"
+openmetrics_allow_cidr = "{{ $PROSODY_METRICS_ALLOWED_CIDR }}"
 {{ end }}
 
 {{ if .Env.GLOBAL_CONFIG }}
