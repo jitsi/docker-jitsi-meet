@@ -12,7 +12,9 @@
 {{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
 {{ $PROSODY_C2S_LIMIT := .Env.PROSODY_C2S_LIMIT | default "10kb/s" -}}
+{{ $PROSODY_METRICS_ALLOWED_CIDR := .Env.PROSODY_METRICS_ALLOWED_CIDR | default "172.16.0.0/12" -}}
 {{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
+{{ $PROSODY_ENABLE_METRICS := .Env.PROSODY_ENABLE_METRICS | default "false" | toBool -}}
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
 {{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
 {{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
@@ -108,6 +110,12 @@ modules_enabled = {
 		"s2sout_override";
 		"s2s_whitelist";
 		{{ end -}}
+
+		{{ if $PROSODY_ENABLE_METRICS }}
+		-- metrics collection functionality
+		"http_openmetrics";
+		{{ end -}}
+
 		{{ if .Env.GLOBAL_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
         {{ end }}
@@ -286,6 +294,13 @@ log = {
 	{{ join "\n" (splitList "\\n" .Env.PROSODY_LOG_CONFIG) }}
 {{ end }}
 }
+
+{{ if $PROSODY_ENABLE_METRICS }} 
+-- Statistics Provider configuration
+statistics = "internal"
+statistics_interval = "manual"
+openmetrics_allow_cidr = "{{ $PROSODY_METRICS_ALLOWED_CIDR }}"
+{{ end }}
 
 {{ if .Env.GLOBAL_CONFIG }}
 {{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG) }}
