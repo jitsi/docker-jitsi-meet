@@ -1,5 +1,11 @@
 #!/usr/bin/with-contenv bash
 
+# Check if the SYS_ADMIN cap is set
+if ! capsh --has-p=cap_sys_admin; then
+    echo "Required capability SYS_ADMIN is missing"
+    exit 1
+fi
+
 # Check if /dev/shm is large enough (2GB at least)
 if ! shm-check; then
     echo "/dev/shm must be at least 2GB in size"
@@ -69,6 +75,7 @@ fi
 
 # always recreate configs
 tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
+tpl /defaults/xmpp.conf > /etc/jitsi/jibri/xmpp.conf
 tpl /defaults/logging.properties > /etc/jitsi/jibri/logging.properties
 tpl /defaults/xorg-video-dummy.conf > /etc/jitsi/jibri/xorg-video-dummy.conf
 

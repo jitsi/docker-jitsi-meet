@@ -27,7 +27,7 @@ jobs:
       - name: Prosody repo
         uses: myci-actions/add-deb-repo@11
         with:
-          repo: deb https://packages.prosody.im/debian bullseye main
+          repo: deb https://packages.prosody.im/debian bookworm main
           repo-name: prosody
           keys-asc: https://prosody.im/files/prosody-debian-packages.key
       - name: Jitsi repo

@@ -11,6 +11,16 @@ services:
             - ${CONFIG}/jigasi:/config:Z
             - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
+            - AUTOSCALER_SIDECAR_KEY_FILE
+            - AUTOSCALER_SIDECAR_KEY_ID
+            - AUTOSCALER_SIDECAR_GROUP_NAME
+            - AUTOSCALER_SIDECAR_HOST_ID
+            - AUTOSCALER_SIDECAR_INSTANCE_ID
+            - AUTOSCALER_SIDECAR_PORT
+            - AUTOSCALER_SIDECAR_REGION
+            - AUTOSCALER_SIDECAR_SHUTDOWN_POLLING_INTERVAL
+            - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
+            - AUTOSCALER_URL
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - XMPP_AUTH_DOMAIN
@@ -22,6 +32,7 @@ services:
             - XMPP_DOMAIN
             - PUBLIC_URL
             - JIGASI_DISABLE_SIP
+            - JIGASI_LOG_FILE
             - JIGASI_SIP_URI
             - JIGASI_SIP_PASSWORD
             - JIGASI_SIP_SERVER

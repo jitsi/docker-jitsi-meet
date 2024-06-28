@@ -1,17 +1,24 @@
 #!/usr/bin/with-contenv bash
 
-if [[ -z $JVB_AUTH_PASSWORD ]]; then
-    echo 'FATAL ERROR: JVB auth password must be set'
-    exit 1
-fi
+if [[ -z $JVB_DISABLE_XMPP ]]; then
+    if [[ -z $JVB_AUTH_PASSWORD ]]; then
+        echo 'FATAL ERROR: JVB auth password must be set'
+        exit 1
+    fi
 
-OLD_JVB_AUTH_PASSWORD=passw0rd
-if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
-    echo 'FATAL ERROR: JVB auth password must be changed, check the README'
-    exit 1
-fi
+    OLD_JVB_AUTH_PASSWORD=passw0rd
+    if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
+        echo 'FATAL ERROR: JVB auth password must be changed, check the README'
+        exit 1
+    fi
 
-[ -z "${XMPP_SERVER}" ] && export XMPP_SERVER=xmpp.meet.jitsi
+    [ -z "${XMPP_SERVER}" ] && export XMPP_SERVER=xmpp.meet.jitsi
+
+    # On environments like Swarm the IP address used by the default gateway need not be
+    # the one used for inter-container traffic. Use that one for our fallback ID.
+    XMPP_SERVER_IP=$(dig +short +search ${XMPP_SERVER})
+    export JVB_WS_SERVER_ID_FALLBACK=$(ip route get ${XMPP_SERVER_IP} | grep -oP '(?<=src ).*' | awk '{ print $1 '})
+fi
 
 # Migration from DOCKER_HOST_ADDRESS to JVB_ADVERTISE_IPS
 if [[ -z "${JVB_ADVERTISE_IPS}" ]]; then
@@ -20,11 +27,6 @@ if [[ -z "${JVB_ADVERTISE_IPS}" ]]; then
         export JVB_ADVERTISE_IPS=${DOCKER_HOST_ADDRESS}
     fi
 fi
-
-# On environments like Swarm the IP address used by the default gateway need not be
-# the one used for inter-container traffic. Use that one for our fallback ID.
-XMPP_SERVER_IP=$(dig +short +search ${XMPP_SERVER})
-export JVB_WS_SERVER_ID_FALLBACK=$(ip route get ${XMPP_SERVER_IP} | grep -oP '(?<=src ).*' | awk '{ print $1 '})
 
 # Local IP for the ice4j mapping harvester.
 export LOCAL_ADDRESS=$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1 '})
@@ -72,9 +74,3 @@ tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/jvb.conf > /config/jvb.conf
 
 chown -R jvb:jitsi /config
-
-# Configuration checks
-if [[ (-z $ENABLE_COLIBRI_WEBSOCKET || $ENABLE_COLIBRI_WEBSOCKET == "0") && $ENABLE_OCTO == "1"  ]]; then
-  echo "ERROR: In order to enable Octo relays (with ENABLE_OCTO=1), you MUST enable Colibri websockets (with ENABLE_COLIBRI_WEBSOCKET=1)";
-  exit 1;
-fi
