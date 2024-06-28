@@ -1,0 +1,131 @@
+version: '3.8'
+
+services:
+    web:
+        image: jitsi/web:latest
+        #hostname: meet.jitsi
+        environment:
+            AMPLITUDE_ID:
+            ANALYTICS_SCRIPT_URLS:
+            ANALYTICS_WHITELISTED_EVENTS:
+            CALLSTATS_CUSTOM_SCRIPT_URL:
+            CALLSTATS_ID:
+            CALLSTATS_SECRET:
+            CHROME_EXTENSION_BANNER_JSON:
+            CONFCODE_URL:
+            CONFIG_EXTERNAL_CONNECT:
+            DEFAULT_LANGUAGE:
+            DIALIN_NUMBERS_URL:
+            DIALOUT_AUTH_URL:
+            DIALOUT_CODES_URL:
+            DISABLE_HTTPS: 1
+            DISABLE_POLLS: 0
+            DEPLOYMENTINFO_SHARD: shard1
+            DEPLOYMENTINFO_ENVIRONMENT: #"meet.jitsi"
+            DEPLOYMENTINFO_ENVIRONMENT_TYPE: testing
+            DEPLOYMENTINFO_REGION: Region1
+            DEPLOYMENTINFO_USERREGION: Region1
+            DISABLE_DEEP_LINKING: "true"
+            DISABLE_RTX: "false"
+            DROPBOX_APPKEY:
+            DROPBOX_REDIRECT_URI:
+            DYNAMIC_BRANDING_URL: ''
+            ENABLE_AUDIO_PROCESSING:
+            ENABLE_AUTH: 1
+            ENABLE_GUESTS:
+            ENABLE_RECORDING: 0
+            ENABLE_FILE_RECORDING_SERVICE:
+            ENABLE_CALENDAR:
+            ENABLE_TRANSCRIPTIONS:
+            ENABLE_NO_AUDIO_DETECTION: "true"
+            ENABLE_P2P: "false"
+            ENABLE_PREJOIN_PAGE: "true"
+            ENABLE_WELCOME_PAGE:
+            ENABLE_CLOSE_PAGE:
+            ENABLE_XMPP_WEBSOCKET: 1
+            ENABLE_COLIBRI_WEBSOCKET: 1
+            ENABLE_FLOC:
+            ENABLE_SUBDOMAINS: "true"
+            ENABLE_SIMULCAST: "true"
+            ENABLE_REMB: "true"
+            ENABLE_TCC: "true"
+            ENABLE_LETSENCRYPT:
+            ENABLE_HTTP_REDIRECT:
+            ETHERPAD_URL_BASE:
+            JICOFO_AUTH_USER: focus
+            JIBRI_BREWERY_MUC: jibribrewery
+            JIBRI_PENDING_TIMEOUT: 90
+            JIBRI_XMPP_USER: jibri
+            JIBRI_XMPP_PASSWORD: CHANGE_HERE
+            JIBRI_RECORDER_USER: recorder
+            JIBRI_RECORDER_PASSWORD: CHANGE_HERE
+            LETSENCRYPT_DOMAIN:
+            LETSENCRYPT_EMAIL:
+            LETSENCRYPT_USE_STAGING:
+            NGINX_RESOLVER:
+            PUBLIC_URL: https://CHANGE_HERE
+            P2P_USE_STUN_TURN:
+            P2P_PREFERRED_CODEC: VP9
+            RESOLUTION: # default 720
+            RESOLUTION_MIN: # default 180
+            RESOLUTION_WIDTH:  # default 1280
+            RESOLUTION_WIDTH_MIN: # default 320
+            START_AUDIO_ONLY:
+            START_AUDIO_MUTED:  # default 10
+            START_BITRATE:
+            START_VIDEO_MUTED:  # default 10
+            TESTING_CAP_SCREENSHARE_BITRATE:
+            TESTING_OCTO_PROBABILITY: 0
+            TZ: Asia/Kolkata
+            VIDEOQUALITY_PREFERRED_CODEC: VP9
+            VIDEOQUALITY_ENFORCE_PREFERRED_CODEC:
+            VIDEOQUALITY_BITRATE_VP8_LOW:
+            VIDEOQUALITY_BITRATE_VP8_STANDARD:
+            VIDEOQUALITY_BITRATE_VP8_HIGH:
+            VIDEOQUALITY_BITRATE_VP9_LOW:
+            VIDEOQUALITY_BITRATE_VP9_STANDARD:
+            VIDEOQUALITY_BITRATE_VP9_HIGH:
+            XMPP_DOMAIN: meet.jitsi
+            XMPP_AUTH_DOMAIN: auth.meet.jitsi
+            XMPP_BOSH_URL_BASE: http://xmpp.meet.jitsi:5280
+            XMPP_GUEST_DOMAIN: guest.meet.jitsi
+            XMPP_MUC_DOMAIN: muc.meet.jitsi
+            XMPP_RECORDER_DOMAIN: recorder.meet.jitsi
+            XMPP_SERVER: xmpp.meet.jitsi
+            # analytics
+            #MATOMO_ENDPOINT:
+            #MATOMO_SITE_ID: 1
+        deploy:
+          replicas: 1
+          update_config:
+            failure_action: rollback
+          restart_policy:
+            condition: on-failure
+            delay: 5s
+            max_attempts: 5
+          #placement:
+          #  constraints:
+          #    - node.hostname == demo2
+          #    - node.role == manager
+        volumes:
+            - ${CONFIG}/web:/config
+            - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
+            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
+        ports:
+            - target: 80
+              published: 80
+              mode: host
+
+            - target: 443
+              published: 443
+              mode: host
+        networks:
+          proxy:
+          jitsi:
+            aliases:
+              - meet.jitsi
+# Custom network so all services can communicate using a FQDN
+networks:
+  jitsi:
+    external: true
+    name: jitsi
