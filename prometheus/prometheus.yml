@@ -1,15 +1,5 @@
 scrape_configs:
-  - job_name: "prometheus-prosody"
+  - job_name: "prometheus"
     scrape_interval: 5s
     static_configs:
-      - targets: ["prosody:5280"]
-      
-  - job_name: "prometheus-jvb"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["jvb:8080"]
-
-  - job_name: "prometheus-jicofo"
-    scrape_interval: 5s
-    static_configs:
-      - targets: ["jicofo:8888"]
+      - targets: ["prosody:5280","jvb:8080","jicofo:8888"]
