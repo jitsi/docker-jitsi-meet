@@ -1,0 +1,71 @@
+# JITSI MEET LOG ANALYSER - Grafana Loki and OpenTelemetry Integration
+
+Welcome to the Grafana Loki and OpenTelemetry integration project! This repository provides a simple and effective setup for log management and analysis using Docker, Grafana Loki and OpenTelemetry.
+
+## Overview
+
+This project demonstrates how to configure and use Grafana Loki with OpenTelemetry to collect, parse, and visualize log data. It includes:
+
+- A Docker Compose setup for Grafana, Loki, and OpenTelemetry Collector
+- Configuration files for log parsing and exporting
+- Instructions to set up and access Grafana with Loki as a data source
+
+## Getting Started
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Setup
+
+1. **Clone the repository:**
+
+    ```bash
+    git clone https://github.com/jitsi/docker-jitsi-meet.git
+    cd grafana-loki-otel
+    ```
+
+2. **Add your log files:**
+
+   Place your log file in the `log-analyser/jitsi-logs` directory. Update the `otel-collector-config.yaml` file with the correct file path to start ingesting the logs. This setup allows OpenTelemetry to read logs from the file and forward them to Loki.
+
+3. **Start the Docker containers:**
+
+    ```bash
+    docker-compose up -d
+    ```
+
+4. **Access Grafana:**
+
+   Open your web browser and navigate to [http://localhost:3000](http://localhost:3000).
+
+5. **Log in to Grafana:**
+
+   Use the default credentials:
+
+    ```
+    Username: admin
+    Password: admin
+    ```
+
+6. **Add Loki as a data source:**
+
+    - Go to `Configuration` > `Data Sources` > `Add data source`.
+    - Select `Loki` from the list.
+    - Enter `http://loki:3100` as the Loki endpoint.
+    - Save the configuration.
+
+### Dashboard Setups
+
+The dashboard setups are available as JSON files in the `log-analyser/grafana-dashboards` directory. You can import these JSON files into Grafana to use the pre-configured dashboards. In the future, we plan to automate this import process.
+
+
+## Usage
+
+- **Log Parsing and Visualization:** After setting up, you can use Grafana to explore and visualize your logs. Check our dashboards and panels to monitor log data effectively.
+
+
+## Acknowledgements
+
+Thanks for checking out this project! If you have any questions or need further assistance, don't hesitate to reach out.

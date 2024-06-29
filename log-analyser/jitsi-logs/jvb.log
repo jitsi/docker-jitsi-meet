@@ -1,0 +1,447 @@
+[s6-init] making user provided files available at /var/run/s6/etc...exited 0.
+[s6-init] ensuring user provided files have correct perms...exited 0.
+[fix-attrs.d] applying ownership & permissions fixes...
+[fix-attrs.d] done.
+[cont-init.d] executing container initialization scripts...
+[cont-init.d] 01-set-timezone: executing... 
+[cont-init.d] 01-set-timezone: exited 0.
+[cont-init.d] 10-config: executing... 
+No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled
+[cont-init.d] 10-config: exited 0.
+[cont-init.d] done.
+[services.d] starting services
+[services.d] done.
+JVB 2024-06-26 21:10:03.389 INFO: [1] JitsiConfig.<clinit>#47: Initialized newConfig: merge of /config/jvb.conf: 1,application.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/application.conf: 1,system properties,reference.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/ice4j-3.0-68-gd289f12.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/jitsi-media-transform-2.3-109-gacf024b7.jar!/reference.conf: 1
+JVB 2024-06-26 21:10:03.423 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#51: loading config file at path /config/sip-communicator.properties
+JVB 2024-06-26 21:10:03.427 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#56: Error loading config file: java.io.FileNotFoundException: /config/sip-communicator.properties (No such file or directory)
+JVB 2024-06-26 21:10:03.429 INFO: [1] JitsiConfig.<clinit>#68: Initialized legacyConfig: sip communicator props (no description provided)
+JVB 2024-06-26 21:10:03.721 INFO: [1] JvmMetrics.<init>#36: Detected GC type G1
+JVB 2024-06-26 21:10:03.732 INFO: [1] MetricsUpdater.addUpdateTask#45: Scheduling metrics update task with interval PT5S.
+JVB 2024-06-26 21:10:03.748 INFO: [1] JitsiConfig$Companion.reloadNewConfig#94: Reloading the Typesafe config source (previously reloaded 0 times).
+JVB 2024-06-26 21:10:03.759 INFO: [1] MainKt.main#76: Starting jitsi-videobridge version 2.3.109-gacf024b7
+JVB 2024-06-26 21:10:03.796 INFO: [1] UlimitCheck.printUlimits#109: Running with open files limit 1048576 (hard 1048576), thread limit unlimited (hard unlimited).
+JVB 2024-06-26 21:10:03.949 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Adding a static mapping: StaticMapping(localAddress=172.19.0.4, publicAddress=, localPort=null, publicPort=null, name=ip-0)
+JVB 2024-06-26 21:10:03.957 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using AwsCandidateHarvester.
+JVB 2024-06-26 21:10:03.965 INFO: [1] org.ice4j.ice.harvest.AbstractUdpListener.<init>: Initialized AbstractUdpListener with address 172.19.0.4:10000/udp. Receive buffer size 212992 (asked for 10485760)
+JVB 2024-06-26 21:10:03.966 INFO: [1] org.ice4j.ice.harvest.SinglePortUdpHarvester.<init>: Initialized SinglePortUdpHarvester with address 172.19.0.4:10000/udp
+JVB 2024-06-26 21:10:03.971 INFO: [1] Smack.initialize#30: Setting XML parsing limits.
+JVB 2024-06-26 21:10:04.000 INFO: [1] Smack.initialize#42: Using JitsiXmppStringprep.
+JVB 2024-06-26 21:10:04.023 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.createStunHarvesters: Using 132.145.230.5:443/udp for StunMappingCandidateHarvester (localAddress=172.19.0.4:0/udp).
+JVB 2024-06-26 21:10:04.166 INFO: [18] org.ice4j.ice.harvest.StunMappingCandidateHarvester.discover: Discovered public address 90.191.14.8:63738/udp from STUN server 132.145.230.5:443/udp using local address org.ice4j.socket.IceUdpSocketWrapper@1eb74b62
+JVB 2024-06-26 21:10:04.350 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#288: Initializing a new MucClient for [ org.jitsi.xmpp.mucclient.MucClientConfiguration id=shard0 domain=auth.meet.jitsi hostname=xmpp.meet.jitsi port=5222 username=jvb mucs=[jvbbrewery@internal-muc.meet.jitsi] mucNickname=c7e2f95ee80b disableCertificateVerification=true]
+JVB 2024-06-26 21:10:04.359 INFO: [1] TaskPools.<clinit>#87: TaskPools detected 4 processors, creating the CPU pool with that many threads
+JVB 2024-06-26 21:10:04.367 INFO: [1] HealthChecker.start#122: Started with interval=60000, timeout=PT1M30S, maxDuration=PT3S, stickyFailures=false.
+JVB 2024-06-26 21:10:04.368 INFO: [1] MucPublisher.start#36: Starting with interval PT5S.
+JVB 2024-06-26 21:10:04.370 INFO: [1] MainKt.main#121: Starting public http server
+JVB 2024-06-26 21:10:04.395 WARNING: [1] ColibriWebSocketService.<init>#51: Websockets enabled, but no domains specified: URLs=[wss://localhost:8443/colibri-ws/172.19.0.4], Relay URLs=[]
+JVB 2024-06-26 21:10:04.399 WARNING: [24] MucClient.createXMPPTCPConnectionConfiguration#117: Disabling certificate verification!
+JVB 2024-06-26 21:10:04.424 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-26 21:10:04.497 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#350: Dispatching a thread to connect and login.
+JVB 2024-06-26 21:10:04.616 INFO: [1] ColibriWebSocketService.registerServlet#84: Registering servlet with baseUrls = [wss://localhost:8443/colibri-ws/172.19.0.4], relayBaseUrls = []
+JVB 2024-06-26 21:10:04.680 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.maybeAdd: Discarding a mapping harvester: org.ice4j.ice.harvest.AwsCandidateHarvester@9333bfe
+JVB 2024-06-26 21:10:04.681 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StaticMappingCandidateHarvester(face=172.19.0.4:9/udp, mask=127.0.0.1:9/udp)
+JVB 2024-06-26 21:10:04.681 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StunMappingCandidateHarvester@487e390d
+JVB 2024-06-26 21:10:04.696 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Initialized mapping harvesters (delay=883ms).  stunDiscoveryFailed=false
+JVB 2024-06-26 21:10:04.697 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-26 21:10:04.817 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@6ac0b715{/,null,AVAILABLE}
+JVB 2024-06-26 21:10:04.822 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@723ed581{HTTP/1.1, (http/1.1)}{0.0.0.0:9090}
+JVB 2024-06-26 21:10:04.828 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@35088e87{STARTING}[11.0.20,sto=0] @2087ms
+JVB 2024-06-26 21:10:04.830 INFO: [1] MainKt.main#139: Starting private http server
+JVB 2024-06-26 21:10:04.856 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-26 21:10:04.863 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connected#321: Connected.
+JVB 2024-06-26 21:10:04.863 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#646: Logging in.
+JVB 2024-06-26 21:10:05.002 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.authenticated#327: Authenticated, b=false
+JVB 2024-06-26 21:10:05.024 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#771: Joined MUC: jvbbrewery@internal-muc.meet.jitsi
+JVB 2024-06-26 21:10:05.139 WARNING: [1] org.glassfish.jersey.server.wadl.WadlFeature.configure: JAXBContext implementation could not be found. WADL feature is disabled.
+JVB 2024-06-26 21:10:05.201 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Health registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Health will be ignored. 
+JVB 2024-06-26 21:10:05.202 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Version registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Version will be ignored. 
+JVB 2024-06-26 21:10:05.203 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.prometheus.Prometheus registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.prometheus.Prometheus will be ignored. 
+JVB 2024-06-26 21:10:05.393 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@114a5e0{/,null,AVAILABLE}
+JVB 2024-06-26 21:10:05.393 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@633a2e99{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+JVB 2024-06-26 21:10:05.393 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@5496c165{STARTING}[11.0.20,sto=0] @2652ms
+JVB 2024-06-29 19:51:19.728 WARNING: [320] org.jivesoftware.smack.AbstractXMPPConnection.callConnectionClosedOnErrorListener: Connection XMPPTCPConnection[jvb@auth.meet.jitsi/SLY5BUPpGyaS] (0) closed with error
+org.jivesoftware.smack.XMPPException$StreamErrorException: system-shutdown You can read more about the meaning of this stream error at http://xmpp.org/rfcs/rfc6120.html#streams-error-conditions
+<stream:error><system-shutdown xmlns='urn:ietf:params:xml:ns:xmpp-streams'/><text>Received SIGTERM</text></stream:error>
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader.parsePackets(XMPPTCPConnection.java:984)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader.access$700(XMPPTCPConnection.java:916)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader$1.run(XMPPTCPConnection.java:939)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:51:19.757 WARNING: [320] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connectionClosedOnError#341: Closed on error:
+org.jivesoftware.smack.XMPPException$StreamErrorException: system-shutdown You can read more about the meaning of this stream error at http://xmpp.org/rfcs/rfc6120.html#streams-error-conditions
+<stream:error><system-shutdown xmlns='urn:ietf:params:xml:ns:xmpp-streams'/><text>Received SIGTERM</text></stream:error>
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader.parsePackets(XMPPTCPConnection.java:984)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader.access$700(XMPPTCPConnection.java:916)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader$1.run(XMPPTCPConnection.java:939)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:51:21.911 WARNING: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#640: Error connecting:
+org.jivesoftware.smack.SmackException$EndpointConnectionException: The following addresses failed: 'RFC 6120 A/AAAA Endpoint + [xmpp.meet.jitsi:5222] (xmpp.meet.jitsi/172.19.0.2:5222)' failed because: java.net.ConnectException: Connection refused
+	at org.jivesoftware.smack.SmackException$EndpointConnectionException.from(SmackException.java:334)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection.connectUsingConfiguration(XMPPTCPConnection.java:664)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection.connectInternal(XMPPTCPConnection.java:849)
+	at org.jivesoftware.smack.AbstractXMPPConnection.connect(AbstractXMPPConnection.java:526)
+	at org.jitsi.xmpp.mucclient.MucClient.lambda$getConnectAndLoginCallable$9(MucClient.java:635)
+	at org.jitsi.retry.RetryStrategy$TaskRunner.run(RetryStrategy.java:167)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:51:24.558 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 19:51:27.920 WARNING: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#640: Error connecting:
+org.jivesoftware.smack.SmackException$EndpointConnectionException: The following addresses failed: 'RFC 6120 A/AAAA Endpoint + [xmpp.meet.jitsi:5222] (xmpp.meet.jitsi/172.19.0.2:5222)' failed because: java.net.ConnectException: Connection refused
+	at org.jivesoftware.smack.SmackException$EndpointConnectionException.from(SmackException.java:334)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection.connectUsingConfiguration(XMPPTCPConnection.java:664)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection.connectInternal(XMPPTCPConnection.java:849)
+	at org.jivesoftware.smack.AbstractXMPPConnection.connect(AbstractXMPPConnection.java:526)
+	at org.jitsi.xmpp.mucclient.MucClient.lambda$getConnectAndLoginCallable$9(MucClient.java:635)
+	at org.jitsi.retry.RetryStrategy$TaskRunner.run(RetryStrategy.java:167)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:51:29.559 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 19:51:33.012 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connected#321: Connected.
+JVB 2024-06-29 19:51:33.012 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#646: Logging in.
+JVB 2024-06-29 19:51:33.065 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.authenticated#327: Authenticated, b=false
+JVB 2024-06-29 19:51:33.066 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#751: Leaving a MUC we already occupy.
+JVB 2024-06-29 19:51:34.558 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.setPresenceExtensions#787: Cannot set presence extensions: no previous presence available.
+JVB 2024-06-29 19:51:38.089 WARNING: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.leave#726: Error while trying to leave a MUC: 
+org.jivesoftware.smack.SmackException$NoResponseException: No response received within reply timeout. Timeout was 5000ms (~5s). StanzaCollector has been cancelled. Waited for response using: AndFilter: (StanzaTypeFilter: Presence, OrFilter: (AndFilter: (FromMatchesFilter (full): jvbbrewery@internal-muc.meet.jitsi/c7e2f95ee80b, PresenceTypeFilter: type=unavailable, MUCUserStatusCodeFilter: status=110), AndFilter: (FromMatchesFilter (ignoreResourcepart): jvbbrewery@internal-muc.meet.jitsi, PresenceTypeFilter: type=error))).
+	at org.jivesoftware.smack.SmackException$NoResponseException.newWith(SmackException.java:124)
+	at org.jivesoftware.smack.SmackException$NoResponseException.newWith(SmackException.java:104)
+	at org.jivesoftware.smack.StanzaCollector.nextResultOrThrow(StanzaCollector.java:281)
+	at org.jivesoftware.smack.StanzaCollector.nextResultOrThrow(StanzaCollector.java:228)
+	at org.jivesoftware.smackx.muc.MultiUserChat.leave(MultiUserChat.java:798)
+	at org.jitsi.xmpp.mucclient.MucClient$MucWrapper.leave(MucClient.java:722)
+	at org.jitsi.xmpp.mucclient.MucClient$MucWrapper.join(MucClient.java:752)
+	at org.jitsi.xmpp.mucclient.MucClient.joinMucs(MucClient.java:370)
+	at org.jitsi.xmpp.mucclient.MucClient.lambda$getConnectAndLoginCallable$9(MucClient.java:667)
+	at org.jitsi.retry.RetryStrategy$TaskRunner.run(RetryStrategy.java:167)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:51:38.146 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#771: Joined MUC: jvbbrewery@internal-muc.meet.jitsi
+JVB 2024-06-29 19:53:02.875 WARNING: [323] org.jivesoftware.smack.AbstractXMPPConnection.callConnectionClosedOnErrorListener: Connection XMPPTCPConnection[jvb@auth.meet.jitsi/IPZTtEbqyE-t] (0) closed with error
+org.jivesoftware.smack.XMPPException$StreamErrorException: system-shutdown You can read more about the meaning of this stream error at http://xmpp.org/rfcs/rfc6120.html#streams-error-conditions
+<stream:error><system-shutdown xmlns='urn:ietf:params:xml:ns:xmpp-streams'/><text>Received SIGTERM</text></stream:error>
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader.parsePackets(XMPPTCPConnection.java:984)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader.access$700(XMPPTCPConnection.java:916)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader$1.run(XMPPTCPConnection.java:939)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:53:02.878 WARNING: [323] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connectionClosedOnError#341: Closed on error:
+org.jivesoftware.smack.XMPPException$StreamErrorException: system-shutdown You can read more about the meaning of this stream error at http://xmpp.org/rfcs/rfc6120.html#streams-error-conditions
+<stream:error><system-shutdown xmlns='urn:ietf:params:xml:ns:xmpp-streams'/><text>Received SIGTERM</text></stream:error>
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader.parsePackets(XMPPTCPConnection.java:984)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader.access$700(XMPPTCPConnection.java:916)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection$PacketReader$1.run(XMPPTCPConnection.java:939)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:53:03.188 WARNING: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#640: Error connecting:
+org.jivesoftware.smack.SmackException$EndpointConnectionException: The following addresses failed: 'RFC 6120 A/AAAA Endpoint + [xmpp.meet.jitsi:5222] (xmpp.meet.jitsi/172.19.0.2:5222)' failed because: java.net.ConnectException: Connection refused
+	at org.jivesoftware.smack.SmackException$EndpointConnectionException.from(SmackException.java:334)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection.connectUsingConfiguration(XMPPTCPConnection.java:664)
+	at org.jivesoftware.smack.tcp.XMPPTCPConnection.connectInternal(XMPPTCPConnection.java:849)
+	at org.jivesoftware.smack.AbstractXMPPConnection.connect(AbstractXMPPConnection.java:526)
+	at org.jitsi.xmpp.mucclient.MucClient.lambda$getConnectAndLoginCallable$9(MucClient.java:635)
+	at org.jitsi.retry.RetryStrategy$TaskRunner.run(RetryStrategy.java:167)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:53:04.558 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 19:53:09.557 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 19:53:14.556 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 19:53:15.466 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connected#321: Connected.
+JVB 2024-06-29 19:53:15.466 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#646: Logging in.
+JVB 2024-06-29 19:53:15.496 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.authenticated#327: Authenticated, b=false
+JVB 2024-06-29 19:53:15.496 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#751: Leaving a MUC we already occupy.
+JVB 2024-06-29 19:53:15.505 WARNING: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.leave#726: Error while trying to leave a MUC: 
+org.jivesoftware.smack.XMPPException$XMPPErrorException: XMPP error reply received from jvbbrewery@internal-muc.meet.jitsi/c7e2f95ee80b: XMPPError: item-not-found - cancel. Generated by internal-muc.meet.jitsi
+	at org.jivesoftware.smack.XMPPException$XMPPErrorException.ifHasErrorThenThrow(XMPPException.java:171)
+	at org.jivesoftware.smack.XMPPException$XMPPErrorException.ifHasErrorThenThrow(XMPPException.java:165)
+	at org.jivesoftware.smack.StanzaCollector.nextResultOrThrow(StanzaCollector.java:284)
+	at org.jivesoftware.smack.StanzaCollector.nextResultOrThrow(StanzaCollector.java:228)
+	at org.jivesoftware.smackx.muc.MultiUserChat.leave(MultiUserChat.java:798)
+	at org.jitsi.xmpp.mucclient.MucClient$MucWrapper.leave(MucClient.java:722)
+	at org.jitsi.xmpp.mucclient.MucClient$MucWrapper.join(MucClient.java:752)
+	at org.jitsi.xmpp.mucclient.MucClient.joinMucs(MucClient.java:370)
+	at org.jitsi.xmpp.mucclient.MucClient.lambda$getConnectAndLoginCallable$9(MucClient.java:667)
+	at org.jitsi.retry.RetryStrategy$TaskRunner.run(RetryStrategy.java:167)
+	at java.base/java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:539)
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:264)
+	at java.base/java.util.concurrent.ScheduledThreadPoolExecutor$ScheduledFutureTask.run(ScheduledThreadPoolExecutor.java:304)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1136)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:635)
+	at java.base/java.lang.Thread.run(Thread.java:840)
+JVB 2024-06-29 19:53:15.522 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#771: Joined MUC: jvbbrewery@internal-muc.meet.jitsi
+[cont-finish.d] executing container finish scripts...
+[cont-finish.d] done.
+[s6-finish] waiting for services.
+[s6-finish] sending all processes the TERM signal.
+[s6-finish] sending all processes the KILL signal and exiting.
+[s6-init] making user provided files available at /var/run/s6/etc...exited 0.
+[s6-init] ensuring user provided files have correct perms...exited 0.
+[fix-attrs.d] applying ownership & permissions fixes...
+[fix-attrs.d] done.
+[cont-init.d] executing container initialization scripts...
+[cont-init.d] 01-set-timezone: executing... 
+[cont-init.d] 01-set-timezone: exited 0.
+[cont-init.d] 10-config: executing... 
+No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled
+[cont-init.d] 10-config: exited 0.
+[cont-init.d] done.
+[services.d] starting services
+[services.d] done.
+JVB 2024-06-29 21:46:00.862 INFO: [1] JitsiConfig.<clinit>#47: Initialized newConfig: merge of /config/jvb.conf: 1,application.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/application.conf: 1,system properties,reference.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/ice4j-3.0-68-gd289f12.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/jitsi-media-transform-2.3-109-gacf024b7.jar!/reference.conf: 1
+JVB 2024-06-29 21:46:00.894 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#51: loading config file at path /config/sip-communicator.properties
+JVB 2024-06-29 21:46:00.895 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#56: Error loading config file: java.io.FileNotFoundException: /config/sip-communicator.properties (No such file or directory)
+JVB 2024-06-29 21:46:00.897 INFO: [1] JitsiConfig.<clinit>#68: Initialized legacyConfig: sip communicator props (no description provided)
+JVB 2024-06-29 21:46:01.151 INFO: [1] JvmMetrics.<init>#36: Detected GC type G1
+JVB 2024-06-29 21:46:01.158 INFO: [1] MetricsUpdater.addUpdateTask#45: Scheduling metrics update task with interval PT5S.
+JVB 2024-06-29 21:46:01.178 INFO: [1] JitsiConfig$Companion.reloadNewConfig#94: Reloading the Typesafe config source (previously reloaded 0 times).
+JVB 2024-06-29 21:46:01.193 INFO: [1] MainKt.main#76: Starting jitsi-videobridge version 2.3.109-gacf024b7
+JVB 2024-06-29 21:46:01.227 INFO: [1] UlimitCheck.printUlimits#109: Running with open files limit 1048576 (hard 1048576), thread limit unlimited (hard unlimited).
+JVB 2024-06-29 21:46:01.290 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Adding a static mapping: StaticMapping(localAddress=172.19.0.4, publicAddress=, localPort=null, publicPort=null, name=ip-0)
+JVB 2024-06-29 21:46:01.316 INFO: [1] org.ice4j.ice.harvest.AbstractUdpListener.<init>: Initialized AbstractUdpListener with address 172.19.0.4:10000/udp. Receive buffer size 212992 (asked for 10485760)
+JVB 2024-06-29 21:46:01.318 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using AwsCandidateHarvester.
+JVB 2024-06-29 21:46:01.320 INFO: [1] org.ice4j.ice.harvest.SinglePortUdpHarvester.<init>: Initialized SinglePortUdpHarvester with address 172.19.0.4:10000/udp
+JVB 2024-06-29 21:46:01.326 INFO: [1] Smack.initialize#30: Setting XML parsing limits.
+JVB 2024-06-29 21:46:01.341 INFO: [1] Smack.initialize#42: Using JitsiXmppStringprep.
+JVB 2024-06-29 21:46:01.363 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.createStunHarvesters: Using 193.122.4.180:443/udp for StunMappingCandidateHarvester (localAddress=172.19.0.4:0/udp).
+JVB 2024-06-29 21:46:01.471 INFO: [18] org.ice4j.ice.harvest.StunMappingCandidateHarvester.discover: Discovered public address 90.191.14.8:63555/udp from STUN server 193.122.4.180:443/udp using local address org.ice4j.socket.IceUdpSocketWrapper@74560739
+JVB 2024-06-29 21:46:01.688 INFO: [1] TaskPools.<clinit>#87: TaskPools detected 4 processors, creating the CPU pool with that many threads
+JVB 2024-06-29 21:46:01.691 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#288: Initializing a new MucClient for [ org.jitsi.xmpp.mucclient.MucClientConfiguration id=shard0 domain=auth.meet.jitsi hostname=xmpp.meet.jitsi port=5222 username=jvb mucs=[jvbbrewery@internal-muc.meet.jitsi] mucNickname=c7e2f95ee80b disableCertificateVerification=true]
+JVB 2024-06-29 21:46:01.708 INFO: [1] HealthChecker.start#122: Started with interval=60000, timeout=PT1M30S, maxDuration=PT3S, stickyFailures=false.
+JVB 2024-06-29 21:46:01.717 INFO: [1] MucPublisher.start#36: Starting with interval PT5S.
+JVB 2024-06-29 21:46:01.727 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 21:46:01.730 INFO: [1] MainKt.main#121: Starting public http server
+JVB 2024-06-29 21:46:01.737 WARNING: [24] MucClient.createXMPPTCPConnectionConfiguration#117: Disabling certificate verification!
+JVB 2024-06-29 21:46:01.751 WARNING: [1] ColibriWebSocketService.<init>#51: Websockets enabled, but no domains specified: URLs=[wss://localhost:8443/colibri-ws/172.19.0.4], Relay URLs=[]
+JVB 2024-06-29 21:46:01.851 INFO: [1] ColibriWebSocketService.registerServlet#84: Registering servlet with baseUrls = [wss://localhost:8443/colibri-ws/172.19.0.4], relayBaseUrls = []
+JVB 2024-06-29 21:46:01.866 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#350: Dispatching a thread to connect and login.
+JVB 2024-06-29 21:46:01.869 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-29 21:46:01.930 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@37ce3644{/,null,AVAILABLE}
+JVB 2024-06-29 21:46:01.935 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@3d36dff4{HTTP/1.1, (http/1.1)}{0.0.0.0:9090}
+JVB 2024-06-29 21:46:01.939 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@528f8f8b{STARTING}[11.0.20,sto=0] @1406ms
+JVB 2024-06-29 21:46:01.940 INFO: [1] MainKt.main#139: Starting private http server
+JVB 2024-06-29 21:46:01.975 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-29 21:46:01.978 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.maybeAdd: Discarding a mapping harvester: org.ice4j.ice.harvest.AwsCandidateHarvester@16aea622
+JVB 2024-06-29 21:46:01.979 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StaticMappingCandidateHarvester(face=172.19.0.4:9/udp, mask=127.0.0.1:9/udp)
+JVB 2024-06-29 21:46:01.979 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StunMappingCandidateHarvester@24b34ba1
+JVB 2024-06-29 21:46:01.980 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Initialized mapping harvesters (delay=751ms).  stunDiscoveryFailed=false
+JVB 2024-06-29 21:46:02.024 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connected#321: Connected.
+JVB 2024-06-29 21:46:02.024 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#646: Logging in.
+JVB 2024-06-29 21:46:02.100 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.authenticated#327: Authenticated, b=false
+JVB 2024-06-29 21:46:02.123 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#771: Joined MUC: jvbbrewery@internal-muc.meet.jitsi
+JVB 2024-06-29 21:46:02.154 WARNING: [1] org.glassfish.jersey.server.wadl.WadlFeature.configure: JAXBContext implementation could not be found. WADL feature is disabled.
+JVB 2024-06-29 21:46:02.215 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Health registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Health will be ignored. 
+JVB 2024-06-29 21:46:02.216 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Version registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Version will be ignored. 
+JVB 2024-06-29 21:46:02.216 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.prometheus.Prometheus registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.prometheus.Prometheus will be ignored. 
+JVB 2024-06-29 21:46:02.338 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@3a7c678b{/,null,AVAILABLE}
+JVB 2024-06-29 21:46:02.339 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@10acd6{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+JVB 2024-06-29 21:46:02.339 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@55a609dd{STARTING}[11.0.20,sto=0] @1806ms
+[cont-finish.d] executing container finish scripts...
+[cont-finish.d] done.
+[s6-finish] waiting for services.
+[s6-finish] sending all processes the TERM signal.
+[s6-finish] sending all processes the KILL signal and exiting.
+[s6-init] making user provided files available at /var/run/s6/etc...exited 0.
+[s6-init] ensuring user provided files have correct perms...exited 0.
+[fix-attrs.d] applying ownership & permissions fixes...
+[fix-attrs.d] done.
+[cont-init.d] executing container initialization scripts...
+[cont-init.d] 01-set-timezone: executing... 
+[cont-init.d] 01-set-timezone: exited 0.
+[cont-init.d] 10-config: executing... 
+No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled
+[cont-init.d] 10-config: exited 0.
+[cont-init.d] done.
+[services.d] starting services
+[services.d] done.
+JVB 2024-06-29 21:49:13.670 INFO: [1] JitsiConfig.<clinit>#47: Initialized newConfig: merge of /config/jvb.conf: 1,application.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/application.conf: 1,system properties,reference.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/ice4j-3.0-68-gd289f12.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/jitsi-media-transform-2.3-109-gacf024b7.jar!/reference.conf: 1
+JVB 2024-06-29 21:49:13.714 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#51: loading config file at path /config/sip-communicator.properties
+JVB 2024-06-29 21:49:13.714 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#56: Error loading config file: java.io.FileNotFoundException: /config/sip-communicator.properties (No such file or directory)
+JVB 2024-06-29 21:49:13.715 INFO: [1] JitsiConfig.<clinit>#68: Initialized legacyConfig: sip communicator props (no description provided)
+JVB 2024-06-29 21:49:14.106 INFO: [1] JvmMetrics.<init>#36: Detected GC type G1
+JVB 2024-06-29 21:49:14.123 INFO: [1] MetricsUpdater.addUpdateTask#45: Scheduling metrics update task with interval PT5S.
+JVB 2024-06-29 21:49:14.144 INFO: [1] JitsiConfig$Companion.reloadNewConfig#94: Reloading the Typesafe config source (previously reloaded 0 times).
+JVB 2024-06-29 21:49:14.156 INFO: [1] MainKt.main#76: Starting jitsi-videobridge version 2.3.109-gacf024b7
+JVB 2024-06-29 21:49:14.180 INFO: [1] UlimitCheck.printUlimits#109: Running with open files limit 1048576 (hard 1048576), thread limit unlimited (hard unlimited).
+JVB 2024-06-29 21:49:14.242 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Adding a static mapping: StaticMapping(localAddress=172.19.0.4, publicAddress=, localPort=null, publicPort=null, name=ip-0)
+JVB 2024-06-29 21:49:14.245 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using AwsCandidateHarvester.
+JVB 2024-06-29 21:49:14.247 INFO: [1] org.ice4j.ice.harvest.AbstractUdpListener.<init>: Initialized AbstractUdpListener with address 172.19.0.4:10000/udp. Receive buffer size 212992 (asked for 10485760)
+JVB 2024-06-29 21:49:14.250 INFO: [1] org.ice4j.ice.harvest.SinglePortUdpHarvester.<init>: Initialized SinglePortUdpHarvester with address 172.19.0.4:10000/udp
+JVB 2024-06-29 21:49:14.251 INFO: [1] Smack.initialize#30: Setting XML parsing limits.
+JVB 2024-06-29 21:49:14.268 INFO: [1] Smack.initialize#42: Using JitsiXmppStringprep.
+JVB 2024-06-29 21:49:14.281 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.createStunHarvesters: Using 193.122.56.141:443/udp for StunMappingCandidateHarvester (localAddress=172.19.0.4:0/udp).
+JVB 2024-06-29 21:49:14.448 INFO: [18] org.ice4j.ice.harvest.StunMappingCandidateHarvester.discover: Discovered public address 90.191.14.8:55312/udp from STUN server 193.122.56.141:443/udp using local address org.ice4j.socket.IceUdpSocketWrapper@182f308a
+JVB 2024-06-29 21:49:14.733 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#288: Initializing a new MucClient for [ org.jitsi.xmpp.mucclient.MucClientConfiguration id=shard0 domain=auth.meet.jitsi hostname=xmpp.meet.jitsi port=5222 username=jvb mucs=[jvbbrewery@internal-muc.meet.jitsi] mucNickname=c7e2f95ee80b disableCertificateVerification=true]
+JVB 2024-06-29 21:49:14.734 INFO: [1] TaskPools.<clinit>#87: TaskPools detected 4 processors, creating the CPU pool with that many threads
+JVB 2024-06-29 21:49:14.747 INFO: [1] HealthChecker.start#122: Started with interval=60000, timeout=PT1M30S, maxDuration=PT3S, stickyFailures=false.
+JVB 2024-06-29 21:49:14.748 WARNING: [24] MucClient.createXMPPTCPConnectionConfiguration#117: Disabling certificate verification!
+JVB 2024-06-29 21:49:14.750 INFO: [1] MucPublisher.start#36: Starting with interval PT5S.
+JVB 2024-06-29 21:49:14.752 INFO: [1] MainKt.main#121: Starting public http server
+JVB 2024-06-29 21:49:14.762 WARNING: [1] ColibriWebSocketService.<init>#51: Websockets enabled, but no domains specified: URLs=[wss://localhost:8443/colibri-ws/172.19.0.4], Relay URLs=[]
+JVB 2024-06-29 21:49:14.784 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 21:49:14.879 INFO: [1] ColibriWebSocketService.registerServlet#84: Registering servlet with baseUrls = [wss://localhost:8443/colibri-ws/172.19.0.4], relayBaseUrls = []
+JVB 2024-06-29 21:49:14.915 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#350: Dispatching a thread to connect and login.
+JVB 2024-06-29 21:49:14.920 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-29 21:49:14.954 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.maybeAdd: Discarding a mapping harvester: org.ice4j.ice.harvest.AwsCandidateHarvester@6f901caf
+JVB 2024-06-29 21:49:14.955 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StaticMappingCandidateHarvester(face=172.19.0.4:9/udp, mask=127.0.0.1:9/udp)
+JVB 2024-06-29 21:49:14.955 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StunMappingCandidateHarvester@3f353f95
+JVB 2024-06-29 21:49:14.957 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Initialized mapping harvesters (delay=773ms).  stunDiscoveryFailed=false
+JVB 2024-06-29 21:49:14.989 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@30d25c03{/,null,AVAILABLE}
+JVB 2024-06-29 21:49:14.996 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@723ed581{HTTP/1.1, (http/1.1)}{0.0.0.0:9090}
+JVB 2024-06-29 21:49:14.998 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@35088e87{STARTING}[11.0.20,sto=0] @2033ms
+JVB 2024-06-29 21:49:15.000 INFO: [1] MainKt.main#139: Starting private http server
+JVB 2024-06-29 21:49:15.050 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-29 21:49:15.090 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connected#321: Connected.
+JVB 2024-06-29 21:49:15.090 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#646: Logging in.
+JVB 2024-06-29 21:49:15.160 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.authenticated#327: Authenticated, b=false
+JVB 2024-06-29 21:49:15.179 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#771: Joined MUC: jvbbrewery@internal-muc.meet.jitsi
+JVB 2024-06-29 21:49:15.297 WARNING: [1] org.glassfish.jersey.server.wadl.WadlFeature.configure: JAXBContext implementation could not be found. WADL feature is disabled.
+JVB 2024-06-29 21:49:15.353 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Health registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Health will be ignored. 
+JVB 2024-06-29 21:49:15.353 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Version registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Version will be ignored. 
+JVB 2024-06-29 21:49:15.353 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.prometheus.Prometheus registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.prometheus.Prometheus will be ignored. 
+JVB 2024-06-29 21:49:15.465 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@3292d91a{/,null,AVAILABLE}
+JVB 2024-06-29 21:49:15.465 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@5017e1{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+JVB 2024-06-29 21:49:15.465 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@588307f7{STARTING}[11.0.20,sto=0] @2500ms
+[cont-finish.d] executing container finish scripts...
+[cont-finish.d] done.
+[s6-finish] waiting for services.
+[s6-finish] sending all processes the TERM signal.
+[s6-finish] sending all processes the KILL signal and exiting.
+[s6-init] making user provided files available at /var/run/s6/etc...exited 0.
+[s6-init] ensuring user provided files have correct perms...exited 0.
+[fix-attrs.d] applying ownership & permissions fixes...
+[fix-attrs.d] done.
+[cont-init.d] executing container initialization scripts...
+[cont-init.d] 01-set-timezone: executing... 
+[cont-init.d] 01-set-timezone: exited 0.
+[cont-init.d] 10-config: executing... 
+No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled
+[cont-init.d] 10-config: exited 0.
+[cont-init.d] done.
+[services.d] starting services
+[services.d] done.
+JVB 2024-06-29 21:52:31.996 INFO: [1] JitsiConfig.<clinit>#47: Initialized newConfig: merge of /config/jvb.conf: 1,application.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/application.conf: 1,system properties,reference.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/ice4j-3.0-68-gd289f12.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/jitsi-media-transform-2.3-109-gacf024b7.jar!/reference.conf: 1
+JVB 2024-06-29 21:52:32.028 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#51: loading config file at path /config/sip-communicator.properties
+JVB 2024-06-29 21:52:32.033 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#56: Error loading config file: java.io.FileNotFoundException: /config/sip-communicator.properties (No such file or directory)
+JVB 2024-06-29 21:52:32.034 INFO: [1] JitsiConfig.<clinit>#68: Initialized legacyConfig: sip communicator props (no description provided)
+JVB 2024-06-29 21:52:32.318 INFO: [1] JvmMetrics.<init>#36: Detected GC type G1
+JVB 2024-06-29 21:52:32.326 INFO: [1] MetricsUpdater.addUpdateTask#45: Scheduling metrics update task with interval PT5S.
+JVB 2024-06-29 21:52:32.340 INFO: [1] JitsiConfig$Companion.reloadNewConfig#94: Reloading the Typesafe config source (previously reloaded 0 times).
+JVB 2024-06-29 21:52:32.359 INFO: [1] MainKt.main#76: Starting jitsi-videobridge version 2.3.109-gacf024b7
+JVB 2024-06-29 21:52:32.393 INFO: [1] UlimitCheck.printUlimits#109: Running with open files limit 1048576 (hard 1048576), thread limit unlimited (hard unlimited).
+JVB 2024-06-29 21:52:32.450 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Adding a static mapping: StaticMapping(localAddress=172.19.0.4, publicAddress=, localPort=null, publicPort=null, name=ip-0)
+JVB 2024-06-29 21:52:32.459 INFO: [1] org.ice4j.ice.harvest.AbstractUdpListener.<init>: Initialized AbstractUdpListener with address 172.19.0.4:10000/udp. Receive buffer size 212992 (asked for 10485760)
+JVB 2024-06-29 21:52:32.462 INFO: [1] org.ice4j.ice.harvest.SinglePortUdpHarvester.<init>: Initialized SinglePortUdpHarvester with address 172.19.0.4:10000/udp
+JVB 2024-06-29 21:52:32.465 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using AwsCandidateHarvester.
+JVB 2024-06-29 21:52:32.467 INFO: [1] Smack.initialize#30: Setting XML parsing limits.
+JVB 2024-06-29 21:52:32.482 INFO: [1] Smack.initialize#42: Using JitsiXmppStringprep.
+JVB 2024-06-29 21:52:32.495 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.createStunHarvesters: Using 193.122.4.180:443/udp for StunMappingCandidateHarvester (localAddress=172.19.0.4:0/udp).
+JVB 2024-06-29 21:52:32.610 INFO: [18] org.ice4j.ice.harvest.StunMappingCandidateHarvester.discover: Discovered public address 90.191.14.8:59319/udp from STUN server 193.122.4.180:443/udp using local address org.ice4j.socket.IceUdpSocketWrapper@606a826b
+JVB 2024-06-29 21:52:32.621 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.maybeAdd: Discarding a mapping harvester: org.ice4j.ice.harvest.AwsCandidateHarvester@70b89454
+JVB 2024-06-29 21:52:32.621 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StaticMappingCandidateHarvester(face=172.19.0.4:9/udp, mask=127.0.0.1:9/udp)
+JVB 2024-06-29 21:52:32.622 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StunMappingCandidateHarvester@5c60cf80
+JVB 2024-06-29 21:52:32.632 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Initialized mapping harvesters (delay=226ms).  stunDiscoveryFailed=false
+JVB 2024-06-29 21:52:32.810 INFO: [1] TaskPools.<clinit>#87: TaskPools detected 4 processors, creating the CPU pool with that many threads
+JVB 2024-06-29 21:52:32.823 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#288: Initializing a new MucClient for [ org.jitsi.xmpp.mucclient.MucClientConfiguration id=shard0 domain=auth.meet.jitsi hostname=xmpp.meet.jitsi port=5222 username=jvb mucs=[jvbbrewery@internal-muc.meet.jitsi] mucNickname=c7e2f95ee80b disableCertificateVerification=true]
+JVB 2024-06-29 21:52:32.839 INFO: [1] HealthChecker.start#122: Started with interval=60000, timeout=PT1M30S, maxDuration=PT3S, stickyFailures=false.
+JVB 2024-06-29 21:52:32.843 INFO: [1] MucPublisher.start#36: Starting with interval PT5S.
+JVB 2024-06-29 21:52:32.848 INFO: [1] MainKt.main#121: Starting public http server
+JVB 2024-06-29 21:52:32.851 WARNING: [24] MucClient.createXMPPTCPConnectionConfiguration#117: Disabling certificate verification!
+JVB 2024-06-29 21:52:32.894 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 21:52:32.936 WARNING: [1] ColibriWebSocketService.<init>#51: Websockets enabled, but no domains specified: URLs=[wss://localhost:8443/colibri-ws/172.19.0.4], Relay URLs=[]
+JVB 2024-06-29 21:52:33.007 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#350: Dispatching a thread to connect and login.
+JVB 2024-06-29 21:52:33.038 INFO: [1] ColibriWebSocketService.registerServlet#84: Registering servlet with baseUrls = [wss://localhost:8443/colibri-ws/172.19.0.4], relayBaseUrls = []
+JVB 2024-06-29 21:52:33.089 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-29 21:52:33.194 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@3bec2275{/,null,AVAILABLE}
+JVB 2024-06-29 21:52:33.197 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connected#321: Connected.
+JVB 2024-06-29 21:52:33.197 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#646: Logging in.
+JVB 2024-06-29 21:52:33.203 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@773e2eb5{HTTP/1.1, (http/1.1)}{0.0.0.0:9090}
+JVB 2024-06-29 21:52:33.204 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@59532566{STARTING}[11.0.20,sto=0] @1804ms
+JVB 2024-06-29 21:52:33.205 INFO: [1] MainKt.main#139: Starting private http server
+JVB 2024-06-29 21:52:33.230 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-29 21:52:33.276 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.authenticated#327: Authenticated, b=false
+JVB 2024-06-29 21:52:33.312 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#771: Joined MUC: jvbbrewery@internal-muc.meet.jitsi
+JVB 2024-06-29 21:52:33.519 WARNING: [1] org.glassfish.jersey.server.wadl.WadlFeature.configure: JAXBContext implementation could not be found. WADL feature is disabled.
+JVB 2024-06-29 21:52:33.564 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Health registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Health will be ignored. 
+JVB 2024-06-29 21:52:33.565 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Version registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Version will be ignored. 
+JVB 2024-06-29 21:52:33.565 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.prometheus.Prometheus registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.prometheus.Prometheus will be ignored. 
+JVB 2024-06-29 21:52:33.678 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@24c685e7{/,null,AVAILABLE}
+JVB 2024-06-29 21:52:33.679 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@379ce046{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+JVB 2024-06-29 21:52:33.679 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@148c7c4b{STARTING}[11.0.20,sto=0] @2279ms
+[cont-finish.d] executing container finish scripts...
+[cont-finish.d] done.
+[s6-finish] waiting for services.
+[s6-finish] sending all processes the TERM signal.
+[s6-finish] sending all processes the KILL signal and exiting.
+[s6-init] making user provided files available at /var/run/s6/etc...exited 0.
+[s6-init] ensuring user provided files have correct perms...exited 0.
+[fix-attrs.d] applying ownership & permissions fixes...
+[fix-attrs.d] done.
+[cont-init.d] executing container initialization scripts...
+[cont-init.d] 01-set-timezone: executing... 
+[cont-init.d] 01-set-timezone: exited 0.
+[cont-init.d] 10-config: executing... 
+No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled
+[cont-init.d] 10-config: exited 0.
+[cont-init.d] done.
+[services.d] starting services
+[services.d] done.
+JVB 2024-06-29 21:55:27.408 INFO: [1] JitsiConfig.<clinit>#47: Initialized newConfig: merge of /config/jvb.conf: 1,application.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/application.conf: 1,system properties,reference.conf @ jar:file:/usr/share/jitsi-videobridge/jitsi-videobridge.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/ice4j-3.0-68-gd289f12.jar!/reference.conf: 1,reference.conf @ jar:file:/usr/share/jitsi-videobridge/lib/jitsi-media-transform-2.3-109-gacf024b7.jar!/reference.conf: 1
+JVB 2024-06-29 21:55:27.437 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#51: loading config file at path /config/sip-communicator.properties
+JVB 2024-06-29 21:55:27.438 INFO: [1] ReadOnlyConfigurationService.reloadConfiguration#56: Error loading config file: java.io.FileNotFoundException: /config/sip-communicator.properties (No such file or directory)
+JVB 2024-06-29 21:55:27.438 INFO: [1] JitsiConfig.<clinit>#68: Initialized legacyConfig: sip communicator props (no description provided)
+JVB 2024-06-29 21:55:27.678 INFO: [1] JvmMetrics.<init>#36: Detected GC type G1
+JVB 2024-06-29 21:55:27.684 INFO: [1] MetricsUpdater.addUpdateTask#45: Scheduling metrics update task with interval PT5S.
+JVB 2024-06-29 21:55:27.693 INFO: [1] JitsiConfig$Companion.reloadNewConfig#94: Reloading the Typesafe config source (previously reloaded 0 times).
+JVB 2024-06-29 21:55:27.707 INFO: [1] MainKt.main#76: Starting jitsi-videobridge version 2.3.109-gacf024b7
+JVB 2024-06-29 21:55:27.732 INFO: [1] UlimitCheck.printUlimits#109: Running with open files limit 1048576 (hard 1048576), thread limit unlimited (hard unlimited).
+JVB 2024-06-29 21:55:27.825 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Adding a static mapping: StaticMapping(localAddress=172.19.0.4, publicAddress=, localPort=null, publicPort=null, name=ip-0)
+JVB 2024-06-29 21:55:27.831 INFO: [1] org.ice4j.ice.harvest.AbstractUdpListener.<init>: Initialized AbstractUdpListener with address 172.19.0.4:10000/udp. Receive buffer size 212992 (asked for 10485760)
+JVB 2024-06-29 21:55:27.832 INFO: [1] org.ice4j.ice.harvest.SinglePortUdpHarvester.<init>: Initialized SinglePortUdpHarvester with address 172.19.0.4:10000/udp
+JVB 2024-06-29 21:55:27.833 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using AwsCandidateHarvester.
+JVB 2024-06-29 21:55:27.833 INFO: [1] Smack.initialize#30: Setting XML parsing limits.
+JVB 2024-06-29 21:55:27.838 INFO: [1] Smack.initialize#42: Using JitsiXmppStringprep.
+JVB 2024-06-29 21:55:27.862 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.createStunHarvesters: Using 193.122.4.180:443/udp for StunMappingCandidateHarvester (localAddress=172.19.0.4:0/udp).
+JVB 2024-06-29 21:55:27.971 INFO: [18] org.ice4j.ice.harvest.StunMappingCandidateHarvester.discover: Discovered public address 90.191.14.8:52634/udp from STUN server 193.122.4.180:443/udp using local address org.ice4j.socket.IceUdpSocketWrapper@4cbad1b6
+JVB 2024-06-29 21:55:28.206 INFO: [1] TaskPools.<clinit>#87: TaskPools detected 4 processors, creating the CPU pool with that many threads
+JVB 2024-06-29 21:55:28.218 INFO: [1] HealthChecker.start#122: Started with interval=60000, timeout=PT1M30S, maxDuration=PT3S, stickyFailures=false.
+JVB 2024-06-29 21:55:28.223 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#288: Initializing a new MucClient for [ org.jitsi.xmpp.mucclient.MucClientConfiguration id=shard0 domain=auth.meet.jitsi hostname=xmpp.meet.jitsi port=5222 username=jvb mucs=[jvbbrewery@internal-muc.meet.jitsi] mucNickname=c7e2f95ee80b disableCertificateVerification=true]
+JVB 2024-06-29 21:55:28.225 INFO: [1] MucPublisher.start#36: Starting with interval PT5S.
+JVB 2024-06-29 21:55:28.249 INFO: [1] MainKt.main#121: Starting public http server
+JVB 2024-06-29 21:55:28.250 WARNING: [25] [hostname=xmpp.meet.jitsi id=shard0] MucClient.setPresenceExtensions#467: Cannot set presence extension: not connected.
+JVB 2024-06-29 21:55:28.263 WARNING: [24] MucClient.createXMPPTCPConnectionConfiguration#117: Disabling certificate verification!
+JVB 2024-06-29 21:55:28.336 WARNING: [1] ColibriWebSocketService.<init>#51: Websockets enabled, but no domains specified: URLs=[wss://localhost:8443/colibri-ws/172.19.0.4], Relay URLs=[]
+JVB 2024-06-29 21:55:28.398 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.initializeConnectAndJoin#350: Dispatching a thread to connect and login.
+JVB 2024-06-29 21:55:28.436 INFO: [1] ColibriWebSocketService.registerServlet#84: Registering servlet with baseUrls = [wss://localhost:8443/colibri-ws/172.19.0.4], relayBaseUrls = []
+JVB 2024-06-29 21:55:28.444 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-29 21:55:28.486 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.maybeAdd: Discarding a mapping harvester: org.ice4j.ice.harvest.AwsCandidateHarvester@44146676
+JVB 2024-06-29 21:55:28.491 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StaticMappingCandidateHarvester(face=172.19.0.4:9/udp, mask=127.0.0.1:9/udp)
+JVB 2024-06-29 21:55:28.491 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Using org.ice4j.ice.harvest.StunMappingCandidateHarvester@4536021b
+JVB 2024-06-29 21:55:28.493 INFO: [16] org.ice4j.ice.harvest.MappingCandidateHarvesters.initialize: Initialized mapping harvesters (delay=755ms).  stunDiscoveryFailed=false
+JVB 2024-06-29 21:55:28.528 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@598260a6{/,null,AVAILABLE}
+JVB 2024-06-29 21:55:28.547 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@1ba05e38{HTTP/1.1, (http/1.1)}{0.0.0.0:9090}
+JVB 2024-06-29 21:55:28.548 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@58a4a74d{STARTING}[11.0.20,sto=0] @1829ms
+JVB 2024-06-29 21:55:28.552 INFO: [1] MainKt.main#139: Starting private http server
+JVB 2024-06-29 21:55:28.588 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.connected#321: Connected.
+JVB 2024-06-29 21:55:28.588 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient.lambda$getConnectAndLoginCallable$9#646: Logging in.
+JVB 2024-06-29 21:55:28.600 INFO: [1] org.eclipse.jetty.server.Server.doStart: jetty-11.0.20; built: 2024-01-29T21:04:22.394Z; git: 922f8dc188f7011e60d0361de585fd4ac4d63064; jvm 17.0.11+9-Debian-1deb12u1
+JVB 2024-06-29 21:55:28.687 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$2.authenticated#327: Authenticated, b=false
+JVB 2024-06-29 21:55:28.728 INFO: [24] [hostname=xmpp.meet.jitsi id=shard0] MucClient$MucWrapper.join#771: Joined MUC: jvbbrewery@internal-muc.meet.jitsi
+JVB 2024-06-29 21:55:28.884 WARNING: [1] org.glassfish.jersey.server.wadl.WadlFeature.configure: JAXBContext implementation could not be found. WADL feature is disabled.
+JVB 2024-06-29 21:55:28.961 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Health registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Health will be ignored. 
+JVB 2024-06-29 21:55:28.962 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.Version registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.Version will be ignored. 
+JVB 2024-06-29 21:55:28.963 WARNING: [1] org.glassfish.jersey.internal.inject.Providers.checkProviderRuntime: A provider org.jitsi.rest.prometheus.Prometheus registered in SERVER runtime does not implement any provider interfaces applicable in the SERVER runtime. Due to constraint configuration problems the provider org.jitsi.rest.prometheus.Prometheus will be ignored. 
+JVB 2024-06-29 21:55:29.111 INFO: [1] org.eclipse.jetty.server.handler.ContextHandler.doStart: Started o.e.j.s.ServletContextHandler@182e7eda{/,null,AVAILABLE}
+JVB 2024-06-29 21:55:29.111 INFO: [1] org.eclipse.jetty.server.AbstractConnector.doStart: Started ServerConnector@3d7b1f1c{HTTP/1.1, (http/1.1)}{0.0.0.0:8080}
+JVB 2024-06-29 21:55:29.111 INFO: [1] org.eclipse.jetty.server.Server.doStart: Started Server@3bd3d05e{STARTING}[11.0.20,sto=0] @2392ms
