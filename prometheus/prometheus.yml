@@ -1,9 +1,5 @@
 scrape_configs:
-  # - job_name: "prometheus"
-  #   scrape_interval: 5s
-  #   static_configs:
-  #     - targets: ["prosody:5280","jvb:8080","jicofo:8888"]
-  
-  - job_name: "docker"
+  - job_name: "prometheus"
     scrape_interval: 5s
-      - targets: ["host.docker.internal:9323"]
+    static_configs:
+      - targets: ["prosody:5280","jvb:8080","jicofo:8888"]
