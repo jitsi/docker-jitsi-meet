@@ -1,0 +1,13 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - 9090:9090
+    restart: ${RESTART_POLICY:-unless-stopped}
+    volumes:
+      - ./prometheus:/etc/prometheus
+    networks:
+      meet.jitsi:
