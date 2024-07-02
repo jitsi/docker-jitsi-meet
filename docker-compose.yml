@@ -459,49 +459,6 @@ services:
             - prosody
         networks:
             meet.jitsi:
-    # Log Analyser
-    grafana:
-        image: grafana/grafana:10.2.0
-        container_name: grafana
-        user: "0"
-        environment:
-            # - GF_LOG_LEVEL=warn
-            - GF_ANALYTICS_REPORTING_ENABLED=false
-        volumes:
-            - ./log-analyser/grafana:/var/lib/grafana
-            - ./log-analyser/grafana-provisioning/:/etc/grafana/provisioning/
-        ports:
-            - "3000:3000"
-        logging:
-            driver: syslog
-            options:
-                syslog-address: "udp://127.0.0.1:5123"
-                tag: "grafana"
-    loki:
-        container_name: loki
-        user: "0"
-        image: grafana/loki:3.0.0
-        command: -config.file=/conf/loki-config.yaml
-        volumes:
-            - ./log-analyser/loki/data:/data
-            - ./log-analyser/loki/conf:/conf
-        ports:
-            - "3100:3100"
-    otel-collector:
-        container_name: otel
-        image: otel/opentelemetry-collector-contrib
-        volumes:
-            - ./log-analyser/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
-            - ./log-analyser/jitsi-logs/:/tmp/jitsi-logs/
-        ports:
-            - 1888:1888 # pprof extension
-            # - 8888:8888 # Prometheus metrics exposed by the Collector
-            # - 8889:8889 # Prometheus exporter metrics
-            - 13133:13133 # health_check extension
-            - 4317:4317 # OTLP gRPC receiver
-            - 4318:4318 # OTLP http receiver
-            - 55679:55679 # zpages extension
-
 
 # Custom network so all services can communicate using a FQDN
 networks:

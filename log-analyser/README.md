@@ -1,15 +1,16 @@
 # JITSI MEET LOG ANALYSER - Grafana Loki and OpenTelemetry Integration
 
-Welcome to the Grafana Loki and OpenTelemetry integration project! This repository provides a simple and effective setup for log management and analysis using Docker, Grafana Loki and OpenTelemetry.
+Welcome to the Grafana Loki and OpenTelemetry integration project! This repository provides a simple and effective setup for log management and analysis using Docker, Grafana Loki, and OpenTelemetry.
 
 ## Overview
 
 This project demonstrates how to configure and use Grafana Loki with OpenTelemetry to collect, parse, and visualize log data. It includes:
 
-- A Docker Compose setup for Grafana, Loki, and OpenTelemetry Collector
-- Configuration files for log parsing and exporting
-- Instructions to set up and access Grafana with Loki as a data source
-
+- A Docker Compose setup (`log-analyser.yml`) for Loki and OpenTelemetry Collector.
+- A Docker Compose setup (`grafana.yml`) for Grafana.
+- Configuration files for log parsing and exporting.
+- Instructions to set up and access Grafana with Loki as a data source.
+- 
 ## Getting Started
 
 ### Prerequisites
@@ -26,21 +27,35 @@ This project demonstrates how to configure and use Grafana Loki with OpenTelemet
     cd grafana-loki-otel
     ```
 
-2. **Add your log files:**
+### Log Analyser
+
+1. **Add your log files:**
 
    Place your log file in the `log-analyser/jitsi-logs` directory. Update the `otel-collector-config.yaml` file with the correct file path to start ingesting the logs. This setup allows OpenTelemetry to read logs from the file and forward them to Loki.
 
+2. **Update the otel-collector-config.yaml file:**
+
+   Update the file path to point to your log file for ingestion by OpenTelemetry.
+
 3. **Start the Docker containers:**
 
-    ```bash
-    docker-compose up -d
+   ```bash
+   docker-compose -f log-analyser.yml up -d
     ```
 
-4. **Access Grafana:**
+### Grafana
+
+1. **Start the Docker container:**
+
+   ```bash
+   docker-compose -f grafana.yml up -d
+    ```
+
+2. **Access Grafana:**
 
    Open your web browser and navigate to [http://localhost:3000](http://localhost:3000).
 
-5. **Log in to Grafana:**
+3. **Log in to Grafana:**
 
    Use the default credentials:
 
@@ -49,14 +64,14 @@ This project demonstrates how to configure and use Grafana Loki with OpenTelemet
     Password: admin
     ```
 
-6. **Add Loki as a data source:**
+4. **Add Loki as a data source:**
 
     - Go to `Configuration` > `Data Sources` > `Add data source`.
     - Select `Loki` from the list.
     - Enter `http://loki:3100` as the Loki endpoint.
     - Save the configuration.
 
-### Dashboard Setups
+### Dashboard Setup
 
 The dashboard setups are available as JSON files in the `log-analyser/grafana-dashboards` directory. You can import these JSON files into Grafana to use the pre-configured dashboards. In the future, we plan to automate this import process.
 
