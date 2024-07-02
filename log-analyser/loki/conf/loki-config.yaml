@@ -36,8 +36,6 @@ schema_config:
         prefix: index_
         period: 24h
 
-ruler:
-  alertmanager_url: http://localhost:9093
 
 # By default, Loki will send anonymous, but uniquely-identifiable usage and configuration
 # analytics to Grafana Labs. These statistics are sent to https://stats.grafana.org/
