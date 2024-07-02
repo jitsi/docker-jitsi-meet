@@ -64,13 +64,6 @@ This project demonstrates how to configure and use Grafana Loki with OpenTelemet
     Password: admin
     ```
 
-4. **Add Loki as a data source:**
-
-    - Go to `Configuration` > `Data Sources` > `Add data source`.
-    - Select `Loki` from the list.
-    - Enter `http://loki:3100` as the Loki endpoint.
-    - Save the configuration.
-
 ### Dashboard Setup
 
 The dashboard setups are available as JSON files in the `log-analyser/grafana-dashboards` directory. You can import these JSON files into Grafana to use the pre-configured dashboards. In the future, we plan to automate this import process.
