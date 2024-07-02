@@ -1,3 +1,30 @@
+## stable-9584
+
+Based on stable release 9584.
+
+* b4604f3 feat(whiteboard) add builtin whiteboard integration
+* 49bd165 feat(jibri) update Chrome to 126
+* 980703b fix(jibri): display modes in xorg config
+* c65d2bd feat(jigasi,jicofo,jvb,jibri,prosody): add healthcheck.sh scripts and prosody http_health mod
+* d2ac43d feat(jigasi): Add new environment variables for jigasi configuration (#1841)
+* fbc250e feat(prosody): openmetrics module support (#1832)
+* 2adac72 feat(prosody): Drop non existing config.
+* e22b4f3 feat(jibri): Adds more fonts.
+* 982e577 feat(jicofo,jvb,web) default to using SCTP based datachannels
+* 55c975f fix(jicofo): use integer for port value to fix addition (#1826)
+* 7c8763f base: update tpl to version 1.3.0
+* 1d3c0f1 jibri: fail to start if the SYS_ADMIN cap is missing (#1816)
+* cacee4e jvb: adds autoscaler sidecar hook to signal final shutdown (#1809)
+* 726b0f0 jibri: adds autoscaler sidecar hook to signal final shutdown (#1810)
+* f2b2cc4 etherpad: update image version and settings
+* 731d6d1 base: update tpl to make toBool more resilient
+* 59c4eb2 jvb: add fallback WS server ID
+* 9a54843 jvb: add ability to configure the TLS option for colibri WS
+* 79a4635 jvb: add ability to disable XMPP
+* 77ce86a jvb: add ability to enable SCTP datachannels
+* 76ffaa7 jicofo, jvb: fix OCTO + SCTP behaviour
+* 0298a30 misc: working on unstable
+
 ## stable-9457-2
 
 Based on stable release 9457-2.
