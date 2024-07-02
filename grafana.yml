@@ -11,8 +11,3 @@ services:
       - ./log-analyser/grafana-provisioning/:/etc/grafana/provisioning/
     ports:
       - "3000:3000"
-    logging:
-      driver: syslog
-      options:
-        syslog-address: "udp://127.0.0.1:5123"
-        tag: "grafana"

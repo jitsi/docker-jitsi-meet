@@ -32,10 +32,6 @@ exporters:
     loglevel: debug
   loki:
     endpoint: "http://loki:3100/loki/api/v1/push"
-  otlp:
-    endpoint: tempo:4317
-    tls:
-      insecure: true
 
 service:
   pipelines:
