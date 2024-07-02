@@ -1,0 +1,53 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+      grpc:
+        endpoint: 0.0.0.0:4317
+  filelog/jicofo:
+    include: ['/tmp/jitsi-logs/jicofo.log']
+    operators:
+      - type: regex_parser
+        regex: "^(?P<app>Jicofo) (?P<timestamp>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}) (?P<level>\\w+): \\[(?P<pid>\\d+)\\] (?P<codefile>[\\w\\.]+)#(?P<codeline>\\d+): (?P<message>[\\S\\s]*)$"
+  filelog/jvb:
+    include: ['/tmp/jitsi-logs/jvb.log']
+    operators:
+      - type: regex_parser
+        regex: "^(?P<app>JVB) (?P<timestamp>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}) (?P<level>\\w+): \\[(?P<pid>\\d+)\\] (?P<codefile>[\\w\\.]+)#(?P<codeline>\\d+): (?P<message>[\\S\\s]*)$"
+  filelog/prosody:
+    include: ['/tmp/jitsi-logs/prosody.log']
+    operators:
+      - type: regex_parser
+        regex: "^(?P<timestamp>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})\\s+(?P<service>\\S+)\\s+(?P<level>\\w+)\\s+(?P<message>.+)$"
+  filelog/jitsi-web:
+    include: ['/tmp/jitsi-logs/jitsi-web.log']
+    operators:
+      - type: regex_parser
+        regex: "^(?P<message>\\[\\w+-\\w+\\.\\w+\\]\\s+(\\w+\\s+)*\\w+:?\\s*.*$)"
+processors:
+  batch:
+
+exporters:
+  logging:
+    loglevel: debug
+  loki:
+    endpoint: "http://loki:3100/loki/api/v1/push"
+
+service:
+  pipelines:
+    logs/jicofo:
+      receivers: [otlp, filelog/jicofo]
+      processors: [batch]
+      exporters: [loki]
+    logs/jvb:
+      receivers: [otlp, filelog/jvb]
+      processors: [batch]
+      exporters: [loki]
+    logs/prosody:
+      receivers: [otlp, filelog/prosody]
+      processors: [batch]
+      exporters: [loki]
+    logs/jitsi-web:
+      receivers: [otlp, filelog/jitsi-web]
+      processors: [batch]
+      exporters: [loki]
