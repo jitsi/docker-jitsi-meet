@@ -1,6 +1,7 @@
 # JITSI MEET LOG ANALYSER - Grafana Loki and OpenTelemetry Integration
 
 Welcome to the Grafana Loki and OpenTelemetry integration project! This repository provides a simple and effective setup for log management and analysis using Docker, Grafana Loki, and OpenTelemetry.
+Currently this is an in-progress GSoC Summer of Code project and so the instructions may change before being finalized.  Please treat all this as alpha code.
 
 ## Overview
 
