@@ -554,7 +554,7 @@ config.e2eping.maxMessagePerSecond = {{ .Env.E2EPING_MAX_MESSAGE_PER_SECOND }};
 config.whiteboard = {
     enabled: {{ $WHITEBOARD_ENABLED }},
 {{ if .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL -}}
-    collabServerBaseUrl: '{{ .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}';
+    collabServerBaseUrl: '{{ .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}'
 {{ else if .Env.WHITEBOARD_COLLAB_SERVER_URL_BASE -}}
     collabServerBaseUrl: '{{ $PUBLIC_URL }}'
 {{ end -}}
