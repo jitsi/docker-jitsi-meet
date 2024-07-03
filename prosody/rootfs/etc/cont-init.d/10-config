@@ -63,6 +63,7 @@ else
     rm /config/conf.d/brewery.cfg.lua
 fi
 tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
+tpl /defaults/lib/prosody/modules/mod_c2s.lua > /lib/prosody/modules/mod_c2s.lua
 tpl /defaults/conf.d/$PROSODY_SITE_CFG > /config/conf.d/$PROSODY_SITE_CFG
 
 if [[ -z $JICOFO_AUTH_PASSWORD ]]; then

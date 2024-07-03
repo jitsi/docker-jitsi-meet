@@ -1,3 +1,4 @@
+{{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
 -- Prosody IM
 -- Copyright (C) 2008-2010 Matthew Wild
 -- Copyright (C) 2008-2010 Waqas Hussain
@@ -458,7 +459,7 @@ end, -100);
 module:provides("net", {
 	name = "c2s";
 	listener = listener;
-	default_port = 5222;
+	default_port = {{ $XMPP_PORT }};
 	encryption = "starttls";
 	multiplex = {
 		protocol = "xmpp-client";
