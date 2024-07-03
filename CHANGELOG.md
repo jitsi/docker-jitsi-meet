@@ -1,3 +1,13 @@
+## stable-9584-1
+
+Based on stable release 9584-1.
+
+* 29a4523 feat(jvb) add JVB_CC_TRUST_BWE environment variable
+* 0f7be54 feat(prometheus): Prometheus container and basic scraping configuration  (#1838)
+* 9c87bba feat(jitsi-meet): added grafana loki and otel integration for log analysis (#1844)
+* fcb90ba fix(web): whiteboard config.js syntax error (#1851)
+* 811518b misc: working on unstable
+
 ## stable-9584
 
 Based on stable release 9584.
