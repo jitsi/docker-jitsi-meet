@@ -39,7 +39,7 @@ This project demonstrates how to configure and use Grafana Loki with OpenTelemet
 3. **Start the Docker containers:**
 
    ```bash
-   docker-compose -f docker-compose.yml log-analyser.yml up -d
+   docker-compose -f docker-compose.yml -f log-analyser.yml up -d
     ```
 
 ### Grafana
@@ -47,7 +47,7 @@ This project demonstrates how to configure and use Grafana Loki with OpenTelemet
 1. **Start the Docker container:**
 
    ```bash
-   docker-compose -f docker-compose.yml grafana.yml up -d
+   docker-compose -f docker-compose.yml -f grafana.yml up -d
     ```
 
 2. **Access Grafana:**
