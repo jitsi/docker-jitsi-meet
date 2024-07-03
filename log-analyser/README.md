@@ -24,7 +24,6 @@ This project demonstrates how to configure and use Grafana Loki with OpenTelemet
 
     ```bash
     git clone https://github.com/jitsi/docker-jitsi-meet.git
-    cd grafana-loki-otel
     ```
 
 ### Log Analyser
