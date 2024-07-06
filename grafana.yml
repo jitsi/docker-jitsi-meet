@@ -8,6 +8,6 @@ services:
       - GF_ANALYTICS_REPORTING_ENABLED=false
     volumes:
       - ./log-analyser/grafana:/var/lib/grafana
-      - ./log-analyser/grafana-provisioning/:/etc/grafana/provisioning/
+      - ./log-analyser/grafana-provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
     ports:
       - "3000:3000"
