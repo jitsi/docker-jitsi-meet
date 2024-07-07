@@ -171,8 +171,8 @@ services:
             - XMPP_MUC_DOMAIN
             - XMPP_RECORDER_DOMAIN
             - XMPP_PORT
-            - WHITEBOARD_ENABLED
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
+            - WHITEBOARD_COLLAB_SERVER_URL_BASE
         networks:
             meet.jitsi:
         depends_on:
@@ -425,6 +425,7 @@ services:
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
+            - JVB_CC_TRUST_BWE
             - JVB_DISABLE_STUN
             - JVB_DISABLE_XMPP
             - JVB_INSTANCE_ID
