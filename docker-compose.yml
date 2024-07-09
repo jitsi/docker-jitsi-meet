@@ -437,6 +437,7 @@ services:
             - JVB_OCTO_REGION
             - JVB_OCTO_RELAY_ID
             - JVB_REQUIRE_VALID_ADDRESS
+            - JVB_USE_USRSCTP
             - JVB_WS_DOMAIN
             - JVB_WS_SERVER_ID
             - JVB_WS_TLS
