@@ -21,6 +21,7 @@ services:
             - AUTOSCALER_SIDECAR_SHUTDOWN_POLLING_INTERVAL
             - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
             - AUTOSCALER_URL
+            - BOSH_URL_PATTERN
             - ENABLE_AUTH
             - ENABLE_GUESTS
             - XMPP_AUTH_DOMAIN
@@ -31,7 +32,10 @@ services:
             - XMPP_PORT
             - XMPP_DOMAIN
             - PUBLIC_URL
+            - JIGASI_CONFIGURATION
             - JIGASI_DISABLE_SIP
+            - JIGASI_JVB_TIMEOUT
+            - JIGASI_LOCAL_REGION
             - JIGASI_LOG_FILE
             - JIGASI_SIP_URI
             - JIGASI_SIP_PASSWORD
@@ -63,6 +67,7 @@ services:
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
+            - USE_TRANSLATOR_IN_CONFERENCE
         depends_on:
             - prosody
         networks:

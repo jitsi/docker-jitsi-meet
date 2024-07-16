@@ -62,8 +62,7 @@
 {{ $ENABLE_LOCAL_RECORDING_SELF_START := .Env.ENABLE_LOCAL_RECORDING_SELF_START | default "false" | toBool -}}
 {{ $DISABLE_PROFILE := .Env.DISABLE_PROFILE | default "false" | toBool -}}
 {{ $ROOM_PASSWORD_DIGITS := .Env.ROOM_PASSWORD_DIGITS | default "false" -}}
-{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL := .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" -}}
-{{ $WHITEBOARD_ENABLED := .Env.WHITEBOARD_ENABLED | default "false" | toBool -}}
+{{ $WHITEBOARD_ENABLED := or (.Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" | toBool) (.Env.WHITEBOARD_COLLAB_SERVER_URL_BASE | default "" | toBool) }}
 {{ $TESTING_AV1_SUPPORT := .Env.TESTING_AV1_SUPPORT | default "false" | toBool -}}
 
 // Video configuration.
@@ -554,7 +553,11 @@ config.e2eping.maxMessagePerSecond = {{ .Env.E2EPING_MAX_MESSAGE_PER_SECOND }};
 // Settings for the Excalidraw whiteboard integration.
 config.whiteboard = {
     enabled: {{ $WHITEBOARD_ENABLED }},
-    collabServerBaseUrl: '{{ $WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}'
+{{ if .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL -}}
+    collabServerBaseUrl: '{{ .Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL }}'
+{{ else if .Env.WHITEBOARD_COLLAB_SERVER_URL_BASE -}}
+    collabServerBaseUrl: '{{ $PUBLIC_URL }}'
+{{ end -}}
 };
 
 // Testing
