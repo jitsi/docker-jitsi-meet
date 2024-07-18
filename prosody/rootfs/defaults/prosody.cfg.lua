@@ -15,6 +15,7 @@
 {{ $PROSODY_METRICS_ALLOWED_CIDR := .Env.PROSODY_METRICS_ALLOWED_CIDR | default "172.16.0.0/12" -}}
 {{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
 {{ $PROSODY_ENABLE_METRICS := .Env.PROSODY_ENABLE_METRICS | default "false" | toBool -}}
+{{ $PROSODY_ENABLE_STANZA_COUNTS := .Env.PROSODY_ENABLE_STANZA_COUNTS | default "false" | toBool -}}
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
 {{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
 {{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
@@ -115,6 +116,11 @@ modules_enabled = {
 		{{ if $PROSODY_ENABLE_METRICS }}
 		-- metrics collection functionality
 		"http_openmetrics";
+		{{ end -}}
+
+		{{ if $PROSODY_ENABLE_STANZA_COUNTS }}
+		-- Stanza count metrics for monitoring
+		"measure_stanza_counts";
 		{{ end -}}
 
 		{{ if .Env.GLOBAL_MODULES }}
