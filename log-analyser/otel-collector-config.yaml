@@ -24,6 +24,8 @@ receivers:
     operators:
       - type: regex_parser
         regex: "^(?P<message>\\[\\w+-\\w+\\.\\w+\\]\\s+(\\w+\\s+)*\\w+:?\\s*.*$)"
+  docker_stats:
+    endpoint: "unix:///var/run/docker.sock"
 processors:
   batch:
 
@@ -32,6 +34,8 @@ exporters:
     loglevel: debug
   loki:
     endpoint: "http://loki:3100/loki/api/v1/push"
+  prometheus:
+    endpoint: "0.0.0.0:9464"
 
 service:
   pipelines:
@@ -51,3 +55,8 @@ service:
       receivers: [otlp, filelog/jitsi-web]
       processors: [batch]
       exporters: [loki]
+    metrics:
+      receivers: [docker_stats]
+      processors: [batch]
+      exporters: [prometheus]
+
