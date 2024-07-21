@@ -11,3 +11,5 @@ services:
       - ./log-analyser/grafana-provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
     ports:
       - "3000:3000"
+    networks:
+      meet.jitsi:
