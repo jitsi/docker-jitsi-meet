@@ -18,7 +18,6 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 4,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -37,7 +36,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -79,7 +79,7 @@
             "editorMode": "code",
             "expr": "container_memory_percent_ratio * 100",
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Memory Usage (in %)",
             "range": true,
             "refId": "A"
           }
@@ -102,7 +102,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -146,7 +147,7 @@
             "expr": "container_cpu_utilization_ratio * 100",
             "format": "time_series",
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "CPU Utilization (in %)",
             "range": true,
             "refId": "A"
           }
@@ -201,7 +202,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -241,7 +243,7 @@
             "expr": "sum(rate(container_blockio_io_service_bytes_recursive_total{operation=\"read\"}[5m])) ",
             "hide": false,
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Read Operation",
             "range": true,
             "refId": "B"
           },
@@ -254,7 +256,7 @@
             "expr": "sum(rate(container_blockio_io_service_bytes_recursive_total{operation=\"write\"}[5m])) ",
             "hide": false,
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Write Operation",
             "range": true,
             "refId": "C"
           }
@@ -309,7 +311,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -330,7 +333,7 @@
         "options": {
           "legend": {
             "calcs": [],
-            "displayMode": "list",
+            "displayMode": "table",
             "placement": "bottom",
             "showLegend": true
           },
@@ -349,7 +352,7 @@
             "editorMode": "code",
             "expr": "rate(container_cpu_usage_kernelmode_nanoseconds_total[5m])",
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Kernel Mode",
             "range": true,
             "refId": "A"
           },
@@ -362,7 +365,7 @@
             "expr": "rate(container_cpu_usage_usermode_nanoseconds_total[5m])",
             "hide": false,
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "User Mode",
             "range": true,
             "refId": "B"
           }
@@ -417,7 +420,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -457,7 +461,7 @@
             "editorMode": "code",
             "expr": "(container_memory_usage_total_bytes / container_memory_usage_limit_bytes) * 100",
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Total Bytes Read/Written",
             "range": true,
             "refId": "A"
           }
@@ -512,7 +516,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -549,9 +554,10 @@
               "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
             },
             "editorMode": "code",
+            "exemplar": false,
             "expr": "rate(container_network_io_usage_rx_bytes_total{interface=\"eth0\"}[5m])",
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Network bytes received",
             "range": true,
             "refId": "A"
           },
@@ -564,7 +570,7 @@
             "expr": "rate(container_network_io_usage_tx_bytes_total{interface=\"eth0\"}[5m])",
             "hide": false,
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Network bytes Sent",
             "range": true,
             "refId": "B"
           }
@@ -619,7 +625,8 @@
               "mode": "absolute",
               "steps": [
                 {
-                  "color": "green"
+                  "color": "green",
+                  "value": null
                 },
                 {
                   "color": "red",
@@ -658,7 +665,7 @@
             "editorMode": "code",
             "expr": "rate(container_network_io_usage_rx_dropped_total{interface=\"eth0\"}[5m])",
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Network Bytes Dropped in Receiving",
             "range": true,
             "refId": "A"
           },
@@ -671,7 +678,7 @@
             "expr": "rate(container_network_io_usage_tx_dropped_total{interface=\"eth0\"}[5m])",
             "hide": false,
             "instant": false,
-            "legendFormat": "__auto",
+            "legendFormat": "Network Bytes dropped in Sending",
             "range": true,
             "refId": "B"
           }
@@ -687,13 +694,13 @@
       "list": []
     },
     "time": {
-      "from": "now-1h",
+      "from": "now-24h",
       "to": "now"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Docker Statistics",
     "uid": "c67742f2-7db9-489b-90fa-a13f4655806a",
-    "version": 2,
+    "version": 3,
     "weekStart": ""
   }
