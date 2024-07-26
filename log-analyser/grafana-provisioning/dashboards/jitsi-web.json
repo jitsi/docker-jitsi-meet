@@ -22,20 +22,26 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": {},
+      "datasource": {
+        "type": "loki",
+        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            }
-          },
-          "mappings": []
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 80
+              }
+            ]
+          }
         },
         "overrides": []
       },
@@ -47,16 +53,9 @@
       },
       "id": 2,
       "options": {
-        "displayLabels": [
-          "percent",
-          "name"
-        ],
-        "legend": {
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "pieType": "pie",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -64,49 +63,50 @@
           "fields": "",
           "values": false
         },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
+      "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
             "type": "loki",
-            "uid": "b8130a28-4867-4668-917d-539c93852857"
+            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
           },
           "editorMode": "code",
-          "expr": "sum by (attributes_level) (\n  rate({exporter=\"OTLP\"} | json|attributes_log_file_name=\"jvb.log\"| line_format \"{{.log}}\" | logfmt | pattern \"[<_>] <_level>: <_>\"[5m])\n)",
-          "legendFormat": "Level: {{attributes_level}}",
+          "expr": "sum(count_over_time({exporter=\"OTLP\"} | json | attributes_log_file_name=\"jitsi-web.log\" |= \"GET\" [5m])) by (instance)",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "JVB Log Levels Pie Chart",
-      "type": "piechart"
+      "title": "Sum of 'GET' Log Counts",
+      "type": "gauge"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "loki",
+        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+      },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "continuous-GrYlRd"
-          },
           "mappings": [],
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
                 "color": "green",
                 "value": null
               },
               {
+                "color": "orange",
+                "value": 70
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 85
               }
             ]
-          },
-          "unit": "percent"
+          }
         },
         "overrides": []
       },
@@ -118,11 +118,9 @@
       },
       "id": 1,
       "options": {
-        "displayMode": "lcd",
-        "minVizHeight": 10,
-        "minVizWidth": 0,
-        "namePlacement": "auto",
-        "orientation": "horizontal",
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -130,25 +128,24 @@
           "fields": "",
           "values": false
         },
-        "showUnfilled": true,
-        "valueMode": "color"
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
       },
       "pluginVersion": "10.2.0",
       "targets": [
         {
           "datasource": {
             "type": "loki",
-            "uid": "b8130a28-4867-4668-917d-539c93852857"
+            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
           },
           "editorMode": "code",
-          "expr": "sum by (attributes_level, attributes_log_file_name) (\n  rate({exporter=\"OTLP\"} | json|attributes_log_file_name=\"jvb.log\"| line_format \"{{.attributes_message}}\" | logfmt | pattern \"[<_>] <attributes_level>#<attributes_log_file_name>: <_>\"[5m]))",
-          "legendFormat": "Level: {{attributes_level}}",
+          "expr": "sum(count_over_time({exporter=\"OTLP\"} | json | attributes_log_file_name=\"jitsi-web.log\" |= \"HTTP/1.1\" [1m]))",
           "queryType": "range",
           "refId": "A"
         }
       ],
-      "title": "JVB Log Levels Bar Chart",
-      "type": "bargauge"
+      "title": "Sum of 'HTTP/1.1' Log Entries in jitsi-web.log",
+      "type": "gauge"
     }
   ],
   "refresh": "",
@@ -163,8 +160,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "JVB Dashboard",
-  "uid": "d53a9efb-ca3b-4f47-af3a-9638de8a35fa",
-  "version": 1,
+  "title": "Jitsi Web",
+  "uid": "d1f8ba02-9b8d-42c7-8934-d30ea3559a49",
+  "version": 2,
   "weekStart": ""
 }
