@@ -160,8 +160,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "Jitsi Web",
+  "title": "Jitsi Web Dashboard",
   "uid": "d1f8ba02-9b8d-42c7-8934-d30ea3559a49",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
