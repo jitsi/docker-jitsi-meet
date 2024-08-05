@@ -1,3 +1,15 @@
+## stable-9646
+
+Based on stable release 9646.
+
+* 0dad31d fix(jicofo) enable jigasi brewery with ENABLE_TRANSCRIPTIONS
+* fae66ad fix(jibri): IGNORE_CERTIFICATE_ERRORS as boolean
+* 54baee2 feat(prosody): custom metrics of stanza counts for prosody service implemented (#1862)
+* a88dd8b feat(jvb) default to using dcSCTP
+* d2c26aa fix(jigasi) add missing variables to jigasi.yml
+* 41559d6 feat(log-analyser): added grafana dashboard provisioning (#1855)
+* 2e9e6ca misc: working on unstable
+
 ## stable-9584-1
 
 Based on stable release 9584-1.
