@@ -19,3 +19,6 @@ services:
     volumes:
       - ./log-analyser/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
       - ./log-analyser/jitsi-logs/:/tmp/jitsi-logs/
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      meet.jitsi:
