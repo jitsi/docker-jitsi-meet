@@ -14,7 +14,7 @@ RUN \
     esac && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y apt-transport-https apt-utils ca-certificates gnupg wget curl && \
-    wget -qO /usr/bin/tpl https://github.com/jitsi/tpl/releases/download/v1.3.0/tpl-linux-${TPL_ARCH} && \
+    wget -qO /usr/bin/tpl https://github.com/jitsi/tpl/releases/download/v1.4.0/tpl-linux-${TPL_ARCH} && \
     # Workaround S6 bug when /bin is a symlink
     wget -qO /tmp/s6.tar.gz https://github.com/just-containers/s6-overlay/releases/download/v1.22.1.0/s6-overlay-${S6_ARCH}.tar.gz && \
     mkdir /tmp/s6 && \
