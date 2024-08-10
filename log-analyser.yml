@@ -12,6 +12,8 @@ services:
       - ./log-analyser/loki/conf:/conf
     ports:
       - "3100:3100"
+    networks:
+      meet.jitsi:
 
   otel-collector:
     container_name: otel
