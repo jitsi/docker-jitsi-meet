@@ -1,0 +1,17 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: 'slack-notifications'
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+
+receivers:
+- name: 'slack-notifications'
+  slack_configs:
+  - api_url: 'https://hooks.slack.com/services/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'
+    channel: '#alerts'
+    send_resolved: true
+    title: '{{ .CommonAnnotations.summary }}'
+    text: '{{ .CommonAnnotations.description }}'
