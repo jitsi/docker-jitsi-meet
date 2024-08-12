@@ -1,4 +1,4 @@
-# Jitsi Recorded Video Organizer
+# Jitsi Video Organizer
 
 This script is designed to help administrators and users of Jitsi, who are running the service in Docker, to easily manage and access recorded conference videos. The script automatically organizes the videos by renaming folders that are created for each video into more descriptive names and moving them to a structured directory.
 
