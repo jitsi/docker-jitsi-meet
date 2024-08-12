@@ -17,7 +17,7 @@ This script is designed to help administrators and users of Jitsi, who are runni
 - A CronJob for executing script in case you need to have a frequent execution process.
 
 
-## Configuration:
+## Configuration
 
 Open the script "main.go" and configure the following variables:
 
@@ -46,13 +46,29 @@ Open the script "main.go" and configure the following variables:
    go build -o "Name Your Script Here" .
    ```
 
-## Running the Script Manually:
+## Running the Script Manually
 
 **After you've built the script, you can run the script manually to organize your videos:**
    ```bash
    go build -o "Name Your Script Here" .
 
    ./"Your Executable Script"
-
+   ```
 This will rename the videos and move them from folders to the destination directory.
+
+## Automation with CronJob
+To automate the process of organizing recorded videos, you can set up a cron job on your server. This allows the script to run at defined intervals, ensuring that your videos are always organized.
+
+**Open your crontab:**
+
+```bash
+crontab -e
+Add the CronJob:
+
+Add the following line to schedule the script to run at a specific time. For example, to run the script every day at midnight:
+
+0 0 * * * user /path/to/your/script/organize_videos
+```
+Make sure to replace the path with the actual path to your script.
+
 
