@@ -19,11 +19,11 @@ This script is designed to help administrators and users of Jitsi, who are runni
 
 ## Configuration:
 
-Open the script and configure the following variables:
+Open the script "main.go" and configure the following variables:
 
-srcDir: The directory where Jitsi stores recorded videos. This should be the directory mounted on your Docker container.
-dstDir: The destination directory where you want to move the organized videos.
-videoLog: The file path where the script will log its actions.
+- srcDir: The directory where Jitsi stores recorded videos. This should be the directory mounted on your Docker container.
+- dstDir: The destination directory where you want to move the organized videos.
+- videoLog: The file path where the script will log its actions.
 
 **Variables available to change:**
    ```bash
@@ -32,6 +32,7 @@ videoLog: The file path where the script will log its actions.
    dstDir = "/path/to/your/organized/videos"
 
    videoLog = "/path/to/your/log/file.log"
+   ```
 
 ## Setup
 
@@ -43,6 +44,7 @@ videoLog: The file path where the script will log its actions.
    cd docker-jitsi-meet/organizing-videos
 
    go build -o "Name Your Script Here" .
+   ```
 
 ## Running the Script Manually:
 
