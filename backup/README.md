@@ -63,7 +63,6 @@ To automate the process of organizing recorded videos, you can set up a cron job
 
 ```bash
 crontab -e
-Add the CronJob:
 
 Add the following line to schedule the script to run at a specific time. For example, to run the script every day at midnight:
 
