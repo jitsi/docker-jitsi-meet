@@ -41,7 +41,7 @@ Open the script "main.go" and configure the following variables:
    ```bash
    git clone git@github.com:jitsi/docker-jitsi-meet.git 
 
-   cd docker-jitsi-meet/organizing-videos
+   cd docker-jitsi-meet/backup
 
    go build -o "Name Your Script Here" .
    ```
