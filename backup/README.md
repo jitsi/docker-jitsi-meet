@@ -17,9 +17,21 @@ This script is designed to help administrators and users of Jitsi, who are runni
 - A CronJob for executing script in case you need to have a frequent execution process.
 
 
-- Reccomendation: 
-   1) You can change srcDir, dstDir, and videoLog from main.go file that can match with your infrastructure needs.
-   2) Before moving towards the execution, make sure you've built the script on your system with Go.
+## Configuration:
+
+Open the script and configure the following variables:
+
+srcDir: The directory where Jitsi stores recorded videos. This should be the directory mounted on your Docker container.
+dstDir: The destination directory where you want to move the organized videos.
+videoLog: The file path where the script will log its actions.
+
+**Variables available to change:**
+   ```bash
+   srcDir = "/path/to/your/mounted/jitsi/recordings"
+
+   dstDir = "/path/to/your/organized/videos"
+
+   videoLog = "/path/to/your/log/file.log"
 
 ## Setup
 
@@ -31,3 +43,14 @@ This script is designed to help administrators and users of Jitsi, who are runni
    cd docker-jitsi-meet/organizing-videos
 
    go build -o "Name Your Script Here" .
+
+## Running the Script Manually:
+
+**After you've built the script, you can run the script manually to organize your videos:**
+   ```bash
+   go build -o "Name Your Script Here" .
+
+   ./"Your Executable Script"
+
+This will rename the videos and move them from folders to the destination directory.
+
