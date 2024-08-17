@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 18,
+  "id": 20,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -512,7 +512,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": {},
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -573,6 +576,98 @@
         "x": 12,
         "y": 18
       },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+          },
+          "editorMode": "code",
+          "expr": "sum(prosody_mod_measure_stanza_counts__received_total)by(stanza_kind)",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Stanza Counts",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {},
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 26
+      },
       "id": 9,
       "options": {
         "legend": {
@@ -609,7 +704,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 34
       },
       "id": 13,
       "panels": [],
@@ -676,7 +771,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 27
+        "y": 35
       },
       "id": 12,
       "options": {
@@ -786,7 +881,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 27
+        "y": 35
       },
       "id": 11,
       "options": {
@@ -822,7 +917,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 35
+        "y": 43
       },
       "id": 16,
       "panels": [],
@@ -876,8 +971,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -892,7 +986,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 36
+        "y": 44
       },
       "id": 15,
       "options": {
@@ -936,8 +1030,7 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "orange",
@@ -956,7 +1049,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 36
+        "y": 44
       },
       "id": 14,
       "options": {
@@ -1038,8 +1131,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1054,7 +1146,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 44
+        "y": 52
       },
       "id": 20,
       "options": {
@@ -1092,7 +1184,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 60
       },
       "id": 19,
       "panels": [],
@@ -1143,8 +1235,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1159,7 +1250,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 53
+        "y": 61
       },
       "id": 17,
       "options": {
@@ -1235,8 +1326,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1251,7 +1341,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 53
+        "y": 61
       },
       "id": 18,
       "options": {
@@ -1284,7 +1374,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "auto",
+  "refresh": "5s",
   "schemaVersion": 38,
   "tags": [],
   "templating": {
@@ -1298,6 +1388,6 @@
   "timezone": "",
   "title": "Prosody Dashboard",
   "uid": "c8b1b5f8-6b45-4fa7-92b2-01cc164e2f94asdf",
-  "version": 3,
+  "version": 1,
   "weekStart": ""
 }
