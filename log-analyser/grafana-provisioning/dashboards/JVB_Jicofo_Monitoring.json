@@ -18,7 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 6,
+  "id": 22,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -32,14 +32,11 @@
       },
       "id": 11,
       "panels": [],
-      "title": "Health Checks / Up",
+      "title": "System",
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
+      "datasource": {},
       "fieldConfig": {
         "defaults": {
           "mappings": [],
@@ -61,7 +58,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 5,
+        "h": 7,
         "w": 4,
         "x": 0,
         "y": 1
@@ -86,7 +83,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
           "expr": "jitsi_jvb_healthy",
@@ -96,14 +93,14 @@
           "refId": "A"
         }
       ],
-      "title": "JVB Health Check",
+      "title": "Healthy",
       "transformations": [],
       "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
       },
       "fieldConfig": {
         "defaults": {
@@ -185,8 +182,8 @@
         ]
       },
       "gridPos": {
-        "h": 5,
-        "w": 9,
+        "h": 7,
+        "w": 11,
         "x": 4,
         "y": 1
       },
@@ -207,7 +204,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
           "expr": "jitsi_jvb_stress",
@@ -227,7 +224,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 6
+        "y": 8
       },
       "id": 18,
       "panels": [],
@@ -237,7 +234,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
       },
       "fieldConfig": {
         "defaults": {
@@ -294,10 +291,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 12,
         "x": 0,
-        "y": 7
+        "y": 9
       },
       "id": 17,
       "options": {
@@ -316,7 +313,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
           "expr": "jitsi_jvb_current_endpoints",
@@ -329,36 +326,23 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_endpoints_inactive",
-          "instant": false,
-          "legendFormat": "Inactive Endpoints",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
           "expr": "jitsi_jvb_endpoints_total",
-          "hide": false,
           "instant": false,
           "legendFormat": "Total Endpoints",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
-      "title": "JVB Endpoints",
+      "title": "JVB meetings",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
       },
       "fieldConfig": {
         "defaults": {
@@ -415,131 +399,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 12,
         "x": 12,
-        "y": 7
-      },
-      "id": 19,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_endpoints_sending_audio",
-          "instant": false,
-          "legendFormat": "Audio",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_endpoints_sending_video",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Video",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Endpoints Sending",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 13
-      },
-      "id": 10,
-      "panels": [],
-      "title": "Participants and conferences",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 14
+        "y": 9
       },
       "id": 5,
       "options": {
@@ -559,7 +422,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
           "expr": "jitsi_jicofo_participants_current/jitsi_jicofo_bridge_selector_bridge_count_operational",
@@ -567,28 +430,15 @@
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "B"
         }
       ],
-      "title": "Participants per Bridge",
+      "title": "Participants",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
       },
       "fieldConfig": {
         "defaults": {
@@ -645,10 +495,344 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 16
+      },
+      "id": 3,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": ""
+          },
+          "editorMode": "code",
+          "expr": "jitsi_jvb_conferences",
+          "instant": false,
+          "legendFormat": "JVB Conferences",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": ""
+          },
+          "editorMode": "code",
+          "expr": "jitsi_jicofo_conferences",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Jicofo Conferences",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Count of Conferences",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "{__name__=\"jitsi_jvb_largest_conference\", instance=\"jvb:8080\", job=\"prometheus\"}"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 7,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 16
+      },
+      "id": 32,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+          },
+          "editorMode": "code",
+          "expr": "jitsi_jvb_largest_conference",
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Panel Title",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {},
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 23
+      },
+      "id": 19,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": ""
+          },
+          "editorMode": "code",
+          "expr": "jitsi_jvb_endpoints_sending_audio",
+          "instant": false,
+          "legendFormat": "Audio",
+          "range": true,
+          "refId": "A"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": ""
+          },
+          "editorMode": "code",
+          "expr": "jitsi_jvb_endpoints_sending_video",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Video",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "Meeting Sending audio/video",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 23
       },
       "id": 7,
       "options": {
@@ -667,273 +851,36 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jicofo_participants_restart_requested_created",
-          "instant": false,
-          "legendFormat": "Restart Request Created",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
           "expr": "jitsi_jicofo_participants_restart_requested_total",
-          "hide": false,
           "instant": false,
-          "legendFormat": "Restart total",
+          "legendFormat": "Restart Request Total",
           "range": true,
-          "refId": "B"
+          "refId": "A"
         }
       ],
       "title": "Restarts Requested",
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
+      "collapsed": false,
       "gridPos": {
-        "h": 7,
-        "w": 8,
+        "h": 1,
+        "w": 24,
         "x": 0,
-        "y": 20
+        "y": 30
       },
-      "id": 6,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_largest_conference",
-          "instant": false,
-          "legendFormat": "JVB Largest Conference",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jicofo_largest_conference",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Jicofo Largest Conferences",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Largest Conference",
-      "type": "gauge"
+      "id": 20,
+      "panels": [],
+      "title": "JVM",
+      "type": "row"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 8,
-        "y": 20
-      },
-      "id": 3,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_conferences",
-          "instant": false,
-          "legendFormat": "JVB Conferences",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jicofo_conferences",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Jicofo Conferences",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Count of Conferences",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 7,
-        "w": 8,
-        "x": 16,
-        "y": 20
-      },
-      "id": 4,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": true
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jicofo_participants_current",
-          "instant": false,
-          "legendFormat": "Current Participants",
-          "range": true,
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jicofo_participants_total",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Total Participants",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Participants",
-      "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
       },
       "fieldConfig": {
         "defaults": {
@@ -993,7 +940,7 @@
         "h": 7,
         "w": 12,
         "x": 0,
-        "y": 27
+        "y": 31
       },
       "id": 1,
       "options": {
@@ -1013,161 +960,123 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "jitsi_jvb_thread_count",
+          "expr": "rate(jitsi_jvb_thread_count[1m])",
           "format": "time_series",
           "instant": false,
           "legendFormat": "JVB Threads",
           "range": true,
           "refId": "A"
+        }
+      ],
+      "title": "JVB Thread Count",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 31
+      },
+      "id": 31,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "10.2.0",
+      "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
           "exemplar": false,
           "expr": "jitsi_jicofo_threads",
-          "hide": false,
+          "format": "time_series",
           "instant": false,
-          "interval": "",
           "legendFormat": "Jicofo Threads",
           "range": true,
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "thread",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "C"
-        }
-      ],
-      "title": "Count of Threads",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 34
-      },
-      "id": 20,
-      "panels": [],
-      "title": "JVM",
-      "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 35
-      },
-      "id": 21,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_jvm_gc_count",
-          "instant": false,
-          "legendFormat": "GC count",
-          "range": true,
           "refId": "A"
         }
       ],
-      "title": "JVM GC Count",
+      "title": "Jicofo Threads",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
       },
       "fieldConfig": {
         "defaults": {
@@ -1224,105 +1133,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 12,
-        "y": 35
-      },
-      "id": 22,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_jvm_gc_time",
-          "instant": false,
-          "legendFormat": "GC Time",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "JVM GC Time",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
+        "h": 7,
         "w": 12,
         "x": 0,
-        "y": 41
+        "y": 38
       },
       "id": 23,
       "options": {
@@ -1341,17 +1155,112 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": ""
           },
           "editorMode": "code",
-          "expr": "jitsi_jvb_jvm_open_fd_count",
+          "expr": "rate(jitsi_jvb_jvm_open_fd_count[1m])",
           "instant": false,
           "legendFormat": "Open FD Count",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Open FD",
+      "title": "Open FD count",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 38
+      },
+      "id": 21,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": ""
+          },
+          "editorMode": "code",
+          "expr": "rate(jitsi_jvb_jvm_gc_count[1m])*1000",
+          "instant": false,
+          "legendFormat": "GC count",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "JVM GC Count",
       "type": "timeseries"
     },
     {
@@ -1360,7 +1269,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 47
+        "y": 45
       },
       "id": 9,
       "panels": [],
@@ -1370,7 +1279,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
       },
       "fieldConfig": {
         "defaults": {
@@ -1427,18 +1336,18 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 12,
         "x": 0,
-        "y": 48
+        "y": 46
       },
-      "id": 8,
+      "id": 25,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "right",
-          "showLegend": false
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -1449,23 +1358,403 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
           },
           "editorMode": "code",
-          "expr": "jitsi_jvb_packets_received_created",
+          "expr": "jitsi_jvb_incoming_bitrate",
+          "instant": false,
+          "legendFormat": "Incoming Bitrate",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Incoming Bitrate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 46
+      },
+      "id": 29,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+          },
+          "editorMode": "code",
+          "expr": "jitsi_jvb_outgoing_bitrate",
+          "instant": false,
+          "legendFormat": "Outgoing Bitrate",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Outgoing Bitrate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 54
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+          },
+          "editorMode": "code",
+          "expr": "jitsi_jvb_incoming_packet_rate",
+          "instant": false,
+          "legendFormat": "Incoming Packets",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Incoming Packet Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 54
+      },
+      "id": 30,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+          },
+          "editorMode": "code",
+          "expr": "jitsi_jvb_outgoing_packet_rate",
+          "instant": false,
+          "legendFormat": "Outgoing Packets",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Outgoing Packet Rate",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 62
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+          },
+          "editorMode": "code",
+          "expr": "rate(jitsi_jvb_packets_received_total[1m])",
           "instant": false,
           "legendFormat": "Packets Received",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "JVB Packets Received Created",
+      "title": "Packet Received Total",
       "type": "timeseries"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
       },
       "fieldConfig": {
         "defaults": {
@@ -1522,18 +1811,18 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 6,
+        "h": 8,
         "w": 12,
         "x": 12,
-        "y": 48
+        "y": 62
       },
-      "id": 12,
+      "id": 27,
       "options": {
         "legend": {
           "calcs": [],
-          "displayMode": "hidden",
-          "placement": "right",
-          "showLegend": false
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -1544,309 +1833,21 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
           },
           "editorMode": "code",
-          "expr": "jitsi_jvb_packets_sent_created",
+          "expr": "rate(jitsi_jvb_packets_sent_total[1m])",
           "instant": false,
           "legendFormat": "Packets Sent",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "JVB Packets Sent Created",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 54
-      },
-      "id": 13,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_relay_bytes_received_created",
-          "instant": false,
-          "legendFormat": "Relay Packets Received Created",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Relay Packets Received",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 12,
-        "y": 54
-      },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "pluginVersion": "10.2.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_relay_bytes_sent_created",
-          "hide": false,
-          "instant": false,
-          "legendFormat": "Relay Packets Sent Created",
-          "range": true,
-          "refId": "B"
-        }
-      ],
-      "title": "Relay Packets Sent",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 6,
-        "w": 12,
-        "x": 0,
-        "y": 60
-      },
-      "id": 15,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
-          },
-          "editorMode": "code",
-          "expr": "jitsi_jvb_average_rtt",
-          "format": "time_series",
-          "instant": false,
-          "legendFormat": "RTT",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Round Trip Time",
+      "title": "Packet Sent Total",
       "type": "timeseries"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 38,
   "tags": [],
   "templating": {
@@ -1859,7 +1860,7 @@
   "timepicker": {},
   "timezone": "",
   "title": "JVB & Jicofo Monitoring",
-  "uid": "c03d90e4-2e37-4ea3-a551-b97bc7c9b40a",
-  "version": 7,
+  "uid": "",
+  "version": 3,
   "weekStart": ""
 }
