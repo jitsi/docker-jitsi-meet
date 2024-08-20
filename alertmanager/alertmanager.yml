@@ -1,11 +1,11 @@
-global:
-  resolve_timeout: 5m
+# global:
+#   resolve_timeout: 5m
 
-route:
-  receiver: 'slack-notifications'
-  group_wait: 10s
-  group_interval: 10s
-  repeat_interval: 1h
+# route:
+#   receiver: 'slack-notifications'
+#   group_wait: 10s
+#   group_interval: 10s
+#   repeat_interval: 1h
 
 receivers:
 - name: 'slack-notifications'
