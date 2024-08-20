@@ -2,13 +2,11 @@ version: '3.5'
 
 services:
     # SIP gateway (audio)
-    jigasi:
+    transcriber:
         image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
-        ports:
-            - '${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}:${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}/udp'
         volumes:
-            - ${CONFIG}/jigasi:/config:Z
+            - ${CONFIG}/transcriber:/config:Z
             - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
@@ -30,6 +28,7 @@ services:
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_SERVER
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - XMPP_DOMAIN
             - PUBLIC_URL
             - JIGASI_CONFIGURATION
@@ -37,26 +36,19 @@ services:
             - JIGASI_JVB_TIMEOUT
             - JIGASI_LOCAL_REGION
             - JIGASI_LOG_FILE
-            - JIGASI_MODE="sip"
-            - JIGASI_SIP_URI
-            - JIGASI_SIP_PASSWORD
-            - JIGASI_SIP_SERVER
-            - JIGASI_SIP_PORT
-            - JIGASI_SIP_TRANSPORT
-            - JIGASI_SIP_DEFAULT_ROOM
+            - JIGASI_MODE="transcriber"
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JIGASI_BREWERY_MUC
-            - JIGASI_PORT_MIN
-            - JIGASI_PORT_MAX
-            - JIGASI_HEALTH_CHECK_SIP_URI
-            - JIGASI_HEALTH_CHECK_INTERVAL
-            - JIGASI_SIP_KEEP_ALIVE_METHOD
             - JIGASI_ENABLE_SDES_SRTP
-            - ENABLE_TRANSCRIPTIONS
             - JIGASI_TRANSCRIBER_ADVERTISE_URL
+            - JIGASI_TRANSCRIBER_CUSTOM_SERVICE
+            - JIGASI_TRANSCRIBER_FILTER_SILENCE
+            - JIGASI_TRANSCRIBER_PASSWORD
             - JIGASI_TRANSCRIBER_RECORD_AUDIO
+            - JIGASI_TRANSCRIBER_REMOTE_CONFIG_URL
             - JIGASI_TRANSCRIBER_SEND_TXT
+            - JIGASI_TRANSCRIBER_USER
             - GC_PROJECT_ID
             - GC_PRIVATE_KEY_ID
             - GC_PRIVATE_KEY
