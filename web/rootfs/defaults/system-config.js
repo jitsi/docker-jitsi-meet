@@ -16,9 +16,7 @@
 var config = {};
 
 config.hosts = {};
-
 config.hosts.domain = '{{ $XMPP_DOMAIN }}';
-config.focusUserJid = 'focus@{{$XMPP_AUTH_DOMAIN}}';
 
 {{ if $ENABLE_SUBDOMAINS -}}
 var subdir = '<!--# echo var="subdir" default="" -->';
