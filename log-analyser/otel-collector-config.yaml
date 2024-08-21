@@ -45,7 +45,7 @@ receivers:
       - type: regex_parser
         id: jitsi_jvb_parser
         parse_from: attributes.log
-        regex: "^(?P<app>JVB) (?P<timestamp>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}) (?P<level>\\w+): \\[(?P<pid>\\d+)\\] (?P<codefile>[\\w\\.]+)#(?P<codeline>\\d+): (?P<message>[\\S\\s]*)$"
+        regex: "^(?P<app>JVB)  \\[(?P<pid>\\d+)\\] (?P<codefile>[\\w\\.]+)#(?P<codeline>\\d+): (?P<message>[\\S\\s]*)$"
       - type: regex_parser
         id: jitsi_prosody_parser
         parse_from: attributes.log

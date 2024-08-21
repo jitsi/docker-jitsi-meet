@@ -12,10 +12,6 @@ services:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
-        logging:
-            driver: "json-file"
-            options:
-                labels: "service"
         labels:
             service: "jitsi-web"
         environment:
@@ -193,10 +189,6 @@ services:
             - '${PROSODY_S2S_PORT:-5269}'
             - '5347'
             - '${PROSODY_HTTP_PORT:-5280}'
-        logging:
-            driver: "json-file"
-            options:
-                labels: "service"
         labels:
             service: "jitsi-prosody"
         volumes:
@@ -334,10 +326,6 @@ services:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
-        logging:
-            driver: "json-file"
-            options:
-                labels: "service"
         labels:
             service: "jitsi-jicofo"
         environment:
@@ -424,10 +412,6 @@ services:
             - '127.0.0.1:${JVB_COLIBRI_PORT:-8080}:8080'
         volumes:
             - ${CONFIG}/jvb:/config:Z
-        logging:
-            driver: "json-file"
-            options:
-                labels: "service"
         labels:
             service: "jitsi-jvb"
         environment:
