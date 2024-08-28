@@ -1,7 +1,6 @@
 version: '3.5'
 
 services:
-    # SIP gateway (audio)
     transcriber:
         image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
@@ -20,8 +19,6 @@ services:
             - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
             - AUTOSCALER_URL
             - BOSH_URL_PATTERN
-            - ENABLE_AUTH
-            - ENABLE_GUESTS
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
@@ -32,7 +29,6 @@ services:
             - XMPP_DOMAIN
             - PUBLIC_URL
             - JIGASI_CONFIGURATION
-            - JIGASI_DISABLE_SIP
             - JIGASI_JVB_TIMEOUT
             - JIGASI_LOCAL_REGION
             - JIGASI_LOG_FILE
@@ -40,7 +36,6 @@ services:
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JIGASI_BREWERY_MUC
-            - JIGASI_ENABLE_SDES_SRTP
             - JIGASI_TRANSCRIBER_ADVERTISE_URL
             - JIGASI_TRANSCRIBER_CUSTOM_SERVICE
             - JIGASI_TRANSCRIBER_FILTER_SILENCE
