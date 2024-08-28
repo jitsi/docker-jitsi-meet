@@ -55,7 +55,7 @@ fi
 
 tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
-tpl /defaults/xmpp-sip-communicator.properties > /config/sip-communicator.properties
+tpl /defaults/xmpp-sip-communicator.properties >> /config/sip-communicator.properties
 
 if [[ "$JIGASI_MODE" == "sip" ]]; then
     tpl /defaults/sipserver-sip-communicator.properties >> /config/sip-communicator.properties
