@@ -9,7 +9,6 @@ services:
             - '${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}:${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}/udp'
         volumes:
             - ${CONFIG}/jigasi:/config:Z
-            - ${CONFIG}/transcripts:/tmp/transcripts:Z
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
@@ -53,10 +52,6 @@ services:
             - JIGASI_HEALTH_CHECK_INTERVAL
             - JIGASI_SIP_KEEP_ALIVE_METHOD
             - JIGASI_ENABLE_SDES_SRTP
-            - ENABLE_TRANSCRIPTIONS
-            - JIGASI_TRANSCRIBER_ADVERTISE_URL
-            - JIGASI_TRANSCRIBER_RECORD_AUDIO
-            - JIGASI_TRANSCRIBER_SEND_TXT
             - GC_PROJECT_ID
             - GC_PRIVATE_KEY_ID
             - GC_PRIVATE_KEY
@@ -68,7 +63,6 @@ services:
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
-            - USE_TRANSLATOR_IN_CONFERENCE
         depends_on:
             - prosody
         networks:
