@@ -14,12 +14,9 @@ if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
 fi
 
 [ -z "$JIGASI_MODE" ] && JIGASI_MODE="sip"
-if [[ "$(echo $JIGASI_MODE | tr '[:upper:]' '[:lower:]')" == "transcriber" ]]; then
-    OLD_JIGASI_TRANSCRIBER_PASSWORD=passw0rd
-    if [[ "$JIGASI_TRANSCRIBER_PASSWORD" == "$OLD_JIGASI_TRANSCRIBER_PASSWORD" ]]; then
-        echo 'FATAL ERROR: Jigasi transcriber password must be changed, check the README'
-        exit 1
-    fi
+JIGASI_MODE="$(echo $JIGASI_MODE | tr '[:upper:]' '[:lower:]')"
+
+if [[ "$JIGASI_MODE" == "transcriber" ]]; then
     # set random jigasi nickname for the instance if is not set
     [ -z "${JIGASI_INSTANCE_ID}" ] && export JIGASI_INSTANCE_ID="transcriber-$(date +%N)"
 fi
@@ -58,16 +55,16 @@ fi
 
 tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
+tpl /defaults/xmpp-sip-communicator.properties > /config/sip-communicator.properties
 
-if [[ -f /config/custom-sip-communicator.properties ]]; then
-    cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
-fi
+if [[ "$JIGASI_MODE" == "sip" ]]; then
+    tpl /defaults/sipserver-sip-communicator.properties >> /config/sip-communicator.properties
+elif [[ "$JIGASI_MODE" == "transcriber" ]]; then
+    tpl /defaults/transcriber-sip-communicator.properties >> /config/sip-communicator.properties
+    mkdir -pm777 /tmp/transcripts
+    chown jigasi:jitsi /tmp/transcripts
 
-mkdir -pm777 /tmp/transcripts
-chown jigasi:jitsi /tmp/transcripts
-
-# Create Google Cloud Credentials
-if [[ "$(echo $JIGASI_MODE | tr '[:upper:]' '[:lower:]')" == "transcriber" ]]; then
+    # Create Google Cloud Credentials
     if [[ -z $GC_PROJECT_ID || -z $GC_PRIVATE_KEY_ID || -z $GC_PRIVATE_KEY || -z $GC_CLIENT_EMAIL || -z $GC_CLIENT_ID || -z $GC_CLIENT_CERT_URL ]]; then
         echo 'Transcriptions: One or more environment variables are undefined'
         exit 1
@@ -93,4 +90,8 @@ if [[ "$(echo $JIGASI_MODE | tr '[:upper:]' '[:lower:]')" == "transcriber" ]]; t
             client_x509_cert_url: $GC_CLIENT_CERT_URL
         }' \
         > /config/key.json
+fi
+
+if [[ -f /config/custom-sip-communicator.properties ]]; then
+    cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
 fi
