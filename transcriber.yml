@@ -32,7 +32,7 @@ services:
             - JIGASI_JVB_TIMEOUT
             - JIGASI_LOCAL_REGION
             - JIGASI_LOG_FILE
-            - JIGASI_MODE="transcriber"
+            - JIGASI_MODE=transcriber
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JIGASI_BREWERY_MUC
