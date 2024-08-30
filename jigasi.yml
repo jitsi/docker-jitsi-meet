@@ -57,6 +57,7 @@ services:
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
+            - USE_TRANSLATOR_IN_CONFERENCE
         depends_on:
             - prosody
         networks:
