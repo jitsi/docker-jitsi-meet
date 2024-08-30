@@ -305,6 +305,8 @@ VirtualHost "{{ $XMPP_RECORDER_DOMAIN }}"
 Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     storage = "memory"
     modules_enabled = {
+        "muc_hide_all";
+        "muc_filter_access";
         {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
         {{ end -}}
