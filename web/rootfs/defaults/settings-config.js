@@ -149,9 +149,12 @@ config.etherpad_base = '{{ $PUBLIC_URL }}/etherpad/p/';
 // Recording.
 //
 
-{{ if $ENABLE_RECORDING  -}}
+{{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS  -}}
 
 config.hiddenDomain = '{{ $XMPP_RECORDER_DOMAIN }}';
+{{ end -}}
+
+{{ if $ENABLE_RECORDING -}}
 
 config.recordingService = {
     // Whether to enable file recording or not using the "service" defined by the finalizer in Jibri
