@@ -225,6 +225,8 @@ services:
             - JIBRI_XMPP_PASSWORD
             - JICOFO_AUTH_PASSWORD
             - JICOFO_COMPONENT_SECRET
+            - JIGASI_TRANSCRIBER_PASSWORD
+            - JIGASI_TRANSCRIBER_USER
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JVB_AUTH_USER
