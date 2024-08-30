@@ -347,6 +347,7 @@ services:
             - ENABLE_OCTO_SCTP
             - ENABLE_RECORDING
             - ENABLE_SCTP
+            - ENABLE_TRANSCRIPTIONS
             - ENABLE_VISITORS
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_LIFETIME
