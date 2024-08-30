@@ -234,7 +234,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     room_metadata_component = "metadata.{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_LOBBY }}
     lobby_muc = "lobby.{{ $XMPP_DOMAIN }}"
-    {{ if $ENABLE_RECORDING }}
+    {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS }}
     muc_lobby_whitelist = { "{{ $XMPP_RECORDER_DOMAIN }}" }
     {{ end }}
     {{ end }}
@@ -294,7 +294,7 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     }
     authentication = "internal_hashed"
 
-{{ if $ENABLE_RECORDING }}
+{{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS }}
 VirtualHost "{{ $XMPP_RECORDER_DOMAIN }}"
     modules_enabled = {
       "smacks";
