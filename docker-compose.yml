@@ -206,6 +206,7 @@ services:
             - ENABLE_LOBBY
             - ENABLE_RECORDING
             - ENABLE_S2S
+            - ENABLE_TRANSCRIPTIONS
             - ENABLE_VISITORS
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
@@ -224,6 +225,8 @@ services:
             - JIBRI_XMPP_PASSWORD
             - JICOFO_AUTH_PASSWORD
             - JICOFO_COMPONENT_SECRET
+            - JIGASI_TRANSCRIBER_PASSWORD
+            - JIGASI_TRANSCRIBER_USER
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JVB_AUTH_USER
