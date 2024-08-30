@@ -12,6 +12,8 @@ services:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
+        labels:
+            service: "jitsi-web"
         environment:
             - AMPLITUDE_ID
             - ANALYTICS_SCRIPT_URLS
@@ -187,6 +189,8 @@ services:
             - '${PROSODY_S2S_PORT:-5269}'
             - '5347'
             - '${PROSODY_HTTP_PORT:-5280}'
+        labels:
+            service: "jitsi-prosody"
         volumes:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
@@ -322,6 +326,8 @@ services:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
+        labels:
+            service: "jitsi-jicofo"
         environment:
             - AUTH_TYPE
             - BRIDGE_AVG_PARTICIPANT_STRESS
@@ -406,6 +412,8 @@ services:
             - '127.0.0.1:${JVB_COLIBRI_PORT:-8080}:8080'
         volumes:
             - ${CONFIG}/jvb:/config:Z
+        labels:
+            service: "jitsi-jvb"
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
