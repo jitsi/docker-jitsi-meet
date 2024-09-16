@@ -117,6 +117,7 @@ services:
             - MATOMO_ENDPOINT
             - MATOMO_SITE_ID
             - MICROSOFT_API_APP_CLIENT_ID
+            - NGINX_KEEPALIVE_TIMEOUT
             - NGINX_RESOLVER
             - NGINX_WORKER_PROCESSES
             - NGINX_WORKER_CONNECTIONS
