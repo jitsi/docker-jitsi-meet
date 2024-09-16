@@ -5,6 +5,7 @@
 {{ $PROSODY_AUTH_TYPE := .Env.PROSODY_AUTH_TYPE | default $AUTH_TYPE -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool -}}
+{{ $ENABLE_RECORDING_METADATA := .Env.PROSODY_ENABLE_RECORDING_METADATA | default "1" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "0" | toBool -}}
 {{ $JIBRI_XMPP_USER := .Env.JIBRI_XMPP_USER | default "jibri" -}}
 {{ $JIGASI_XMPP_USER := .Env.JIGASI_XMPP_USER | default "jigasi" -}}
@@ -228,6 +229,10 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{ if $ENABLE_VISITORS }}
         "visitors";
         {{ end }}
+        {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
+        "jibri_session";
+        {{- end }}
+
     }
 
     main_muc = "{{ $XMPP_MUC_DOMAIN }}"
@@ -291,6 +296,9 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     }
     modules_enabled = {
         "limits_exception";
+        {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
+        "jibri_session";
+        {{- end }}
     }
     authentication = "internal_hashed"
 
