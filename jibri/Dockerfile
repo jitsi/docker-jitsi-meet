@@ -11,12 +11,26 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 ARG USE_CHROMIUM=0
 #ARG CHROME_RELEASE=latest
 # https://googlechromelabs.github.io/chrome-for-testing/
-ARG CHROME_RELEASE=121.0.6167.85
+ARG CHROME_RELEASE=126.0.6478.126
 
 COPY rootfs/ /
 
 RUN apt-dpkg-wrap apt-get update && \
-    apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" jibri libgl1-mesa-dri procps jitsi-upload-integrations jitsi-autoscaler-sidecar jq pulseaudio dbus dbus-x11 rtkit unzip fonts-noto && \
+    apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+        jibri \
+        libgl1-mesa-dri \
+        procps \
+        jitsi-upload-integrations \
+        jitsi-autoscaler-sidecar \
+        jq \
+        pulseaudio \
+        dbus \
+        dbus-x11 \
+        rtkit \
+        unzip \
+        fonts-noto \
+        fonts-noto-cjk \
+        libcap2-bin && \
     /usr/bin/install-chrome.sh && \
     apt-cleanup && \
     adduser jibri rtkit && \

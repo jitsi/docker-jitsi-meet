@@ -13,41 +13,84 @@ if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
     exit 1
 fi
 
+[ -z "$JIGASI_MODE" ] && JIGASI_MODE="sip"
+JIGASI_MODE="$(echo $JIGASI_MODE | tr '[:upper:]' '[:lower:]')"
+
+if [[ "$JIGASI_MODE" == "transcriber" ]]; then
+    # set random jigasi nickname for the instance if is not set
+    [ -z "${JIGASI_INSTANCE_ID}" ] && export JIGASI_INSTANCE_ID="transcriber-$(date +%N)"
+fi
+
+# set random jigasi nickname for the instance if is not set
+[ -z "${JIGASI_INSTANCE_ID}" ] && export JIGASI_INSTANCE_ID="jigasi-$(date +%N)"
+
+# check for AUTOSCALER_URL, AUTOSCALER_SIDECAR_KEY_FILE and AUTOSCALER_SIDECAR_KEY_ID as indicator that sidecar should be enabled
+if [ -n "$AUTOSCALER_URL" ]; then
+    if [ -z "$AUTOSCALER_SIDECAR_KEY_FILE" ]; then
+        export AUTOSCALER_SIDECAR_KEY_FILE="/etc/jitsi/autoscaler-sidecar/asap.pem"
+    fi
+    if [ -z "$AUTOSCALER_SIDECAR_KEY_ID" ]; then
+        # assume key id is equal to the base real path of the key file minus .pem
+        export AUTOSCALER_SIDECAR_KEY_ID="$(basename "$(realpath "$AUTOSCALER_SIDECAR_KEY_FILE")" | tr -d '.pem')"
+    fi
+
+    if [ -f "$AUTOSCALER_SIDECAR_KEY_FILE" ]; then
+        echo "AUTOSCALER_URL found, enabling autoscaler sidecar"
+
+        export JIGASI_VERSION="$(dpkg -s jigasi | grep Version | awk '{print $2}' | sed 's/..$//')"
+
+        [ -z "$AUTOSCALER_SIDECAR_PORT" ] && export AUTOSCALER_SIDECAR_PORT="6000"
+        [ -z "$AUTOSCALER_SIDECAR_INSTANCE_ID" ] && export AUTOSCALER_SIDECAR_INSTANCE_ID="$JIGASI_INSTANCE_ID"
+        [ -z "$AUTOSCALER_SIDECAR_REGION" ] && export AUTOSCALER_SIDECAR_REGION="docker"
+        [ -z "$AUTOSCALER_SIDECAR_GROUP_NAME" ] && export AUTOSCALER_SIDECAR_GROUP_NAME="docker-jigasi"
+
+        mkdir -p /etc/jitsi/autoscaler-sidecar
+        tpl /defaults/autoscaler-sidecar.config > /etc/jitsi/autoscaler-sidecar/config
+    else
+        echo "No key file at $AUTOSCALER_SIDECAR_KEY_FILE, leaving autoscaler sidecar disabled"
+    fi
+else
+    echo "No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled"
+fi
+
 tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
+tpl /defaults/xmpp-sip-communicator.properties >> /config/sip-communicator.properties
+
+if [[ "$JIGASI_MODE" == "sip" ]]; then
+    tpl /defaults/sipserver-sip-communicator.properties >> /config/sip-communicator.properties
+elif [[ "$JIGASI_MODE" == "transcriber" ]]; then
+    tpl /defaults/transcriber-sip-communicator.properties >> /config/sip-communicator.properties
+    mkdir -pm777 /tmp/transcripts
+    chown jigasi:jitsi /tmp/transcripts
+
+    # Create Google Cloud Credentials
+    if [[ -z $GC_PROJECT_ID || -z $GC_PRIVATE_KEY_ID || -z $GC_PRIVATE_KEY || -z $GC_CLIENT_EMAIL || -z $GC_CLIENT_ID || -z $GC_CLIENT_CERT_URL ]]; then
+        echo 'Transcriptions: One or more gcloud environment variables are undefined, skipping gcloud credentials file /config/key.json'
+    else
+        jq -n \
+            --arg GC_PROJECT_ID "$GC_PROJECT_ID" \
+            --arg GC_PRIVATE_KEY_ID "$GC_PRIVATE_KEY_ID" \
+            --arg GC_PRIVATE_KEY "$GC_PRIVATE_KEY" \
+            --arg GC_CLIENT_EMAIL "$GC_CLIENT_EMAIL" \
+            --arg GC_CLIENT_ID "$GC_CLIENT_ID" \
+            --arg GC_CLIENT_CERT_URL "$GC_CLIENT_CERT_URL" \
+            '{
+                type: "service_account",
+                project_id: $GC_PROJECT_ID,
+                private_key_id: $GC_PRIVATE_KEY_ID,
+                private_key: $GC_PRIVATE_KEY,
+                client_email: $GC_CLIENT_EMAIL,
+                client_id: $GC_CLIENT_ID,
+                auth_uri: "https://accounts.google.com/o/oauth2/auth",
+                token_uri: "https://oauth2.googleapis.com/token",
+                auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+                client_x509_cert_url: $GC_CLIENT_CERT_URL
+            }' \
+            > /config/key.json
+    fi
+fi
 
 if [[ -f /config/custom-sip-communicator.properties ]]; then
     cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
-fi
-
-mkdir -pm777 /tmp/transcripts
-chown jigasi:jitsi /tmp/transcripts
-
-# Create Google Cloud Credentials
-if [[ $ENABLE_TRANSCRIPTIONS -eq 1 || $ENABLE_TRANSCRIPTIONS == "true" ]]; then
-    if [[ -z $GC_PROJECT_ID || -z $GC_PRIVATE_KEY_ID || -z $GC_PRIVATE_KEY || -z $GC_CLIENT_EMAIL || -z $GC_CLIENT_ID || -z $GC_CLIENT_CERT_URL ]]; then
-        echo 'Transcriptions: One or more environment variables are undefined'
-        exit 1
-    fi
-
-    jq -n \
-        --arg GC_PROJECT_ID "$GC_PROJECT_ID" \
-        --arg GC_PRIVATE_KEY_ID "$GC_PRIVATE_KEY_ID" \
-        --arg GC_PRIVATE_KEY "$GC_PRIVATE_KEY" \
-        --arg GC_CLIENT_EMAIL "$GC_CLIENT_EMAIL" \
-        --arg GC_CLIENT_ID "$GC_CLIENT_ID" \
-        --arg GC_CLIENT_CERT_URL "$GC_CLIENT_CERT_URL" \
-        '{
-            type: "service_account",
-            project_id: $GC_PROJECT_ID,
-            private_key_id: $GC_PRIVATE_KEY_ID,
-            private_key: $GC_PRIVATE_KEY,
-            client_email: $GC_CLIENT_EMAIL,
-            client_id: $GC_CLIENT_ID,
-            auth_uri: "https://accounts.google.com/o/oauth2/auth",
-            token_uri: "https://oauth2.googleapis.com/token",
-            auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
-            client_x509_cert_url: $GC_CLIENT_CERT_URL
-        }' \
-        > /config/key.json
 fi

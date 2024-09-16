@@ -1,3 +1,125 @@
+## stable-9646
+
+Based on stable release 9646.
+
+* 0dad31d fix(jicofo) enable jigasi brewery with ENABLE_TRANSCRIPTIONS
+* fae66ad fix(jibri): IGNORE_CERTIFICATE_ERRORS as boolean
+* 54baee2 feat(prosody): custom metrics of stanza counts for prosody service implemented (#1862)
+* a88dd8b feat(jvb) default to using dcSCTP
+* d2c26aa fix(jigasi) add missing variables to jigasi.yml
+* 41559d6 feat(log-analyser): added grafana dashboard provisioning (#1855)
+* 2e9e6ca misc: working on unstable
+
+## stable-9584-1
+
+Based on stable release 9584-1.
+
+* 29a4523 feat(jvb) add JVB_CC_TRUST_BWE environment variable
+* 0f7be54 feat(prometheus): Prometheus container and basic scraping configuration  (#1838)
+* 9c87bba feat(jitsi-meet): added grafana loki and otel integration for log analysis (#1844)
+* fcb90ba fix(web): whiteboard config.js syntax error (#1851)
+* 811518b misc: working on unstable
+
+## stable-9584
+
+Based on stable release 9584.
+
+* b4604f3 feat(whiteboard) add builtin whiteboard integration
+* 49bd165 feat(jibri) update Chrome to 126
+* 980703b fix(jibri): display modes in xorg config
+* c65d2bd feat(jigasi,jicofo,jvb,jibri,prosody): add healthcheck.sh scripts and prosody http_health mod
+* d2ac43d feat(jigasi): Add new environment variables for jigasi configuration (#1841)
+* fbc250e feat(prosody): openmetrics module support (#1832)
+* 2adac72 feat(prosody): Drop non existing config.
+* e22b4f3 feat(jibri): Adds more fonts.
+* 982e577 feat(jicofo,jvb,web) default to using SCTP based datachannels
+* 55c975f fix(jicofo): use integer for port value to fix addition (#1826)
+* 7c8763f base: update tpl to version 1.3.0
+* 1d3c0f1 jibri: fail to start if the SYS_ADMIN cap is missing (#1816)
+* cacee4e jvb: adds autoscaler sidecar hook to signal final shutdown (#1809)
+* 726b0f0 jibri: adds autoscaler sidecar hook to signal final shutdown (#1810)
+* f2b2cc4 etherpad: update image version and settings
+* 731d6d1 base: update tpl to make toBool more resilient
+* 59c4eb2 jvb: add fallback WS server ID
+* 9a54843 jvb: add ability to configure the TLS option for colibri WS
+* 79a4635 jvb: add ability to disable XMPP
+* 77ce86a jvb: add ability to enable SCTP datachannels
+* 76ffaa7 jicofo, jvb: fix OCTO + SCTP behaviour
+* 0298a30 misc: working on unstable
+
+## stable-9457-2
+
+Based on stable release 9457-2.
+
+* fed87fb web: update acme.sh version to 3.0.7
+* 11285cd prosody: Fixed the wrong position of the JWT_SIGN_TYPE setting in the file (#1796)
+* f9ff2a4 misc: working on unstable
+
+## stable-9457-1
+
+Based on stable release 9457-1.
+
+* 09bbfaf misc: working on unstable
+
+## stable-9457
+
+Based on stable release 9457.
+
+* 6f98bbe prosody: add ability to customize TURN TTL value
+* 8fe3139 jvb: fix autoscaler sidecar config (#1785)
+* 48d803c jigasi: fix autoscaler sidecar config for shutdown url (#1784)
+* c951116 jibri: fix autoscaler sidecar config (#1783)
+* cae1e40 feat(jigasi): Adds trusted domains option.
+* e939230 prosody: add ability to customize JWT signature type
+* b0f9eb2 prosody: integrate prosody-plugins-contrib
+* 604ba22 prosody: Switches lua gc back to incremental. (#1777)
+* 68d4b1a jibri: fix xorg modeline for 1280x720 (#1778)
+* 8094a17 web: add ability to change CORS header value
+* 03b6ca2 web: remove no longer needed mime type definition
+* 70ba4cb base: update to Debian Bookworm
+* dc5cbae misc: working on unstable
+
+## stable-9364-1
+
+Based on stable release 9364-1.
+
+* a5ebb99 jibri: flag to support prometheus-style metrics (#1768)
+* 80fc10e feat(prosody): Cleans up gc settings.
+* 69bba17 feat(prosody): Adjusts lua to use generational GC for brewery.cfg.lua.
+* 2798426 feat(prosody): Adjusts lua to use generational GC.
+* 28d2b32 feat(prosody): Make sure muc tumbstones is disabled.
+* d5df19d jigasi: autoscaler sidecar support (#1738)
+* 0953ca0 jigasi: skip SIP configuration when configured as a transcriber
+* ca1d670 fix: :bug: wrong quote in default config (#1761)
+* 360361e jibri: move xmpp config for easier override (#1748)
+* 452f5ba misc: working on unstable
+
+## stable-9364
+
+Based on stable release 9364.
+
+* ca61ea2 jibri: add ability to ignore certificate errors
+* 615396e java: use Java 17
+* 140db22 jibri: check for chrome bin before pre-warm (#1757)
+* 648612f feat(prosody): Always report visitors support when enabled.
+* 28f3cf8 jvb: lipcap from apt to allow for pcap dumps (#1747)
+* 33350c3 prosody: fix env var default value
+* d6dc1e3 base-java: install nodejs 20 from nodesource
+* 8f84f2f jibri: use storage.googleapis.com location for chromedriver
+* 1bbb4ab fix(prosody): Updates a rate whitelist config that changed in jitsi-meet. (#1741)
+* eccf68e misc: working on unstable
+
+## stable-9258
+
+Based on stable release 9258.
+
+* a198d56 compose: add jvb dependency to web container (#1739)
+* 5c5742b prosody: var for speakerstats modules
+* a1d1f2c web: Add env vars for setting 1080p and 4k bitrates.
+* bb69407 Remove "ping" in ViarualHosts (#1728)
+* 14efd9c prosody: disable "offline" and "register" modules. (#1727)
+* 8e28256 misc: working on unstable
+
 ## stable-9220-1
 
 Based on stable release 9220-1.

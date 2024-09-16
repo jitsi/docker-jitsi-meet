@@ -1,0 +1,15 @@
+version: '3.5'
+
+services:
+  # Grafana: used for visualization of metrics and log data through customizable dashboards.
+  grafana:
+    image: grafana/grafana:10.2.0
+    environment:
+      - GF_ANALYTICS_REPORTING_ENABLED=false
+    volumes:
+      - ./log-analyser/grafana:/var/lib/grafana
+      - ./log-analyser/grafana-provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+    ports:
+      - "3000:3000"
+    networks:
+      meet.jitsi:

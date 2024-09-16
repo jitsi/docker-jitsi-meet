@@ -20,6 +20,7 @@
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
 {{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
 {{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT -}}
+{{ $TURN_TTL := .Env.TURN_TTL | default "86400" -}}
 {{ $TURNS_HOST := .Env.TURNS_HOST | default "" -}}
 {{ $TURNS_HOSTS := splitList "," $TURNS_HOST -}}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
@@ -36,7 +37,7 @@
 {{ $XMPP_SERVER_S2S_PORT := .Env.XMPP_SERVER_S2S_PORT | default $S2S_PORT -}}
 {{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 
-plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom" }
+plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/prosody-plugins-contrib" }
 
 muc_mapper_domain_base = "v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}";
 muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
@@ -53,7 +54,7 @@ external_services = {
     {{- range $idx1, $host := $TURN_HOSTS -}}
       {{- range $idx2, $transport := $TURN_TRANSPORTS -}}
         {{- if or $idx1 $idx2 -}},{{- end }}
-        { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = 86400, algorithm = "turn" }
+        { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -61,7 +62,7 @@ external_services = {
   {{- if $TURNS_HOST -}}
     {{- range $idx, $host := $TURNS_HOSTS -}}
         {{- if or $TURN_HOST $idx -}},{{- end }}
-        { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = 86400, algorithm = "turn" }
+        { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
     {{- end }}
   {{- end }}
 };
@@ -130,7 +131,7 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
     {{- end }}
 
-VirtualHost '{{ $XMPP_AUTH_DOMAIN}}'
+VirtualHost '{{ $XMPP_AUTH_DOMAIN }}'
     modules_enabled = {
       'limits_exception';
     }
@@ -170,6 +171,8 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
     muc_access_whitelist = {
         "{{ $XMPP_DOMAIN }}";
     }
+    muc_tombstones = false
+    muc_room_allow_persistent = false
 
     {{ if $ENABLE_RATE_LIMITS -}}
     -- Max allowed join/login rate in events per second.
@@ -186,10 +189,6 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
       {{ end -}}
     };
 
-    rate_limit_whitelist_jids = {
-        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}",
-        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}"    
-    }
     {{ end -}}
 
 	-- The size of the cache that saves state for IP addresses

@@ -5,14 +5,17 @@
 {{ $ENABLE_S2S := or $ENABLE_VISITORS ( .Env.PROSODY_ENABLE_S2S | default "0" | toBool ) }}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
 {{ $GC_TYPE := .Env.GC_TYPE | default "incremental" -}}
-{{ $GC_INC_TH := .Env.GC_INC_TH | default 150 -}}
+{{ $GC_INC_TH := .Env.GC_INC_TH | default 400 -}}
 {{ $GC_INC_SPEED := .Env.GC_INC_SPEED | default 250 -}}
 {{ $GC_INC_STEP_SIZE := .Env.GC_INC_STEP_SIZE | default 13 -}}
 {{ $GC_GEN_MIN_TH := .Env.GC_GEN_MIN_TH | default 20 -}}
 {{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
 {{ $PROSODY_C2S_LIMIT := .Env.PROSODY_C2S_LIMIT | default "10kb/s" -}}
+{{ $PROSODY_METRICS_ALLOWED_CIDR := .Env.PROSODY_METRICS_ALLOWED_CIDR | default "172.16.0.0/12" -}}
 {{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
+{{ $PROSODY_ENABLE_METRICS := .Env.PROSODY_ENABLE_METRICS | default "false" | toBool -}}
+{{ $PROSODY_ENABLE_STANZA_COUNTS := .Env.PROSODY_ENABLE_STANZA_COUNTS | default "false" | toBool -}}
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
 {{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
 {{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
@@ -23,7 +26,7 @@
 {{ $VISITORS_XMPP_DOMAIN := .Env.VISITORS_XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $VISITORS_XMPP_SERVER := .Env.VISITORS_XMPP_SERVER | default "" -}}
 {{ $VISITORS_XMPP_SERVERS := splitList "," $VISITORS_XMPP_SERVER -}}
-{{ $VISITORS_XMPP_PORT := .Env.VISITORS_XMPP_PORT | default "52220" }}
+{{ $VISITORS_XMPP_PORT := .Env.VISITORS_XMPP_PORT | default 52220 }}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
@@ -97,6 +100,7 @@ modules_enabled = {
 		--"watchregistrations"; -- Alert admins of registrations
 		--"motd"; -- Send a message to users when they log in
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
+		"http_health";
 		{{ if eq .Env.PROSODY_MODE "brewery" -}}
 		"firewall"; -- Enable firewalling
 		"secure_interfaces";
@@ -108,6 +112,17 @@ modules_enabled = {
 		"s2sout_override";
 		"s2s_whitelist";
 		{{ end -}}
+
+		{{ if $PROSODY_ENABLE_METRICS }}
+		-- metrics collection functionality
+		"http_openmetrics";
+		{{ end -}}
+
+		{{ if $PROSODY_ENABLE_STANZA_COUNTS }}
+		-- Stanza count metrics for monitoring
+		"measure_stanza_counts";
+		{{ end -}}
+
 		{{ if .Env.GLOBAL_MODULES }}
         "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
         {{ end }}
@@ -286,6 +301,13 @@ log = {
 	{{ join "\n" (splitList "\\n" .Env.PROSODY_LOG_CONFIG) }}
 {{ end }}
 }
+
+{{ if $PROSODY_ENABLE_METRICS }} 
+-- Statistics Provider configuration
+statistics = "internal"
+statistics_interval = "manual"
+openmetrics_allow_cidr = "{{ $PROSODY_METRICS_ALLOWED_CIDR }}"
+{{ end }}
 
 {{ if .Env.GLOBAL_CONFIG }}
 {{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG) }}

@@ -23,8 +23,10 @@ services:
             - CHROMIUM_FLAGS
             - DISPLAY=:0
             - ENABLE_STATS_D
+            - IGNORE_CERTIFICATE_ERRORS
             - JIBRI_WEBHOOK_SUBSCRIBERS
             - JIBRI_INSTANCE_ID
+            - JIBRI_ENABLE_PROMETHEUS
             - JIBRI_HTTP_API_EXTERNAL_PORT
             - JIBRI_HTTP_API_INTERNAL_PORT
             - JIBRI_RECORDING_RESOLUTION
@@ -36,6 +38,8 @@ services:
             - JIBRI_USAGE_TIMEOUT
             - JIBRI_XMPP_USER
             - JIBRI_XMPP_PASSWORD
+            - JIBRI_XORG_HORIZ_SYNC
+            - JIBRI_XORG_VERT_REFRESH
             - JIBRI_BREWERY_MUC
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD

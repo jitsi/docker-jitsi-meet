@@ -1,0 +1,88 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+      grpc:
+        endpoint: 0.0.0.0:4317
+  filelog/jitsi-containers:
+    include: ['/var/lib/docker/containers/*/*.log']
+    encoding: utf-8
+    operators:
+      - type: json_parser
+        id: parser-docker
+        output: filter_non_tagged_containers
+        timestamp:
+          parse_from: attributes.time
+          layout: '%Y-%m-%dT%H:%M:%S.%LZ'
+      - type: filter
+        id: filter_non_tagged_containers
+        expr: |
+          (attributes?.attrs?.service != "jitsi-web" and 
+          attributes?.attrs?.service != "jitsi-jicofo" and 
+          attributes?.attrs?.service != "jitsi-jvb" and
+          attributes?.attrs?.service != "jitsi-prosody")
+        output: regex_parser_choice
+      - type: router
+        id: regex_parser_choice
+        routes:
+          - expr: 'attributes.attrs.service == "jitsi-web"'
+            output: jitsi_web_parser
+          - expr: 'attributes.attrs.service == "jitsi-jicofo"'
+            output: jitsi_jicofo_parser
+          - expr: 'attributes.attrs.service == "jitsi-jvb"'
+            output: jitsi_jvb_parser
+          - expr: 'attributes.attrs.service == "jitsi-prosody"'
+            output: jitsi_prosody_parser
+      - type: regex_parser
+        id: jitsi_web_parser
+        parse_from: attributes.log
+        regex: "^(?P<message>[\\s\\S]*)$|^(\\[(?P<temp_meta>[\\w\\W]+)\\] (?P<temp_message>[\\S\\s]*)$)"
+      - type: regex_parser
+        id: jitsi_jicofo_parser
+        parse_from: attributes.log
+        regex: "(^(?P<app>\\w+) (?P<timestamp>\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}\\.\\d{3}) (?P<level>\\w+): \\[(?P<pid>\\d+)\\]( \\[(?P<meta>[\\w\\W]+)\\])? (?P<codefile>[\\w\\W]+)(#(?P<codeline>\\d+))?: (?P<message>[\\s\\S]*)$)|^(\\[(?P<temp_meta>[\\w\\W]+)\\] (?P<temp_message>[\\S\\s]*)$)"
+        output: move_meta_key
+      - type: regex_parser
+        id: jitsi_jvb_parser
+        parse_from: attributes.log
+        regex: "^(?P<app>JVB)  \\[(?P<pid>\\d+)\\] (?P<codefile>[\\w\\.]+)#(?P<codeline>\\d+): (?P<message>[\\S\\s]*)$"
+      - type: regex_parser
+        id: jitsi_prosody_parser
+        parse_from: attributes.log
+        regex: (^(?<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\s+(?<service>\S+)\s+(?<level>\w{0,10})(\t)(?P<message>[\s\S]*)$)|^(\[(?P<temp_meta>[\w\W]+)\] (?P<temp_message>[\S\s]*)$)
+        output: move_meta_key
+      - type: move
+        id: move_meta_key
+        if: "attributes.temp_meta != nil and attributes.temp_meta != ''"
+        from: attributes.temp_meta
+        to: attributes.meta
+        output: move_message_key
+      - type: move
+        id: move_message_key
+        if: "attributes.temp_message != nil and attributes.temp_message != ''"
+        from: attributes.temp_message
+        to: attributes.message
+  docker_stats:
+    endpoint: "unix:///var/run/docker.sock"
+processors:
+  batch:
+
+exporters:
+  logging:
+    loglevel: debug
+  loki:
+    endpoint: "http://loki:3100/loki/api/v1/push"
+  prometheus:
+    endpoint: "0.0.0.0:9464"
+
+service:
+  pipelines:
+    logs:
+      receivers: [otlp, filelog/jitsi-containers]
+      processors: [batch]
+      exporters: [loki]
+    metrics:
+      receivers: [docker_stats]
+      processors: [batch]
+      exporters: [prometheus]
+
