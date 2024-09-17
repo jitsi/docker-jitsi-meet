@@ -5,5 +5,5 @@
 # services and shutdown the container.
 
 if [[ $1 -eq 0 ]]; then
-  s6-svscanctl -t /var/run/s6/services
+  /opt/jitsi/shutdown.sh
 fi
