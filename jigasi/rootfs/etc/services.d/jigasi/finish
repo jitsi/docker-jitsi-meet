@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv bash
+
+# When the jigasi is shutdown (or gracefully shutdown), it exits with code 0.
+# In this case, we don't want S6 to restart the service. We want to stop all
+# services and shutdown the container.
+
+if [[ $1 -eq 0 ]]; then
+  /opt/jitsi/shutdown.sh
+fi
