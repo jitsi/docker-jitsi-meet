@@ -69,7 +69,7 @@ modules_enabled = {
 		"saslauth"; -- Authentication for clients and servers. Recommended if you want to log in.
 		"tls"; -- Add support for secure TLS on c2s/s2s connections
 		"disco"; -- Service discovery
-
+{{ if eq .Env.PROSODY_MODE "client" -}}
 	-- Not essential, but recommended
 		"private"; -- Private XML storage (for room bookmarks, etc.)
 		"limits"; -- Enable bandwidth limiting for XMPP connections
@@ -78,16 +78,19 @@ modules_enabled = {
 		--"privacy"; -- Support privacy lists
 		--"compression"; -- Stream compression (Debian: requires lua-zlib module to work)
 
-	-- Nice to have
-		"version"; -- Replies to server version requests
-		"uptime"; -- Report how long server has been running
-		"time"; -- Let others know the time here on this server
-		"ping"; -- Replies to XMPP pings with pongs
-
 	-- Admin interfaces
 		"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
 		--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
 
+	-- Nice to have
+		"version"; -- Replies to server version requests
+		"uptime"; -- Report how long server has been running
+		"time"; -- Let others know the time here on this server
+{{ end -}}
+		"ping"; -- Replies to XMPP pings with pongs
+{{ if eq .Env.PROSODY_MODE "visitors" -}}
+		"limits"; -- Enable bandwidth limiting for XMPP connections
+{{ end -}}
 	-- HTTP modules
 		--"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
 		--"http_files"; -- Serve static files from a directory over HTTP
