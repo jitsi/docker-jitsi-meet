@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-if [[ ! -f /etc/saslauthd.conf ]]; then
+if [[ ! -f /etc/saslauthd.conf ]] && [[ "$AUTH_TYPE" == "ldap" ]]; then
   tpl /defaults/saslauthd.conf > /etc/saslauthd.conf
   mkdir -pm777 /var/run/saslauthd
   adduser prosody sasl
