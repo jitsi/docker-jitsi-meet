@@ -339,6 +339,7 @@ services:
             - BRIDGE_STRESS_THRESHOLD
             - ENABLE_AUTH
             - ENABLE_AUTO_OWNER
+            - ENABLE_MODERATOR_CHECKS
             - ENABLE_CODEC_VP8
             - ENABLE_CODEC_VP9
             - ENABLE_CODEC_AV1
