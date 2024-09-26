@@ -1,3 +1,36 @@
+## stable-9753
+
+Based on stable release 9753.
+
+* 9e17f95 feat(jigasi): allow unique account UID for each entry even if the same auth is used (#1917)
+* ad2a577 fix(jigasi): transcriber VOSK URL variable into compose file (#1916)
+* 6c08391 feat(jigasi): transcriber configuration supports vosk URL (#1915)
+* 1db83ed feat(ldap): Start and configure only if enabled.
+* ceb4a51 feat(prosody): Skip some modules for prosody-jvb.
+* e7786d5 feat(jigasi): transcriber configuration for OCI and whisper and to skip saving (#1909)
+* c5afcde feat(jigasi): support graceful shutdown via sidecar (#1908)
+* 5d40297 feat(jigasi): allow optional label for xmpp servers (#1907)
+* e7cb0f4 feat(jvb): autoscaler sidecar shutdown hook on finish (#1906)
+* b0675c0 prosody: recording metadata module (#1734)
+* 36b2e16 feat(web) - Added NGINX_KEEPALIVE_TIMEOUT environment variable
+* 24bf3e4 fix(web) add HTTPS port to URL in env.example
+* 2280f6b feat(web) add ability to run the web container targetting JaaS
+* ff49cd9 Revert "feat(jigasi): install openjdk nonheadless, currently required for dep…" (#1899)
+* 66c6ad8 feat(jigasi): install openjdk nonheadless, currently required for dependencies (#1895)
+* 3f67408 feat(jigasi,transcriber): transcriber component and jigasi configuration updates (#1881)
+* 3e93212 fix(jicofo): pass compose variable for jicofo transcription support (#1893)
+* 084266c feat(transcriber): transcriber password in env.example and gen-passwords.sh (#1894)
+* e1b14f2 feat(prosody): enable brewery muc modules in internal muc component (#1892)
+* 1889c5d fix(web): enable hidden domain when transcriptions or recordings are enabled (#1891)
+* 46377d4 feat(prosody): transcriber account support and flag configuration fix (#1890)
+* 9f2489d feat(log-analyser): updated grafana dashboards (#1885)
+* 1e589f3 feat(log-analyser): transfered docker logs from docker containers and updated readme (#1884)
+* 1f056b4 web: remove unnecessary option
+* f893e49 base: update tpl
+* 7617503 fix(log-analyser): added Jitsi network to loki service
+* 27150a2 feat(prometheus): Docker Daemon scraping for monitoring (#1865)
+* d6b64a2 misc: working on unstable
+
 ## stable-9646
 
 Based on stable release 9646.
