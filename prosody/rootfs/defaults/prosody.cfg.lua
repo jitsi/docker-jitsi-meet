@@ -224,6 +224,11 @@ s2s_whitelist = {
 	{{ end -}}
 	{{ if $ENABLE_GUEST_DOMAIN -}}
     '{{ $XMPP_GUEST_DOMAIN }}';
+
+	{{ end }}
+	{{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS -}}
+    '{{ $XMPP_RECORDER_DOMAIN }}';
+
 	{{ end -}}
 }
 {{ end -}}
