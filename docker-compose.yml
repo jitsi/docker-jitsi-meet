@@ -12,6 +12,7 @@ services:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
+            - ${CONFIG}/web/load-test:/usr/share/jitsi-meet/load-test:Z
         labels:
             service: "jitsi-web"
         environment:
