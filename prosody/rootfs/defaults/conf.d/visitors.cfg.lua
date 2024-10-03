@@ -28,7 +28,7 @@
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 -}}
 {{ $XMPP_SERVER := .Env.XMPP_SERVER | default "xmpp.meet.jitsi" -}}
 {{ $XMPP_SERVER_S2S_PORT := .Env.XMPP_SERVER_S2S_PORT | default $S2S_PORT -}}
-{{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
+{{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
 
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/prosody-plugins-contrib" }
 
@@ -69,7 +69,7 @@ s2sout_override = {
     ["{{ $XMPP_GUEST_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
 {{ end -}}
 {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS -}}
-    ["{{ $XMPP_RECORDER_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
+    ["{{ $XMPP_HIDDEN_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
 {{ end -}}
 {{ if .Env.PROSODY_VISITORS_S2S_VHOSTS -}}
   {{- range $index, $vhost := (splitList "," .Env.PROSODY_VISITORS_S2S_VHOSTS | compact) }}
@@ -154,18 +154,23 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
 
     {{ if $ENABLE_RATE_LIMITS -}}
     -- Max allowed join/login rate in events per second.
-	rate_limit_login_rate = {{ $RATE_LIMIT_LOGIN_RATE }};
-	-- The rate to which sessions from IPs exceeding the join rate will be limited, in bytes per second.
-	rate_limit_session_rate = {{ $RATE_LIMIT_SESSION_RATE }};
-	-- The time in seconds, after which the limit for an IP address is lifted.
-	rate_limit_timeout = {{ $RATE_LIMIT_TIMEOUT }};
-	-- List of regular expressions for IP addresses that are not limited by this module.
-	rate_limit_whitelist = {
-      "127.0.0.1";
-      {{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES | compact) -}}
-      "{{ $cidr }}";
-      {{ end -}}
-    };
+    rate_limit_login_rate = {{ $RATE_LIMIT_LOGIN_RATE }};
+    -- The rate to which sessions from IPs exceeding the join rate will be limited, in bytes per second.
+    rate_limit_session_rate = {{ $RATE_LIMIT_SESSION_RATE }};
+    -- The time in seconds, after which the limit for an IP address is lifted.
+    rate_limit_timeout = {{ $RATE_LIMIT_TIMEOUT }};
+    -- List of regular expressions for IP addresses that are not limited by this module.
+    rate_limit_whitelist = {
+        "127.0.0.1";
+        {{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES) -}}
+        "{{ $cidr }}";
+        {{ end -}}
+      };
+
+    rate_limit_whitelist_jids = {
+        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}",
+        "{{ $JIGASI_XMPP_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}"
+    }
 
     {{ end -}}
 
