@@ -1,9 +1,11 @@
 {{ $C2S_REQUIRE_ENCRYPTION := .Env.PROSODY_C2S_REQUIRE_ENCRYPTION | default "1" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
+{{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
+{{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool -}}
+{{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "0" | toBool -}}
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
 {{ $ENABLE_S2S := or $ENABLE_VISITORS ( .Env.PROSODY_ENABLE_S2S | default "0" | toBool ) }}
-{{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
 {{ $GC_TYPE := .Env.GC_TYPE | default "incremental" -}}
 {{ $GC_INC_TH := .Env.GC_INC_TH | default 400 -}}
 {{ $GC_INC_SPEED := .Env.GC_INC_SPEED | default 250 -}}
@@ -31,6 +33,7 @@
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
+{{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
 
 -- Prosody Example Configuration File
 --
