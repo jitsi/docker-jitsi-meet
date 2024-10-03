@@ -1,0 +1,11 @@
+groups:
+- name: example
+  rules:
+  - alert: HighCPUUsage
+    expr: container_cpu_utilization_ratio > 0.05
+    for: 5s
+    labels:
+      severity: critical
+    annotations:
+      summary: "High CPU usage detected"
+      description: "CPU usage is above 5% for more than 10 seconds."
