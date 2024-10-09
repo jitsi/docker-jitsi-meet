@@ -1,4 +1,6 @@
 {{ $C2S_REQUIRE_ENCRYPTION := .Env.PROSODY_C2S_REQUIRE_ENCRYPTION | default "1" | toBool -}}
+{{ $DISABLE_C2S_LIMIT := .Env.PROSODY_DISABLE_C2S_LIMIT | default "0" | toBool -}}
+{{ $DISABLE_S2S_LIMIT := .Env.PROSODY_DISABLE_S2S_LIMIT | default "0" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
 {{ $ENABLE_IPV6 := .Env.ENABLE_IPV6 | default "true" | toBool -}}
@@ -165,15 +167,17 @@ modules_disabled = {
 -- For more information see http://prosody.im/doc/creating_accounts
 allow_registration = false;
 
-{{ if ne .Env.PROSODY_MODE "brewery" -}}
--- Enable rate limits for incoming client and server connections
+{{ if and (ne .Env.PROSODY_MODE "brewery") (or (not $DISABLE_C2S_LIMIT) (not $DISABLE_S2S_LIMIT)) -}}
+-- Enable rate limits for incoming connections
 limits = {
-{{ if ne $PROSODY_C2S_LIMIT "" }}
+{{ if not $DISABLE_C2S_LIMIT }}
+-- Limit incoming client connections
   c2s = {
     rate = "{{ $PROSODY_C2S_LIMIT }}";
   };
 {{ end }}
-{{ if ne $PROSODY_S2S_LIMIT "" }}
+{{ if not $DISABLE_S2S_LIMIT }}
+-- Limit incoming server connections
   s2sin = {
     rate = "{{ $PROSODY_S2S_LIMIT }}";
   };
