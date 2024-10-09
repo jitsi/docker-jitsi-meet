@@ -22,6 +22,7 @@
 {{ $PROSODY_ENABLE_STANZA_COUNTS := .Env.PROSODY_ENABLE_STANZA_COUNTS | default "false" | toBool -}}
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
 {{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
+{{ $PROSODY_MODE := .Env.PROSODY_MODE | default "client" -}}
 {{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
 {{ $TRUSTED_PROXY_LIST := splitList "," $TRUSTED_PROXIES -}}
 {{ $PROSODY_S2S_LIMIT := .Env.PROSODY_S2S_LIMIT | default "30kb/s" -}}
@@ -74,7 +75,7 @@ modules_enabled = {
 		"saslauth"; -- Authentication for clients and servers. Recommended if you want to log in.
 		"tls"; -- Add support for secure TLS on c2s/s2s connections
 		"disco"; -- Service discovery
-{{ if eq .Env.PROSODY_MODE "client" -}}
+{{- if eq $PROSODY_MODE "client" }}
 	-- Not essential, but recommended
 		"private"; -- Private XML storage (for room bookmarks, etc.)
 		"limits"; -- Enable bandwidth limiting for XMPP connections
@@ -91,11 +92,11 @@ modules_enabled = {
 		"version"; -- Replies to server version requests
 		"uptime"; -- Report how long server has been running
 		"time"; -- Let others know the time here on this server
-{{ end -}}
+{{- end }}
 		"ping"; -- Replies to XMPP pings with pongs
-{{ if eq .Env.PROSODY_MODE "visitors" -}}
+{{- if eq $PROSODY_MODE "visitors" }}
 		"limits"; -- Enable bandwidth limiting for XMPP connections
-{{ end -}}
+{{- end }}
 	-- HTTP modules
 		--"bosh"; -- Enable BOSH clients, aka "Jabber over HTTP"
 		--"http_files"; -- Serve static files from a directory over HTTP
@@ -109,7 +110,7 @@ modules_enabled = {
 		--"motd"; -- Send a message to users when they log in
 		--"legacyauth"; -- Legacy authentication. Only used by some old clients and bots.
 		"http_health";
-		{{ if eq .Env.PROSODY_MODE "brewery" -}}
+		{{ if eq $PROSODY_MODE "brewery" -}}
 		"firewall"; -- Enable firewalling
 		"secure_interfaces";
 		{{ end -}}
@@ -145,7 +146,7 @@ trusted_proxies = {
 {{ end }}
 }
 
-{{ if eq .Env.PROSODY_MODE "brewery" -}}
+{{ if eq $PROSODY_MODE "brewery" -}}
 firewall_scripts = {
     "/config/rules.d/jvb_muc_presence_filter.pfw";
 };
@@ -167,7 +168,7 @@ modules_disabled = {
 -- For more information see http://prosody.im/doc/creating_accounts
 allow_registration = false;
 
-{{ if and (ne .Env.PROSODY_MODE "brewery") (or (not $DISABLE_C2S_LIMIT) (not $DISABLE_S2S_LIMIT)) -}}
+{{ if and (ne $PROSODY_MODE "brewery") (or (not $DISABLE_C2S_LIMIT) (not $DISABLE_S2S_LIMIT)) -}}
 -- Enable rate limits for incoming connections
 limits = {
 {{ if not $DISABLE_C2S_LIMIT }}
@@ -221,7 +222,7 @@ c2s_interfaces = { "*" }
 -- set s2s port
 s2s_ports = { {{ $S2S_PORT }} } -- Listen on specific s2s port
 
-{{ if eq .Env.PROSODY_MODE "visitors" -}}
+{{ if eq $PROSODY_MODE "visitors" -}}
 s2s_whitelist = {
 	{{ if $ENABLE_VISITORS -}}
     '{{ $XMPP_MUC_DOMAIN }}'; -- needed for visitors to send messages to main room
@@ -252,7 +253,7 @@ s2sout_override = {
         ["v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
 {{ end -}}
 };
-{{ if ne .Env.PROSODY_MODE "visitors" -}}
+{{ if ne $PROSODY_MODE "visitors" -}}
 s2s_whitelist = {
 {{ range $index, $element := $VISITORS_XMPP_SERVERS -}}
 	"{{ $VISITORS_MUC_PREFIX }}.v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}";
