@@ -32,7 +32,7 @@ fi
 mkdir /config/certs
 cp -r /defaults/* /config
 
-[ -z "$PROSODY_MODE" ] && PROSODY_MODE="client"
+[ -z "$PROSODY_MODE" ] && export PROSODY_MODE="client"
 
 if [[ "$PROSODY_MODE" == "visitors" ]]; then
     echo "Prosody visitor mode, using alternate config"
