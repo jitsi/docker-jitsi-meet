@@ -44,13 +44,13 @@
 {{ $STUN_HOST := .Env.STUN_HOST | default "" -}}
 {{ $STUN_PORT := .Env.STUN_PORT | default "443" -}}
 {{ $TURNS_HOST := .Env.TURNS_HOST | default "" -}}
-{{ $TURNS_HOSTS := splitList "," $TURNS_HOST -}}
+{{ $TURNS_HOSTS := splitList "," $TURNS_HOST | compact -}}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
 {{ $TURN_HOST := .Env.TURN_HOST | default "" -}}
-{{ $TURN_HOSTS := splitList "," $TURN_HOST -}}
+{{ $TURN_HOSTS := splitList "," $TURN_HOST | compact -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
 {{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
-{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT -}}
+{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT | compact -}}
 {{ $TURN_TTL := .Env.TURN_TTL | default "86400" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
@@ -113,11 +113,11 @@ external_services = {
 {{- end }}
 
 {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_ISSUERS }}
-asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS) }}" }
+asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS | compact) }}" }
 {{ end }}
 
 {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_AUDIENCES }}
-asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES) }}" }
+asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES | compact) }}" }
 {{ end }}
 
 consider_bosh_secure = true;
@@ -223,7 +223,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         "av_moderation";
         {{ end }}
         {{ if .Env.XMPP_MODULES }}
-        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MODULES) }}";
+        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MODULES | compact) }}";
         {{ end }}
         {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "ldap") }}
         "auth_cyrus";
@@ -275,7 +275,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ end }}
 
     {{ if .Env.XMPP_CONFIGURATION -}}
-    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
+    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION | compact) }}
     {{ end -}}
 
 {{ if $ENABLE_GUEST_DOMAIN }}
@@ -321,7 +321,7 @@ Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
         "muc_hide_all";
         "muc_filter_access";
         {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
-        "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES) }}";
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES | compact) }}";
         {{ end -}}
     }
     restrict_room_creation = true
@@ -338,7 +338,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     modules_enabled = {
         "muc_meeting_id";
         {{ if .Env.XMPP_MUC_MODULES -}}
-        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
+        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MUC_MODULES | compact) }}";
         {{ end -}}
         {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) -}}
         "{{ $JWT_TOKEN_AUTH_MODULE }}";
@@ -378,7 +378,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     -- List of regular expressions for IP addresses that are not limited by this module.
     rate_limit_whitelist = {
         "127.0.0.1";
-{{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES) }}
+{{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES | compact) }}
         "{{ $cidr }}";
 {{ end }}
     };
@@ -395,7 +395,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     muc_room_locking = false
     muc_room_default_public_jids = true
     {{ if .Env.XMPP_MUC_CONFIGURATION -}}
-    {{ join "\n    " (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}
+    {{ join "\n    " (splitList "," .Env.XMPP_MUC_CONFIGURATION | compact) }}
     {{ end -}}
     {{ if .Env.MAX_PARTICIPANTS }}
     muc_access_whitelist = {
@@ -428,7 +428,7 @@ Component "speakerstats.{{ $XMPP_DOMAIN }}" "speakerstats_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
     {{- if .Env.XMPP_SPEAKERSTATS_MODULES }}
     modules_enabled = {
-        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_SPEAKERSTATS_MODULES) }}";
+        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_SPEAKERSTATS_MODULES | compact) }}";
     }
     {{- end }}
 
@@ -459,7 +459,7 @@ Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
         "muc_rate_limit";
         {{ end -}}
         {{ if .Env.XMPP_LOBBY_MUC_MODULES -}}
-        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_LOBBY_MUC_MODULES) }}";
+        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_LOBBY_MUC_MODULES | compact) }}";
         {{ end -}}
     }
 
@@ -483,7 +483,7 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         "muc_rate_limit";
         {{ end -}}
         {{ if .Env.XMPP_BREAKOUT_MUC_MODULES -}}
-        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_BREAKOUT_MUC_MODULES) }}";
+        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_BREAKOUT_MUC_MODULES | compact) }}";
         {{ end -}}
     }
 {{ end }}
