@@ -227,11 +227,11 @@ config.analytics.matomoSiteID = '{{ .Env.MATOMO_SITE_ID }}';
 
 {{ if .Env.ANALYTICS_SCRIPT_URLS -}}
 // Array of script URLs to load as lib-jitsi-meet "analytics handlers".
-config.analytics.scriptURLs = [ '{{ join "','" (splitList "," .Env.ANALYTICS_SCRIPT_URLS) }}' ];
+config.analytics.scriptURLs = [ '{{ join "','" (splitList "," .Env.ANALYTICS_SCRIPT_URLS | compact) }}' ];
 {{ end -}}
 
 {{ if .Env.ANALYTICS_WHITELISTED_EVENTS -}}
-config.analytics.whiteListedEvents = [ '{{ join "','" (splitList "," .Env.ANALYTICS_WHITELISTED_EVENTS) }}' ];
+config.analytics.whiteListedEvents = [ '{{ join "','" (splitList "," .Env.ANALYTICS_WHITELISTED_EVENTS | compact) }}' ];
 {{ end -}}
 
 
@@ -299,7 +299,7 @@ config.prejoinConfig = {
 
 // List of buttons to hide from the extra join options dropdown on prejoin screen.
 {{ if .Env.HIDE_PREJOIN_EXTRA_BUTTONS -}}
-config.prejoinConfig.hideExtraJoinButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREJOIN_EXTRA_BUTTONS) }}' ];
+config.prejoinConfig.hideExtraJoinButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREJOIN_EXTRA_BUTTONS | compact) }}' ];
 {{ end -}}
 
 // Welcome page.
@@ -522,12 +522,12 @@ config.disablePolls = {{ $DISABLE_POLLS }};
 
 // Configure toolbar buttons
 {{ if .Env.TOOLBAR_BUTTONS -}}
-config.toolbarButtons = [ '{{ join "','" (splitList "," .Env.TOOLBAR_BUTTONS) }}' ];
+config.toolbarButtons = [ '{{ join "','" (splitList "," .Env.TOOLBAR_BUTTONS | compact) }}' ];
 {{ end -}}
 
 // Hides the buttons at pre-join screen
 {{ if .Env.HIDE_PREMEETING_BUTTONS -}}
-config.hiddenPremeetingButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREMEETING_BUTTONS) }}' ];
+config.hiddenPremeetingButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREMEETING_BUTTONS | compact) }}' ];
 {{ end -}}
 
 // Configure remote participant video menu

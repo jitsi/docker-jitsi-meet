@@ -21,16 +21,16 @@
 {{ $PROSODY_ENABLE_METRICS := .Env.PROSODY_ENABLE_METRICS | default "false" | toBool -}}
 {{ $PROSODY_ENABLE_STANZA_COUNTS := .Env.PROSODY_ENABLE_STANZA_COUNTS | default "false" | toBool -}}
 {{ $PROSODY_ADMINS := .Env.PROSODY_ADMINS | default "" -}}
-{{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS -}}
+{{ $PROSODY_ADMIN_LIST := splitList "," $PROSODY_ADMINS | compact -}}
 {{ $PROSODY_MODE := .Env.PROSODY_MODE | default "client" -}}
 {{ $TRUSTED_PROXIES := .Env.PROSODY_TRUSTED_PROXIES | default "127.0.0.1,::1" -}}
-{{ $TRUSTED_PROXY_LIST := splitList "," $TRUSTED_PROXIES -}}
+{{ $TRUSTED_PROXY_LIST := splitList "," $TRUSTED_PROXIES | compact -}}
 {{ $PROSODY_S2S_LIMIT := .Env.PROSODY_S2S_LIMIT | default "30kb/s" -}}
 {{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" }}
 {{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
 {{ $VISITORS_XMPP_DOMAIN := .Env.VISITORS_XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $VISITORS_XMPP_SERVER := .Env.VISITORS_XMPP_SERVER | default "" -}}
-{{ $VISITORS_XMPP_SERVERS := splitList "," $VISITORS_XMPP_SERVER -}}
+{{ $VISITORS_XMPP_SERVERS := splitList "," $VISITORS_XMPP_SERVER | compact -}}
 {{ $VISITORS_XMPP_PORT := .Env.VISITORS_XMPP_PORT | default 52220 }}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -133,7 +133,7 @@ modules_enabled = {
 		{{ end -}}
 
 		{{ if .Env.GLOBAL_MODULES }}
-        "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES) }}";
+        "{{ join "\";\n\"" (splitList "," .Env.GLOBAL_MODULES | compact) }}";
         {{ end }}
 };
 
@@ -314,7 +314,7 @@ authentication = "internal_hashed"
 log = {
 	{ levels = {min = "{{ $LOG_LEVEL }}"}, timestamps = "%Y-%m-%d %X", to = "console"};
 {{ if .Env.PROSODY_LOG_CONFIG }}
-	{{ join "\n" (splitList "\\n" .Env.PROSODY_LOG_CONFIG) }}
+	{{ join "\n" (splitList "\\n" .Env.PROSODY_LOG_CONFIG | compact) }}
 {{ end }}
 }
 
@@ -326,7 +326,7 @@ openmetrics_allow_cidr = "{{ $PROSODY_METRICS_ALLOWED_CIDR }}"
 {{ end }}
 
 {{ if .Env.GLOBAL_CONFIG }}
-{{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG) }}
+{{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG | compact) }}
 {{ end }}
 
 -- Enable use of native prosody 0.11 support for epoll over select
