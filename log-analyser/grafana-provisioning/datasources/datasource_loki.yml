@@ -7,3 +7,13 @@ datasources:
     access: proxy
     url: http://loki:3100
     editable: true
+    apiVersion: 1
+
+  - name: Prometheus
+    type: prometheus
+    access: proxy
+    url: http://prometheus:9090
+    isDefault: true
+    editable: true
+    jsonData:
+      timeInterval: "5s"
