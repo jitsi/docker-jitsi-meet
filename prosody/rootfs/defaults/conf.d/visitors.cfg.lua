@@ -18,13 +18,13 @@
 {{ $SHARD_NAME := .Env.SHARD | default "default" -}}
 {{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" -}}
 {{ $TURN_HOST := .Env.TURN_HOST | default "" -}}
-{{ $TURN_HOSTS := splitList "," $TURN_HOST -}}
+{{ $TURN_HOSTS := splitList "," $TURN_HOST | compact -}}
 {{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
 {{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
-{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT -}}
+{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT | compact -}}
 {{ $TURN_TTL := .Env.TURN_TTL | default "86400" -}}
 {{ $TURNS_HOST := .Env.TURNS_HOST | default "" -}}
-{{ $TURNS_HOSTS := splitList "," $TURNS_HOST -}}
+{{ $TURNS_HOSTS := splitList "," $TURNS_HOST | compact -}}
 {{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
 {{ $VISITOR_INDEX := .Env.PROSODY_VISITOR_INDEX | default "0" -}}
 {{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
@@ -124,7 +124,7 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
       "smacks"; -- XEP-0198: Stream Management
       {{ end -}}
       {{ if .Env.XMPP_MODULES }}
-      "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES) }}";
+      "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES | compact) }}";
       {{ end }}
     }
     main_muc = '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}';
@@ -133,7 +133,7 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     release_number = "{{ $RELEASE_NUMBER }}"
 
     {{ if .Env.XMPP_CONFIGURATION -}}
-    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION) }}
+    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION | compact) }}
     {{- end }}
 
 VirtualHost '{{ $XMPP_AUTH_DOMAIN }}'
@@ -162,7 +162,7 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
         "rate_limit";
         {{ end -}}
         {{ if .Env.XMPP_MUC_MODULES -}}
-        "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES) }}";
+        "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES | compact) }}";
         {{ end -}}
       }
     muc_room_default_presence_broadcast = {
@@ -189,7 +189,7 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
 	-- List of regular expressions for IP addresses that are not limited by this module.
 	rate_limit_whitelist = {
       "127.0.0.1";
-      {{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES) -}}
+      {{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES | compact) -}}
       "{{ $cidr }}";
       {{ end -}}
     };
@@ -201,5 +201,5 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
 
     muc_rate_joins = 30;
     {{ if .Env.XMPP_MUC_CONFIGURATION -}}
-    {{ join "\n" (splitList "," .Env.XMPP_MUC_CONFIGURATION) }}
+    {{ join "\n" (splitList "," .Env.XMPP_MUC_CONFIGURATION | compact) }}
     {{ end -}}
