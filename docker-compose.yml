@@ -291,6 +291,7 @@ services:
             - PROSODY_TRUSTED_PROXIES
             - PROSODY_VISITOR_INDEX
             - PROSODY_VISITORS_MUC_PREFIX
+            - PROSODY_VISITORS_S2S_VHOSTS
             - PUBLIC_URL
             - STUN_HOST
             - STUN_PORT

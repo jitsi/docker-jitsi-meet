@@ -224,20 +224,22 @@ s2s_ports = { {{ $S2S_PORT }} } -- Listen on specific s2s port
 
 {{ if eq $PROSODY_MODE "visitors" -}}
 s2s_whitelist = {
-	{{ if $ENABLE_VISITORS -}}
+	{{- if $ENABLE_VISITORS }}
     '{{ $XMPP_MUC_DOMAIN }}'; -- needed for visitors to send messages to main room
     'visitors.{{ $XMPP_DOMAIN }}'; -- needed for sending promotion request to visitors.{{ $XMPP_DOMAIN }} component
     '{{ $XMPP_DOMAIN }}'; -- unavailable presences back to main room
+	{{- end }}
 
-	{{ end -}}
-	{{ if $ENABLE_GUEST_DOMAIN -}}
+    {{- if $ENABLE_GUEST_DOMAIN }}
     '{{ $XMPP_GUEST_DOMAIN }}';
-
-	{{ end }}
-	{{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS -}}
+    {{- end }}
+    {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS -}}
     '{{ $XMPP_RECORDER_DOMAIN }}';
+	{{- end }}
 
-	{{ end -}}
+    {{- if .Env.PROSODY_VISITORS_S2S_VHOSTS }}
+    '{{ join "';\n    '" (splitList "," .Env.PROSODY_VISITORS_S2S_VHOSTS | compact) }}';
+    {{- end }}
 }
 {{ end -}}
 
