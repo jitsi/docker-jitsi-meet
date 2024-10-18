@@ -572,7 +572,6 @@ config.testing = {
 {{ if .Env.JAAS_APP_ID -}}
 {{ $JAAS_USE_STAGING := .Env.JAAS_USE_STAGING | default "false" | toBool -}}
 {{ $JAAS_DOMAIN := $JAAS_USE_STAGING | ternary "stage.8x8.vc" "8x8.vc" -}}
-{{ $VO_API_DOMAIN := $JAAS_USE_STAGING | ternary "api-vo-pilot.cloudflare.jitsi.net" "api-vo.cloudflare.jitsi.net" -}}
 
 config.hosts.domain = '{{ $JAAS_DOMAIN }}';
 config.hosts.muc = 'conference.{{ .Env.JAAS_APP_ID }}.{{ $JAAS_DOMAIN }}';
@@ -594,22 +593,22 @@ config.hiddenDomain = 'recorder.{{ $JAAS_DOMAIN }}';
 config.hiddenFromRecorderFeatureEnabled = true;
 config.enableEmailInStats = true;
 
-config.jaasActuatorUrl = 'https://{{ $VO_API_DOMAIN }}/jaas-actuator';
-config.jaasTokenUrl = 'https://{{ $VO_API_DOMAIN }}/token-mapping';
-config.jaasConferenceCreatorUrl = 'https://{{ $VO_API_DOMAIN }}/vmms-conference-mapper/v1/access/conference-creator';
-config.webhookProxyUrl = 'https://{{ $VO_API_DOMAIN }}/webhook-proxy';
-config.billingCounterUrl = 'https://{{ $VO_API_DOMAIN }}/billing-counter/v1/connection';
-config.brandingDataUrl = 'https://{{ $VO_API_DOMAIN }}/branding/public/v1/conferences';
-config.dialInNumbersUrl = 'https://{{ $VO_API_DOMAIN }}/vmms-conference-mapper/access/v1/dids';
-config.dialInConfCodeUrl = 'https://{{ $VO_API_DOMAIN }}/vmms-conference-mapper/v1/access';
-config.dialOutAuthUrl = 'https://{{ $VO_API_DOMAIN }}/phone-authorize';
-config.dialOutRegionUrl = 'https://{{ $VO_API_DOMAIN }}/customer-configs/v1/outbound-destination';
-config.peopleSearchUrl = 'https://{{ $VO_API_DOMAIN }}/v1/directory/search';
-config.inviteServiceUrl = 'https://{{ $VO_API_DOMAIN }}/v1/meeting/invite';
-config.recordingSharingUrl = 'https://{{ $VO_API_DOMAIN }}/jaas-recordings/link';
+config.jaasActuatorUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/jaas-actuator';
+config.jaasTokenUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/token-mapping';
+config.jaasConferenceCreatorUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/vmms-conference-mapper/v1/access/conference-creator';
+config.webhookProxyUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/webhook-proxy';
+config.billingCounterUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/billing-counter/v1/connection';
+config.brandingDataUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/branding/public/v1/conferences';
+config.dialInNumbersUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/vmms-conference-mapper/access/v1/dids';
+config.dialInConfCodeUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/vmms-conference-mapper/v1/access';
+config.dialOutAuthUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/phone-authorize';
+config.dialOutRegionUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/customer-configs/v1/outbound-destination';
+config.peopleSearchUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/v1/directory/search';
+config.inviteServiceUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/v1/meeting/invite';
+config.recordingSharingUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/jaas-recordings/link';
 config.peopleSearchQueryTypes = ['user','conferenceRooms'];
-config.sipInviteUrl = 'https://{{ $VO_API_DOMAIN }}/sip-jibri-gateway/jibris/invite';
-config.jaasFeedbackMetadataURL = 'https://{{ $VO_API_DOMAIN }}/webhook-proxy/feedback';
+config.sipInviteUrl = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/sip-jibri-gateway/jibris/invite';
+config.jaasFeedbackMetadataURL = 'https://{{ $JAAS_DOMAIN }}/v1/_jaas/webhook-proxy/feedback';
 
 {{ if $JAAS_USE_STAGING -}}
 config.whiteboard.collabServerBaseUrl = 'https://eght-excalidraw-backend-pilot.cloudflare.jitsi.net';
