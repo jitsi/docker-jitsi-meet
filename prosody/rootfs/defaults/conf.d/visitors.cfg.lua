@@ -104,6 +104,12 @@ s2sout_override = {
 {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS -}}
     ["{{ $XMPP_RECORDER_DOMAIN }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
 {{ end -}}
+{{ if .Env.PROSODY_VISITORS_S2S_VHOSTS -}}
+  {{- range $index, $vhost := (splitList "," .Env.PROSODY_VISITORS_S2S_VHOSTS | compact) }}
+    ["{{ $vhost }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
+  {{ end -}}
+{{ end -}}
+
 }
 
 muc_limit_messages_count = 10;

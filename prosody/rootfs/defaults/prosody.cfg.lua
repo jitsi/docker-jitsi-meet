@@ -238,8 +238,8 @@ s2s_whitelist = {
     '{{ $XMPP_RECORDER_DOMAIN }}';
 
 	{{ end -}}
-	{{- if .Env.PROSODY_VISITORS_S2S_WHITELIST }}
-	"{{ join "\";\n\"" (splitList "," .Env.PROSODY_VISITORS_S2S_WHITELIST | compact) }}";
+	{{- if .Env.PROSODY_VISITORS_S2S_VHOSTS }}
+	"{{ join "\";\n\"" (splitList "," .Env.PROSODY_VISITORS_S2S_VHOSTS | compact) }}";
 	{{- end }}
 }
 {{ end -}}
