@@ -23,6 +23,7 @@ services:
             - BOSH_URL_PATTERN
             - ENABLE_AUTH
             - ENABLE_GUESTS
+            - ENABLE_VISITORS
             - XMPP_AUTH_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
@@ -52,6 +53,9 @@ services:
             - JIGASI_HEALTH_CHECK_INTERVAL
             - JIGASI_SIP_KEEP_ALIVE_METHOD
             - JIGASI_ENABLE_SDES_SRTP
+            - JIGASI_VISITORS_QUEUE_SERVICE_URL
+            - JIGASI_VISITORS_QUEUE_SERVICE_PRIVATE_KEY_PATH
+            - JIGASI_VISITORS_QUEUE_SERVICE_PRIVATE_KEY_ID
             - SHUTDOWN_REST_ENABLED
             - SENTRY_DSN="${JIGASI_SENTRY_DSN:-0}"
             - SENTRY_ENVIRONMENT
