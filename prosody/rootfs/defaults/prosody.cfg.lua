@@ -96,13 +96,11 @@ modules_enabled = {
 		--"compression"; -- Stream compression (Debian: requires lua-zlib module to work)
 
 	-- Admin interfaces
-		"admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
+		-- "admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
 		--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
 
 	-- Nice to have
 		"version"; -- Replies to server version requests
-		"uptime"; -- Report how long server has been running
-		"time"; -- Let others know the time here on this server
 {{- end }}
 		"ping"; -- Replies to XMPP pings with pongs
 {{- if eq $PROSODY_MODE "visitors" }}
@@ -126,7 +124,6 @@ modules_enabled = {
 		"secure_interfaces";
 		{{ end -}}
 		{{ if $ENABLE_S2S -}}
-		"dialback"; -- s2s dialback support
 		"s2s_bidi";
 		"certs_s2soutinjection";
 		"s2sout_override";
