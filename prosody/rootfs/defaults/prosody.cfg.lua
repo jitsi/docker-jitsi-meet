@@ -126,7 +126,6 @@ modules_enabled = {
 		"secure_interfaces";
 		{{ end -}}
 		{{ if $ENABLE_S2S -}}
-		"dialback"; -- s2s dialback support
 		"s2s_bidi";
 		"certs_s2soutinjection";
 		"s2sout_override";
