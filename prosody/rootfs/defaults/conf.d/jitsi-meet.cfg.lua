@@ -413,13 +413,19 @@ Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
     muc_room_cache_size = 10000
     muc_room_locking = false
     muc_room_default_public_jids = true
+    {{- if .Env.MAX_PARTICIPANTS }}
+    muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
+    {{- end }}
     modules_enabled = {
-        {{ if $ENABLE_RATE_LIMITS -}}
+        {{- if $ENABLE_RATE_LIMITS }}
         "muc_rate_limit";
-        {{ end -}}
-        {{ if .Env.XMPP_LOBBY_MUC_MODULES -}}
+        {{- end }}
+        {{- if .Env.MAX_PARTICIPANTS }}
+        "muc_max_occupants";
+        {{- end }}
+        {{- if .Env.XMPP_LOBBY_MUC_MODULES }}
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_LOBBY_MUC_MODULES | compact) }}";
-        {{ end -}}
+        {{- end }}
     }
 
     {{ end }}
