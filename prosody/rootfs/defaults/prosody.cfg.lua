@@ -101,8 +101,6 @@ modules_enabled = {
 
 	-- Nice to have
 		"version"; -- Replies to server version requests
-		"uptime"; -- Report how long server has been running
-		"time"; -- Let others know the time here on this server
 {{- end }}
 		"ping"; -- Replies to XMPP pings with pongs
 {{- if eq $PROSODY_MODE "visitors" }}
