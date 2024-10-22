@@ -1,3 +1,27 @@
+## stable-9779
+
+Based on stable release 9779.
+
+* a5b719c :sparkles: allow configuration of a custom translation service (such as libretranslate) (#1946)
+* d6251b7 feat(jaas): updated jaas URLs (#1944)
+* 2a87a50 fix(jigasi): ensure tpl doesn't fail even if no JIGASI_SIP_PASSWORD is set (#1943)
+* 5164db7 feat(jigasi): config for jigasi in visitor mode (#1942)
+* a88c6e4 feat(prosody): allow s2s whitelist additions (#1940)
+* b89c328 fix(prosody): install the new version of jitsi-contrib/prosody-plugins
+* 0b75cd1 fix(transcriber): fix bosh and xmpp connections from jigasi to prosody (#1934)
+* 4369907 feat(jibri,jicofo,jigasi,jvb,prosody,web): trim empty list entries when splitting with splitList to allow trailing comma (#1932)
+* c58a9e5 feat(prosody): allow components access even after max participants is reached (#1930)
+* 5e1fcd8 fix(prosody): default value for PROSODY_MODE (#1929)
+* 7b7f101 feat(prosody): new flags to disable incoming client and server conection limits (#1928)
+* 02aa4f1 fix: Only set app_secret when defined. (#1925)
+* df0bb25 fix(prosody): install the new version of jitsi-contrib/prosody-plugins (#1926)
+* ff0cdc7 fix(prosody): tpl errors on container startup due to missing variables (#1924)
+* 905943d feat(prosody) update prosody contrib plugins from 20240117 to 20240817
+* 1f2b14d feat(prosody): enable recorder domain for s2s to visitor nodes to allow transcription support (#1905)
+* c9b6679 feat(web): mount load-test volume to expose load-test client from host (#1910)
+* b726312 feat(jicofo) add config parameter for ENABLE_MODERATOR_CHECKS
+* 2d39624 misc: working on unstable
+
 ## stable-9753
 
 Based on stable release 9753.
