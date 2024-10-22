@@ -17,15 +17,6 @@
 {{ $RELEASE_NUMBER := .Env.RELEASE_NUMBER | default "" -}}
 {{ $SHARD_NAME := .Env.SHARD | default "default" -}}
 {{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" -}}
-{{ $TURN_HOST := .Env.TURN_HOST | default "" -}}
-{{ $TURN_HOSTS := splitList "," $TURN_HOST | compact -}}
-{{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
-{{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
-{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT | compact -}}
-{{ $TURN_TTL := .Env.TURN_TTL | default "86400" -}}
-{{ $TURNS_HOST := .Env.TURNS_HOST | default "" -}}
-{{ $TURNS_HOSTS := splitList "," $TURNS_HOST | compact -}}
-{{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
 {{ $VISITOR_INDEX := .Env.PROSODY_VISITOR_INDEX | default "0" -}}
 {{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
 {{ $VISITORS_MAX_VISITORS_PER_NODE := .Env.VISITORS_MAX_VISITORS_PER_NODE | default "250" }}
@@ -45,30 +36,6 @@ muc_mapper_domain_base = "v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}";
 muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
 
 http_default_host = "v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}"
-
-{{ if .Env.TURN_CREDENTIALS -}}
-external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
-{{- end }}
-
-{{ if or .Env.TURN_HOST .Env.TURNS_HOST -}}
-external_services = {
-  {{ if $TURN_HOST -}}
-    {{- range $idx1, $host := $TURN_HOSTS -}}
-      {{- range $idx2, $transport := $TURN_TRANSPORTS -}}
-        {{- if or $idx1 $idx2 -}},{{- end }}
-        { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-
-  {{- if $TURNS_HOST -}}
-    {{- range $idx, $host := $TURNS_HOSTS -}}
-        {{- if or $TURN_HOST $idx -}},{{- end }}
-        { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
-    {{- end }}
-  {{- end }}
-};
-{{- end }}
 
 main_domain = '{{ $XMPP_DOMAIN }}';
 

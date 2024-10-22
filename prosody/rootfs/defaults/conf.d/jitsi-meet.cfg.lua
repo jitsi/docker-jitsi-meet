@@ -41,17 +41,6 @@
 {{ $RATE_LIMIT_LOGIN_RATE := .Env.PROSODY_RATE_LIMIT_LOGIN_RATE | default "3" -}}
 {{ $RATE_LIMIT_SESSION_RATE := .Env.PROSODY_RATE_LIMIT_SESSION_RATE | default "200" -}}
 {{ $RATE_LIMIT_TIMEOUT := .Env.PROSODY_RATE_LIMIT_TIMEOUT | default "60" -}}
-{{ $STUN_HOST := .Env.STUN_HOST | default "" -}}
-{{ $STUN_PORT := .Env.STUN_PORT | default "443" -}}
-{{ $TURNS_HOST := .Env.TURNS_HOST | default "" -}}
-{{ $TURNS_HOSTS := splitList "," $TURNS_HOST | compact -}}
-{{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
-{{ $TURN_HOST := .Env.TURN_HOST | default "" -}}
-{{ $TURN_HOSTS := splitList "," $TURN_HOST | compact -}}
-{{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
-{{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
-{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT | compact -}}
-{{ $TURN_TTL := .Env.TURN_TTL | default "86400" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -84,33 +73,6 @@ muc_mapper_domain_base = "{{ $XMPP_DOMAIN }}";
 muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
 
 http_default_host = "{{ $XMPP_DOMAIN }}"
-
-{{ if .Env.TURN_CREDENTIALS -}}
-external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
-{{- end }}
-
-{{ if or .Env.STUN_HOST .Env.TURN_HOST .Env.TURNS_HOST -}}
-external_services = {
-  {{- if $STUN_HOST }}
-        { type = "stun", host = "{{ $STUN_HOST }}", port = {{ $STUN_PORT }}, transport = "udp" }
-  {{- end }}
-  {{- if $TURN_HOST -}}
-    {{- range $idx1, $host := $TURN_HOSTS -}}
-      {{- range $idx2, $transport := $TURN_TRANSPORTS -}}
-        {{- if or $STUN_HOST $idx1 $idx2 -}},{{- end }}
-        { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
-      {{- end -}}
-    {{- end -}}
-  {{- end -}}
-
-  {{- if $TURNS_HOST -}}
-    {{- range $idx, $host := $TURNS_HOSTS -}}
-        {{- if or $STUN_HOST $TURN_HOST $idx -}},{{- end }}
-        { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
-    {{- end }}
-  {{- end }}
-};
-{{- end }}
 
 {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_ISSUERS }}
 asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSUERS | compact) }}" }
@@ -209,9 +171,6 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         "room_metadata";
         {{ if $ENABLE_END_CONFERENCE }}
         "end_conference";
-        {{ end }}
-        {{ if or .Env.TURN_HOST .Env.TURNS_HOST }}
-        "external_services";
         {{ end }}
         {{ if $ENABLE_LOBBY }}
         "muc_lobby_rooms";

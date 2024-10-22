@@ -27,6 +27,17 @@
 {{ $TRUSTED_PROXY_LIST := splitList "," $TRUSTED_PROXIES | compact -}}
 {{ $PROSODY_S2S_LIMIT := .Env.PROSODY_S2S_LIMIT | default "30kb/s" -}}
 {{ $S2S_PORT := .Env.PROSODY_S2S_PORT | default "5269" }}
+{{ $STUN_HOST := .Env.STUN_HOST | default "" -}}
+{{ $STUN_PORT := .Env.STUN_PORT | default "443" -}}
+{{ $TURNS_HOST := .Env.TURNS_HOST | default "" -}}
+{{ $TURNS_HOSTS := splitList "," $TURNS_HOST | compact -}}
+{{ $TURNS_PORT := .Env.TURNS_PORT | default "443" -}}
+{{ $TURN_HOST := .Env.TURN_HOST | default "" -}}
+{{ $TURN_HOSTS := splitList "," $TURN_HOST | compact -}}
+{{ $TURN_PORT := .Env.TURN_PORT | default "443" -}}
+{{ $TURN_TRANSPORT := .Env.TURN_TRANSPORT | default "tcp" -}}
+{{ $TURN_TRANSPORTS := splitList "," $TURN_TRANSPORT | compact -}}
+{{ $TURN_TTL := .Env.TURN_TTL | default "86400" -}}
 {{ $VISITORS_MUC_PREFIX := .Env.PROSODY_VISITORS_MUC_PREFIX | default "muc" -}}
 {{ $VISITORS_XMPP_DOMAIN := .Env.VISITORS_XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $VISITORS_XMPP_SERVER := .Env.VISITORS_XMPP_SERVER | default "" -}}
@@ -121,6 +132,9 @@ modules_enabled = {
 		"s2sout_override";
 		"s2s_whitelist";
 		{{ end -}}
+        {{- if or .Env.TURN_HOST .Env.TURNS_HOST }}
+        "external_services";
+        {{- end }}
 
 		{{ if $PROSODY_ENABLE_METRICS }}
 		-- metrics collection functionality
@@ -326,6 +340,34 @@ statistics = "internal"
 statistics_interval = "manual"
 openmetrics_allow_cidr = "{{ $PROSODY_METRICS_ALLOWED_CIDR }}"
 {{ end }}
+
+{{ if .Env.TURN_CREDENTIALS -}}
+external_service_secret = "{{.Env.TURN_CREDENTIALS}}";
+{{- end }}
+
+{{ if or .Env.STUN_HOST .Env.TURN_HOST .Env.TURNS_HOST -}}
+external_services = {
+  {{- if $STUN_HOST }}
+        { type = "stun", host = "{{ $STUN_HOST }}", port = {{ $STUN_PORT }}, transport = "udp" }
+  {{- end }}
+  {{- if $TURN_HOST -}}
+    {{- range $idx1, $host := $TURN_HOSTS -}}
+      {{- range $idx2, $transport := $TURN_TRANSPORTS -}}
+        {{- if or $STUN_HOST $idx1 $idx2 -}},{{- end }}
+        { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if $TURNS_HOST -}}
+    {{- range $idx, $host := $TURNS_HOSTS -}}
+        {{- if or $STUN_HOST $TURN_HOST $idx -}},{{- end }}
+        { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
+    {{- end }}
+  {{- end }}
+};
+{{- end }}
+
 
 {{ if .Env.GLOBAL_CONFIG }}
 {{ join "\n" (splitList "\\n" .Env.GLOBAL_CONFIG | compact) }}
