@@ -26,3 +26,4 @@ config.toolbarButtons = [
 ];
 
 config.disableDeepLinking = true;
+config.transcription.enabled = true
