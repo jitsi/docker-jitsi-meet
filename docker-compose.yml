@@ -15,6 +15,17 @@ services:
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
             - ${CONFIG}/web/load-test:/usr/share/jitsi-meet/load-test:Z
+            - ./web/assets/watermark.svg:/usr/share/jitsi-meet/images/watermark.svg
+            - ./web/assets/title.html:/usr/share/jitsi-meet/title.html
+            - ./web/assets/favicon.ico:/usr/share/jitsi-meet/images/favicon.ico
+            - ./web/assets/apple-touch-icon.png:/usr/share/jitsi-meet/images/apple-touch-icon.png
+            - ./web/config/custom-config.js:/config/custom-config.js
+            - ./web/config/custom-interface_config.js:/config/custom-interface_config.js
+            #- ./web/assets/images/virtual-background/background-1.jpg:/usr/share/jitsi-meet/images/virtual-background/background-1.jpg
+            - ./web/assets/images/virtual-background/background-2.jpg:/usr/share/jitsi-meet/images/virtual-background/background-2.jpg
+            - ./web/assets/images/virtual-background/background-3.jpg:/usr/share/jitsi-meet/images/virtual-background/background-3.jpg
+            - ./web/assets/lang/main.json:/usr/share/jitsi-meet/lang/main.json
+            - ./web/assets/react/features/virtual-background/constants.ts:/usr/share/jitsi-meet/react/features/virtual-background/constants.ts
         labels:
             service: "jitsi-web"
         environment:

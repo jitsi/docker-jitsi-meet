@@ -1,0 +1,1 @@
+interfaceConfig.APP_NAME = "Stella Health Virtual"
