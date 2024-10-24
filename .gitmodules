@@ -1,0 +1,3 @@
+[submodule "jitsi-meet-custom"]
+	path = jitsi-meet-custom
+	url = git@github.com:Stella-Center/jitsi-meet-custom.git
