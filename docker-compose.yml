@@ -197,9 +197,7 @@ services:
 
     # XMPP server
     prosody:
-        build:
-            context: .
-            dockerfile: ./prosody/Dockerfile
+        image: jitsi/prosody:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         ports:
             - '0.0.0.0:${XMPP_PORT:-5222}:5222'
