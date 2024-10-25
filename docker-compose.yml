@@ -210,7 +210,8 @@ services:
             service: "jitsi-prosody"
         volumes:
             - ${CONFIG}/prosody/config:/config:Z
-            - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
+            #- ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
+            - ./prosody/custom:/prosody-plugins-custom:Z
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS
