@@ -27,3 +27,5 @@ config.toolbarButtons = [
 
 config.disableDeepLinking = true;
 config.transcription.enabled = true
+config.transcription.useAppLanguage = false;
+config.transcription.preferredLanguage = 'en-US';
