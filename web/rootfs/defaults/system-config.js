@@ -68,3 +68,7 @@ config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
 config.bridgeChannel = {
     preferSctp: {{ $JVB_PREFER_SCTP }}
 };
+
+{{ if .Env.LOGO_URL -}}
+config.defaultLogoUrl = '{{ .Env.LOGO_URL }}';
+{{ end -}}

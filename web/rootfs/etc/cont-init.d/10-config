@@ -129,3 +129,7 @@ cp /defaults/interface_config.js /config/interface_config.js
 if [[ -f /config/custom-interface_config.js ]]; then
     cat /config/custom-interface_config.js >> /config/interface_config.js
 fi
+
+if [[ -n "${LOGO_URL}" ]]; then
+  ln -s /config/custom-images /usr/share/jitsi-meet/images/custom-images
+fi
