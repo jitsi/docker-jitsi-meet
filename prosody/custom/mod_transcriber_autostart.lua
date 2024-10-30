@@ -28,26 +28,37 @@ end
 -- -----------------------------------------------------------------------------
 local function _start_recording(room, session, stanza)
     local jigasi_brewery_room = get_room_from_jid(jigasi_brewery_room_jid);
-    -- Customize Jigasi JID to the one set up in your environment
-    local jigasi_jid = "transcriber@recorder.meet.jitsi"; -- replace with Jigasi's actual JID
+    
+    -- Ensure that the brewery room is valid
+    if not jigasi_brewery_room then
+        module:log("error", "Failed to get Jigasi brewery room from JID: %s", jigasi_brewery_room_jid);
+        return
+    end
 
-    -- Invite Jigasi to the room to start transcription
+    -- Customize Jigasi JID to the one set up in your environment
+    local jigasi_bare_jid = module:get_option_string("muc_jigasi_jid", "jigasi@auth." .. muc_domain_base);
+    
     module:log("info", "Inviting Jigasi for transcription to room: %s", room.jid);
-    module:log("info",jigasi_brewery_room_jid)
-    module:log("info",jigasi_bare_jid)
-    module:log("info","yess")
+    module:log("info", "Jigasi Brewery Room JID: %s", jigasi_brewery_room.jid);
+    module:log("info", "Jigasi Bare JID: %s", jigasi_bare_jid);
+
+    -- Create a presence stanza for Jigasi
     local jigasi_presence = st.presence({ from = jigasi_bare_jid, to = jigasi_brewery_room.jid })
         :tag("x", { xmlns = "http://jabber.org/protocol/muc" })
 
-        room:route_stanza(jigasi_presence)  -- Use route_stanza instead of send
+    -- Route the presence stanza to the Jigasi brewery room
+    module:log("info", "Routing presence to Jigasi Brewery Room: %s", jigasi_brewery_room.jid);
+    room:route_stanza(jigasi_presence)  -- Use route_stanza instead of send
 
     -- Optionally, send a message indicating transcription has started
     local message = st.message({ type="groupchat", from = jigasi_bare_jid, to = room.jid })
         :tag("body"):text("Transcription service has been activated for this room.")
-        room:route_stanza(message)
+    
+    module:log("info", "Sending message to room: %s", room.jid);
+    room:route_stanza(message)
+
     return
 end
-
 -- -----------------------------------------------------------------------------
 module:hook("muc-room-created", function (event)
     local room = event.room
