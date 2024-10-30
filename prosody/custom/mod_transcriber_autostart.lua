@@ -33,13 +33,13 @@ local function _start_recording(room, session, stanza)
     module:log("info",jigasi_bare_jid)
     module:log("info",focus_jid)
     module:log("info","yess")
-    local jigasi_presence = st.presence({ from = jigasi_jid, to = room.jid })
+    local jigasi_presence = st.presence({ from = jigasi_bare_jid, to = room.jid })
         :tag("x", { xmlns = "http://jabber.org/protocol/muc" })
 
     room:route_stanza(jigasi_presence)  -- Use route_stanza instead of send
 
     -- Optionally, send a message indicating transcription has started
-    local message = st.message({ type="groupchat", from = jigasi_jid, to = room.jid })
+    local message = st.message({ type="groupchat", from = jigasi_bare_jid, to = room.jid })
         :tag("body"):text("Transcription service has been activated for this room.")
     room:route_stanza(message)
     return
