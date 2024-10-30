@@ -13,7 +13,7 @@ local function _is_admin(jid)
 end
 
 -- -----------------------------------------------------------------------------
-local function _start_recording(room, session)
+local function _start_recording(room, session, stanza)
     local room = room;
     -- Customize Jigasi JID to the one set up in your environment
     local jigasi_jid = "jigasi@example.com"; -- replace with Jigasi's actual JID
@@ -27,7 +27,7 @@ local function _start_recording(room, session)
 
     -- Invite Jigasi to the room to start transcription
     module:log("info", "Inviting Jigasi for transcription to room: %s", room.jid);
-    room:send(st.message({ from = jigasi_jid, to = room.jid })
+    room:send(stanza.message({ from = jigasi_jid, to = room.jid })
         :tag("x", { xmlns = "http://jabber.org/protocol/muc" }));
 
     -- Optionally send a message to indicate transcription has started
@@ -38,10 +38,11 @@ end
 -- -----------------------------------------------------------------------------
 module:hook("muc-room-created", function (event)
     local room = event.room
+    local stanza = event.stanza
     local session = event.origin
 
     -- wait for the affiliation to set then start recording if applicable
     timer.add_task(3, function()
-        _start_recording(room, session)
+        _start_recording(room, session, stanza)
     end)
 end)
