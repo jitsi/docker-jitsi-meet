@@ -14,7 +14,17 @@ end
 
 -- -----------------------------------------------------------------------------
 local function _start_recording(room, session)
-    module:log("info", "Ok let us start")
+    local room = room;
+    -- Customize Jigasi JID to the one set up in your environment
+    local jigasi_jid = "jigasi@example.com"; -- replace with Jigasi's actual JID
+
+    -- Invite Jigasi to the room to start transcription
+    module:log("info", "Inviting Jigasi for transcription to room: %s", room.jid);
+    room:send(stanza.presence({ from = jigasi_jid, to = room.jid })
+        :tag("x", { xmlns = "http://jabber.org/protocol/muc" }));
+
+    -- Optionally send a message to indicate transcription has started
+    room:send_message("Transcription service has been activated for this room.");
     return
 end
 
