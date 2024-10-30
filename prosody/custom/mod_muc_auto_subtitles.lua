@@ -10,7 +10,7 @@ local function invite_jigasi_to_room(room_jid)
     module:log("This starts for Brice")
 end
 
-module:hook("muc-room-created", function(event)
+module:hook("muc-occupant-joined", function(event)
     local room = event.room;
     invite_jigasi_to_room(room.jid);
 end);
