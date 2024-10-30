@@ -112,11 +112,6 @@ local function handle_jigasi_invite(event)
     event_count()
     local request = event.request;
     local conference = payload["conference"];
-    local phone_no = payload["phoneNo"];
-    if not conference then
-        module:log("warn", "Missing conference param")
-        return { status_code = 400; }
-    end
 
     --invite jigasi
     local status_code, error_msg = invite_jigasi(conference, phone_no)
