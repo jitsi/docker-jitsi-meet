@@ -17,7 +17,6 @@ local muc_domain_base = module:get_option_string("muc_mapper_domain_base");
 local muc_domain = module:get_option_string("muc_internal_domain_base", 'internal.auth.' .. muc_domain_base);
 
 local jigasi_brewery_room_jid = module:get_option_string("muc_jigasi_brewery_jid", 'jigasibrewery@' .. muc_domain);
-
 local jigasi_bare_jid = module:get_option_string("muc_jigasi_jid", "jigasi@auth." .. muc_domain_base);
 local focus_jid = module:get_option_string("muc_jicofo_brewery_jid", jigasi_brewery_room_jid .. "/focus");
 
@@ -28,7 +27,7 @@ end
 
 -- -----------------------------------------------------------------------------
 local function _start_recording(room, session, stanza)
-    -- local jigasi_brewery_room = get_room_from_jid(jigasi_brewery_room_jid);
+    local jigasi_brewery_room = get_room_from_jid(jigasi_brewery_room_jid);
     -- Customize Jigasi JID to the one set up in your environment
     local jigasi_jid = "transcriber@recorder.meet.jitsi"; -- replace with Jigasi's actual JID
 
@@ -36,7 +35,7 @@ local function _start_recording(room, session, stanza)
     module:log("info", "Inviting Jigasi for transcription to room: %s", room.jid);
     module:log("info",jigasi_brewery_room_jid)
     module:log("info",jigasi_bare_jid)
-    module:log("info",focus_jid)
+    module:log("info",jigasi_brewery_room)
     module:log("info","yess")
     local jigasi_presence = st.presence({ from = jigasi_bare_jid, to = room.jid })
         :tag("x", { xmlns = "http://jabber.org/protocol/muc" })
