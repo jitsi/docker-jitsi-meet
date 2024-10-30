@@ -35,9 +35,8 @@ local function _start_recording(room, session, stanza)
     module:log("info", "Inviting Jigasi for transcription to room: %s", room.jid);
     module:log("info",jigasi_brewery_room_jid)
     module:log("info",jigasi_bare_jid)
-    module:log("info",jigasi_brewery_room)
     module:log("info","yess")
-    local jigasi_presence = st.presence({ from = jigasi_bare_jid, to = room.jid })
+    local jigasi_presence = st.presence({ from = jigasi_bare_jid, to = jigasi_brewery_room.jid })
         :tag("x", { xmlns = "http://jabber.org/protocol/muc" })
 
         room:route_stanza(jigasi_presence)  -- Use route_stanza instead of send
