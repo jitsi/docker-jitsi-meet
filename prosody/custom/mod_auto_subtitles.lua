@@ -8,12 +8,10 @@ local focus_jid = module:get_option_string("muc_jicofo_brewery_jid", "focus@" ..
 
 local function invite_jigasi_to_room(room_jid)
     local room_name = jid_split(room_jid);
-    local jigasi_jid = jigasi_bare_jid;
-    local stanza_id = "jigasi-" .. tostring(os.time());
-    
-    local invite_stanza = st.iq({ xmlns = "jabber:client", type = "set", to = jigasi_jid, from = focus_jid, id = stanza_id })
-        :tag("dial", { xmlns = "urn:xmpp:rayo:1", from = "transcription", to = "transcription" })
-        :tag("header", { xmlns = "urn:xmpp:rayo:1", name = "JvbRoomName", value = room_name });
+    module:log(muc_domain_base)
+    module:log(jigasi_bare_jid)
+    module:log(focus_jid)
+    module:log("Brice log")
         
     module:log("info", "Automatically inviting Jigasi for transcription in room %s", room_name);
     module:send(invite_stanza);
