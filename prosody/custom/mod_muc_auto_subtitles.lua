@@ -1,4 +1,4 @@
--- module: mod_auto_jigasi.lua
+-- module: mod_muc_auto_subtitles.lua
 local jid_split = require "util.jid".split;
 local st = require("util.stanza");
 
