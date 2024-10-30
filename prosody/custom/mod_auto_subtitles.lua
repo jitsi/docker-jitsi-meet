@@ -13,8 +13,8 @@ local function invite_jigasi_to_room(room_jid)
     module:log(focus_jid)
     module:log("Brice log")
         
-    module:log("info", "Automatically inviting Jigasi for transcription in room %s", room_name);
-    module:send(invite_stanza);
+    -- module:log("info", "Automatically inviting Jigasi for transcription in room %s", room_name);
+    -- module:send(invite_stanza);
 end
 
 module:hook("muc-room-created", function(event)
