@@ -7,14 +7,7 @@ local jigasi_bare_jid = module:get_option_string("muc_jigasi_jid", "jigasi@auth.
 local focus_jid = module:get_option_string("muc_jicofo_brewery_jid", "focus@" .. muc_domain_base);
 
 local function invite_jigasi_to_room(room_jid)
-    local room_name = jid_split(room_jid);
-    module:log(muc_domain_base)
-    module:log(jigasi_bare_jid)
-    module:log(focus_jid)
-    module:log("Brice log")
-        
-    -- module:log("info", "Automatically inviting Jigasi for transcription in room %s", room_name);
-    -- module:send(invite_stanza);
+    module:log("This starts for Brice")
 end
 
 module:hook("muc-room-created", function(event)
