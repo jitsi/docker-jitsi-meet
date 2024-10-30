@@ -20,6 +20,7 @@ local function _start_recording(room, session)
 
     if not room then
         return
+    end
 
     -- Invite Jigasi to the room to start transcription
     module:log("info", "Inviting Jigasi for transcription to room: %s", room.jid);
