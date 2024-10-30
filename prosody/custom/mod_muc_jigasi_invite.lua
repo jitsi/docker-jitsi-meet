@@ -33,7 +33,7 @@ if ASAP_KEY_SERVER then
     token_util:set_asap_key_server(ASAP_KEY_SERVER)
 end
 
-local function invite_jigasi(conference, phone_no)
+local function invite_jigasi(conference)
     local jigasi_brewery_room = main_muc_service.get_room_from_jid(jigasi_brewery_room_jid);
     if not jigasi_brewery_room then
         module:log("error", "Jigasi brewery room not found")
@@ -114,7 +114,7 @@ local function handle_jigasi_invite(event)
     local conference = payload["conference"];
 
     --invite jigasi
-    local status_code, error_msg = invite_jigasi(conference, phone_no)
+    local status_code, error_msg = invite_jigasi(conference)
 
     if not error_msg then
         event_count_success()
