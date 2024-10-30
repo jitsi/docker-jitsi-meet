@@ -18,6 +18,9 @@ local function _start_recording(room, session)
     -- Customize Jigasi JID to the one set up in your environment
     local jigasi_jid = "jigasi@example.com"; -- replace with Jigasi's actual JID
 
+    if not room then
+        return
+
     -- Invite Jigasi to the room to start transcription
     module:log("info", "Inviting Jigasi for transcription to room: %s", room.jid);
     room:send(st.message({ from = jigasi_jid, to = room.jid })
