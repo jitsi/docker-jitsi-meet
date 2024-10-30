@@ -5,6 +5,7 @@ local is_healthcheck_room = module:require "util".is_healthcheck_room
 local timer = require "util.timer"
 local st = require "util.stanza"
 local uuid = require "util.uuid".generate
+local process_host_module = util.process_host_module;
 module:log(LOGLEVEL, "loaded")
 
 local main_muc_service;
@@ -59,3 +60,19 @@ module:hook("muc-room-created", function (event)
         _start_recording(room, session, stanza)
     end)
 end)
+
+process_host_module(muc_domain, function(_, host)
+    local muc_module = prosody.hosts[host].modules.muc;
+    if muc_module then
+        main_muc_service = muc_module;
+        module:log('info', 'Found main_muc_service: %s', main_muc_service);
+    else
+        module:log('info', 'Will wait for muc to be available');
+        prosody.hosts[host].events.add_handler('module-loaded', function(event)
+            if (event.module == 'muc') then
+                main_muc_service = prosody.hosts[host].modules.muc;
+                module:log('info', 'Found(on loaded) main_muc_service: %s', main_muc_service);
+            end
+        end);
+    end
+end);
