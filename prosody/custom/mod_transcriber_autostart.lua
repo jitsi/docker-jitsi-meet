@@ -13,8 +13,9 @@ local function _is_admin(jid)
 end
 
 -- -----------------------------------------------------------------------------
-local function _start_recording(room, session, occupant_jid)
+local function _start_recording(room, session)
     module:log("info", "Ok let us start")
+    return
     -- dont start recording if already triggered
     if room.is_recorder_triggered then
         return
@@ -54,14 +55,9 @@ end
 module:hook("muc-room-created", function (event)
     local room = event.room
     local session = event.origin
-    local occupant = event.occupant
-
-    if is_healthcheck_room(room.jid) or _is_admin(occupant.jid) then
-        return
-    end
 
     -- wait for the affiliation to set then start recording if applicable
     timer.add_task(3, function()
-        _start_recording(room, session, occupant.jid)
+        _start_recording(room, session)
     end)
 end)
