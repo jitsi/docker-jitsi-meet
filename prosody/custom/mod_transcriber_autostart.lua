@@ -64,3 +64,7 @@ module:hook("muc-occupant-joined", function (event)
         _start_recording(room, session, occupant.jid)
     end)
 end)
+
+module:hook("muc-room-created", function (event)
+    module:log("info","Here you go")
+end)
