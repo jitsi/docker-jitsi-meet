@@ -29,6 +29,10 @@ local function _start_recording(room, session, stanza)
 
     -- Invite Jigasi to the room to start transcription
     module:log("info", "Inviting Jigasi for transcription to room: %s", room.jid);
+    module:log("info",jigasi_brewery_room_jid)
+    module:log("info",jigasi_bare_jid)
+    module:log("info",focus_jid)
+    module:log("info","yess")
     local jigasi_presence = st.presence({ from = jigasi_jid, to = room.jid })
         :tag("x", { xmlns = "http://jabber.org/protocol/muc" })
 
