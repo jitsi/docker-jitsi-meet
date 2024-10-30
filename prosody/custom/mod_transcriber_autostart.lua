@@ -24,6 +24,7 @@ end
 
 -- -----------------------------------------------------------------------------
 local function _start_recording(room, session, stanza)
+    local jigasi_brewery_room = main_muc_service.get_room_from_jid(jigasi_brewery_room_jid);
     -- Customize Jigasi JID to the one set up in your environment
     local jigasi_jid = "transcriber@recorder.meet.jitsi"; -- replace with Jigasi's actual JID
 
@@ -36,12 +37,12 @@ local function _start_recording(room, session, stanza)
     local jigasi_presence = st.presence({ from = jigasi_bare_jid, to = room.jid })
         :tag("x", { xmlns = "http://jabber.org/protocol/muc" })
 
-    room:route_stanza(jigasi_presence)  -- Use route_stanza instead of send
+        jigasi_brewery_room:route_stanza(jigasi_presence)  -- Use route_stanza instead of send
 
     -- Optionally, send a message indicating transcription has started
     local message = st.message({ type="groupchat", from = jigasi_bare_jid, to = room.jid })
         :tag("body"):text("Transcription service has been activated for this room.")
-    room:route_stanza(message)
+    jigasi_brewery_room:route_stanza(message)
     return
 end
 
