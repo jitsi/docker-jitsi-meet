@@ -5,6 +5,7 @@ local is_healthcheck_room = module:require "util".is_healthcheck_room
 local timer = require "util.timer"
 local st = require "util.stanza"
 local uuid = require "util.uuid".generate
+local util = module:require "util";
 local get_room_from_jid = util.get_room_from_jid;
 module:log(LOGLEVEL, "loaded")
 
