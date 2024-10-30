@@ -16,39 +16,6 @@ end
 local function _start_recording(room, session)
     module:log("info", "Ok let us start")
     return
-    -- dont start recording if already triggered
-    if room.is_recorder_triggered then
-        return
-    end
-
-    -- get occupant current status
-    local occupant = room:get_occupant_by_real_jid(occupant_jid)
-
-    -- check recording permission
-    if occupant.role ~= "moderator" then
-        return
-    elseif
-        session.jitsi_meet_context_features ~= nil and
-        session.jitsi_meet_context_features["recording"] ~= true
-    then
-        return
-    end
-
-    -- start recording
-    local iq = st.iq({
-        type = "set",
-        id = uuid() .. ":sendIQ",
-        from = occupant_jid,
-        to = room.jid .. "/focus"
-        })
-        :tag("jibri", {
-            xmlns = "http://jitsi.org/protocol/jibri",
-            action = "start",
-            recording_mode = "file",
-            app_data = '{"file_recording_metadata":{"share":true}}'})
-
-    module:send(iq)
-    room.is_recorder_triggered = true
 end
 
 -- -----------------------------------------------------------------------------
