@@ -7,6 +7,16 @@ local st = require "util.stanza"
 local uuid = require "util.uuid".generate
 module:log(LOGLEVEL, "loaded")
 
+local muc_domain_base = module:get_option_string("muc_mapper_domain_base");
+
+-- This module chooses jigasi from the brewery room, so it needs information for the configured brewery
+local muc_domain = module:get_option_string("muc_internal_domain_base", 'internal.auth.' .. muc_domain_base);
+
+local jigasi_brewery_room_jid = module:get_option_string("muc_jigasi_brewery_jid", 'jigasibrewery@' .. muc_domain);
+
+local jigasi_bare_jid = module:get_option_string("muc_jigasi_jid", "jigasi@auth." .. muc_domain_base);
+local focus_jid = module:get_option_string("muc_jicofo_brewery_jid", jigasi_brewery_room_jid .. "/focus");
+
 -- -----------------------------------------------------------------------------
 local function _is_admin(jid)
     return is_admin(jid, module.host)
