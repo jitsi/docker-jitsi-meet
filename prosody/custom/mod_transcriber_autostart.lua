@@ -14,6 +14,7 @@ end
 
 -- -----------------------------------------------------------------------------
 local function _start_recording(room, session, occupant_jid)
+    module:log("info", "Ok let us start")
     -- dont start recording if already triggered
     if room.is_recorder_triggered then
         return
@@ -50,7 +51,7 @@ local function _start_recording(room, session, occupant_jid)
 end
 
 -- -----------------------------------------------------------------------------
-module:hook("muc-occupant-joined", function (event)
+module:hook("muc-room-created", function (event)
     local room = event.room
     local session = event.origin
     local occupant = event.occupant
@@ -63,8 +64,4 @@ module:hook("muc-occupant-joined", function (event)
     timer.add_task(3, function()
         _start_recording(room, session, occupant.jid)
     end)
-end)
-
-module:hook("muc-room-created", function (event)
-    module:log("info","Here you go")
 end)
