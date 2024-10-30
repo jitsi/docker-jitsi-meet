@@ -7,6 +7,8 @@ local st = require "util.stanza"
 local uuid = require "util.uuid".generate
 module:log(LOGLEVEL, "loaded")
 
+local main_muc_service;
+
 local muc_domain_base = module:get_option_string("muc_mapper_domain_base");
 
 -- This module chooses jigasi from the brewery room, so it needs information for the configured brewery
