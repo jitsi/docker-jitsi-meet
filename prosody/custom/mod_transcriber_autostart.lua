@@ -20,7 +20,7 @@ local function _start_recording(room, session)
 
     module:log("info",room.jid)
     module:log("info", jigasi_jid)
-    module:log("Hello!!!")
+    module:log("info","Hello!!!")
     if not room then
         return
     end
