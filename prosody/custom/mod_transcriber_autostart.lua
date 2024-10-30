@@ -28,7 +28,7 @@ end
 
 -- -----------------------------------------------------------------------------
 local function _start_recording(room, session, stanza)
-    local jigasi_brewery_room = get_room_from_jid(jigasi_brewery_room_jid);
+    -- local jigasi_brewery_room = get_room_from_jid(jigasi_brewery_room_jid);
     -- Customize Jigasi JID to the one set up in your environment
     local jigasi_jid = "transcriber@recorder.meet.jitsi"; -- replace with Jigasi's actual JID
 
