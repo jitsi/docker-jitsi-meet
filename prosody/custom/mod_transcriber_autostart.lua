@@ -30,7 +30,7 @@ local function _start_recording(room, session, stanza)
     --     :tag("x", { xmlns = "http://jabber.org/protocol/muc" }));
 
     -- Optionally send a message to indicate transcription has started
-    room:send_message("Transcription service has been activated for this room.");
+    room:broadcast_message("Transcription service has been activated for this room.");
     return
 end
 
