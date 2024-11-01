@@ -25,6 +25,8 @@ config.toolbarButtons = [
   "security",
 ];
 
+config.premeetingBackground = 'url(https://t3.ftcdn.net/jpg/07/98/19/02/360_F_798190274_6VJG4eKmXlvtemnEYsmQOUHfhoF8dNbR.jpg)';
+
 // config.disableDeepLinking = true;
 // config.transcription.enabled = true;
 // config.transcription.disableStartForAll = false;
