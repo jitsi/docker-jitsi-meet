@@ -14,7 +14,7 @@ config.toolbarButtons = [
   "filmstrip",
   // "invite",
   "feedback",
-  "shortcuts",
+  // "shortcuts",
   // "tileview",
   "select-background",
   "participants-pane",
