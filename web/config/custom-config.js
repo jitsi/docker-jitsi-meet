@@ -6,7 +6,7 @@ config.toolbarButtons = [
   "fullscreen",
   "fodeviceselection",
   "hangup",
-  "profile",
+  // "profile",
   "chat",
   "settings",
   // "raisehand",
