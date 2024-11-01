@@ -8,7 +8,7 @@ config.toolbarButtons = [
   "hangup",
   // "profile",
   "chat",
-  // "settings",
+  "settings",
   // "raisehand",
   // "videoquality",
   // "filmstrip",
@@ -20,8 +20,8 @@ config.toolbarButtons = [
   // "participants-pane",
   "download",
   // "help",
-  // "mute-everyone",
-  // "mute-video-everyone",
+  "mute-everyone",
+  "mute-video-everyone",
   // "security",
 ];
 
