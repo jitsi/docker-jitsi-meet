@@ -12,7 +12,7 @@ config.toolbarButtons = [
   // "raisehand",
   "videoquality",
   "filmstrip",
-  "invite",
+  // "invite",
   "feedback",
   "shortcuts",
   // "tileview",
