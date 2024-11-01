@@ -31,3 +31,14 @@ config.disableDeepLinking = true;
 // // config.transcription.useAppLanguage = false;
 // // config.transcription.preferredLanguage = 'en-US';
 // config.transcription.autoCaptionOnTranscribe = true;
+
+
+
+config.breakoutRooms = {
+    // Hides the add breakout room button. This replaces `hideAddRoomButton`.
+    hideAddRoomButton: true,
+    // Hides the auto assign participants button.
+    hideAutoAssignButton: true,
+    // Hides the join breakout room button.
+    hideJoinRoomButton: true,
+}
