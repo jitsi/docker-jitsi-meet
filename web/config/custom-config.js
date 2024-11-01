@@ -7,7 +7,7 @@ config.toolbarButtons = [
   // "fodeviceselection",
   "hangup",
   // "profile",
-  // "chat",
+  "chat",
   // "settings",
   // "raisehand",
   // "videoquality",
