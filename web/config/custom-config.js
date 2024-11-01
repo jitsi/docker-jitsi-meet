@@ -4,7 +4,7 @@ config.toolbarButtons = [
   // "closedcaptions",
   "desktop",
   "fullscreen",
-  // "fodeviceselection",
+  "fodeviceselection",
   // "hangup",
   // "profile",
   // "chat",
