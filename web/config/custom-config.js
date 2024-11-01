@@ -31,3 +31,4 @@ config.transcription.disableStartForAll = false;
 // config.transcription.useAppLanguage = false;
 // config.transcription.preferredLanguage = 'en-US';
 config.transcription.autoCaptionOnTranscribe = true;
+config.backgroundColor = "#000";
