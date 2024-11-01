@@ -8,7 +8,7 @@ config.toolbarButtons = [
   "hangup",
   "profile",
   "chat",
-  "settings",
+  // "settings",
   "raisehand",
   "videoquality",
   "filmstrip",
