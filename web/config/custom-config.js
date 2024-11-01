@@ -1,9 +1,9 @@
 config.toolbarButtons = [
   "microphone",
   "camera",
-  "closedcaptions",
-  // "desktop",
-  // "fullscreen",
+  // "closedcaptions",
+  "desktop",
+  "fullscreen",
   // "fodeviceselection",
   // "hangup",
   // "profile",
