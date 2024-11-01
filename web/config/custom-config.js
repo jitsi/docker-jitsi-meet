@@ -9,7 +9,7 @@ config.toolbarButtons = [
   "profile",
   "chat",
   "settings",
-  "raisehand",
+  // "raisehand",
   "videoquality",
   "filmstrip",
   "invite",
