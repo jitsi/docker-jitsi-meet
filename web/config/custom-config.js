@@ -15,7 +15,7 @@ config.toolbarButtons = [
   "invite",
   "feedback",
   "shortcuts",
-  "tileview",
+  // "tileview",
   "select-background",
   "participants-pane",
   "download",
