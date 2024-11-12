@@ -1,3 +1,18 @@
+## stable-9823
+
+Based on stable release 9823.
+
+* 51a1214 feat(jibri) bump Chrome to version 130
+* 345f8c2 fix(prosody,jicofo,jigasi,jibri) rename recorder domain to hidden domain
+* 47d974d feat(jibri,jicofo,jvb): custom hocon support via include for components that support it (#1960)
+* 6443c6f feat(transcriber): fix exposing transcript path in web
+* 74d913f feat(transcriber): flag to enable translations (#1953)
+* 8909050 feat(transcriber): remote config auth parameters (#1951)
+* bb17a29 feat(prosody): enable muc_max_participants in lobby component (#1950)
+* 26b6f27 fix(prosody): remove admin_adhoc module from defaults (#1948)
+* 4ae7438 feat(prosody): move external_services module and config to global prosody.cfg.lua (#1949)
+* 74a536e misc: working on unstable
+
 ## stable-9779
 
 Based on stable release 9779.
