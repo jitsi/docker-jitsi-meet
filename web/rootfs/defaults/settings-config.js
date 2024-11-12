@@ -63,7 +63,6 @@
 {{ $DISABLE_PROFILE := .Env.DISABLE_PROFILE | default "false" | toBool -}}
 {{ $ROOM_PASSWORD_DIGITS := .Env.ROOM_PASSWORD_DIGITS | default "false" -}}
 {{ $WHITEBOARD_ENABLED := or (.Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" | toBool) (.Env.WHITEBOARD_COLLAB_SERVER_URL_BASE | default "" | toBool) }}
-{{ $TESTING_AV1_SUPPORT := .Env.TESTING_AV1_SUPPORT | default "false" | toBool -}}
 
 // Video configuration.
 //
@@ -561,11 +560,6 @@ config.whiteboard = {
 {{ else if .Env.WHITEBOARD_COLLAB_SERVER_URL_BASE -}}
     collabServerBaseUrl: '{{ $PUBLIC_URL }}'
 {{ end -}}
-};
-
-// Testing
-config.testing = {
-    enableAv1Support: {{ $TESTING_AV1_SUPPORT }}
 };
 
 // JaaS support: pre-configure image if JAAS_APP_ID was set.
