@@ -73,6 +73,9 @@ else
     echo "No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled"
 fi
 
+# maintain backward compatibility with older variable
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
+
 # always recreate configs
 tpl /defaults/jibri.conf > /etc/jitsi/jibri/jibri.conf
 tpl /defaults/xmpp.conf > /etc/jitsi/jibri/xmpp.conf

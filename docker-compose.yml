@@ -174,6 +174,7 @@ services:
             - XMPP_MUC_DOMAIN
             - XMPP_HIDDEN_DOMAIN
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
             - WHITEBOARD_COLLAB_SERVER_URL_BASE
         networks:
@@ -319,6 +320,7 @@ services:
             - XMPP_INTERNAL_MUC_MODULES
             - XMPP_HIDDEN_DOMAIN
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER_S2S_PORT
             - XMPP_SPEAKERSTATS_MODULES
         networks:
@@ -406,6 +408,7 @@ services:
             - XMPP_HIDDEN_DOMAIN
             - XMPP_SERVER
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - MAX_SSRCS_PER_USER
             - MAX_SSRC_GROUPS_PER_USER
         depends_on:

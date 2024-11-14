@@ -107,6 +107,9 @@ if [ -z "$COLIBRI_WEBSOCKET_REGEX" ]; then
     fi
 fi
 
+# maintain backward compatibility with older variable
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
+
 # copy config files
 tpl /defaults/nginx.conf > /config/nginx/nginx.conf
 
