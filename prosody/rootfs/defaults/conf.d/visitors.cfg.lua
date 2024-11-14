@@ -169,7 +169,7 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
 
     rate_limit_whitelist_jids = {
         "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}",
-        "{{ $JIGASI_XMPP_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}"
+        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}"
     }
 
     {{ end -}}
