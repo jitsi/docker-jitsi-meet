@@ -13,6 +13,9 @@ if [[ "$JICOFO_AUTH_PASSWORD" == "$OLD_JICOFO_AUTH_PASSWORD" ]]; then
     exit 1
 fi
 
+# maintain backward compatibility with older variable
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
+
 tpl /defaults/logging.properties > /config/logging.properties
 tpl /defaults/jicofo.conf > /config/jicofo.conf
 
