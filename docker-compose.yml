@@ -19,6 +19,7 @@ services:
             - AMPLITUDE_ID
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
+            - APP_NAME
             - AUDIO_QUALITY_OPUS_BITRATE
             - AUTO_CAPTION_ON_RECORD
             - BRANDING_DATA_URL
@@ -115,6 +116,7 @@ services:
             - LETSENCRYPT_DOMAIN
             - LETSENCRYPT_EMAIL
             - LETSENCRYPT_USE_STAGING
+            - LOGO_URL
             - MATOMO_ENDPOINT
             - MATOMO_SITE_ID
             - MICROSOFT_API_APP_CLIENT_ID
