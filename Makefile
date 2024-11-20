@@ -1,13 +1,14 @@
 FORCE_REBUILD ?= 0
 JITSI_RELEASE ?= stable
-JITSI_BUILD ?= unstable
+JITSI_IMAGE_VERSION ?= unstable
 JITSI_REPO ?= jitsi
 
 JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
 
 BUILD_ARGS := \
 	--build-arg JITSI_REPO=$(JITSI_REPO) \
-	--build-arg JITSI_RELEASE=$(JITSI_RELEASE)
+	--build-arg JITSI_RELEASE=$(JITSI_RELEASE) \
+	--build-arg BASE_TAG=$(JITSI_IMAGE_VERSION)
 
 ifeq ($(FORCE_REBUILD), 1)
   BUILD_ARGS := $(BUILD_ARGS) --no-cache
@@ -23,9 +24,9 @@ buildx:
 	docker buildx build \
 		--platform linux/amd64,linux/arm64 \
 		--progress=plain \
-		$(BUILD_ARGS) --build-arg BASE_TAG=$(JITSI_BUILD) \
+		$(BUILD_ARGS) \
 		--pull --push \
-		--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD) \
+		--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_IMAGE_VERSION) \
 		--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_RELEASE) \
 		$(JITSI_SERVICE)
 
@@ -36,17 +37,17 @@ build:
 	docker build \
 		$(BUILD_ARGS) \
 		--progress plain \
-		--tag $(JITSI_REPO)/$(JITSI_SERVICE) \
+		--tag $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_IMAGE_VERSION) \
 		$(JITSI_SERVICE)
 
 $(addprefix build_,$(JITSI_SERVICES)):
 	$(MAKE) --no-print-directory JITSI_SERVICE=$(patsubst build_%,%,$@) build
 
 tag:
-	docker tag $(JITSI_REPO)/$(JITSI_SERVICE) $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
+	docker tag $(JITSI_REPO)/$(JITSI_SERVICE) $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_IMAGE_VERSION)
 
 push:
-	docker push $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_BUILD)
+	docker push $(JITSI_REPO)/$(JITSI_SERVICE):$(JITSI_IMAGE_VERSION)
 
 %-all:
 	@$(foreach SERVICE, $(JITSI_SERVICES), $(MAKE) --no-print-directory JITSI_SERVICE=$(SERVICE) $(subst -all,;,$@))
