@@ -301,6 +301,7 @@ services:
             - TURN_PORT
             - TURNS_PORT
             - TURN_TRANSPORT
+            - TURN_TTL
             - TZ
             - VISITORS_MAX_VISITORS_PER_NODE
             - VISITORS_XMPP_DOMAIN
