@@ -112,8 +112,10 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
 VirtualHost '{{ $XMPP_AUTH_DOMAIN }}'
     modules_enabled = {
       'limits_exception';
+      'smacks';
     }
     authentication = 'internal_hashed'
+    smacks_hibernation_time = 15;
 
 Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}' 'muc'
     storage = 'memory'
