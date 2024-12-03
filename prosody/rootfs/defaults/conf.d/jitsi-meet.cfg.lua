@@ -263,8 +263,10 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
         {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
         "jibri_session";
         {{- end }}
+        "smacks";
     }
     authentication = "internal_hashed"
+    smacks_hibernation_time = 15;
 
 {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS }}
 VirtualHost "{{ $XMPP_HIDDEN_DOMAIN }}"
