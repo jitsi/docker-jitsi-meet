@@ -64,7 +64,7 @@
 {{ $DISABLE_PROFILE := .Env.DISABLE_PROFILE | default "false" | toBool -}}
 {{ $ROOM_PASSWORD_DIGITS := .Env.ROOM_PASSWORD_DIGITS | default "false" -}}
 {{ $WHITEBOARD_ENABLED := or (.Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" | toBool) (.Env.WHITEBOARD_COLLAB_SERVER_URL_BASE | default "" | toBool) }}
-{{ $CODEC_ORDER_JVB := .Env.CODEC_ORDER_JVB | default "["AV1", "VP9", "VP8", "H264"]" -}}
+{{ $CODEC_ORDER_JVB := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
 {{ $CODEC_ORDER_JVB_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "["VP8", "VP9", "H264", "AV1"]" -}}
 {{ $CODEC_ORDER_P2P := .Env.CODEC_ORDER_JVB | default "["AV1", "VP9", "VP8", "H264"]" -}}
 {{ $CODEC_ORDER_P2P_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "["VP8", "VP9", "H264", "AV1"]" -}}
