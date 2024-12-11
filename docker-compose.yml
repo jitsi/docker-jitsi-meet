@@ -24,6 +24,10 @@ services:
             - BRANDING_DATA_URL
             - BOSH_RELATIVE
             - CHROME_EXTENSION_BANNER_JSON
+            - CODEC_ORDER_JVB
+            - CODEC_ORDER_JVB_MOBILE
+            - CODEC_ORDER_P2P
+            - CODEC_ORDER_P2P_MOBILE
             - COLIBRI_WEBSOCKET_PORT
             - COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME
             - COLIBRI_WEBSOCKET_REGEX
@@ -57,6 +61,7 @@ services:
             - DROPBOX_APPKEY
             - DROPBOX_REDIRECT_URI
             - DYNAMIC_BRANDING_URL
+            - ENABLE_ADAPTIVE_MODE
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUTH
             - ENABLE_AUTH_DOMAIN
