@@ -31,6 +31,7 @@ jobs:
       run:  |
         /tmp/tpl web/rootfs/defaults/system-config.js > /tmp/config.js
         /tmp/tpl web/rootfs/defaults/settings-config.js >> /tmp/config.js
+        cat /tmp/config.js
     - name: Check config.js syntax
       run: node /tmp/config.js
     - name: Run tpl with default values for jvb
