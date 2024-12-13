@@ -130,8 +130,8 @@ config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 //
 
 config.p2p = {
-    enabled: {{ $ENABLE_P2P }};
-    codecPreferenceOrder: {{ $CODEC_ORDER_P2P }};
+    enabled: {{ $ENABLE_P2P }},
+    codecPreferenceOrder: {{ $CODEC_ORDER_P2P }},
     mobileCodecPreferenceOrder: {{ $CODEC_ORDER_P2P_MOBILE }}
 };
 
