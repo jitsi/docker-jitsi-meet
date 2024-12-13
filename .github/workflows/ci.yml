@@ -54,7 +54,7 @@ jobs:
         /tmp/tpl jigasi/rootfs/defaults/sip-communicator.properties > /tmp/sip-communicator.properties
         /tmp/tpl jigasi/rootfs/defaults/sipserver-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
         /tmp/tpl jigasi/rootfs/defaults/transcriber-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
-        /tmp/tpl jigasi/rootfs/defaults/xmmp-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/xmpp-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
         /tmp/tpl jigasi/rootfs/defaults/logging.properties > /tmp/logging.properties
         /tmp/tpl jigasi/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
     - name: Run tpl with default values for prosody
