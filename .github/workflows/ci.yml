@@ -37,7 +37,7 @@ jobs:
       run:  |
         /tmp/tpl jvb/rootfs/defaults/jvb.conf > /tmp/jvb.conf
         /tmp/tpl jvb/rootfs/defaults/logging.properties > /tmp/logging.properties
-        /tmp/tpl jvb/rootfs/defaults/autoscaler_sidecar.conf > /tmp/autoscaler_sidecar.conf
+        /tmp/tpl jvb/rootfs/defaults/autoscaler-sidecar.conf > /tmp/autoscaler-sidecar.conf
     - name: Run tpl with default values for prosody
       run:  |
         /tmp/tpl prosody/rootfs/defaults/prosody.cfg.lua > /tmp/prosody.cfg.lua
