@@ -29,7 +29,7 @@ jobs:
         chmod +x /tmp/tpl
     - name: Run tpl with default values for settings-config.js
       run: /tmp/tpl web/rootfs/defaults/settings-config.js > /tmp/settings-config.js
-    - name: Run tmpl with default values for system-config.js
+    - name: Run tpl with default values for system-config.js
       run: /tmp/tpl web/rootfs/defaults/system-config.js > /tmp/system-config.js
     - name: Check settings-config.js syntax
       run: node /tmp/settings-config.js
