@@ -7,6 +7,32 @@ on:
     - master
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+    - name: Check Node / npm versions
+      run: |
+        node -v
+        npm -v
+    - name: setup tpl
+      run: |
+        dpkgArch="$(dpkg --print-architecture)"
+        case "${dpkgArch##*-}" in \
+          "amd64") TPL_ARCH=amd64; S6_ARCH=amd64 ;; \
+          "arm64") TPL_ARCH=arm64; S6_ARCH=aarch64 ;; \
+          *) echo "unsupported architecture"; exit 1 ;; \
+        esac
+        wget -qO /tmp/tpl https://github.com/jitsi/tpl/releases/download/v1.4.0/tpl-linux-${TPL_ARCH}
+        chmod +x /tmp/tpl
+    - name: Run tpl with default values for system-config.js
+      run:  |
+        /tmp/tpl web/rootfs/defaults/system-config.js > /tmp/config.js
+        /tmp/tpl web/rootfs/defaults/settings-config.js >> /tmp/config.js
+    - name: Check config.js syntax
+      run: node /tmp/config.js
   build:
     runs-on: ubuntu-latest
     steps:
