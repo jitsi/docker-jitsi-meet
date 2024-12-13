@@ -38,6 +38,17 @@ jobs:
         /tmp/tpl jvb/rootfs/defaults/jvb.conf > /tmp/jvb.conf
         /tmp/tpl jvb/rootfs/defaults/logging.properties > /tmp/logging.properties
         /tmp/tpl jvb/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
+    - name: Run tpl with default values for jicofo
+      run:  |
+        /tmp/tpl jicofo/rootfs/defaults/jicofo.conf > /tmp/jicofo.conf
+        /tmp/tpl jicofo/rootfs/defaults/logging.properties > /tmp/logging.properties
+    - name: Run tpl with default values for jibri
+      run:  |
+        /tmp/tpl jibri/rootfs/defaults/jibri.conf > /tmp/jibri.conf
+        /tmp/tpl jibri/rootfs/defaults/logging.properties > /tmp/logging.properties
+        /tmp/tpl jibri/rootfs/defaults/xmpp.conf > /tmp/xmpp.conf
+        /tmp/tpl jibri/rootfs/defaults/xorg-video-dummy.conf > /tmp/xorg-video-dummy.conf
+        /tmp/tpl jibri/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
     - name: Run tpl with default values for prosody
       run:  |
         /tmp/tpl prosody/rootfs/defaults/prosody.cfg.lua > /tmp/prosody.cfg.lua
