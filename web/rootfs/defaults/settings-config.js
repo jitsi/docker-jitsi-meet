@@ -1,4 +1,5 @@
 {{ $DEPLOYMENTINFO_USERREGION := .Env.DEPLOYMENTINFO_USERREGION | default "" -}}
+{{ $ENABLE_ADAPTIVE_MODE := .Env.ENABLE_ADAPTIVE_MODE | default "true" | toBool -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
@@ -48,7 +49,7 @@
 {{ $DESKTOP_SHARING_FRAMERATE_MIN := .Env.DESKTOP_SHARING_FRAMERATE_MIN | default 5 -}}
 {{ $DESKTOP_SHARING_FRAMERATE_MAX := .Env.DESKTOP_SHARING_FRAMERATE_MAX | default 5 -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
-{{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
+{{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $DISABLE_REACTIONS := .Env.DISABLE_REACTIONS | default "false" | toBool -}}
@@ -63,7 +64,10 @@
 {{ $DISABLE_PROFILE := .Env.DISABLE_PROFILE | default "false" | toBool -}}
 {{ $ROOM_PASSWORD_DIGITS := .Env.ROOM_PASSWORD_DIGITS | default "false" -}}
 {{ $WHITEBOARD_ENABLED := or (.Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" | toBool) (.Env.WHITEBOARD_COLLAB_SERVER_URL_BASE | default "" | toBool) }}
-{{ $TESTING_AV1_SUPPORT := .Env.TESTING_AV1_SUPPORT | default "false" | toBool -}}
+{{ $CODEC_ORDER_JVB := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
+{{ $CODEC_ORDER_JVB_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "[\"VP8\", \"VP9\", \"H264\", \"AV1\"]" -}}
+{{ $CODEC_ORDER_P2P := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
+{{ $CODEC_ORDER_P2P_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "[\"VP8\", \"VP9\", \"H264\", \"AV1\"]" -}}
 
 // Video configuration.
 //
@@ -126,7 +130,9 @@ config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
 //
 
 config.p2p = {
-    enabled: {{ $ENABLE_P2P }}
+    enabled: {{ $ENABLE_P2P }},
+    codecPreferenceOrder: {{ $CODEC_ORDER_P2P }},
+    mobileCodecPreferenceOrder: {{ $CODEC_ORDER_P2P_MOBILE }}
 };
 
 
@@ -151,7 +157,7 @@ config.etherpad_base = '{{ $PUBLIC_URL }}/etherpad/p/';
 
 {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS  -}}
 
-config.hiddenDomain = '{{ $XMPP_RECORDER_DOMAIN }}';
+config.hiddenDomain = '{{ $XMPP_HIDDEN_DOMAIN }}';
 {{ end -}}
 
 {{ if $ENABLE_RECORDING -}}
@@ -406,6 +412,10 @@ config.p2p.preferredCodec = '{{ .Env.P2P_PREFERRED_CODEC }}';
 //
 
 config.videoQuality = {};
+config.videoQuality.codecPreferenceOrder = {{ $CODEC_ORDER_JVB }};
+config.videoQuality.mobileCodecPreferenceOrder = {{ $CODEC_ORDER_JVB_MOBILE }};
+config.videoQuality.enableAdaptiveMode = {{ $ENABLE_ADAPTIVE_MODE }};
+
 {{ if .Env.VIDEOQUALITY_PREFERRED_CODEC -}}
 config.videoQuality.preferredCodec = '{{ .Env.VIDEOQUALITY_PREFERRED_CODEC }}';
 {{ end -}}
@@ -563,11 +573,6 @@ config.whiteboard = {
 {{ end -}}
 };
 
-// Testing
-config.testing = {
-    enableAv1Support: {{ $TESTING_AV1_SUPPORT }}
-};
-
 // JaaS support: pre-configure image if JAAS_APP_ID was set.
 {{ if .Env.JAAS_APP_ID -}}
 {{ $JAAS_USE_STAGING := .Env.JAAS_USE_STAGING | default "false" | toBool -}}
@@ -617,3 +622,8 @@ config.whiteboard.collabServerBaseUrl = 'https://eght-excalidraw-backend.cloudfl
 {{ end -}}
 config.whiteboard.userLimit = 25;
 {{ end -}}
+
+// Testing
+config.testing = {
+    enableCodecSelectionAPI: true
+};

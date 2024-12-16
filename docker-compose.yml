@@ -37,6 +37,10 @@ services:
             - BRANDING_DATA_URL
             - BOSH_RELATIVE
             - CHROME_EXTENSION_BANNER_JSON
+            - CODEC_ORDER_JVB
+            - CODEC_ORDER_JVB_MOBILE
+            - CODEC_ORDER_P2P
+            - CODEC_ORDER_P2P_MOBILE
             - COLIBRI_WEBSOCKET_PORT
             - COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME
             - COLIBRI_WEBSOCKET_REGEX
@@ -70,6 +74,7 @@ services:
             - DROPBOX_APPKEY
             - DROPBOX_REDIRECT_URI
             - DYNAMIC_BRANDING_URL
+            - ENABLE_ADAPTIVE_MODE
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUTH
             - ENABLE_AUTH_DOMAIN
@@ -111,6 +116,7 @@ services:
             - ENABLE_TALK_WHILE_MUTED
             - ENABLE_TCC
             - ENABLE_TRANSCRIPTIONS
+            - ENABLE_VLA
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
             - ETHERPAD_PUBLIC_URL
@@ -149,7 +155,6 @@ services:
             - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
             - START_WITH_VIDEO_MUTED
-            - TESTING_AV1_SUPPORT
             - TOKEN_AUTH_URL
             - TOOLBAR_BUTTONS
             - TRANSLATION_LANGUAGES
@@ -186,8 +191,9 @@ services:
             - XMPP_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_DOMAIN
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
             - WHITEBOARD_COLLAB_SERVER_URL_BASE
         networks:
@@ -317,6 +323,7 @@ services:
             - TURN_PORT
             - TURNS_PORT
             - TURN_TRANSPORT
+            - TURN_TTL
             - TZ
             - VISITORS_MAX_VISITORS_PER_NODE
             - VISITORS_XMPP_DOMAIN
@@ -334,8 +341,9 @@ services:
             - XMPP_MUC_MODULES
             - XMPP_MUC_CONFIGURATION
             - XMPP_INTERNAL_MUC_MODULES
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_DOMAIN
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER_S2S_PORT
             - XMPP_SPEAKERSTATS_MODULES
         networks:
@@ -420,9 +428,10 @@ services:
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_MUC_DOMAIN
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_DOMAIN
             - XMPP_SERVER
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - MAX_SSRCS_PER_USER
             - MAX_SSRC_GROUPS_PER_USER
         depends_on:

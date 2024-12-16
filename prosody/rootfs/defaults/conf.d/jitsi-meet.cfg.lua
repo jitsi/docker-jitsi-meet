@@ -47,7 +47,7 @@
 {{ $XMPP_INTERNAL_MUC_DOMAIN := .Env.XMPP_INTERNAL_MUC_DOMAIN | default "internal-muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 -}}
-{{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
+{{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
 
 admins = {
     {{ if .Env.JIGASI_XMPP_PASSWORD }}
@@ -71,6 +71,8 @@ plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/prosody-plugi
 
 muc_mapper_domain_base = "{{ $XMPP_DOMAIN }}";
 muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
+
+recorder_prefixes = { "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}" };
 
 http_default_host = "{{ $XMPP_DOMAIN }}"
 
@@ -204,7 +206,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ if $ENABLE_LOBBY }}
     lobby_muc = "lobby.{{ $XMPP_DOMAIN }}"
     {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS }}
-    muc_lobby_whitelist = { "{{ $XMPP_RECORDER_DOMAIN }}" }
+    muc_lobby_whitelist = { "{{ $XMPP_HIDDEN_DOMAIN }}" }
     {{ end }}
     {{ end }}
 
@@ -230,7 +232,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }}
 
     {{ if $ENABLE_VISITORS -}}
-    visitors_ignore_list = { "{{ $XMPP_RECORDER_DOMAIN }}" }
+    visitors_ignore_list = { "{{ $XMPP_HIDDEN_DOMAIN }}" }
     {{ end }}
 
     {{ if .Env.XMPP_CONFIGURATION -}}
@@ -263,11 +265,13 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
         {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
         "jibri_session";
         {{- end }}
+        "smacks";
     }
     authentication = "internal_hashed"
+    smacks_hibernation_time = 15;
 
 {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS }}
-VirtualHost "{{ $XMPP_RECORDER_DOMAIN }}"
+VirtualHost "{{ $XMPP_HIDDEN_DOMAIN }}"
     modules_enabled = {
       "smacks";
     }
@@ -343,7 +347,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     };
 
     rate_limit_whitelist_hosts = {
-        "{{ $XMPP_RECORDER_DOMAIN }}";
+        "{{ $XMPP_HIDDEN_DOMAIN }}";
     }
     {{ end -}}
 
@@ -360,10 +364,10 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     muc_access_whitelist = {
         "focus@{{ $XMPP_AUTH_DOMAIN }}";
         {{- if $ENABLE_RECORDING }}
-        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}";
+        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
         {{- end }}
         {{- if $ENABLE_TRANSCRIPTIONS }}
-        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}";
+        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
         {{- end }}
     }
     muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
@@ -371,10 +375,10 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     muc_password_whitelist = {
         "focus@{{ $XMPP_AUTH_DOMAIN }}";
 {{- if $ENABLE_RECORDING }}
-        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}";
+        "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
 {{- end }}
 {{- if $ENABLE_TRANSCRIPTIONS }}
-        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_RECORDER_DOMAIN }}";
+        "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
 {{- end }}
     }
     muc_tombstones = false

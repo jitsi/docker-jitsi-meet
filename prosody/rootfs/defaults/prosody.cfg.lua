@@ -47,7 +47,7 @@
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
-{{ $XMPP_RECORDER_DOMAIN := .Env.XMPP_RECORDER_DOMAIN | default "recorder.meet.jitsi" -}}
+{{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
 
 -- Prosody Example Configuration File
 --
@@ -245,7 +245,7 @@ s2s_whitelist = {
     '{{ $XMPP_GUEST_DOMAIN }}';
     {{- end }}
     {{ if or $ENABLE_RECORDING $ENABLE_TRANSCRIPTIONS -}}
-    '{{ $XMPP_RECORDER_DOMAIN }}';
+    '{{ $XMPP_HIDDEN_DOMAIN }}';
 	{{- end }}
 
     {{- if .Env.PROSODY_VISITORS_S2S_VHOSTS }}
