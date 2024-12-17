@@ -2,7 +2,7 @@ version: '3.5'
 
 services:
     transcriber:
-        image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-stable-9909}
+        image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ${CONFIG}/transcriber:/config:Z
