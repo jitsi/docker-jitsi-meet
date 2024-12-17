@@ -1,3 +1,21 @@
+## stable-9909
+
+Based on stable release 9909.
+
+* 9098202 feat(lint): add tpl lint step for each project (#1983)
+* 70b75f5 feat(build): Checks config.js syntax. (#1981)
+* f18b182 fix(web): config.js syntax errors (#1980)
+* eea18b1 feat: Add an option to enable VLA. (#1979)
+* 9527545 feat(web) Add defaults and env variables for codec preference. (#1978)
+* 6ae3414 feat(prosody): Sets recorder prefixes.
+* 07ea79a feat(prosody): Enables connection resumption for jicofo and jvb.
+* 5341065 Update docker-compose.yml (#1968)
+* 5e8b702 fix(prosody-visitors): proper variable for transcriber jid in rate limit (#1967)
+* d3db3a5 fix(jibri,jicofo,jigasi,prosody,web): respect previous XMPP_RECORDER_DOMAIN value if set (#1966)
+* 2d9c3cc feat(web): allow comment at the top of config.js to be overridden (#1964)
+* 9fe5b8b fix(web) Remove no longer used config setting. Av1 has already been enabled by default.
+* a53775c misc: working on unstable
+
 ## stable-9823
 
 Based on stable release 9823.
