@@ -63,6 +63,7 @@ services:
             - DYNAMIC_BRANDING_URL
             - ENABLE_ADAPTIVE_MODE
             - ENABLE_AUDIO_PROCESSING
+            - ENABLE_AUTOMATIC_GAIN_CONTROL
             - ENABLE_AUTH
             - ENABLE_AUTH_DOMAIN
             - ENABLE_BREAKOUT_ROOMS
