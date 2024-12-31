@@ -331,7 +331,7 @@ log = {
 {{ end }}
 }
 
-{{ if $PROSODY_ENABLE_METRICS }} 
+{{ if $PROSODY_ENABLE_METRICS }}
 -- Statistics Provider configuration
 statistics = "internal"
 statistics_interval = "manual"
@@ -351,7 +351,26 @@ external_services = {
     {{- range $idx1, $host := $TURN_HOSTS -}}
       {{- range $idx2, $transport := $TURN_TRANSPORTS -}}
         {{- if or $STUN_HOST $idx1 $idx2 -}},{{- end }}
-        { type = "turn", host = "{{ $host }}", port = {{ $TURN_PORT }}, transport = "{{ $transport }}", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
+        {
+            type = "turn",
+            host = "{{ $host }}",
+            port = {{ $TURN_PORT }},
+            transport = "{{ $transport }}",
+            ttl = {{ $TURN_TTL }},
+
+            {{ if $.Env.TURN_CREDENTIALS -}}
+            secret = true,
+            algorithm = "turn",
+            {{- end }}
+
+            {{ if $.Env.TURN_USERNAME -}}
+            username = "{{$.Env.TURN_USERNAME}}",
+            {{- end }}
+
+            {{ if $.Env.TURN_PASSWORD -}}
+            password = "{{$.Env.TURN_PASSWORD}}",
+            {{- end }}
+        }
       {{- end -}}
     {{- end -}}
   {{- end -}}
@@ -359,7 +378,26 @@ external_services = {
   {{- if $TURNS_HOST -}}
     {{- range $idx, $host := $TURNS_HOSTS -}}
         {{- if or $STUN_HOST $TURN_HOST $idx -}},{{- end }}
-        { type = "turns", host = "{{ $host }}", port = {{ $TURNS_PORT }}, transport = "tcp", secret = true, ttl = {{ $TURN_TTL }}, algorithm = "turn" }
+        {
+            type = "turns",
+            host = "{{ $host }}",
+            port = {{ $TURNS_PORT }},
+            transport = "tcp",
+            ttl = {{ $TURN_TTL }},
+
+            {{ if $.Env.TURN_CREDENTIALS -}}
+            secret = true,
+            algorithm = "turn",
+            {{- end }}
+
+            {{ if $.Env.TURN_USERNAME -}}
+            username = "{{$.Env.TURN_USERNAME}}",
+            {{- end }}
+
+            {{ if $.Env.TURN_PASSWORD -}}
+            password = "{{$.Env.TURN_PASSWORD}}",
+            {{- end }}
+        }
     {{- end }}
   {{- end }}
 };
