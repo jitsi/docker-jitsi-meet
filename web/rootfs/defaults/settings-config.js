@@ -137,6 +137,10 @@ config.p2p = {
     mobileCodecPreferenceOrder: {{ $CODEC_ORDER_P2P_MOBILE }}
 };
 
+{{ if .Env.P2P_STUN_SERVERS -}}
+config.p2p.stunServers = '{{ .Env.P2P_STUN_SERVERS }}'.split(',').map(url => ({ urls: 'stun:' + url }));
+
+{{ end -}}
 
 // Breakout Rooms
 //
