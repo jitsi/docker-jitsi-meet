@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+        "uid": "Loki"
       },
       "gridPos": {
         "h": 8,
@@ -47,7 +47,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+            "uid": "Loki"
           },
           "editorMode": "code",
           "expr": "{exporter=\"OTLP\"} | json | attributes_attrs_service=\"jitsi-prosody\"",
@@ -61,7 +61,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+        "uid": "Loki"
       },
       "fieldConfig": {
         "defaults": {
@@ -114,7 +114,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+            "uid": "Loki"
           },
           "editorMode": "code",
           "expr": "sum by (attributes_level) (\n  rate({exporter=\"OTLP\"} | json|attributes_attrs_service=\"jitsi-prosody\"| line_format \"{{.log}}\" | logfmt | pattern \"[<_>] <_level>: <_>\"[5m])\n)",
@@ -129,7 +129,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+        "uid": "Loki"
       },
       "fieldConfig": {
         "defaults": {
@@ -181,7 +181,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+            "uid": "Loki"
           },
           "editorMode": "code",
           "expr": "sum by (attributes_level, attributes_attrs_service) (\n  rate({exporter=\"OTLP\"} | json|attributes_attrs_service=\"jitsi-prosody\"| line_format \"{{.attributes_message}}\" | logfmt | pattern \"[<_>] <attributes_level>#<attributes_attrs_service>: <_>\"[5m]))",
@@ -196,7 +196,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+        "uid": "Loki"
       },
       "fieldConfig": {
         "defaults": {
@@ -247,7 +247,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+            "uid": "Loki"
           },
           "editorMode": "code",
           "expr": "sum(count_over_time({exporter=\"OTLP\"} | json | attributes_attrs_service=\"jitsi-prosody\" |~ \"Starting room\" [1m]))",
@@ -261,7 +261,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+        "uid": "Loki"
       },
       "fieldConfig": {
         "defaults": {
@@ -312,7 +312,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+            "uid": "Loki"
           },
           "editorMode": "code",
           "expr": "sum(count_over_time({exporter=\"OTLP\"} | json | attributes_attrs_service=\"jitsi-prosody\" |~ \"Client disconnected\" [1m]))",
@@ -326,7 +326,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+        "uid": "Loki"
       },
       "fieldConfig": {
         "defaults": {
@@ -377,7 +377,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+            "uid": "Loki"
           },
           "editorMode": "code",
           "expr": "sum(count_over_time({exporter=\"OTLP\"} | json |attributes_attrs_service=\"jitsi-prosody\" |~ \"Client connected\" [1m]))",

@@ -24,7 +24,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+        "uid": "Loki"
       },
       "description": "",
       "fieldConfig": {
@@ -104,7 +104,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "b8130a28-4867-4668-917d-539c93852857"
+            "uid": "Loki"
           },
           "editorMode": "code",
           "expr": "sum by (attributes_attrs_service) (\n  rate({exporter=\"OTLP\"} | json | line_format \"{{.attributes_message}}\" | logfmt | pattern \"[<_>] <_level>: <_>\"[5m]))",
@@ -119,7 +119,7 @@
     {
       "datasource": {
         "type": "loki",
-        "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+        "uid": "Loki"
       },
       "gridPos": {
         "h": 8,
@@ -142,7 +142,7 @@
         {
           "datasource": {
             "type": "loki",
-            "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
+            "uid": "Loki"
           },
           "editorMode": "code",
           "expr": "{exporter=\"OTLP\"} ",
