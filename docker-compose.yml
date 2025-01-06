@@ -304,6 +304,8 @@ services:
             - STUN_HOST
             - STUN_PORT
             - TURN_CREDENTIALS
+            - TURN_USERNAME
+            - TURN_PASSWORD
             - TURN_HOST
             - TURNS_HOST
             - TURN_PORT
