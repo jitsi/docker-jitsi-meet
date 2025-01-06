@@ -133,6 +133,7 @@ services:
             - PREFERRED_LANGUAGE
             - PUBLIC_URL
             - P2P_PREFERRED_CODEC
+            - P2P_STUN_SERVERS
             - RESOLUTION
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
