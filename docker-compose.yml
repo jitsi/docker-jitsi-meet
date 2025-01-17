@@ -505,8 +505,6 @@ services:
   #   expose:
   #     - "80"
   #     - "9090"
-  #   networks:
-  #     meet.jitsi:
   #   restart: ${RESTART_POLICY:-unless-stopped}
 
 # Custom network so all services can communicate using a FQDN
