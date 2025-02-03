@@ -1,3 +1,12 @@
+## stable-10008
+
+Based on stable release 10008.
+
+* 1f7544c fix(build) fix local build
+* 2a329fa feat(web): include custom nginx conf files
+* 862986a feat(web): Drops userRegion comes from backend now.
+* 2b5c291 misc: working on unstable
+
 ## stable-9955
 
 Based on stable release 9955.
