@@ -365,6 +365,7 @@ services:
             - ENABLE_OCTO_SCTP
             - ENABLE_RECORDING
             - ENABLE_SCTP
+            - ENABLE_SHARED_DOCUMENT_RANDOM_NAME
             - ENABLE_TRANSCRIPTIONS
             - ENABLE_VISITORS
             - ENABLE_AUTO_LOGIN
