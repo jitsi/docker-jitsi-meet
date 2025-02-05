@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+    # Video bridge
+    jvb1:
+        image: jitsi/jvb:latest
+        hostname: jvb1
+        ports:
+          - target: 10000
+            published: 10000
+            mode: host
+            protocol: udp
+          - target: 4443
+            published: 4443
+            mode: host
+            protocol: tcp
+          - target: 4096
+            published: 4096
+            mode: host
+            protocol: udp
+          - target: 8080
+            published: 8080
+            mode: host
+            protocol: tcp
+
+        deploy:
+          replicas: 1
+          update_config:
+            parallelism: 1
+            failure_action: rollback
+          restart_policy:
+            condition: on-failure
+            delay: 5s
+            #max_attempts: 5
+          #placement:
+          #  max_replicas_per_node: 1
+          #  constraints:
+          #    - "node.hostname==demo3"
+
+        healthcheck:
+            test: curl 127.0.0.1:8080/about/health || exit 1
+            interval: 6s
+            timeout: 6s
+            retries: 3
+            start_period: 4s
+
+        environment:
+            DOCKER_HOST_ADDRESS:
+            ENABLE_COLIBRI_WEBSOCKET: 1
+            ENABLE_OCTO: 0
+            JVB_AUTH_USER: jvb
+            JVB_AUTH_PASSWORD: CHANGE_HERE
+            JVB_BREWERY_MUC: jvbbrewery
+            JVB_PORT: 10000
+            JVB_TCP_HARVESTER_DISABLED: 0
+            JVB_TCP_PORT: 4443
+            JVB_STUN_SERVERS: meet-jit-si-turnrelay.jitsi.net:443
+            JVB_ENABLE_APIS: rest,colibri
+            JVB_OCTO_BIND_ADDRESS: "0.0.0.0"
+            JVB_OCTO_PUBLIC_ADDRESS: "" #CHANGE_HERE. put the public-ip of an instance
+            JVB_OCTO_BIND_PORT: 4096
+            JVB_OCTO_REGION: 'Region1'
+            JVB_WS_DOMAIN:
+            JVB_WS_SERVER_ID: jvb1
+            JIBRI_BREWERY_MUC: jibribrewery
+            JIBRI_PENDING_TIMEOUT: 90
+            SENTRY_DSN: "${JVB_SENTRY_DSN:-0}"
+            SENTRY_ENVIRONMENT:
+            SENTRY_RELEASE:
+            PUBLIC_URL: "https://meet.jitsi"
+            TZ: Asia/Kolkata
+            XMPP_AUTH_DOMAIN: auth.meet.jitsi
+            XMPP_INTERNAL_MUC_DOMAIN: internal-muc.meet.jitsi
+            XMPP_SERVER: xmpp.meet.jitsi
+            
+        depends_on:
+            - prosody
+        volumes:
+            - ${CONFIG}/jvb:/config
+        networks:
+            jitsi:
+              aliases:
+                - jvb1
+
+# Custom network so all services can communicate using a FQDN
+networks:
+  jitsi:
+    external: true
+    name: jitsi
