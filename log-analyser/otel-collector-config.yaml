@@ -68,12 +68,12 @@ processors:
   batch:
 
 exporters:
-  logging:
-    loglevel: debug
   loki:
     endpoint: "http://loki:3100/loki/api/v1/push"
   prometheus:
     endpoint: "0.0.0.0:9464"
+  debug:
+    verbosity: detailed
 
 service:
   pipelines:
