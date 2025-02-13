@@ -18,9 +18,11 @@ services:
   otel-collector:
     container_name: otel
     image: otel/opentelemetry-collector-contrib
+    user: "0" # required for reading docker container logs
     volumes:
       - ./log-analyser/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
       - ./log-analyser/jitsi-logs/:/tmp/jitsi-logs/
+      - /var/lib/docker/containers:/var/lib/docker/containers:ro
       - /var/run/docker.sock:/var/run/docker.sock
     networks:
       meet.jitsi:

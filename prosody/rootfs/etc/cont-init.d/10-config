@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-if [[ ! -f /etc/saslauthd.conf ]]; then
+if [[ ! -f /etc/saslauthd.conf ]] && [[ "$AUTH_TYPE" == "ldap" ]]; then
   tpl /defaults/saslauthd.conf > /etc/saslauthd.conf
   mkdir -pm777 /var/run/saslauthd
   adduser prosody sasl
@@ -32,7 +32,7 @@ fi
 mkdir /config/certs
 cp -r /defaults/* /config
 
-[ -z "$PROSODY_MODE" ] && PROSODY_MODE="client"
+[ -z "$PROSODY_MODE" ] && export PROSODY_MODE="client"
 
 if [[ "$PROSODY_MODE" == "visitors" ]]; then
     echo "Prosody visitor mode, using alternate config"
@@ -77,7 +77,9 @@ fi
 [ -z "${JVB_AUTH_USER}" ] && export JVB_AUTH_USER=jvb
 [ -z "${XMPP_DOMAIN}" ] && export XMPP_DOMAIN=meet.jitsi
 [ -z "${XMPP_AUTH_DOMAIN}" ] && export XMPP_AUTH_DOMAIN=auth.meet.jitsi
-[ -z "${XMPP_RECORDER_DOMAIN}" ] && export XMPP_RECORDER_DOMAIN=recorder.meet.jitsi
+# maintain backward compatibility with older variable
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN=hidden.meet.jitsi
 
 prosodyctl --config $PROSODY_CFG register focus $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
 
@@ -115,7 +117,13 @@ if [[ "$PROSODY_MODE" == "client" ]]; then
             echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
             exit 1
         fi
-        prosodyctl --config $PROSODY_CFG register $JIBRI_RECORDER_USER $XMPP_RECORDER_DOMAIN $JIBRI_RECORDER_PASSWORD
+        prosodyctl --config $PROSODY_CFG register $JIBRI_RECORDER_USER $XMPP_HIDDEN_DOMAIN $JIBRI_RECORDER_PASSWORD
+    fi
+    if [[ "$(echo "$ENABLE_TRANSCRIPTIONS" | tr '[:upper:]' '[:lower:]')" == "true" ]] || [[ "$ENABLE_TRANSCRIPTIONS" == "1" ]]; then
+        if [[ ! -z $JIGASI_TRANSCRIBER_PASSWORD ]]; then
+            [ -z "$JIGASI_TRANSCRIBER_USER" ] && JIGASI_TRANSCRIBER_USER="transcriber"
+            prosodyctl --config $PROSODY_CFG register $JIGASI_TRANSCRIBER_USER $XMPP_HIDDEN_DOMAIN $JIGASI_TRANSCRIBER_PASSWORD
+        fi
     fi
 fi
 

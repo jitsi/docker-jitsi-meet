@@ -1,3 +1,112 @@
+## stable-10008
+
+Based on stable release 10008.
+
+* 1f7544c fix(build) fix local build
+* 2a329fa feat(web): include custom nginx conf files
+* 862986a feat(web): Drops userRegion comes from backend now.
+* 2b5c291 misc: working on unstable
+
+## stable-9955
+
+Based on stable release 9955.
+
+* 3ba77e1 feat(prosody) - Added TURN_USERNAME and TURN_PASSWORD (#1989)
+* 82e98d2 web: Added P2P_STUN_SERVERS environment variable (#1990)
+* 02499f8 feat(grafana): prosody monitoring dashboard created (#1879)
+* 3af0725 web: add option param for Automatic Gain Control
+* 9bc57e2 misc: working on unstable
+
+## stable-9909
+
+Based on stable release 9909.
+
+* 9098202 feat(lint): add tpl lint step for each project (#1983)
+* 70b75f5 feat(build): Checks config.js syntax. (#1981)
+* f18b182 fix(web): config.js syntax errors (#1980)
+* eea18b1 feat: Add an option to enable VLA. (#1979)
+* 9527545 feat(web) Add defaults and env variables for codec preference. (#1978)
+* 6ae3414 feat(prosody): Sets recorder prefixes.
+* 07ea79a feat(prosody): Enables connection resumption for jicofo and jvb.
+* 5341065 Update docker-compose.yml (#1968)
+* 5e8b702 fix(prosody-visitors): proper variable for transcriber jid in rate limit (#1967)
+* d3db3a5 fix(jibri,jicofo,jigasi,prosody,web): respect previous XMPP_RECORDER_DOMAIN value if set (#1966)
+* 2d9c3cc feat(web): allow comment at the top of config.js to be overridden (#1964)
+* 9fe5b8b fix(web) Remove no longer used config setting. Av1 has already been enabled by default.
+* a53775c misc: working on unstable
+
+## stable-9823
+
+Based on stable release 9823.
+
+* 51a1214 feat(jibri) bump Chrome to version 130
+* 345f8c2 fix(prosody,jicofo,jigasi,jibri) rename recorder domain to hidden domain
+* 47d974d feat(jibri,jicofo,jvb): custom hocon support via include for components that support it (#1960)
+* 6443c6f feat(transcriber): fix exposing transcript path in web
+* 74d913f feat(transcriber): flag to enable translations (#1953)
+* 8909050 feat(transcriber): remote config auth parameters (#1951)
+* bb17a29 feat(prosody): enable muc_max_participants in lobby component (#1950)
+* 26b6f27 fix(prosody): remove admin_adhoc module from defaults (#1948)
+* 4ae7438 feat(prosody): move external_services module and config to global prosody.cfg.lua (#1949)
+* 74a536e misc: working on unstable
+
+## stable-9779
+
+Based on stable release 9779.
+
+* a5b719c :sparkles: allow configuration of a custom translation service (such as libretranslate) (#1946)
+* d6251b7 feat(jaas): updated jaas URLs (#1944)
+* 2a87a50 fix(jigasi): ensure tpl doesn't fail even if no JIGASI_SIP_PASSWORD is set (#1943)
+* 5164db7 feat(jigasi): config for jigasi in visitor mode (#1942)
+* a88c6e4 feat(prosody): allow s2s whitelist additions (#1940)
+* b89c328 fix(prosody): install the new version of jitsi-contrib/prosody-plugins
+* 0b75cd1 fix(transcriber): fix bosh and xmpp connections from jigasi to prosody (#1934)
+* 4369907 feat(jibri,jicofo,jigasi,jvb,prosody,web): trim empty list entries when splitting with splitList to allow trailing comma (#1932)
+* c58a9e5 feat(prosody): allow components access even after max participants is reached (#1930)
+* 5e1fcd8 fix(prosody): default value for PROSODY_MODE (#1929)
+* 7b7f101 feat(prosody): new flags to disable incoming client and server conection limits (#1928)
+* 02aa4f1 fix: Only set app_secret when defined. (#1925)
+* df0bb25 fix(prosody): install the new version of jitsi-contrib/prosody-plugins (#1926)
+* ff0cdc7 fix(prosody): tpl errors on container startup due to missing variables (#1924)
+* 905943d feat(prosody) update prosody contrib plugins from 20240117 to 20240817
+* 1f2b14d feat(prosody): enable recorder domain for s2s to visitor nodes to allow transcription support (#1905)
+* c9b6679 feat(web): mount load-test volume to expose load-test client from host (#1910)
+* b726312 feat(jicofo) add config parameter for ENABLE_MODERATOR_CHECKS
+* 2d39624 misc: working on unstable
+
+## stable-9753
+
+Based on stable release 9753.
+
+* 9e17f95 feat(jigasi): allow unique account UID for each entry even if the same auth is used (#1917)
+* ad2a577 fix(jigasi): transcriber VOSK URL variable into compose file (#1916)
+* 6c08391 feat(jigasi): transcriber configuration supports vosk URL (#1915)
+* 1db83ed feat(ldap): Start and configure only if enabled.
+* ceb4a51 feat(prosody): Skip some modules for prosody-jvb.
+* e7786d5 feat(jigasi): transcriber configuration for OCI and whisper and to skip saving (#1909)
+* c5afcde feat(jigasi): support graceful shutdown via sidecar (#1908)
+* 5d40297 feat(jigasi): allow optional label for xmpp servers (#1907)
+* e7cb0f4 feat(jvb): autoscaler sidecar shutdown hook on finish (#1906)
+* b0675c0 prosody: recording metadata module (#1734)
+* 36b2e16 feat(web) - Added NGINX_KEEPALIVE_TIMEOUT environment variable
+* 24bf3e4 fix(web) add HTTPS port to URL in env.example
+* 2280f6b feat(web) add ability to run the web container targetting JaaS
+* ff49cd9 Revert "feat(jigasi): install openjdk nonheadless, currently required for dep…" (#1899)
+* 66c6ad8 feat(jigasi): install openjdk nonheadless, currently required for dependencies (#1895)
+* 3f67408 feat(jigasi,transcriber): transcriber component and jigasi configuration updates (#1881)
+* 3e93212 fix(jicofo): pass compose variable for jicofo transcription support (#1893)
+* 084266c feat(transcriber): transcriber password in env.example and gen-passwords.sh (#1894)
+* e1b14f2 feat(prosody): enable brewery muc modules in internal muc component (#1892)
+* 1889c5d fix(web): enable hidden domain when transcriptions or recordings are enabled (#1891)
+* 46377d4 feat(prosody): transcriber account support and flag configuration fix (#1890)
+* 9f2489d feat(log-analyser): updated grafana dashboards (#1885)
+* 1e589f3 feat(log-analyser): transfered docker logs from docker containers and updated readme (#1884)
+* 1f056b4 web: remove unnecessary option
+* f893e49 base: update tpl
+* 7617503 fix(log-analyser): added Jitsi network to loki service
+* 27150a2 feat(prometheus): Docker Daemon scraping for monitoring (#1865)
+* d6b64a2 misc: working on unstable
+
 ## stable-9646
 
 Based on stable release 9646.

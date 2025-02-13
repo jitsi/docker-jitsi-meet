@@ -12,6 +12,9 @@ services:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
+            - ${CONFIG}/web/load-test:/usr/share/jitsi-meet/load-test:Z
+        labels:
+            service: "jitsi-web"
         environment:
             - AMPLITUDE_ID
             - ANALYTICS_SCRIPT_URLS
@@ -21,6 +24,10 @@ services:
             - BRANDING_DATA_URL
             - BOSH_RELATIVE
             - CHROME_EXTENSION_BANNER_JSON
+            - CODEC_ORDER_JVB
+            - CODEC_ORDER_JVB_MOBILE
+            - CODEC_ORDER_P2P
+            - CODEC_ORDER_P2P_MOBILE
             - COLIBRI_WEBSOCKET_PORT
             - COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME
             - COLIBRI_WEBSOCKET_REGEX
@@ -31,7 +38,6 @@ services:
             - DEPLOYMENTINFO_ENVIRONMENT_TYPE
             - DEPLOYMENTINFO_REGION
             - DEPLOYMENTINFO_SHARD
-            - DEPLOYMENTINFO_USERREGION
             - DESKTOP_SHARING_FRAMERATE_AUTO
             - DESKTOP_SHARING_FRAMERATE_MIN
             - DESKTOP_SHARING_FRAMERATE_MAX
@@ -54,7 +60,9 @@ services:
             - DROPBOX_APPKEY
             - DROPBOX_REDIRECT_URI
             - DYNAMIC_BRANDING_URL
+            - ENABLE_ADAPTIVE_MODE
             - ENABLE_AUDIO_PROCESSING
+            - ENABLE_AUTOMATIC_GAIN_CONTROL
             - ENABLE_AUTH
             - ENABLE_AUTH_DOMAIN
             - ENABLE_BREAKOUT_ROOMS
@@ -95,6 +103,7 @@ services:
             - ENABLE_TALK_WHILE_MUTED
             - ENABLE_TCC
             - ENABLE_TRANSCRIPTIONS
+            - ENABLE_VLA
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
             - ETHERPAD_PUBLIC_URL
@@ -115,6 +124,7 @@ services:
             - MATOMO_ENDPOINT
             - MATOMO_SITE_ID
             - MICROSOFT_API_APP_CLIENT_ID
+            - NGINX_KEEPALIVE_TIMEOUT
             - NGINX_RESOLVER
             - NGINX_WORKER_PROCESSES
             - NGINX_WORKER_CONNECTIONS
@@ -122,6 +132,7 @@ services:
             - PREFERRED_LANGUAGE
             - PUBLIC_URL
             - P2P_PREFERRED_CODEC
+            - P2P_STUN_SERVERS
             - RESOLUTION
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
@@ -132,7 +143,6 @@ services:
             - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
             - START_WITH_VIDEO_MUTED
-            - TESTING_AV1_SUPPORT
             - TOKEN_AUTH_URL
             - TOOLBAR_BUTTONS
             - TRANSLATION_LANGUAGES
@@ -169,8 +179,9 @@ services:
             - XMPP_DOMAIN
             - XMPP_GUEST_DOMAIN
             - XMPP_MUC_DOMAIN
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_DOMAIN
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
             - WHITEBOARD_COLLAB_SERVER_URL_BASE
         networks:
@@ -187,6 +198,8 @@ services:
             - '${PROSODY_S2S_PORT:-5269}'
             - '5347'
             - '${PROSODY_HTTP_PORT:-5280}'
+        labels:
+            service: "jitsi-prosody"
         volumes:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
@@ -202,6 +215,7 @@ services:
             - ENABLE_LOBBY
             - ENABLE_RECORDING
             - ENABLE_S2S
+            - ENABLE_TRANSCRIPTIONS
             - ENABLE_VISITORS
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
@@ -220,6 +234,8 @@ services:
             - JIBRI_XMPP_PASSWORD
             - JICOFO_AUTH_PASSWORD
             - JICOFO_COMPONENT_SECRET
+            - JIGASI_TRANSCRIBER_PASSWORD
+            - JIGASI_TRANSCRIBER_USER
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
             - JVB_AUTH_USER
@@ -260,7 +276,10 @@ services:
             - PROSODY_C2S_REQUIRE_ENCRYPTION
             - PROSODY_RESERVATION_ENABLED
             - PROSODY_RESERVATION_REST_BASE_URL
+            - PROSODY_DISABLE_C2S_LIMIT
+            - PROSODY_DISABLE_S2S_LIMIT
             - PROSODY_ENABLE_RATE_LIMITS
+            - PROSODY_ENABLE_RECORDING_METADATA
             - PROSODY_ENABLE_STANZA_COUNTS
             - PROSODY_ENABLE_S2S
             - PROSODY_ENABLE_METRICS
@@ -279,15 +298,19 @@ services:
             - PROSODY_TRUSTED_PROXIES
             - PROSODY_VISITOR_INDEX
             - PROSODY_VISITORS_MUC_PREFIX
+            - PROSODY_VISITORS_S2S_VHOSTS
             - PUBLIC_URL
             - STUN_HOST
             - STUN_PORT
             - TURN_CREDENTIALS
+            - TURN_USERNAME
+            - TURN_PASSWORD
             - TURN_HOST
             - TURNS_HOST
             - TURN_PORT
             - TURNS_PORT
             - TURN_TRANSPORT
+            - TURN_TTL
             - TZ
             - VISITORS_MAX_VISITORS_PER_NODE
             - VISITORS_XMPP_DOMAIN
@@ -305,8 +328,9 @@ services:
             - XMPP_MUC_MODULES
             - XMPP_MUC_CONFIGURATION
             - XMPP_INTERNAL_MUC_MODULES
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_DOMAIN
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - XMPP_SERVER_S2S_PORT
             - XMPP_SPEAKERSTATS_MODULES
         networks:
@@ -322,12 +346,15 @@ services:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
+        labels:
+            service: "jitsi-jicofo"
         environment:
             - AUTH_TYPE
             - BRIDGE_AVG_PARTICIPANT_STRESS
             - BRIDGE_STRESS_THRESHOLD
             - ENABLE_AUTH
             - ENABLE_AUTO_OWNER
+            - ENABLE_MODERATOR_CHECKS
             - ENABLE_CODEC_VP8
             - ENABLE_CODEC_VP9
             - ENABLE_CODEC_AV1
@@ -338,6 +365,8 @@ services:
             - ENABLE_OCTO_SCTP
             - ENABLE_RECORDING
             - ENABLE_SCTP
+            - ENABLE_SHARED_DOCUMENT_RANDOM_NAME
+            - ENABLE_TRANSCRIPTIONS
             - ENABLE_VISITORS
             - ENABLE_AUTO_LOGIN
             - JICOFO_AUTH_LIFETIME
@@ -387,9 +416,10 @@ services:
             - XMPP_AUTH_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_MUC_DOMAIN
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_DOMAIN
             - XMPP_SERVER
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - MAX_SSRCS_PER_USER
             - MAX_SSRC_GROUPS_PER_USER
         depends_on:
@@ -406,6 +436,8 @@ services:
             - '127.0.0.1:${JVB_COLIBRI_PORT:-8080}:8080'
         volumes:
             - ${CONFIG}/jvb:/config:Z
+        labels:
+            service: "jitsi-jvb"
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID

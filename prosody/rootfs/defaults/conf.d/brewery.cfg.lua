@@ -13,11 +13,15 @@ admins = {
 plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/prosody-plugins-contrib" }
 
 VirtualHost "{{ $JVB_XMPP_AUTH_DOMAIN }}"
+    modules_enabled = {
+        "smacks";
+    }
     authentication = "internal_hashed"
     ssl = {
         key = "/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.key";
         certificate = "/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.crt";
     }
+    smacks_hibernation_time = 15;
 
 Component "{{ $JVB_XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     modules_enabled = {

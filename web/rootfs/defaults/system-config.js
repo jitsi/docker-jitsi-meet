@@ -1,3 +1,4 @@
+{{ $CONFIG_PREFIX := .Env.WEB_CONFIG_PREFIX | default "// Jitsi Meet configuration.\n" -}}
 {{ $BOSH_RELATIVE := .Env.BOSH_RELATIVE | default "false" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "false" | toBool -}}
 {{ $ENABLE_AUTH_DOMAIN := .Env.ENABLE_AUTH_DOMAIN | default "true" | toBool -}}
@@ -12,13 +13,11 @@
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0  -}}
 {{ $JVB_PREFER_SCTP := .Env.JVB_PREFER_SCTP | default "1" | toBool -}}
 
-// Jitsi Meet configuration.
+{{ join "\n" (splitList "\\n" $CONFIG_PREFIX) }}
 var config = {};
 
 config.hosts = {};
-
 config.hosts.domain = '{{ $XMPP_DOMAIN }}';
-config.focusUserJid = 'focus@{{$XMPP_AUTH_DOMAIN}}';
 
 {{ if $ENABLE_SUBDOMAINS -}}
 var subdir = '<!--# echo var="subdir" default="" -->';

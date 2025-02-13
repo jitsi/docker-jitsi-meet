@@ -7,6 +7,64 @@ on:
     - master
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+    - name: Check Node / npm versions
+      run: |
+        node -v
+        npm -v
+    - name: setup tpl
+      run: |
+        dpkgArch="$(dpkg --print-architecture)"
+        case "${dpkgArch##*-}" in \
+          "amd64") TPL_ARCH=amd64; S6_ARCH=amd64 ;; \
+          "arm64") TPL_ARCH=arm64; S6_ARCH=aarch64 ;; \
+          *) echo "unsupported architecture"; exit 1 ;; \
+        esac
+        wget -qO /tmp/tpl https://github.com/jitsi/tpl/releases/download/v1.4.0/tpl-linux-${TPL_ARCH}
+        chmod +x /tmp/tpl
+    - name: Run tpl with default values for web
+      run:  |
+        /tmp/tpl web/rootfs/defaults/system-config.js > /tmp/config.js
+        /tmp/tpl web/rootfs/defaults/settings-config.js >> /tmp/config.js
+    - name: Check config.js syntax
+      run: node /tmp/config.js
+    - name: Run tpl with default values for jvb
+      run:  |
+        /tmp/tpl jvb/rootfs/defaults/jvb.conf > /tmp/jvb.conf
+        /tmp/tpl jvb/rootfs/defaults/logging.properties > /tmp/logging.properties
+        /tmp/tpl jvb/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
+    - name: Run tpl with default values for jicofo
+      run:  |
+        /tmp/tpl jicofo/rootfs/defaults/jicofo.conf > /tmp/jicofo.conf
+        /tmp/tpl jicofo/rootfs/defaults/logging.properties > /tmp/logging.properties
+    - name: Run tpl with default values for jibri
+      run:  |
+        /tmp/tpl jibri/rootfs/defaults/jibri.conf > /tmp/jibri.conf
+        /tmp/tpl jibri/rootfs/defaults/logging.properties > /tmp/logging.properties
+        /tmp/tpl jibri/rootfs/defaults/xmpp.conf > /tmp/xmpp.conf
+        /tmp/tpl jibri/rootfs/defaults/xorg-video-dummy.conf > /tmp/xorg-video-dummy.conf
+        /tmp/tpl jibri/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
+    - name: Run tpl with default values for jigasi
+      run:  |
+        /tmp/tpl jigasi/rootfs/defaults/sip-communicator.properties > /tmp/sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/sipserver-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/transcriber-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/xmpp-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/logging.properties > /tmp/logging.properties
+        /tmp/tpl jigasi/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
+    - name: Run tpl with default values for prosody
+      run:  |
+        /tmp/tpl prosody/rootfs/defaults/prosody.cfg.lua > /tmp/prosody.cfg.lua
+        /tmp/tpl prosody/rootfs/defaults/saslauthd.conf > /tmp/saslauthd.conf
+        /tmp/tpl prosody/rootfs/defaults/conf.d/jitsi-meet.cfg.lua > /tmp/jitsi-meet.cfg.lua
+        /tmp/tpl prosody/rootfs/defaults/conf.d/brewery.cfg.lua > /tmp/brewery.cfg.lua
+        /tmp/tpl prosody/rootfs/defaults/conf.d/visitors.cfg.lua > /tmp/visitors.cfg.lua
+        /tmp/tpl prosody/rootfs/defaults/rules.d/jvb_muc_presence_filter.pfw > /tmp/jvb_muc_presence_filter.pfw
   build:
     runs-on: ubuntu-latest
     steps:
