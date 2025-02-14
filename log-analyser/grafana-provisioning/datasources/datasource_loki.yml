@@ -2,7 +2,7 @@ apiVersion: 1
 
 datasources:
   - name: Loki
-    isDefault: true
+    isDefault: false
     type: loki
     access: proxy
     url: http://loki:3100
