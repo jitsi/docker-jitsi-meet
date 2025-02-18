@@ -25,7 +25,7 @@ jobs:
           "arm64") TPL_ARCH=arm64; S6_ARCH=aarch64 ;; \
           *) echo "unsupported architecture"; exit 1 ;; \
         esac
-        wget -qO /tmp/tpl https://github.com/jitsi/tpl/releases/download/v1.4.0/tpl-linux-${TPL_ARCH}
+        wget -qO /tmp/tpl https://github.com/jitsi/tpl/releases/latest/download/tpl-linux-${TPL_ARCH}
         chmod +x /tmp/tpl
     - name: Run tpl with default values for web
       run:  |
