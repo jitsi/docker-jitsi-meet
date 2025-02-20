@@ -1,7 +1,7 @@
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 
-FROM ${JITSI_REPO}/base:${BASE_TAG} as builder
+FROM ${JITSI_REPO}/base:${BASE_TAG} AS builder
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
