@@ -1,3 +1,6 @@
 #!/bin/sh
 
+apt-get autopurge -y
+apt-get clean
+
 rm -rf /var/lib/apt/lists/

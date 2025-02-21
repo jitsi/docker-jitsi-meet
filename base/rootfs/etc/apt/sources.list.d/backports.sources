@@ -1,0 +1,5 @@
+Types: deb
+URIs: https://deb.debian.org/debian
+Suites: bookworm-backports
+Components: main
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
