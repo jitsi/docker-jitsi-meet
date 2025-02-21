@@ -1,52 +1,33 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
-if [[ ! -f /etc/saslauthd.conf ]] && [[ "$AUTH_TYPE" == "ldap" ]]; then
-  tpl /defaults/saslauthd.conf > /etc/saslauthd.conf
+if [[ "$AUTH_TYPE" == "ldap" ]]; then
+  if [[ ! -f /etc/saslauthd.conf ]]; then
+    tpl /defaults/saslauthd.conf > /run/saslauthd.conf
+  else
+    cp /etc/saslauthd.conf /run/
+  fi
+
   mkdir -pm777 /var/run/saslauthd
-  adduser prosody sasl
-  echo >> /etc/ldap/ldap.conf "TLS_REQCERT allow"
 fi
 
-PROSODY_CFG="/config/prosody.cfg.lua"
+PROSODY_CFG="/run/prosody/config/prosody.cfg.lua"
 
-if [[ ! -d /config/data ]]; then
-    mkdir -pm 750 /config/data
-fi
-
-if [[ "$(stat -c %U /config)" != "prosody" ]]; then
-    chown -R prosody /config
-fi
-
-if [[ "$(stat -c %U /prosody-plugins)" != "prosody" ]]; then
-    chown -R prosody /prosody-plugins
-fi
-
-if [[ "$(stat -c %U /prosody-plugins-custom)" != "prosody" ]]; then
-    chown -R prosody /prosody-plugins-custom
-fi
-
-if [[ "$(stat -c %U /prosody-plugins-contrib)" != "prosody" ]]; then
-    chown -R prosody /prosody-plugins-contrib
-fi
-
-mkdir /config/certs
-cp -r /defaults/* /config
+mkdir -pm 750 /run/prosody/config/data
+mkdir -pm 750 /run/prosody/config/certs
+mkdir -pm 750 /run/prosody/config/conf.d
+cp -r /config/. /run/prosody/config
 
 [ -z "$PROSODY_MODE" ] && export PROSODY_MODE="client"
 
 if [[ "$PROSODY_MODE" == "visitors" ]]; then
     echo "Prosody visitor mode, using alternate config"
     PROSODY_SITE_CFG="visitors.cfg.lua"
-    rm /config/conf.d/jitsi-meet.cfg.lua
-    rm /config/conf.d/brewery.cfg.lua
     # force jicofo into auth domain for visitor-mode prosody
     [ -z "$XMPP_AUTH_DOMAIN" ] && XMPP_AUTH_DOMAIN="auth.meet.jitsi"
     export PROSODY_ADMINS="focus@$XMPP_AUTH_DOMAIN"
 elif [[ "$PROSODY_MODE" == "brewery" ]]; then
     echo "Prosody brewery mode, using alternate config"
     PROSODY_SITE_CFG="brewery.cfg.lua"
-    rm /config/conf.d/jitsi-meet.cfg.lua
-    rm /config/conf.d/visitors.cfg.lua
     # force jicofo into auth domain for brewer prosody
     [ -z "$JVB_XMPP_AUTH_DOMAIN" ] && JVB_XMPP_AUTH_DOMAIN="auth.meet.jitsi"
     # ensure proper certs are generated
@@ -54,16 +35,14 @@ elif [[ "$PROSODY_MODE" == "brewery" ]]; then
     # brewery mode requires C2S encryption
     export PROSODY_C2S_REQUIRE_ENCRYPTION="true"
 
-    mkdir -p /config/rules.d
-    tpl /defaults/rules.d/jvb_muc_presence_filter.pfw > /config/rules.d/jvb_muc_presence_filter.pfw
+    mkdir -p /run/prosody/config/rules.d
+    tpl /defaults/rules.d/jvb_muc_presence_filter.pfw > /run/prosody/config/rules.d/jvb_muc_presence_filter.pfw
 else
     echo "Prosody normal mode, using default config"
     PROSODY_SITE_CFG="jitsi-meet.cfg.lua"
-    rm /config/conf.d/visitors.cfg.lua
-    rm /config/conf.d/brewery.cfg.lua
 fi
 tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
-tpl /defaults/conf.d/$PROSODY_SITE_CFG > /config/conf.d/$PROSODY_SITE_CFG
+tpl /defaults/conf.d/$PROSODY_SITE_CFG > /run/prosody/config/conf.d/$PROSODY_SITE_CFG
 
 if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: Jicofo auth password must be set'
@@ -83,7 +62,8 @@ fi
 
 prosodyctl --config $PROSODY_CFG register focus $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
 
-# if we are in client mode, we need to subscribe the focus user to the focus component proxy
+# if we are in client mode, we need to subscribe the focus user to the focus
+# component proxy
 if [[ "$PROSODY_MODE" == "client" ]]; then
     prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN focus@$XMPP_AUTH_DOMAIN
 fi
@@ -140,24 +120,24 @@ if [[ "$PROSODY_MODE" == "visitors" ]]; then
     [ -z "$VISITORS_XMPP_DOMAIN" ] && VISITORS_XMPP_DOMAIN="meet.jitsi"
     [ -z "$PROSODY_VISITOR_INDEX" ] && PROSODY_VISITOR_INDEX=0
     FULL_VISITORS_XMPP_DOMAIN="v$PROSODY_VISITOR_INDEX.$VISITORS_XMPP_DOMAIN"
-    if [[ ! -f /config/certs/$FULL_VISITORS_XMPP_DOMAIN.crt ]]; then
+    if [[ ! -f /run/prosody/config/certs/$FULL_VISITORS_XMPP_DOMAIN.crt ]]; then
         # echo for using all default values
         echo | prosodyctl --config $PROSODY_CFG cert generate $FULL_VISITORS_XMPP_DOMAIN
     fi
 elif [[ "$PROSODY_MODE" == "brewery" ]]; then
     echo "No need to generate certs for main XMPP domain in brewery mode"
 else
-    if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
+    if [[ ! -f /run/prosody/config/certs/$XMPP_DOMAIN.crt ]]; then
         # echo for using all default values
         echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_DOMAIN
     fi
 fi
 
-if [[ ! -f /config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
+if [[ ! -f /run/prosody/config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
     # echo for using all default values
     echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_AUTH_DOMAIN
 fi
 
-# certs will be created in /config/data
-mv /config/data/*.{crt,key} /config/certs/ || true
-rm -f /config/data/*.cnf
+# certs will be created in /run/prosody/config/data
+mv /run/prosody/config/data/*.{crt,key} /run/prosody/config/certs/ || true
+rm -f /run/prosody/config/data/*.cnf

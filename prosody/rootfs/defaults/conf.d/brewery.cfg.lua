@@ -18,8 +18,8 @@ VirtualHost "{{ $JVB_XMPP_AUTH_DOMAIN }}"
     }
     authentication = "internal_hashed"
     ssl = {
-        key = "/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.key";
-        certificate = "/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.crt";
+        key = "/run/prosody/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.key";
+        certificate = "/run/prosody/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.crt";
     }
     smacks_hibernation_time = 15;
 

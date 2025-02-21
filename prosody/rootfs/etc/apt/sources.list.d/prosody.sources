@@ -1,0 +1,5 @@
+Types: deb
+URIs: http://packages.prosody.im/debian
+Suites: bookworm
+Components: main
+Signed-By: /usr/share/keyrings/prosody.gpg

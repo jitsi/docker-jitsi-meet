@@ -1,8 +1,0 @@
-#!/usr/bin/with-contenv bash
-if [[ -f /etc/saslauthd.conf ]]; then
-  exec s6-setuidgid root saslauthd -a ldap -O /etc/saslauthd.conf -c -m /var/run/saslauthd -n 5 -d
-else
-    # if saslauthd should not be started,
-    # prevent s6 from restarting this script again and again
-    s6-svc -O /var/run/s6/services/10-saslauthd
-fi

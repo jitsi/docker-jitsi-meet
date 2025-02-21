@@ -159,8 +159,8 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     authentication = "jitsi-anonymous"
 {{ end }}
     ssl = {
-        key = "/config/certs/{{ $XMPP_DOMAIN }}.key";
-        certificate = "/config/certs/{{ $XMPP_DOMAIN }}.crt";
+        key = "/run/prosody/config/certs/{{ $XMPP_DOMAIN }}.key";
+        certificate = "/run/prosody/config/certs/{{ $XMPP_DOMAIN }}.crt";
     }
     modules_enabled = {
         "bosh";
@@ -257,8 +257,8 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
 
 VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     ssl = {
-        key = "/config/certs/{{ $XMPP_AUTH_DOMAIN }}.key";
-        certificate = "/config/certs/{{ $XMPP_AUTH_DOMAIN }}.crt";
+        key = "/run/prosody/config/certs/{{ $XMPP_AUTH_DOMAIN }}.key";
+        certificate = "/run/prosody/config/certs/{{ $XMPP_AUTH_DOMAIN }}.crt";
     }
     modules_enabled = {
         "limits_exception";
