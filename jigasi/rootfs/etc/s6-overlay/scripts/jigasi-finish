@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 # When the jigasi is shutdown (or gracefully shutdown), it exits with code 0.
 # In this case, we don't want S6 to restart the service. We want to stop all

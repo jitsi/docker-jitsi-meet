@@ -1,4 +1,7 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
+
+mkdir -p /run/jigasi/config
+cp -r /config/. /run/jigasi/config
 
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jigasi | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
@@ -31,7 +34,7 @@ if [ -n "$AUTOSCALER_URL" ]; then
     fi
     if [ -z "$AUTOSCALER_SIDECAR_KEY_ID" ]; then
         # assume key id is equal to the base real path of the key file minus .pem
-        export AUTOSCALER_SIDECAR_KEY_ID="$(basename "$(realpath "$AUTOSCALER_SIDECAR_KEY_FILE")" | tr -d '.pem')"
+        export AUTOSCALER_SIDECAR_KEY_ID="$(basename "$(realpath "$AUTOSCALER_SIDECAR_KEY_FILE")" | sed 's/\.pem$//')"
     fi
 
     if [ -f "$AUTOSCALER_SIDECAR_KEY_FILE" ]; then
@@ -44,8 +47,8 @@ if [ -n "$AUTOSCALER_URL" ]; then
         [ -z "$AUTOSCALER_SIDECAR_REGION" ] && export AUTOSCALER_SIDECAR_REGION="docker"
         [ -z "$AUTOSCALER_SIDECAR_GROUP_NAME" ] && export AUTOSCALER_SIDECAR_GROUP_NAME="docker-jigasi"
 
-        mkdir -p /etc/jitsi/autoscaler-sidecar
-        tpl /defaults/autoscaler-sidecar.config > /etc/jitsi/autoscaler-sidecar/config
+        mkdir -pm 750 /run/autoscaler-sidecar
+        tpl /defaults/autoscaler-sidecar.config > /run/autoscaler-sidecar/config
     else
         echo "No key file at $AUTOSCALER_SIDECAR_KEY_FILE, leaving autoscaler sidecar disabled"
     fi
@@ -56,20 +59,19 @@ fi
 # maintain backward compatibility with older variable
 [ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
 
-tpl /defaults/logging.properties > /config/logging.properties
-tpl /defaults/sip-communicator.properties > /config/sip-communicator.properties
-tpl /defaults/xmpp-sip-communicator.properties >> /config/sip-communicator.properties
+tpl /defaults/logging.properties > /run/jigasi/config/logging.properties
+tpl /defaults/sip-communicator.properties > /run/jigasi/config/sip-communicator.properties
+tpl /defaults/xmpp-sip-communicator.properties >> /run/jigasi/config/sip-communicator.properties
 
 if [[ "$JIGASI_MODE" == "sip" ]]; then
-    tpl /defaults/sipserver-sip-communicator.properties >> /config/sip-communicator.properties
+    tpl /defaults/sipserver-sip-communicator.properties >> /run/jigasi/config/sip-communicator.properties
 elif [[ "$JIGASI_MODE" == "transcriber" ]]; then
-    tpl /defaults/transcriber-sip-communicator.properties >> /config/sip-communicator.properties
+    tpl /defaults/transcriber-sip-communicator.properties >> /run/jigasi/config/sip-communicator.properties
     mkdir -pm777 /tmp/transcripts
-    chown jigasi:jitsi /tmp/transcripts
 
     # Create Google Cloud Credentials
     if [[ -z $GC_PROJECT_ID || -z $GC_PRIVATE_KEY_ID || -z $GC_PRIVATE_KEY || -z $GC_CLIENT_EMAIL || -z $GC_CLIENT_ID || -z $GC_CLIENT_CERT_URL ]]; then
-        echo 'Transcriptions: One or more gcloud environment variables are undefined, skipping gcloud credentials file /config/key.json'
+        echo 'Transcriptions: One or more gcloud environment variables are undefined, skipping gcloud credentials file /run/jigasi/config/key.json'
     else
         jq -n \
             --arg GC_PROJECT_ID "$GC_PROJECT_ID" \
@@ -90,13 +92,13 @@ elif [[ "$JIGASI_MODE" == "transcriber" ]]; then
                 auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
                 client_x509_cert_url: $GC_CLIENT_CERT_URL
             }' \
-            > /config/key.json
+            > /run/jigasi/config/key.json
     fi
 fi
 
-if [[ -f /config/custom-sip-communicator.properties ]]; then
-    cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
+if [[ -f /run/jigasi/config/custom-sip-communicator.properties ]]; then
+    cat /run/jigasi/config/custom-sip-communicator.properties >> /run/jigasi/config/sip-communicator.properties
 fi
-if [[ -f /config/custom-logging.properties ]]; then
-    cat /config/custom-logging.properties >> /config/logging.properties
+if [[ -f /run/jigasi/config/custom-logging.properties ]]; then
+    cat /run/jigasi/config/custom-logging.properties >> /run/jigasi/config/logging.properties
 fi
