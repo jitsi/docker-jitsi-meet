@@ -1,4 +1,4 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 if [ -n "$AUTOSCALER_URL" ]; then
     # notify the sidecar of imminent shutdown
@@ -8,4 +8,4 @@ if [ -n "$AUTOSCALER_URL" ]; then
 fi
 
 # shutdown everything
-s6-svscanctl -t /var/run/s6/services
+s6-svscanctl -t /run/service

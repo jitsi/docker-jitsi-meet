@@ -1,4 +1,7 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
+
+mkdir -p /run/jvb/config
+cp -r /config/. /run/jvb/config
 
 if [[ -z $JVB_DISABLE_XMPP ]]; then
     if [[ -z $JVB_AUTH_PASSWORD ]]; then
@@ -33,8 +36,8 @@ export LOCAL_ADDRESS=$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1
 
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jitsi-videobridge2 | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
-if [[ -f /config/custom-sip-communicator.properties ]]; then
-    cat /config/custom-sip-communicator.properties > /config/sip-communicator.properties
+if [[ -f /run/jvb/config/custom-sip-communicator.properties ]]; then
+    mv /run/jvb/config/custom-sip-communicator.properties /run/jvb/config/sip-communicator.properties
 fi
 
 # set random jvb nickname for the instance if is not set
@@ -47,7 +50,7 @@ if [ -n "$AUTOSCALER_URL" ]; then
     fi
     if [ -z "$AUTOSCALER_SIDECAR_KEY_ID" ]; then
         # assume key id is equal to the base real path of the key file minus .pem
-        export AUTOSCALER_SIDECAR_KEY_ID="$(basename "$(realpath "$AUTOSCALER_SIDECAR_KEY_FILE")" | tr -d '.pem')"
+        export AUTOSCALER_SIDECAR_KEY_ID="$(basename "$(realpath "$AUTOSCALER_SIDECAR_KEY_FILE")" | sed 's/\.pem$//')"
     fi
 
     if [ -f "$AUTOSCALER_SIDECAR_KEY_FILE" ]; then
@@ -61,8 +64,8 @@ if [ -n "$AUTOSCALER_URL" ]; then
         [ -z "$AUTOSCALER_SIDECAR_REGION" ] && export AUTOSCALER_SIDECAR_REGION="docker"
         [ -z "$AUTOSCALER_SIDECAR_GROUP_NAME" ] && export AUTOSCALER_SIDECAR_GROUP_NAME="docker-jvb"
 
-        mkdir -p /etc/jitsi/autoscaler-sidecar
-        tpl /defaults/autoscaler-sidecar.config > /etc/jitsi/autoscaler-sidecar/config
+        mkdir -pm 750 /run/autoscaler-sidecar
+        tpl /defaults/autoscaler-sidecar.config > /run/autoscaler-sidecar/config
     else
         echo "No key file at $AUTOSCALER_SIDECAR_KEY_FILE, leaving autoscaler sidecar disabled"
     fi
@@ -70,7 +73,5 @@ else
     echo "No AUTOSCALER_URL defined, leaving autoscaler sidecar disabled"
 fi
 
-tpl /defaults/logging.properties > /config/logging.properties
-tpl /defaults/jvb.conf > /config/jvb.conf
-
-chown -R jvb:jitsi /config
+tpl /defaults/logging.properties > /run/jvb/config/logging.properties
+tpl /defaults/jvb.conf > /run/jvb/config/jvb.conf

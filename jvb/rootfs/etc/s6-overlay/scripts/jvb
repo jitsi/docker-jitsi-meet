@@ -1,0 +1,10 @@
+#!/command/with-contenv bash
+
+export JAVA_SYS_PROPS="-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/run/jvb -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=config -Djava.util.logging.config.file=/run/jvb/config/logging.properties -Dconfig.file=/run/jvb/config/jvb.conf"
+
+DAEMON=/usr/share/jitsi-videobridge/jvb.sh
+
+JVB_CMD="exec $DAEMON"
+[ -n "$JVB_LOG_FILE" ] && JVB_CMD="$JVB_CMD 2>&1 | tee $JVB_LOG_FILE"
+
+exec /bin/bash -c "$JVB_CMD"
