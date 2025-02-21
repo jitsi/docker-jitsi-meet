@@ -1,32 +1,31 @@
-#!/usr/bin/with-contenv bash
+#!/command/with-contenv bash
 
 # make our folders
-mkdir -p \
-    /config/{nginx/site-confs,keys} \
-    /run \
-    /var/lib/nginx/tmp/client_body \
-    /var/tmp/nginx
+mkdir -p /run/web/tmp
+mkdir -p /run/web/config/keys
+mkdir -p /run/web/config/nginx/site-confs
+cp -r /config/. /run/web/config
 
 # generate keys (maybe)
 if [[ $DISABLE_HTTPS -ne 1 ]]; then
     if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
-        mkdir -p /config/acme.sh
+        mkdir -p /run/web/config/acme.sh
         pushd /opt
-        sh ./acme.sh --install --home /config/acme.sh --accountemail $LETSENCRYPT_EMAIL
+        sh ./acme.sh --install --home /run/web/config/acme.sh --accountemail $LETSENCRYPT_EMAIL
         popd
 
         STAGING=""
         if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
             STAGING="--staging"
         fi
-        export LE_WORKING_DIR="/config/acme.sh"
+        export LE_WORKING_DIR="/run/web/config/acme.sh"
         # TODO: move away from standalone mode to webroot mode.
-        /config/acme.sh/acme.sh \
+        /run/web/config/acme.sh/acme.sh \
             $STAGING \
             --issue \
             --standalone \
-            --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
-            --post-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -u /var/run/s6/services/nginx; fi" \
+            --pre-hook "if [[ -d /run/service/nginx ]]; then s6-svc -d /run/service/nginx; fi" \
+            --post-hook "if [[ -d /run/service/nginx ]]; then s6-svc -u /run/service/nginx; fi" \
             -d $LETSENCRYPT_DOMAIN
         rc=$?
         if [[ $rc -eq 1 ]]; then
@@ -38,11 +37,11 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             exit 1
         fi
         if [[ $rc -eq 0 ]]; then
-            mkdir -p /config/acme-certs/$LETSENCRYPT_DOMAIN
-            if ! /config/acme.sh/acme.sh \
+            mkdir -p /run/web/config/acme-certs/$LETSENCRYPT_DOMAIN
+            if ! /run/web/config/acme.sh/acme.sh \
                     --install-cert -d $LETSENCRYPT_DOMAIN \
-                    --key-file /config/acme-certs/$LETSENCRYPT_DOMAIN/key.pem  \
-                    --fullchain-file /config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem ; then
+                    --key-file /run/web/config/acme-certs/$LETSENCRYPT_DOMAIN/key.pem  \
+                    --fullchain-file /run/web/config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem ; then
                 echo "Failed to install certificate."
                 # this tries to get the user's attention and to spare the
                 # authority's rate limit:
@@ -53,12 +52,12 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
         fi
     else
         # use self-signed certs
-        if [[ -f /config/keys/cert.key && -f /config/keys/cert.crt ]]; then
+        if [[ -f /run/web/config/keys/cert.key && -f /run/web/config/keys/cert.crt ]]; then
             echo "using keys found in /config/keys"
         else
-            echo "generating self-signed keys in /config/keys, you can replace these with your own keys if required"
+            echo "generating self-signed keys in /run/web/config/keys, you can replace these with your own keys if required"
             SUBJECT="/C=US/ST=TX/L=Austin/O=jitsi.org/OU=Jitsi Server/CN=*"
-            openssl req -new -x509 -days 3650 -nodes -out /config/keys/cert.crt -keyout /config/keys/cert.key -subj "$SUBJECT"
+            openssl req -new -x509 -days 3650 -nodes -out /run/web/config/keys/cert.crt -keyout /run/web/config/keys/cert.key -subj "$SUBJECT"
         fi
     fi
 fi
@@ -111,24 +110,24 @@ fi
 [ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
 
 # copy config files
-tpl /defaults/nginx.conf > /config/nginx/nginx.conf
+tpl /defaults/nginx.conf > /run/web/config/nginx/nginx.conf
 
-tpl /defaults/meet.conf > /config/nginx/meet.conf
-if [[ -f /config/nginx/custom-meet.conf ]]; then
-    cat /config/nginx/custom-meet.conf >> /config/nginx/meet.conf
+tpl /defaults/meet.conf > /run/web/config/nginx/meet.conf
+if [[ -f /run/web/config/nginx/custom-meet.conf ]]; then
+    cat /run/web/config/nginx/custom-meet.conf >> /run/web/config/nginx/meet.conf
 fi
 
-tpl /defaults/ssl.conf > /config/nginx/ssl.conf
+tpl /defaults/ssl.conf > /run/web/config/nginx/ssl.conf
 
-tpl /defaults/default > /config/nginx/site-confs/default
+tpl /defaults/default > /run/web/config/nginx/site-confs/default
 
-tpl /defaults/system-config.js > /config/config.js
-tpl /defaults/settings-config.js >> /config/config.js
-if [[ -f /config/custom-config.js ]]; then
-    cat /config/custom-config.js >> /config/config.js
+tpl /defaults/system-config.js > /run/web/config/config.js
+tpl /defaults/settings-config.js >> /run/web/config/config.js
+if [[ -f /run/web/config/custom-config.js ]]; then
+    cat /run/web/config/custom-config.js >> /run/web/config/config.js
 fi
 
-cp /defaults/interface_config.js /config/interface_config.js
-if [[ -f /config/custom-interface_config.js ]]; then
-    cat /config/custom-interface_config.js >> /config/interface_config.js
+cp /defaults/interface_config.js /run/web/config/interface_config.js
+if [[ -f /run/web/config/custom-interface_config.js ]]; then
+    cat /run/web/config/custom-interface_config.js >> /run/web/config/interface_config.js
 fi
