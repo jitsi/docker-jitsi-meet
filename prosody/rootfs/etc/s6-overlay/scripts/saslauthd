@@ -5,5 +5,5 @@ if [[ -f /run/saslauthd.conf ]]; then
 else
     # if saslauthd should not be started,
     # prevent s6 from restarting this script again and again
-    s6-svc -O /run/service/10-saslauthd
+    s6-svc -O /run/service/20-saslauthd
 fi
