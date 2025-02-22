@@ -7,5 +7,5 @@ DAEMON=/opt/jitsi/jibri/launch.sh
 CHROME_BIN_PATH="$(which google-chrome)"
 [ $? -ne 0 ] && CHROME_BIN_PATH="$(which chromium)"
 # pre-warm google chrome before jibri launches to ensure fast chrome launch during recordings
-[ -n "$CHROME_BIN_PATH" ] && $CHROME_BIN_PATH --timeout=1000 --headless about:blank
+[ -n "$CHROME_BIN_PATH" ] && $CHROME_BIN_PATH --timeout=1000 --headless --no-sandbox about:blank
 exec /bin/bash -c "exec $DAEMON"
