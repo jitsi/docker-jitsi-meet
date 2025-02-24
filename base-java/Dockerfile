@@ -8,7 +8,7 @@ COPY rootfs /
 
 RUN \
   wget -qO - https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | \
-    gpg --dearmour >/usr/share/keyrings/nodesource.gpg && \
+    gpg --dearmour > /usr/share/keyrings/nodesource.gpg && \
 \
   apt-dpkg-wrap apt-get update && \
   apt-dpkg-wrap apt-get install -y \
