@@ -85,8 +85,7 @@ RUN \
   cp -a prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/*  /prosody-plugins-contrib && \
   rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
 \
-  adduser s6 prosody && \
-  adduser s6 sasl && \
+  usermod -a -G prosody,sasl s6 && \
   chown s6:sasl /var/run/saslauthd && \
   echo "TLS_REQCERT allow" >> /etc/ldap/ldap.conf
 
