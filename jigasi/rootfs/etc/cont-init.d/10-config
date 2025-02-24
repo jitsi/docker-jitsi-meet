@@ -97,3 +97,6 @@ fi
 if [[ -f /config/custom-sip-communicator.properties ]]; then
     cat /config/custom-sip-communicator.properties >> /config/sip-communicator.properties
 fi
+if [[ -f /config/custom-logging.properties ]]; then
+    cat /config/custom-logging.properties >> /config/logging.properties
+fi

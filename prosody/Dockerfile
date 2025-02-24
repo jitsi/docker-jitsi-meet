@@ -1,7 +1,7 @@
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
 
-FROM ${JITSI_REPO}/base:${BASE_TAG} as builder
+FROM ${JITSI_REPO}/base:${BASE_TAG} AS builder
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
@@ -30,7 +30,8 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 ARG VERSION_JITSI_CONTRIB_PROSODY_PLUGINS="20241017"
 ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
 
-RUN wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
+RUN set -x && \
+    wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
     echo "deb http://packages.prosody.im/debian bookworm main" > /etc/apt/sources.list.d/prosody.list && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
