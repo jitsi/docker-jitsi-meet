@@ -42,7 +42,7 @@ RUN \
   rm -rf /tmp/s6 && \
 \
   wget -qO - https://download.jitsi.org/jitsi-key.gpg.key | \
-    gpg --dearmour >/usr/share/keyrings/jitsi.gpg && \
+    gpg --dearmour > /usr/share/keyrings/jitsi.gpg && \
   sed -i "s/stable/${JITSI_RELEASE}/" /etc/apt/sources.list.d/jitsi.sources && \
 \
   apt-dpkg-wrap apt-get update && \
