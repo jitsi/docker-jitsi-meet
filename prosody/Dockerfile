@@ -41,7 +41,7 @@ COPY rootfs /
 RUN \
   set -x && \
   wget -qO - https://prosody.im/files/prosody-debian-packages.key | \
-    gpg --dearmour >/usr/share/keyrings/prosody.gpg && \
+    gpg --dearmour > /usr/share/keyrings/prosody.gpg && \
 \
   apt-dpkg-wrap apt-get update && \
   apt-dpkg-wrap apt-get install -y \
@@ -88,7 +88,7 @@ RUN \
   adduser s6 prosody && \
   adduser s6 sasl && \
   chown s6:sasl /var/run/saslauthd && \
-  echo "TLS_REQCERT allow" >>/etc/ldap/ldap.conf
+  echo "TLS_REQCERT allow" >> /etc/ldap/ldap.conf
 
 COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
 COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
