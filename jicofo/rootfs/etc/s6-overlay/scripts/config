@@ -17,6 +17,5 @@ fi
 [ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
 
 mkdir -p /run/jicofo/config
-cp -r /config/. /run/jicofo/config
 tpl /defaults/logging.properties > /run/jicofo/config/logging.properties
 tpl /defaults/jicofo.conf > /run/jicofo/config/jicofo.conf
