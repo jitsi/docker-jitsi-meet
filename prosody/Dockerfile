@@ -23,7 +23,6 @@ RUN \
   luarocks install lua-cjson 2.1.0-1 && \
   luarocks install net-url 0.9-1
 
-# ------------------------------------------------------------------------------
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
 USER root
