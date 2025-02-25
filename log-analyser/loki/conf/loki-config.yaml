@@ -6,6 +6,8 @@ auth_enabled: false
 server:
   http_listen_port: 3100
   grpc_listen_port: 9096
+  grpc_server_max_recv_msg_size: 33554432 # 32MiB (int bytes), default 4MB
+  grpc_server_max_send_msg_size: 33554432 # 32MiB (int bytes), default 4MB
 
 common:
   instance_addr: 127.0.0.1
@@ -47,5 +49,5 @@ schema_config:
 # Refer to the buildReport method to see what goes into a report.
 #
 # If you would like to disable reporting, uncomment the following lines:
-#analytics:
-#  reporting_enabled: false
+analytics:
+  reporting_enabled: false
