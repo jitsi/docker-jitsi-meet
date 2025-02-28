@@ -58,7 +58,7 @@ mv tmp CHANGELOG.md
 # Set specific image tags in compose files
 #
 
-sed -i "" -e "s/unstable/${VERSION}/" *.yml
+sed -i".bak" -e "s/unstable/${VERSION}/" *.yml
 
 # Commit all changes and tag the repo
 #
@@ -69,7 +69,7 @@ git tag -a "${VERSION}" -m "release" -m "${CHANGES}"
 # Revert back to "unstable" for development
 #
 
-sed -i "" -e "s/${VERSION}/unstable/" *.yml
+sed -i".bak" -e "s/${VERSION}/unstable/" *.yml
 
 git commit -a -m "misc: working on unstable"
 

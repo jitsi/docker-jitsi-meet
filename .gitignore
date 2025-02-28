@@ -1,3 +1,4 @@
+*.bak
 *.swp
 .env*
 docker-compose.override.yml

@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          sed -i "" -e "s/unstable/stable-${{ github.event.inputs.version }}/" *.yml
+          sed -i".bak" -e "s/unstable/stable-${{ github.event.inputs.version }}/" *.yml
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
             commit_message: "release: stable-${{ github.event.inputs.version }}"
@@ -28,7 +28,7 @@ jobs:
             generate_release_notes: true
             make_latest: true
       - run: |
-          sed -i "" -e "s/stable-${{ github.event.inputs.version }}/unstable/" *.yml
+          sed -i".bak" -e "s/stable-${{ github.event.inputs.version }}/unstable/" *.yml
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
             commit_message: "misc: working on unstable"
