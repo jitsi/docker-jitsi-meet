@@ -137,7 +137,7 @@ config.p2p = {
 };
 
 {{ if .Env.P2P_STUN_SERVERS -}}
-config.p2p.stunServers = '{{ .Env.P2P_STUN_SERVERS }}'.split(',').map(url => ({ urls: 'stun:' + url }));
+config.p2p.stunServers = '{{ .Env.P2P_STUN_SERVERS }}'.split(',').map(function (url) { return { urls: 'stun:' + url }; } );
 
 {{ end -}}
 
