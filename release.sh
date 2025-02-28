@@ -2,6 +2,11 @@
 
 set -e
 
+# **** NB ****
+# This iscript is no longer used, but it is kept here for reference.
+#
+
+
 # Don't start a release if the tree is dirty
 #
 
