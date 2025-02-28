@@ -27,12 +27,24 @@ jobs:
         esac
         wget -qO /tmp/tpl https://github.com/jitsi/tpl/releases/latest/download/tpl-linux-${TPL_ARCH}
         chmod +x /tmp/tpl
+    - name: setup duktape
+      working-directory: /tmp
+      run: |
+        wget https://duktape.org/duktape-2.2.1.tar.xz
+        tar xvf duktape-2.2.1.tar.xz
+        cd duktape-2.2.1
+        make -f Makefile.cmdline
+        mv duk /usr/local/bin
     - name: Run tpl with default values for web
+      env:
+        P2P_STUN_SERVERS: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
       run:  |
         /tmp/tpl web/rootfs/defaults/system-config.js > /tmp/config.js
         /tmp/tpl web/rootfs/defaults/settings-config.js >> /tmp/config.js
+        echo "console.log(JSON.stringify(config, undefined, 2));" >> /tmp/config.js
+        cat /tmp/config.js
     - name: Check config.js syntax
-      run: node /tmp/config.js
+      run: duk /tmp/config.js
     - name: Run tpl with default values for jvb
       run:  |
         /tmp/tpl jvb/rootfs/defaults/jvb.conf > /tmp/jvb.conf
