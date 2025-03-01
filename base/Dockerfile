@@ -6,6 +6,7 @@ ENV S6_BEHAVIOUR_IF_STAGE2_FAILS=2
 COPY rootfs /
 
 RUN \
+    dpkg-reconfigure debconf --frontend=noninteractive && \
     dpkgArch="$(dpkg --print-architecture)" && \
     case "${dpkgArch##*-}" in \
         "amd64") TPL_ARCH=amd64; S6_ARCH=amd64 ;; \
