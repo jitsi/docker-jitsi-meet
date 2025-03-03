@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+    # XMPP server
+    prosody:
+        image: jitsi/prosody:latest
+        hostname: xmpp.meet.jitsi
+        deploy:
+          replicas: 1
+          update_config:
+            failure_action: rollback
+          restart_policy:
+            condition: on-failure
+            delay: 5s
+            max_attempts: 5
+          #placement:
+          #  constraints:
+          #    - node.hostname == demo2
+        environment:
+            AUTH_TYPE: internal #jwt
+            DISABLE_POLLS: 0
+            ENABLE_AUTH: 1
+            ENABLE_BREAKOUT_ROOMS: 0
+            ENABLE_GUESTS:
+            ENABLE_LOBBY:
+            ENABLE_AV_MODERATION: 1
+            ENABLE_SUBDOMAINS: "true"
+            ENABLE_XMPP_WEBSOCKET: 1
+            GLOBAL_CONFIG:
+            GLOBAL_MODULES:
+            JVB_AUTH_USER: jvb
+            JVB_AUTH_PASSWORD: CHANGE_HERE  
+            JICOFO_AUTH_USER: focus
+            JICOFO_AUTH_PASSWORD: CHANGE_HERE
+            JICOFO_COMPONENT_SECRET: CHANGE_HERE
+            JIGASI_XMPP_USER: jigasi
+            JIGASI_XMPP_PASSWORD: CHANGE_HERE
+            JIBRI_BREWERY_MUC: jibribrewery
+            JIBRI_PENDING_TIMEOUT: 90
+            JIBRI_XMPP_USER: jibri
+            JIBRI_XMPP_PASSWORD: CHANGE_HERE
+            JIBRI_RECORDER_USER: recorder
+            JIBRI_RECORDER_PASSWORD: CHANGE_HERE
+            JWT_APP_ID: CHANGE_HERE
+            JWT_APP_SECRET: CHANGE_HERE
+            JWT_ACCEPTED_ISSUERS: my_web_client,my_app_client
+            JWT_ALLOW_EMPTY: 0
+            JWT_AUTH_TYPE: token
+            JWT_TOKEN_AUTH_MODULE: token_verification,token_affiliation #token_moderation
+            JWT_ACCEPTED_AUDIENCES: myserver1,myserver2
+            JWT_ASAP_KEYSERVER:
+            LDAP_AUTH_METHOD:
+            LDAP_URL:
+            LDAP_TLS_CACERT_FILE:
+            LDAP_TLS_CACERT_DIR:
+            LDAP_BINDPW:
+            LDAP_FILTER:
+            LDAP_TLS_CHECK_PEER:
+            LDAP_START_TLS:
+            LDAP_VERSION:
+            LOG_LEVEL: debug
+            PUBLIC_URL: https://meet.jitsi
+            TURN_CREDENTIALS:
+            TURN_HOST:
+            TURNS_HOST:
+            TURN_PORT:
+            TURNS_PORT:
+            TZ: Asia/Kolkata
+            XMPP_DOMAIN: meet.jitsi
+            XMPP_AUTH_DOMAIN: auth.meet.jitsi
+            XMPP_BOSH_URL_BASE: http://xmpp.meet.jitsi:5280
+            XMPP_CROSS_DOMAIN: "true"
+            XMPP_GUEST_DOMAIN: guest.meet.jitsi
+            XMPP_MUC_DOMAIN: muc.meet.jitsi
+            XMPP_INTERNAL_MUC_DOMAIN: internal-muc.meet.jitsi
+            XMPP_RECORDER_DOMAIN: recorder.meet.jitsi
+            XMPP_MODULES:
+            XMPP_MUC_MODULES:
+            XMPP_INTERNAL_MUC_MODULES:
+        volumes:
+            - ${CONFIG}/prosody:/config
+            - ${CONFIG}/prosody:/etc/prosody
+              #- ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom
+        ports:
+            - target: 5222
+              published: 5222
+              #mode: host
+            - target: 5347
+              published: 5347
+              #mode: host
+            - target: 5280
+              published: 5280
+              #mode: host
+        networks:
+          jitsi:
+             aliases:
+               - meet.jitsi
+               - xmpp.meet.jitsi
+               - auth.meet.jitsi
+               - guest.meet.jitsi
+               - muc.meet.jitsi
+               - internal-muc.meet.jitsi
+               - focus.meet.jitsi
+# Custom network so all services can communicate using a FQDN
+networks:
+  jitsi:
+    external: true
+    name: jitsi
