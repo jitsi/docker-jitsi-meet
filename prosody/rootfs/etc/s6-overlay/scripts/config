@@ -12,10 +12,14 @@ fi
 
 PROSODY_CFG="/run/prosody/config/prosody.cfg.lua"
 
-mkdir -pm 750 /run/prosody/config/data
 mkdir -pm 750 /run/prosody/config/certs
 mkdir -pm 750 /run/prosody/config/conf.d
 cp -r /config/. /run/prosody/config
+
+# copy existing prosody accounts from the old setup if this is the initial run
+if [[ -z $(ls /var/lib/prosody) ]] && [[ -d /config/data ]]; then
+    cp -r /config/data/. /var/lib/prosody
+fi
 
 [ -z "$PROSODY_MODE" ] && export PROSODY_MODE="client"
 
@@ -138,6 +142,6 @@ if [[ ! -f /run/prosody/config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
     echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_AUTH_DOMAIN
 fi
 
-# certs will be created in /run/prosody/config/data
-mv /run/prosody/config/data/*.{crt,key} /run/prosody/config/certs/ || true
-rm -f /run/prosody/config/data/*.cnf
+# certs will be created in /var/lib/prosody
+mv /var/lib/prosody/*.{crt,key} /run/prosody/config/certs/ || true
+rm -f /var/lib/prosody/*.cnf

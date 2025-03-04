@@ -203,6 +203,7 @@ services:
         volumes:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
+            - ${CONFIG}/storage/prosody:/var/lib/prosody:Z
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS
