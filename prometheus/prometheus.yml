@@ -1,5 +1,14 @@
+alerting:
+  alertmanagers:
+  - static_configs:
+    - targets:
+      - 'alertmanager:9093'
+
 scrape_configs:
   - job_name: "prometheus"
     scrape_interval: 5s
     static_configs:
       - targets: ["prosody:5280","jvb:8080","jicofo:8888","otel:9464"]
+
+rule_files:
+  - "alert_rules.yml"
