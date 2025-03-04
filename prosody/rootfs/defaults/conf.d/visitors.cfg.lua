@@ -86,8 +86,8 @@ muc_limit_messages_check_token = {{ $LIMIT_MESSAGES_CHECK_TOKEN }};
 VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     authentication = 'jitsi-anonymous'
     ssl = {
-        key = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.key";
-        certificate = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.crt";
+        key = "/run/prosody/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.key";
+        certificate = "/run/prosody/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.crt";
     }
     modules_enabled = {
       'bosh';

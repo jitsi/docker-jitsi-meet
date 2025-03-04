@@ -1,0 +1,21 @@
+#!/command/with-contenv bash
+
+export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jicofo | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
+
+if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
+    echo 'FATAL ERROR: Jicofo auth password must be set'
+    exit 1
+fi
+
+OLD_JICOFO_AUTH_PASSWORD=passw0rd
+if [[ "$JICOFO_AUTH_PASSWORD" == "$OLD_JICOFO_AUTH_PASSWORD" ]]; then
+    echo 'FATAL ERROR: Jicofo auth password must be changed, check the README'
+    exit 1
+fi
+
+# maintain backward compatibility with older variable
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
+
+mkdir -p /run/jicofo/config
+tpl /defaults/logging.properties > /run/jicofo/config/logging.properties
+tpl /defaults/jicofo.conf > /run/jicofo/config/jicofo.conf

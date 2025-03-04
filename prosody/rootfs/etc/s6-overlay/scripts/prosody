@@ -1,0 +1,3 @@
+#!/command/with-contenv bash
+
+exec prosody --config /run/prosody/config/prosody.cfg.lua -F

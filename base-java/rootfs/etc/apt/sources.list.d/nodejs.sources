@@ -1,0 +1,5 @@
+Types: deb
+URIs: https://deb.nodesource.com/node_20.x
+Suites: nodistro
+Components: main
+Signed-By: /usr/share/keyrings/nodesource.gpg

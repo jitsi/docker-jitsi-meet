@@ -6,7 +6,7 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ${CONFIG}/transcriber:/config:Z
-            - ${CONFIG}/transcripts:/tmp/transcripts:Z
+            - ${CONFIG}/storage/transcripts:/tmp/transcripts:z
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID

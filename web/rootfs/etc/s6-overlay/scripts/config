@@ -1,0 +1,133 @@
+#!/command/with-contenv bash
+
+# make our folders
+mkdir -p /run/web/tmp
+mkdir -p /run/web/config/keys
+mkdir -p /run/web/config/nginx/site-confs
+cp -r /config/. /run/web/config
+
+# generate keys (maybe)
+if [[ $DISABLE_HTTPS -ne 1 ]]; then
+    if [[ $ENABLE_LETSENCRYPT -eq 1 ]]; then
+        mkdir -p /run/web/config/acme.sh
+        pushd /opt
+        sh ./acme.sh --install --home /run/web/config/acme.sh --accountemail $LETSENCRYPT_EMAIL
+        popd
+
+        STAGING=""
+        if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
+            STAGING="--staging"
+        fi
+        export LE_WORKING_DIR="/run/web/config/acme.sh"
+        # TODO: move away from standalone mode to webroot mode.
+        /run/web/config/acme.sh/acme.sh \
+            $STAGING \
+            --issue \
+            --standalone \
+            --pre-hook "if [[ -d /run/service/nginx ]]; then s6-svc -d /run/service/nginx; fi" \
+            --post-hook "if [[ -d /run/service/nginx ]]; then s6-svc -u /run/service/nginx; fi" \
+            -d $LETSENCRYPT_DOMAIN
+        rc=$?
+        if [[ $rc -eq 1 ]]; then
+            echo "Failed to obtain a certificate from the Let's Encrypt CA."
+            # this tries to get the user's attention and to spare the
+            # authority's rate limit:
+            sleep 15
+            echo "Exiting."
+            exit 1
+        fi
+        if [[ $rc -eq 0 ]]; then
+            mkdir -p /run/web/config/acme-certs/$LETSENCRYPT_DOMAIN
+            if ! /run/web/config/acme.sh/acme.sh \
+                    --install-cert -d $LETSENCRYPT_DOMAIN \
+                    --key-file /run/web/config/acme-certs/$LETSENCRYPT_DOMAIN/key.pem  \
+                    --fullchain-file /run/web/config/acme-certs/$LETSENCRYPT_DOMAIN/fullchain.pem ; then
+                echo "Failed to install certificate."
+                # this tries to get the user's attention and to spare the
+                # authority's rate limit:
+                sleep 15
+                echo "Exiting."
+                exit 1
+            fi
+        fi
+    else
+        # use self-signed certs
+        if [[ -f /run/web/config/keys/cert.key && -f /run/web/config/keys/cert.crt ]]; then
+            echo "using keys found in /config/keys"
+        else
+            echo "generating self-signed keys in /run/web/config/keys, you can replace these with your own keys if required"
+            SUBJECT="/C=US/ST=TX/L=Austin/O=jitsi.org/OU=Jitsi Server/CN=*"
+            openssl req -new -x509 -days 3650 -nodes -out /run/web/config/keys/cert.crt -keyout /run/web/config/keys/cert.key -subj "$SUBJECT"
+        fi
+    fi
+fi
+
+# Detect nameserver for Nginx, if not specified.
+if [[ -z "$NGINX_RESOLVER" ]]; then
+    IP_LIST=""
+
+    # Parse IPs in /etc/resolv.conf, taking into account IPv6 addresses need to be
+    # enclosed in square brackets for the Nginx config file.
+    while read -r line; do
+        if [[ $line =~ ^nameserver.* ]]; then
+            IP=$(echo $line | cut -d" " -f2)
+            COLONS=$(echo $IP | tr -dc ":" | awk '{ print length '})
+            if [[ $COLONS -ge 2 ]]; then
+                IP="[$IP]"
+            fi
+            if [[ ! "$IP_LIST" = "" ]]; then
+                IP_LIST+=" "
+            fi
+            IP_LIST+="$IP"
+        fi
+    done < <(cat /etc/resolv.conf)
+
+    export NGINX_RESOLVER=$IP_LIST
+fi
+
+echo "Using Nginx resolver: =$NGINX_RESOLVER="
+
+# colibri-ws settings
+COLIBRI_WEBSOCKET_UNSAFE_REGEX="[a-zA-Z0-9-\._]+"
+# use custom websocket regex if provided
+if [ -z "$COLIBRI_WEBSOCKET_REGEX" ]; then
+    # default to the previous unsafe behavior only if flag is set
+    if [[ "$ENABLE_COLIBRI_WEBSOCKET_UNSAFE_REGEX" == "1" ]]; then
+        export COLIBRI_WEBSOCKET_REGEX="$COLIBRI_WEBSOCKET_UNSAFE_REGEX"
+    else
+        # default value to the JVB IP, works in compose and anywhere a dns lookup of the JVB reveals the correct IP for proxying
+        [ -z "$COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME" ] && export COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME="jvb"
+        if [[ "$DISABLE_COLIBRI_WEBSOCKET_JVB_LOOKUP" == "1" ]]; then
+            # otherwise value default to the static value in the template 'jvb'
+            echo "WARNING: DISABLE_COLIBRI_WEBSOCKET_JVB_LOOKUP is set and no value for COLIBRI_WEBSOCKET_REGEX was provided, using static value 'jvb' for COLIBRI_WEBSOCKET_REGEX"
+        else
+            export COLIBRI_WEBSOCKET_REGEX="$(dig +short +search $COLIBRI_WEBSOCKET_JVB_LOOKUP_NAME)"
+        fi
+    fi
+fi
+
+# maintain backward compatibility with older variable
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
+
+# copy config files
+tpl /defaults/nginx.conf > /run/web/config/nginx/nginx.conf
+
+tpl /defaults/meet.conf > /run/web/config/nginx/meet.conf
+if [[ -f /run/web/config/nginx/custom-meet.conf ]]; then
+    cat /run/web/config/nginx/custom-meet.conf >> /run/web/config/nginx/meet.conf
+fi
+
+tpl /defaults/ssl.conf > /run/web/config/nginx/ssl.conf
+
+tpl /defaults/default > /run/web/config/nginx/site-confs/default
+
+tpl /defaults/system-config.js > /run/web/config/config.js
+tpl /defaults/settings-config.js >> /run/web/config/config.js
+if [[ -f /run/web/config/custom-config.js ]]; then
+    cat /run/web/config/custom-config.js >> /run/web/config/config.js
+fi
+
+cp /defaults/interface_config.js /run/web/config/interface_config.js
+if [[ -f /run/web/config/custom-interface_config.js ]]; then
+    cat /run/web/config/custom-interface_config.js >> /run/web/config/interface_config.js
+fi
