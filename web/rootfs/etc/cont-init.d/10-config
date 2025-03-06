@@ -19,10 +19,18 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
         if [[ $LETSENCRYPT_USE_STAGING -eq 1 ]]; then
             STAGING="--staging"
         fi
+
+        ACME_SERVER=""
+        if [[ ! -z $LETSENCRYPT_ACME_SERVER ]]; then
+            ACME_SERVER="--set-default-ca --server $LETSENCRYPT_ACME_SERVER"
+            echo "Using custom ACME server: $LETSENCRYPT_ACME_SERVER"
+        fi
+
         export LE_WORKING_DIR="/config/acme.sh"
         # TODO: move away from standalone mode to webroot mode.
         /config/acme.sh/acme.sh \
             $STAGING \
+            $ACME_SERVER \
             --issue \
             --standalone \
             --pre-hook "if [[ -d /var/run/s6/services/nginx ]]; then s6-svc -d /var/run/s6/services/nginx; fi" \
