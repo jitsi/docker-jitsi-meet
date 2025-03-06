@@ -48,6 +48,7 @@
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 -}}
 {{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
+{{ $XMPP_PERSISTENT_CHATS := .Env.XMPP_PERSISTENT_CHATS | default false | toBool -}}
 
 admins = {
     {{ if .Env.JIGASI_XMPP_PASSWORD }}
@@ -297,7 +298,11 @@ Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
 
 Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     restrict_room_creation = true
+    {{ if $XMPP_PERSISTENT_CHATS }}
+    storage = "internal"
+    {{ else }}
     storage = "memory"
+    {{ end }}
     modules_enabled = {
         "muc_meeting_id";
         {{ if .Env.XMPP_MUC_MODULES -}}
@@ -382,7 +387,8 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
 {{- end }}
     }
     muc_tombstones = false
-    muc_room_allow_persistent = false
+    muc_room_allow_persistent = {{ $XMPP_PERSISTENT_CHATS }}
+    muc_room_default_persistent = {{ $XMPP_PERSISTENT_CHATS }}
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
     target_address = "focus@{{ $XMPP_AUTH_DOMAIN }}"
