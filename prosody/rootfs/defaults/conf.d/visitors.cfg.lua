@@ -51,6 +51,9 @@ limits = {
     c2s = {
         rate = "512kb/s";
     };
+    s2sin = {
+        rate = "512kb/s";
+    };
 }
 
 authentication = 'internal_hashed'
