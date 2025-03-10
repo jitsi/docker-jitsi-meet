@@ -30,7 +30,8 @@ services:
             - JIBRI_HTTP_API_EXTERNAL_PORT
             - JIBRI_HTTP_API_INTERNAL_PORT
             - JIBRI_RECORDING_RESOLUTION
-            - JIBRI_RECORDING_VIDEO_ENCODE_PRESET
+            - JIBRI_RECORDING_VIDEO_ENCODE_PRESET_RECORDING
+            - JIBRI_RECORDING_VIDEO_ENCODE_PRESET_STREAMING
             - JIBRI_RECORDING_CONSTANT_RATE_FACTOR
             - JIBRI_RECORDING_FRAMERATE
             - JIBRI_RECORDING_QUEUE_SIZE
@@ -55,9 +56,10 @@ services:
             - XMPP_DOMAIN
             - XMPP_INTERNAL_MUC_DOMAIN
             - XMPP_MUC_DOMAIN
-            - XMPP_RECORDER_DOMAIN
+            - XMPP_HIDDEN_DOMAIN
             - XMPP_SERVER
             - XMPP_PORT
+            - XMPP_RECORDER_DOMAIN
             - XMPP_TRUST_ALL_CERTS
         depends_on:
             - jicofo

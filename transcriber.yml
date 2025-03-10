@@ -1,0 +1,75 @@
+version: '3.5'
+
+services:
+    transcriber:
+        image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
+        restart: ${RESTART_POLICY:-unless-stopped}
+        volumes:
+            - ${CONFIG}/transcriber:/config:Z
+            - ${CONFIG}/transcripts:/tmp/transcripts:Z
+        environment:
+            - AUTOSCALER_SIDECAR_KEY_FILE
+            - AUTOSCALER_SIDECAR_KEY_ID
+            - AUTOSCALER_SIDECAR_GROUP_NAME
+            - AUTOSCALER_SIDECAR_HOST_ID
+            - AUTOSCALER_SIDECAR_INSTANCE_ID
+            - AUTOSCALER_SIDECAR_PORT
+            - AUTOSCALER_SIDECAR_REGION
+            - AUTOSCALER_SIDECAR_SHUTDOWN_POLLING_INTERVAL
+            - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
+            - AUTOSCALER_URL
+            - BOSH_URL_PATTERN
+            - XMPP_AUTH_DOMAIN
+            - XMPP_GUEST_DOMAIN
+            - XMPP_MUC_DOMAIN
+            - XMPP_INTERNAL_MUC_DOMAIN
+            - XMPP_SERVER
+            - XMPP_PORT
+            - XMPP_HIDDEN_DOMAIN
+            - XMPP_RECORDER_DOMAIN
+            - XMPP_DOMAIN
+            - PUBLIC_URL
+            - JIGASI_CONFIGURATION
+            - JIGASI_JVB_TIMEOUT
+            - JIGASI_LOCAL_REGION
+            - JIGASI_LOG_FILE
+            - JIGASI_MODE=transcriber
+            - JIGASI_XMPP_USER
+            - JIGASI_XMPP_PASSWORD
+            - JIGASI_BREWERY_MUC
+            - JIGASI_TRANSCRIBER_ADVERTISE_URL
+            - JIGASI_TRANSCRIBER_CUSTOM_SERVICE
+            - JIGASI_TRANSCRIBER_CUSTOM_TRANSLATION_SERVICE
+            - JIGASI_TRANSCRIBER_LIBRETRANSLATE_URL
+            - JIGASI_TRANSCRIBER_ENABLE_SAVING
+            - JIGASI_TRANSCRIBER_ENABLE_TRANSLATION
+            - JIGASI_TRANSCRIBER_FILTER_SILENCE
+            - JIGASI_TRANSCRIBER_OCI_COMPARTMENT
+            - JIGASI_TRANSCRIBER_OCI_REGION
+            - JIGASI_TRANSCRIBER_PASSWORD
+            - JIGASI_TRANSCRIBER_RECORD_AUDIO
+            - JIGASI_TRANSCRIBER_REMOTE_CONFIG_URL
+            - JIGASI_TRANSCRIBER_REMOTE_CONFIG_URL_KEY_PATH
+            - JIGASI_TRANSCRIBER_REMOTE_CONFIG_URL_KEY_ID
+            - JIGASI_TRANSCRIBER_REMOTE_CONFIG_URL_AUD
+            - JIGASI_TRANSCRIBER_SEND_TXT
+            - JIGASI_TRANSCRIBER_USER
+            - JIGASI_TRANSCRIBER_VOSK_URL
+            - JIGASI_TRANSCRIBER_WHISPER_URL
+            - JIGASI_TRANSCRIBER_WHISPER_PRIVATE_KEY
+            - JIGASI_TRANSCRIBER_WHISPER_PRIVATE_KEY_NAME
+            - GC_PROJECT_ID
+            - GC_PRIVATE_KEY_ID
+            - GC_PRIVATE_KEY
+            - GC_CLIENT_EMAIL
+            - GC_CLIENT_ID
+            - GC_CLIENT_CERT_URL
+            - SHUTDOWN_REST_ENABLED
+            - SENTRY_DSN="${JIGASI_SENTRY_DSN:-0}"
+            - SENTRY_ENVIRONMENT
+            - SENTRY_RELEASE
+            - TZ
+        depends_on:
+            - prosody
+        networks:
+            meet.jitsi:

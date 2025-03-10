@@ -7,18 +7,88 @@ on:
     - master
 
 jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-node@v4
+    - name: Check Node / npm versions
+      run: |
+        node -v
+        npm -v
+    - name: setup tpl
+      run: |
+        dpkgArch="$(dpkg --print-architecture)"
+        case "${dpkgArch##*-}" in \
+          "amd64") TPL_ARCH=amd64; S6_ARCH=amd64 ;; \
+          "arm64") TPL_ARCH=arm64; S6_ARCH=aarch64 ;; \
+          *) echo "unsupported architecture"; exit 1 ;; \
+        esac
+        wget -qO /tmp/tpl https://github.com/jitsi/tpl/releases/latest/download/tpl-linux-${TPL_ARCH}
+        chmod +x /tmp/tpl
+    - name: setup duktape
+      working-directory: /tmp
+      run: |
+        wget https://duktape.org/duktape-2.2.1.tar.xz
+        tar xvf duktape-2.2.1.tar.xz
+        cd duktape-2.2.1
+        make -f Makefile.cmdline
+        mv duk /usr/local/bin
+    - name: Run tpl with default values for web
+      env:
+        P2P_STUN_SERVERS: stun.l.google.com:19302,stun1.l.google.com:19302,stun2.l.google.com:19302
+      run:  |
+        /tmp/tpl web/rootfs/defaults/system-config.js > /tmp/config.js
+        /tmp/tpl web/rootfs/defaults/settings-config.js >> /tmp/config.js
+        echo "console.log(JSON.stringify(config, undefined, 2));" >> /tmp/config.js
+        cat /tmp/config.js
+    - name: Check config.js syntax
+      run: duk /tmp/config.js
+    - name: Run tpl with default values for jvb
+      run:  |
+        /tmp/tpl jvb/rootfs/defaults/jvb.conf > /tmp/jvb.conf
+        /tmp/tpl jvb/rootfs/defaults/logging.properties > /tmp/logging.properties
+        /tmp/tpl jvb/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
+    - name: Run tpl with default values for jicofo
+      run:  |
+        /tmp/tpl jicofo/rootfs/defaults/jicofo.conf > /tmp/jicofo.conf
+        /tmp/tpl jicofo/rootfs/defaults/logging.properties > /tmp/logging.properties
+    - name: Run tpl with default values for jibri
+      run:  |
+        /tmp/tpl jibri/rootfs/defaults/jibri.conf > /tmp/jibri.conf
+        /tmp/tpl jibri/rootfs/defaults/logging.properties > /tmp/logging.properties
+        /tmp/tpl jibri/rootfs/defaults/xmpp.conf > /tmp/xmpp.conf
+        /tmp/tpl jibri/rootfs/defaults/xorg-video-dummy.conf > /tmp/xorg-video-dummy.conf
+        /tmp/tpl jibri/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
+    - name: Run tpl with default values for jigasi
+      run:  |
+        /tmp/tpl jigasi/rootfs/defaults/sip-communicator.properties > /tmp/sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/sipserver-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/transcriber-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/xmpp-sip-communicator.properties > /tmp/xmpp-sip-communicator.properties
+        /tmp/tpl jigasi/rootfs/defaults/logging.properties > /tmp/logging.properties
+        /tmp/tpl jigasi/rootfs/defaults/autoscaler-sidecar.config > /tmp/autoscaler-sidecar.config
+    - name: Run tpl with default values for prosody
+      run:  |
+        /tmp/tpl prosody/rootfs/defaults/prosody.cfg.lua > /tmp/prosody.cfg.lua
+        /tmp/tpl prosody/rootfs/defaults/saslauthd.conf > /tmp/saslauthd.conf
+        /tmp/tpl prosody/rootfs/defaults/conf.d/jitsi-meet.cfg.lua > /tmp/jitsi-meet.cfg.lua
+        /tmp/tpl prosody/rootfs/defaults/conf.d/brewery.cfg.lua > /tmp/brewery.cfg.lua
+        /tmp/tpl prosody/rootfs/defaults/conf.d/visitors.cfg.lua > /tmp/visitors.cfg.lua
+        /tmp/tpl prosody/rootfs/defaults/rules.d/jvb_muc_presence_filter.pfw > /tmp/jvb_muc_presence_filter.pfw
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v2
+        uses: docker/setup-buildx-action@v3
         with:
           driver: docker
 
       - name: Build base
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./base
           load: true
@@ -28,7 +98,7 @@ jobs:
             JITSI_RELEASE=unstable
 
       - name: Build base-java
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./base-java
           load: true
@@ -36,7 +106,7 @@ jobs:
             jitsi/base-java:latest
 
       - name: Build jibri
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./jibri
           load: true
@@ -44,7 +114,7 @@ jobs:
             jitsi/jibri:latest
 
       - name: Build jicofo
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./jicofo
           load: true
@@ -52,7 +122,7 @@ jobs:
             jitsi/jicofo:latest
 
       - name: Build jigasi
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./jigasi
           load: true
@@ -60,7 +130,7 @@ jobs:
             jitsi/jigasi:latest
 
       - name: Build jvb
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./jvb
           load: true
@@ -68,7 +138,7 @@ jobs:
             jitsi/jvb:latest
 
       - name: Build prosody
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./prosody
           load: true
@@ -76,7 +146,7 @@ jobs:
             jitsi/prosody:latest
 
       - name: Build web
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v6
         with:
           context: ./web
           load: true

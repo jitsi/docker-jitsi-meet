@@ -1,63 +1,40 @@
-name: Unstable Build
+name: "Release Stable"
 
 on:
-  schedule:
-    - cron: "0 5 * * *"
   workflow_dispatch:
-
+    inputs:
+      version:
+        description: Version number
+        required: true
+        type: string
 jobs:
-  version:
+  gh-release:
     runs-on: ubuntu-latest
-    outputs:
-      base: unstable
-      date: unstable-${{ steps.date.outputs.date }}
-      prosody_version: prosody-${{ steps.prosody_version.outputs.version }}
-      jicofo_version: jicofo-${{ steps.jicofo_version.outputs.version }}
-      web_version: web-${{ steps.web_version.outputs.version }}
-      jvb_version: jvb-${{ steps.jvb_version.outputs.version }}
-      jibri_version: jibri-${{ steps.jibri_version.outputs.version }}
-      jigasi_version: jigasi-${{ steps.jigasi_version.outputs.version }}
+    needs: [base, base-java, jibri, jicofo, jigasi, jvb, prosody, web]
+    permissions:
+      # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
+      contents: write
     steps:
-      - name: Get current date
-        id: date
-        run: echo "date=$(date +%F)">> $GITHUB_OUTPUT
-      - name: Prosody gpg key
-        id: prosody_gpg_key
-        run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/trusted.gpg.d/prosody.gpg
-      - name: Prosody repo
-        uses: myci-actions/add-deb-repo@11
+      - uses: actions/checkout@v4
+      - run: |
+          sed -i".bak" -e "s/unstable/stable-${{ github.event.inputs.version }}/" *.yml
+      - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          repo: deb https://packages.prosody.im/debian bookworm main
-          repo-name: prosody
-          keys-asc: https://prosody.im/files/prosody-debian-packages.key
-      - name: Jitsi repo
-        uses: myci-actions/add-deb-repo@11
+            commit_message: "release: stable-${{ github.event.inputs.version }}"
+      - name: release
+        uses: softprops/action-gh-release@v2
         with:
-          repo: deb https://download.jitsi.org/ unstable/
-          repo-name: jitsi
-          keys-asc: https://download.jitsi.org/jitsi-key.gpg.key
-      - name: Get current jicofo versions
-        id: jicofo_version
-        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Depends:' | tr ',' '\n' | grep jicofo | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
-      - name: Get current jitsi-meet-web versions
-        id: web_version
-        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Depends:' | tr ',' '\n' | grep 'jitsi-meet-web ' | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
-      - name: Get current jvb versions
-        id: jvb_version
-        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Pre-Depends:'| tr ',' '\n' | grep 'jitsi-videobridge2' | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
-      - name: Get current prosody versions
-        id: prosody_version
-        run: echo "version=$( apt-cache madison prosody | awk '{print $3;}' | head -1 |  cut -d'-' -f1 )" >> $GITHUB_OUTPUT
-      - name: Get current jibri version
-        id: jibri_version
-        run: echo "version=$( apt-cache show jibri | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
-      - name: Get current jigasi version
-        id: jigasi_version
-        run: echo "version=$( apt-cache show jigasi | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
+            tag_name: stable-${{ github.event.inputs.version }}
+            generate_release_notes: true
+            make_latest: true
+      - run: |
+          sed -i".bak" -e "s/stable-${{ github.event.inputs.version }}/unstable/" *.yml
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+            commit_message: "misc: working on unstable"
 
   base:
     runs-on: ubuntu-latest
-    needs: version
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -78,17 +55,17 @@ jobs:
           push: true
           context: ./base
           tags: |
-            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/base:stable-${{ github.event.inputs.version }}
+            ${{ secrets.JITSI_REPO }}/base:stable
           build-args: |
-            JITSI_RELEASE=unstable
+            JITSI_RELEASE=stable
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   base-java:
     runs-on: ubuntu-latest
-    needs: [version, base]
+    needs: base
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -109,18 +86,18 @@ jobs:
           push: true
           context: ./base-java
           tags: |
-            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/base-java:stable-${{ github.event.inputs.version }}
+            ${{ secrets.JITSI_REPO }}/base-java:stable
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
+            BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   jibri:
     runs-on: ubuntu-latest
-    needs: [version, base-java]
+    needs: base-java
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -141,19 +118,18 @@ jobs:
           push: true
           context: ./jibri
           tags: |
-            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.jibri_version }}
+            ${{ secrets.JITSI_REPO }}/jibri:stable-${{ github.event.inputs.version }}
+            ${{ secrets.JITSI_REPO }}/jibri:stable
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
+            BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   jicofo:
     runs-on: ubuntu-latest
-    needs: [version, base-java]
+    needs: base-java
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -174,19 +150,18 @@ jobs:
           push: true
           context: ./jicofo
           tags: |
-            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.jicofo_version }}
+            ${{ secrets.JITSI_REPO }}/jicofo:stable-${{ github.event.inputs.version }}
+            ${{ secrets.JITSI_REPO }}/jicofo:stable
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
+            BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   jigasi:
     runs-on: ubuntu-latest
-    needs: [version, base-java]
+    needs: base-java
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -207,19 +182,18 @@ jobs:
           push: true
           context: ./jigasi
           tags: |
-            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.jigasi_version }}
+            ${{ secrets.JITSI_REPO }}/jigasi:stable-${{ github.event.inputs.version }}
+            ${{ secrets.JITSI_REPO }}/jigasi:stable
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
+            BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   jvb:
     runs-on: ubuntu-latest
-    needs: [version, base-java]
+    needs: base-java
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -240,19 +214,18 @@ jobs:
           push: true
           context: ./jvb
           tags: |
-            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.jvb_version }}
+            ${{ secrets.JITSI_REPO }}/jvb:stable-${{ github.event.inputs.version }}
+            ${{ secrets.JITSI_REPO }}/jvb:stable
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
+            BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   prosody:
     runs-on: ubuntu-latest
-    needs: [version, base]
+    needs: base
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -273,19 +246,18 @@ jobs:
           push: true
           context: ./prosody
           tags: |
-            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.prosody_version }}
+            ${{ secrets.JITSI_REPO }}/prosody:stable-${{ github.event.inputs.version }}
+            ${{ secrets.JITSI_REPO }}/prosody:stable
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
+            BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   web:
     runs-on: ubuntu-latest
-    needs: [version, base]
+    needs: base
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -306,12 +278,11 @@ jobs:
           push: true
           context: ./web
           tags: |
-            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.web_version }}
+            ${{ secrets.JITSI_REPO }}/web:stable-${{ github.event.inputs.version }}
+            ${{ secrets.JITSI_REPO }}/web:stable
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
-            BASE_TAG=${{ needs.version.outputs.base }}
+            BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max
