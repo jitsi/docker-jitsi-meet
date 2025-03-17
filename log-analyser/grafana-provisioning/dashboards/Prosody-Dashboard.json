@@ -38,7 +38,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
       },
       "fieldConfig": {
         "defaults": {
@@ -514,7 +514,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
       },
       "fieldConfig": {
         "defaults": {
@@ -593,7 +593,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
           },
           "editorMode": "code",
           "expr": "sum(prosody_mod_measure_stanza_counts__received_total)by(stanza_kind)",
@@ -927,7 +927,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
       },
       "fieldConfig": {
         "defaults": {
@@ -1021,7 +1021,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
       },
       "fieldConfig": {
         "defaults": {
@@ -1087,7 +1087,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "bbb38190-2464-44ea-8080-f9ca9e3dcd61"
+        "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
       },
       "fieldConfig": {
         "defaults": {

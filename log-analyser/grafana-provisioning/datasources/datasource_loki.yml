@@ -2,12 +2,13 @@ apiVersion: 1
 
 datasources:
   - name: Loki
-    isDefault: true
+    isDefault: false
     type: loki
     access: proxy
     url: http://loki:3100
     editable: true
     apiVersion: 1
+    uid: a4bdfb3e-762a-46e5-a79f-2e7bbe88d444
 
   - name: Prometheus
     type: prometheus
@@ -17,3 +18,4 @@ datasources:
     editable: true
     jsonData:
       timeInterval: "5s"
+    uid: d301145e-8c4e-4027-bf6e-43e81f095020
