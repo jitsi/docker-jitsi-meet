@@ -99,6 +99,11 @@ if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
     exit 1
 fi
 
+# we see the next register command to hang from time to time, suspect it's a race with mod_roster_command
+# Once this is released: https://issues.prosody.im/1908 we can remove this sleep and make sure prosody is running
+# and then use 'prosodyctl shell user create' to add user live and 'prosodyctl shell roster' to modify their roster live.
+sleep 1
+
 prosodyctl --config $PROSODY_CFG register $JVB_AUTH_USER $XMPP_AUTH_DOMAIN $JVB_AUTH_PASSWORD
 
 if [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
