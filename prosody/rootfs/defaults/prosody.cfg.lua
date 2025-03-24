@@ -72,6 +72,9 @@
 -- (see http://prosody.im/doc/creating_accounts for info)
 -- Example: admins = { "user1@example.com", "user2@example.net" }
 admins = { {{ if .Env.PROSODY_ADMINS }}{{ range $index, $element := $PROSODY_ADMIN_LIST -}}{{ if $index }}, {{ end }}"{{ $element }}"{{ end }}{{ end }} }
+
+component_admins_as_room_owners = true
+
 -- Enable use of libevent for better performance under high load
 -- For more information see: http://prosody.im/doc/libevent
 --use_libevent = true;

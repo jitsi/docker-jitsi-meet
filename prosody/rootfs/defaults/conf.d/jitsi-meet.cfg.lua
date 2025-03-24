@@ -154,6 +154,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     {{ end }}
   {{ else if eq $PROSODY_AUTH_TYPE "internal" }}
     authentication = "internal_hashed"
+    disable_sasl_mechanisms={ "DIGEST-MD5", "OAUTHBEARER" }
   {{ end }}
 {{ else }}
     authentication = "jitsi-anonymous"
