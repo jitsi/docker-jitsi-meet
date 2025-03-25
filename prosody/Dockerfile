@@ -29,14 +29,19 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
 ARG VERSION_JITSI_CONTRIB_PROSODY_PLUGINS="20241017"
 ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
+ARG PROSODY_FROM_URL="false"
+ARG PROSODY_FROM_URL_VERSION="0.12.5"
 
-RUN set -x && \
-    wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
-    echo "deb http://packages.prosody.im/debian bookworm main" > /etc/apt/sources.list.d/prosody.list && \
+RUN dpkgArch="$(dpkg --print-architecture)" && \
+    case "${dpkgArch##*-}" in \
+        "amd64") PROSODY_ARCH=amd64 ;; \
+        "arm64") PROSODY_ARCH=arm64 ;; \
+        *) echo "unsupported architecture"; exit 1 ;; \
+    esac && \
+    set -x && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
-      prosody \
       libldap-common \
       sasl2-bin \
       libsasl2-modules-ldap \
@@ -45,7 +50,21 @@ RUN set -x && \
       lua-ldap \
       lua-luaossl \
       lua-sec \
-      lua-unbound && \
+      lua-unbound \
+      ssl-cert \
+      libicu72 \
+      lua-expat \
+      lua-filesystem && \
+    if [ "$PROSODY_FROM_URL" = "true" ]; then \
+      wget -qO /tmp/prosody.deb "https://packages.prosody.im/debian/pool/main/p/prosody/prosody_${PROSODY_FROM_URL_VERSION}-1~bookworm1_${PROSODY_ARCH}.deb" &&\
+      dpkg -i /tmp/prosody.deb && \
+      rm /tmp/prosody.deb ; \
+    else \
+      wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
+      echo "deb http://packages.prosody.im/debian bookworm main" > /etc/apt/sources.list.d/prosody.list && \
+      apt-dpkg-wrap apt-get update && \
+      apt-dpkg-wrap apt-get install -y prosody ; \
+    fi && \
     apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
     rm /tmp/pkg/usr/share/jitsi-meet/prosody-plugins/mod_smacks.lua && \
