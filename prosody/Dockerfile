@@ -16,7 +16,6 @@ RUN apt-dpkg-wrap apt-get update && \
     wget -qO - https://luarocks.github.io/luarocks/releases/luarocks-3.8.0.tar.gz | tar xfz - --strip-components 1 -C /tmp/luarocks && \
     cd /tmp/luarocks && ./configure && make && make install && cd - && \
     luarocks install basexx 0.4.1-1 && \
-    luarocks install lua-cjson 2.1.0-1 && \
     luarocks install net-url 0.9-1
 
 FROM ${JITSI_REPO}/base:${BASE_TAG}
@@ -34,6 +33,8 @@ RUN set -x && \
     wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
     echo "deb http://packages.prosody.im/debian bookworm main" > /etc/apt/sources.list.d/prosody.list && \
     apt-dpkg-wrap apt-get update && \
+    echo "jitsi-meet-prosody jitsi-videobridge/jvbsecret password dummy" | debconf-set-selections && \
+    debconf-show jitsi-meet-prosody && \
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
       prosody \
@@ -41,21 +42,16 @@ RUN set -x && \
       sasl2-bin \
       libsasl2-modules-ldap \
       lua-cyrussasl \
-      lua-inspect \
       lua-ldap \
-      lua-luaossl \
-      lua-sec \
-      lua-unbound && \
-    apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
-    dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
-    rm /tmp/pkg/usr/share/jitsi-meet/prosody-plugins/mod_smacks.lua && \
-    mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
-    rm -rf /tmp/pkg /var/cache/apt && \
+      lua-unbound \
+      jitsi-meet-prosody && \
     apt-cleanup && \
     rm -rf /etc/prosody && \
     mv /usr/share/lua/5.3/inspect.lua /usr/share/lua/5.4/ && \
     rm -rf /usr/lib/lua/{5.1,5.2,5.3} && \
     rm -rf /usr/share/lua/{5.1,5.2,5.3} && \
+    mv /usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+    rm -f /prosody-plugins/mod_smacks.lua && \
     wget -qO /prosody-plugins/mod_auth_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/mod_auth_cyrus.lua && \
     wget -qO /prosody-plugins/sasl_cyrus.lua https://hg.prosody.im/prosody-modules/raw-file/65438e4ba563/mod_auth_cyrus/sasl_cyrus.lua  && \
     wget -qO /prosody-plugins/mod_http_health.lua https://hg.prosody.im/prosody-modules/raw-file/2b80188448d1/mod_http_health/mod_http_health.lua && \
