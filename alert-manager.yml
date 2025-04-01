@@ -1,0 +1,11 @@
+services:
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager
+    ports:
+      - 9093:9093
+    restart: unless-stopped
+    volumes:
+      - ./alertmanager:/etc/alertmanager
+    networks:
+      meet.jitsi:
