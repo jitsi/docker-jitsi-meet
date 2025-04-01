@@ -6,6 +6,7 @@
 {{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool -}}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
 {{ $ENABLE_END_CONFERENCE := .Env.ENABLE_END_CONFERENCE | default "true" | toBool -}}
+{{ $ENABLE_FILTER_MESSAGES := .Env.PROSODY_ENABLE_FILTER_MESSAGES | default "false" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool -}}
 {{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool -}}
@@ -330,6 +331,9 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         "muc_max_occupants";
         {{ end }}
         "muc_password_whitelist";
+        {{ if $ENABLE_FILTER_MESSAGES }}
+        "filter_messages";
+        {{ end }}
     }
 
     {{ if $ENABLE_RATE_LIMITS -}}
