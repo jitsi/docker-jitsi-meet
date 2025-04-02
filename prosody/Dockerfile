@@ -49,7 +49,6 @@ RUN set -x && \
       lua-unbound && \
     apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
-    rm /tmp/pkg/usr/share/jitsi-meet/prosody-plugins/mod_smacks.lua && \
     mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
     rm -rf /tmp/pkg /var/cache/apt && \
     apt-cleanup && \
