@@ -1,0 +1,102 @@
+#!/command/execlineb -S0
+
+PROSODY_CFG="/config/prosody.cfg.lua"
+
+[ -z "$PROSODY_MODE" ] && export PROSODY_MODE="client"
+
+# Defaults
+[ -z "${JIBRI_RECORDER_USER}" ] && export JIBRI_RECORDER_USER=recorder
+[ -z "${XMPP_DOMAIN}" ] && export XMPP_DOMAIN=meet.jitsi
+[ -z "${XMPP_AUTH_DOMAIN}" ] && export XMPP_AUTH_DOMAIN=auth.meet.jitsi
+[ -z "${JVB_AUTH_USER}" ] && export JVB_AUTH_USER=jvb
+# maintain backward compatibility with older variable
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN=hidden.meet.jitsi
+[ -z "${JIGASI_XMPP_USER}" ] && export JIGASI_XMPP_USER=jigasi
+
+if [[ -z $JVB_AUTH_PASSWORD ]]; then
+    echo 'FATAL ERROR: JVB auth password must be set'
+    exit 1
+fi
+
+OLD_JVB_AUTH_PASSWORD=passw0rd
+if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
+    echo 'FATAL ERROR: JVB auth password must be changed, check the README'
+    exit 1
+fi
+
+if [[ "$PROSODY_MODE" == "visitors" ]]; then
+#    echo "Prosody visitor mode, using alternate config"
+#    PROSODY_SITE_CFG="visitors.cfg.lua"
+    # force jicofo into auth domain for visitor-mode prosody
+    [ -z "$XMPP_AUTH_DOMAIN" ] && XMPP_AUTH_DOMAIN="auth.meet.jitsi"
+#    export PROSODY_ADMINS="focus@$XMPP_AUTH_DOMAIN"
+elif [[ "$PROSODY_MODE" == "brewery" ]]; then
+#    echo "Prosody brewery mode, using alternate config"
+#    PROSODY_SITE_CFG="brewery.cfg.lua"
+#    rm /config/conf.d/jitsi-meet.cfg.lua
+#    rm /config/conf.d/visitors.cfg.lua
+#    # force jicofo into auth domain for brewer prosody
+#    [ -z "$JVB_XMPP_AUTH_DOMAIN" ] && JVB_XMPP_AUTH_DOMAIN="auth.meet.jitsi"
+#    # ensure proper certs are generated
+#    export XMPP_AUTH_DOMAIN="$JVB_XMPP_AUTH_DOMAIN"
+#    # brewery mode requires C2S encryption
+#    export PROSODY_C2S_REQUIRE_ENCRYPTION="true"
+
+#    mkdir -p /config/rules.d
+#    tpl /defaults/rules.d/jvb_muc_presence_filter.pfw > /config/rules.d/jvb_muc_presence_filter.pfw
+else
+#    echo "Prosody normal mode, using default config"
+#    PROSODY_SITE_CFG="jitsi-meet.cfg.lua"
+#    rm /config/conf.d/visitors.cfg.lua
+#    rm /config/conf.d/brewery.cfg.lua
+fi
+
+if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
+    echo 'FATAL ERROR: Jicofo auth password must be set'
+    exit 1
+fi
+
+prosodyctl --config $PROSODY_CFG shell "user:create('focus@$XMPP_AUTH_DOMAIN', '$JICOFO_AUTH_PASSWORD', 'prosody:admin')"
+
+# if we are in client mode, we need to subscribe the focus user to the focus component proxy
+if [[ "$PROSODY_MODE" == "client" ]]; then
+    prosodyctl --config $PROSODY_CFG shell roster subscribe_both focus@$XMPP_AUTH_DOMAIN focus.$XMPP_DOMAIN
+fi
+
+prosodyctl --config $PROSODY_CFG shell "user:create('$JVB_AUTH_USER@$XMPP_AUTH_DOMAIN', '$JVB_AUTH_PASSWORD')"
+
+if [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
+    OLD_JIBRI_XMPP_PASSWORD=passw0rd
+    if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
+        echo 'FATAL ERROR: Jibri auth password must be changed, check the README'
+        exit 1
+    fi
+    prosodyctl --config $PROSODY_CFG shell "user:create('$JIBRI_XMPP_USER@$XMPP_AUTH_DOMAIN', '$JIBRI_XMPP_PASSWORD')"
+fi
+
+if [[ "$PROSODY_MODE" == "client" ]]; then
+    if [[ ! -z $JIBRI_RECORDER_PASSWORD ]]; then
+        OLD_JIBRI_RECORDER_PASSWORD=passw0rd
+        if [[ "$JIBRI_RECORDER_PASSWORD" == "$OLD_JIBRI_RECORDER_PASSWORD" ]]; then
+            echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
+            exit 1
+        fi
+        prosodyctl --config $PROSODY_CFG shell "user:create('$JIBRI_RECORDER_USER@$XMPP_HIDDEN_DOMAIN', '$JIBRI_RECORDER_PASSWORD')"
+    fi
+    if [[ "$(echo "$ENABLE_TRANSCRIPTIONS" | tr '[:upper:]' '[:lower:]')" == "true" ]] || [[ "$ENABLE_TRANSCRIPTIONS" == "1" ]]; then
+        if [[ ! -z $JIGASI_TRANSCRIBER_PASSWORD ]]; then
+            [ -z "$JIGASI_TRANSCRIBER_USER" ] && JIGASI_TRANSCRIBER_USER="transcriber"
+            prosodyctl --config $PROSODY_CFG shell "user:create('$JIGASI_TRANSCRIBER_USER@$XMPP_HIDDEN_DOMAIN', '$JIGASI_TRANSCRIBER_PASSWORD')"
+        fi
+    fi
+fi
+
+if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
+    OLD_JIGASI_XMPP_PASSWORD=passw0rd
+    if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
+        echo 'FATAL ERROR: Jigasi auth password must be changed, check the README'
+        exit 1
+    fi
+    prosodyctl --config $PROSODY_CFG shell "user:create('$JIGASI_XMPP_USER@$XMPP_AUTH_DOMAIN', '$JIGASI_XMPP_PASSWORD')"
+fi
