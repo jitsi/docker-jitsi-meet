@@ -47,7 +47,7 @@ jobs:
         run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Pre-Depends:'| tr ',' '\n' | grep 'jitsi-videobridge2' | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
       - name: Get current prosody versions
         id: prosody_version
-        run: echo "version=$( apt-cache madison prosody-0.12 | awk '{print $3;}' | head -1 |  cut -d'-' -f1 )" >> $GITHUB_OUTPUT
+        run: echo "version=$( apt-cache madison prosody | awk '{print $3;}' | head -1 |  cut -d'-' -f1 )" >> $GITHUB_OUTPUT
       - name: Get current jibri version
         id: jibri_version
         run: echo "version=$( apt-cache show jibri | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
