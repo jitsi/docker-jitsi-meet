@@ -9,6 +9,7 @@ services:
     volumes:
       - ./log-analyser/grafana:/var/lib/grafana
       - ./log-analyser/grafana-provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+      - ./log-analyser/grafana-provisioning/datasources/:/etc/grafana/provisioning/datasources/
     ports:
       - "3000:3000"
     networks:
