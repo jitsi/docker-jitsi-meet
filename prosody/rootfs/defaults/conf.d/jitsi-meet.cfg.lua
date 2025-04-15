@@ -301,6 +301,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     restrict_room_creation = true
     storage = "memory"
     modules_enabled = {
+        "muc_hide_all";
         "muc_meeting_id";
         {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MUC_MODULES | compact) }}";
@@ -426,6 +427,7 @@ Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
     muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
     {{- end }}
     modules_enabled = {
+        "muc_hide_all";
         {{- if $ENABLE_RATE_LIMITS }}
         "muc_rate_limit";
         {{- end }}
@@ -449,6 +451,7 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
     muc_tombstones = false
     muc_room_allow_persistent = false
     modules_enabled = {
+        "muc_hide_all";
         "muc_meeting_id";
         {{ if not $DISABLE_POLLS -}}
         "polls";
