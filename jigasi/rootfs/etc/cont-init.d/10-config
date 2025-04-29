@@ -24,6 +24,9 @@ fi
 # set random jigasi nickname for the instance if is not set
 [ -z "${JIGASI_INSTANCE_ID}" ] && export JIGASI_INSTANCE_ID="jigasi-$(date +%N)"
 
+# set stats id for the instance
+[ -z "${JIGASI_STATS_ID}" ] && export JIGASI_STATS_ID="$JIGASI_INSTANCE_ID"
+
 # check for AUTOSCALER_URL, AUTOSCALER_SIDECAR_KEY_FILE and AUTOSCALER_SIDECAR_KEY_ID as indicator that sidecar should be enabled
 if [ -n "$AUTOSCALER_URL" ]; then
     if [ -z "$AUTOSCALER_SIDECAR_KEY_FILE" ]; then
