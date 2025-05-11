@@ -53,6 +53,7 @@
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $DISABLE_REACTIONS := .Env.DISABLE_REACTIONS | default "false" | toBool -}}
+{{ $DISABLE_DEMOTE := .Env.DISABLE_DEMOTE | default "false" | toBool -}}
 {{ $DISABLE_REMOTE_VIDEO_MENU := .Env.DISABLE_REMOTE_VIDEO_MENU | default "false" | toBool -}}
 {{ $DISABLE_PRIVATE_CHAT:= .Env.DISABLE_PRIVATE_CHAT | default "false" | toBool -}}
 {{ $DISABLE_KICKOUT := .Env.DISABLE_KICKOUT | default "false" | toBool -}}
@@ -544,6 +545,7 @@ config.hiddenPremeetingButtons = [ '{{ join "','" (splitList "," .Env.HIDE_PREME
 // Configure remote participant video menu
 config.remoteVideoMenu = {
     disabled: {{ $DISABLE_REMOTE_VIDEO_MENU }},
+    disableDemote: {{ $DISABLE_DEMOTE }},
     disableKick: {{ $DISABLE_KICKOUT }},
     disableGrantModerator: {{ $DISABLE_GRANT_MODERATOR }},
     disablePrivateChat: {{ $DISABLE_PRIVATE_CHAT }}
@@ -594,6 +596,9 @@ config.bosh = 'https://{{ $JAAS_DOMAIN }}/{{ .Env.JAAS_APP_ID }}/http-bind';
 config.websocket = 'wss://{{ $JAAS_DOMAIN }}/{{ .Env.JAAS_APP_ID }}/xmpp-websocket';
 config.websocketKeepAliveUrl = 'https://{{ $JAAS_DOMAIN }}/{{ .Env.JAAS_APP_ID }}/_unlock';
 config.conferenceRequestUrl = 'https://{{ $JAAS_DOMAIN }}/{{ .Env.JAAS_APP_ID }}/conference-request/v1';
+   // conferenceRequestUrl:
+    //   'https://<!--# echo var="http_host" default="jitsi-meet.example.com" -->/' + subdir + 'conference-request/v1',
+
 
 config.hiddenDomain = 'recorder.{{ $JAAS_DOMAIN }}';
 config.hiddenFromRecorderFeatureEnabled = true;

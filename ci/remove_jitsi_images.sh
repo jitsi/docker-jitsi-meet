@@ -1,0 +1,1 @@
+docker rmi $(docker images --filter=reference="jitsi/*" -q)
