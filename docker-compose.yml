@@ -111,6 +111,7 @@ services:
             - E2EPING_NUM_REQUESTS
             - E2EPING_MAX_CONFERENCE_SIZE
             - E2EPING_MAX_MESSAGE_PER_SECOND
+            - FILESHARING_API_URL
             - GOOGLE_ANALYTICS_ID
             - GOOGLE_API_APP_CLIENT_ID
             - HIDE_PREMEETING_BUTTONS
