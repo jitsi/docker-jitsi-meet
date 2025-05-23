@@ -13,6 +13,7 @@
 {{ $ENABLE_RATE_LIMITS := .Env.PROSODY_ENABLE_RATE_LIMITS | default "0" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool -}}
 {{ $ENABLE_RECORDING_METADATA := .Env.PROSODY_ENABLE_RECORDING_METADATA | default "1" | toBool -}}
+{{ $ENABLE_SHORTLIVED_TOKENS := .Env.PROSODY_ENABLE_SHORTLIVED_TOKENS | default "0" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "0" | toBool -}}
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
@@ -42,6 +43,11 @@
 {{ $RATE_LIMIT_LOGIN_RATE := .Env.PROSODY_RATE_LIMIT_LOGIN_RATE | default "3" -}}
 {{ $RATE_LIMIT_SESSION_RATE := .Env.PROSODY_RATE_LIMIT_SESSION_RATE | default "200" -}}
 {{ $RATE_LIMIT_TIMEOUT := .Env.PROSODY_RATE_LIMIT_TIMEOUT | default "60" -}}
+{{ $SHORTLIVED_TOKEN_AUDIENCES := .Env.PROSODY_SHORTLIVED_TOKEN_AUDIENCES | default "\"file-sharing\"" }}
+{{ $SHORTLIVED_TOKEN_ISSUER := .Env.PROSODY_SHORTLIVED_TOKEN_ISSUER | default "prosody" -}}
+{{ $SHORTLIVED_TOKEN_KEY_PATH := .Env.PROSODY_SHORTLIVED_TOKEN_KEY_PATH | default "/config/asap-shortlived.key" -}}
+{{ $SHORTLIVED_TOKEN_KID := .Env.PROSODY_SHORTLIVED_TOKEN_KID | default "replaceme" -}}
+{{ $SHORTLIVED_TOKEN_TTL := .Env.PROSODY_SHORTLIVED_TOKEN_TTL | default "30" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -92,6 +98,16 @@ consider_websocket_secure = true;
 smacks_max_unacked_stanzas = 5;
 smacks_hibernation_time = 60;
 smacks_max_old_sessions = 1;
+{{ end }}
+
+{{ if $ENABLE_SHORTLIVED_TOKENS }}
+short_lived_token = {
+    issuer = "{{ $SHORTLIVED_TOKEN_ISSUER }}";
+    accepted_audiences = { {{ $SHORTLIVED_TOKEN_AUDIENCES }} };
+    key_path = "{{ $SHORTLIVED_TOKEN_KEY_PATH }}";
+    key_id = "{{ $SHORTLIVED_TOKEN_KID }}";
+    ttl_seconds = {{ $SHORTLIVED_TOKEN_TTL }};
+};
 {{ end }}
 
 {{ if $ENABLE_JAAS_COMPONENTS }}
@@ -199,6 +215,9 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{ end }}
         {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
         "jibri_session";
+        {{- end }}
+        {{- if $ENABLE_SHORTLIVED_TOKENS }}
+        "short_lived_token";
         {{- end }}
 
     }
