@@ -358,6 +358,7 @@ config.enableTcc = false;
 // Transcriptions (subtitles and buttons can be configured in interface_config)
 config.transcription = {
     enabled: {{ $ENABLE_TRANSCRIPTIONS }},
+    disableClosedCaptions: {{ not $ENABLE_TRANSCRIPTIONS }},
     translationLanguages: {{ $TRANSLATION_LANGUAGES }},
     translationLanguagesHead: {{ $TRANSLATION_LANGUAGES_HEAD }},
     useAppLanguage: {{ $USE_APP_LANGUAGE }},
