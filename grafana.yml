@@ -7,9 +7,13 @@ services:
     environment:
       - GF_ANALYTICS_REPORTING_ENABLED=false
     volumes:
-      - ./log-analyser/grafana:/var/lib/grafana
+      - grafana-storage:/var/log/grafana
       - ./log-analyser/grafana-provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
+      - ./log-analyser/grafana-provisioning/datasources/:/etc/grafana/provisioning/datasources/
     ports:
       - "3000:3000"
     networks:
       meet.jitsi:
+      
+volumes:
+  grafana-storage:
