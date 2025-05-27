@@ -86,8 +86,6 @@ jobs:
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_RELEASE=unstable
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   base:
     runs-on: ubuntu-latest
@@ -140,8 +138,6 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   base-java:
     runs-on: ubuntu-latest
@@ -195,8 +191,6 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   jibri:
     runs-on: ubuntu-latest
@@ -251,8 +245,6 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   jicofo:
     runs-on: ubuntu-latest
@@ -307,8 +299,6 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   jigasi:
     runs-on: ubuntu-latest
@@ -363,8 +353,6 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   jvb:
     runs-on: ubuntu-latest
@@ -419,8 +407,6 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   prosody:
     runs-on: ubuntu-latest
@@ -475,8 +461,6 @@ jobs:
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
   web:
     runs-on: ubuntu-latest
