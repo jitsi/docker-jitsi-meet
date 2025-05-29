@@ -5,6 +5,7 @@
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool -}}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
+{{ $ENABLE_AUTOMATIC_VISITOR_PROMOTION := .Env.ENABLE_AUTOMATIC_VISITOR_PROMOTION | default "true" | toBool -}}
 {{ $ENABLE_END_CONFERENCE := .Env.ENABLE_END_CONFERENCE | default "true" | toBool -}}
 {{ $ENABLE_FILTER_MESSAGES := .Env.PROSODY_ENABLE_FILTER_MESSAGES | default "false" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
@@ -301,7 +302,6 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     restrict_room_creation = true
     storage = "memory"
     modules_enabled = {
-        "muc_hide_all";
         "muc_meeting_id";
         {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MUC_MODULES | compact) }}";
@@ -427,7 +427,6 @@ Component "lobby.{{ $XMPP_DOMAIN }}" "muc"
     muc_max_occupants = "{{ .Env.MAX_PARTICIPANTS }}"
     {{- end }}
     modules_enabled = {
-        "muc_hide_all";
         {{- if $ENABLE_RATE_LIMITS }}
         "muc_rate_limit";
         {{- end }}
@@ -451,7 +450,6 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
     muc_tombstones = false
     muc_room_allow_persistent = false
     modules_enabled = {
-        "muc_hide_all";
         "muc_meeting_id";
         {{ if not $DISABLE_POLLS -}}
         "polls";
@@ -472,6 +470,7 @@ Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
 
 {{ if $ENABLE_VISITORS }}
 Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
-    auto_allow_visitor_promotion = true
+    auto_allow_visitor_promotion = {{ $ENABLE_AUTOMATIC_VISITOR_PROMOTION }}
     always_visitors_enabled = true
+    admins = { "focus@{{ $XMPP_AUTH_DOMAIN }}" }
 {{ end }}
