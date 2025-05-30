@@ -24,6 +24,9 @@ jobs:
       - name: Prosody gpg key
         id: prosody_gpg_key
         run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/trusted.gpg.d/prosody.gpg
+      - name: Prosody apt key
+        id: prosody_apt_key
+        run: sudo apt-key < /etc/apt/trusted.gpg.d/prosody.gpg
       - name: Prosody repo
         id: prosody_repo
         run: echo "deb https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
