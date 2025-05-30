@@ -24,14 +24,9 @@ jobs:
       - name: Prosody gpg key
         id: prosody_gpg_key
         run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/trusted.gpg.d/prosody.gpg
-      - name: Prosody dsa1024 key support
-        run: sudo mkdir -p /etc/crypto-policies/back-ends && echo -e "[hash_algorithms]\nsha1.second_preimage_resistance = \"always\"\n\n[asymmetric_algorithms]\ndsa1024 = \"always\"\n" | sudo tee -a /etc/crypto-policies/back-ends/apt-sequoia.config
       - name: Prosody repo
-        uses: myci-actions/add-deb-repo@11
-        with:
-          repo: deb https://packages.prosody.im/debian bookworm main
-          repo-name: prosody
-          keys-asc: https://prosody.im/files/prosody-debian-packages.key
+        id: prosody_repo
+        run: echo "deb https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
       - name: Jitsi repo
         uses: myci-actions/add-deb-repo@11
         with:
