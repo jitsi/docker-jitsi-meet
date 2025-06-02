@@ -248,6 +248,9 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
         {{ if $ENABLE_XMPP_WEBSOCKET }}
         "smacks"; -- XEP-0198: Stream Management
         {{ end }}
+        {{ if .Env.XMPP_MODULES }}
+        "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MODULES | compact) }}";
+        {{ end }}
     }
 
     c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }}
