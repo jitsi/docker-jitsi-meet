@@ -252,7 +252,7 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MODULES | compact) }}";
         {{ end }}
     }
-
+    main_muc = "{{ $XMPP_MUC_DOMAIN }}"
     c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }}
     {{ if $ENABLE_VISITORS }}
     allow_anonymous_s2s = true
