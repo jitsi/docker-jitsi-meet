@@ -5,3 +5,8 @@ docker-compose.override.yml
 log-analyser/grafana
 **/.DS_Store
 **/.idea
+
+extra-large-conferences-client-prosody.env
+extra-large-conferences-visitors-prosody.env
+extra-large-conferences-jicofo.env
+extra-large-conferences-web.env
