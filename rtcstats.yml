@@ -1,0 +1,26 @@
+services:
+
+  rtcstats-server:
+    image: jitsi/rtcstats-server
+    restart: ${RESTART_POLICY:-unless-stopped}
+    env_file:
+      - ./rtcstats/.env
+      - ./rtcstats/rtcstats-server/.env
+    networks:
+      meet.jitsi:
+        aliases:
+            - rtcstats-server.meet.jitsi
+
+
+  rtc-visualizer:
+    image: jitsi/rtcstats-visualizer
+    restart: ${RESTART_POLICY:-unless-stopped}
+    volumes:
+      - ./rtcstats/rtc-visualizer/.data:/rtc-visualizer/.data
+    env_file:
+      - ./rtcstats/.env
+      - ./rtcstats/rtc-visualizer/.env
+    networks:
+      meet.jitsi:
+        aliases:
+            - rtc-visualizer.meet.jitsi

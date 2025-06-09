@@ -33,6 +33,7 @@
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
 {{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
+{{ $PUBLIC_URL_DOMAIN := .Env.PUBLIC_URL | default "https://localhost:8443" | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $RESOLUTION := .Env.RESOLUTION | default "720" -}}
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
@@ -68,6 +69,10 @@
 {{ $CODEC_ORDER_JVB_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "[\"VP8\", \"VP9\", \"H264\", \"AV1\"]" -}}
 {{ $CODEC_ORDER_P2P := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
 {{ $CODEC_ORDER_P2P_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "[\"VP8\", \"VP9\", \"H264\", \"AV1\"]" -}}
+{{ $RTCSTATS_ENABLED := .Env.RTCSTATS_ENABLED | default "false" | toBool -}}
+{{ $RTCSTATS_STORE_LOGS := .Env.RTCSTATS_STORE_LOGS | default "false" | toBool -}}
+{{ $RTCSTATS_POLL_INTERVAL := .Env.RTCSTATS_POLL_INTERVAL | default 10000 -}}
+{{ $RTCSTATS_SEND_SDP := .Env.RTCSTATS_SEND_SDP | default "false" | toBool -}}
 
 // Video configuration.
 //
@@ -215,6 +220,15 @@ config.localRecording = {
 //
 
 config.analytics = {};
+
+{{ if $RTCSTATS_ENABLED -}}
+// RTCStats configuration.
+config.analytics.rtcstatsEnabled = true;
+config.analytics.rtcstatsStoreLogs = {{ $RTCSTATS_STORE_LOGS }};
+config.analytics.rtcstatsEndpoint = 'wss://{{ $PUBLIC_URL_DOMAIN }}/rtcstats-ws';
+config.analytics.rtcstatsPollInterval = {{ $RTCSTATS_POLL_INTERVAL }};
+config.analytics.rtcstatsSendSdp = {{ $RTCSTATS_SEND_SDP }};
+{{ end -}}
 
 {{ if .Env.AMPLITUDE_ID -}}
 // The Amplitude APP Key:
