@@ -23,10 +23,12 @@ jobs:
         run: echo "date=$(date +%F)">> $GITHUB_OUTPUT
       - name: Prosody gpg key
         id: prosody_gpg_key
-        run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/trusted.gpg.d/prosody.gpg
+        run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/keyrings/prosody.gpg
+      - name: Prosody dsa1024 key support
+        run: echo 'APT::Key::Assert-Pubkey-Algo ">=rsa2048,ed25519,ed448,dsa1024";' | sudo tee /etc/apt/apt.conf.d/99weakkey-warning
       - name: Prosody repo
         id: prosody_repo
-        run: echo "deb https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
+        run: echo "deb [signed-by=/etc/apt/keyrings/prosody.gpg] https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
       - name: Jitsi repo
         uses: myci-actions/add-deb-repo@11
         with:
