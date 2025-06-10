@@ -27,7 +27,7 @@ jobs:
       - name: sequoa directory creation
         run: sudo mkdir -p /etc/crypto-policies/back-ends
       - name: Prosody dsa1024 key support
-        run: echo -e "[hash_algorithms]\nsha1.second_preimage_resistance = \"always\"\n\n[asymmetric_algorithms]\ndsa1024 = \"always\"\n" > /etc/crypto-policies/back-ends/apt-sequoia.config
+        run: echo -e "[hash_algorithms]\nsha1.second_preimage_resistance = \"always\"\n\n[asymmetric_algorithms]\ndsa1024 = \"always\"\n" | sudo tee /etc/crypto-policies/back-ends/apt-sequoia.config
       - name: Prosody repo
         id: prosody_repo
         run: echo "deb [signed-by=/etc/apt/keyrings/prosody.gpg] https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
