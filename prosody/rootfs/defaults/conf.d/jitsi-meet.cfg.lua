@@ -166,6 +166,7 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
     }
     modules_enabled = {
         "bosh";
+        "features_identity";
         {{ if $ENABLE_XMPP_WEBSOCKET }}
         "websocket";
         "smacks"; -- XEP-0198: Stream Management
