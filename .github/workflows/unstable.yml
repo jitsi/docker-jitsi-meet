@@ -23,13 +23,12 @@ jobs:
         run: echo "date=$(date +%F)">> $GITHUB_OUTPUT
       - name: Prosody gpg key
         id: prosody_gpg_key
-        run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/trusted.gpg.d/prosody.gpg
+        run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/keyrings/prosody.gpg
+      - name: Prosody dsa1024 key support
+        run: echo 'APT::Key::Assert-Pubkey-Algo ">=rsa2048,ed25519,ed448,dsa1024";' | sudo tee /etc/apt/apt.conf.d/99weakkey-warning
       - name: Prosody repo
-        uses: myci-actions/add-deb-repo@11
-        with:
-          repo: deb https://packages.prosody.im/debian bookworm main
-          repo-name: prosody
-          keys-asc: https://prosody.im/files/prosody-debian-packages.key
+        id: prosody_repo
+        run: echo "deb [signed-by=/etc/apt/keyrings/prosody.gpg] https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
       - name: Jitsi repo
         uses: myci-actions/add-deb-repo@11
         with:
@@ -55,18 +54,22 @@ jobs:
         id: jigasi_version
         run: echo "version=$( apt-cache show jigasi | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
 
-  base:
-    runs-on: ubuntu-latest
+  base-arch:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - { os: ubuntu-24.04, arch: amd64 }
+            - { os: ubuntu-24.04-arm, arch: arm64 }
     needs: version
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -78,26 +81,46 @@ jobs:
           push: true
           context: ./base
           tags: |
-            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_RELEASE=unstable
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-  base-java:
+  base:
     runs-on: ubuntu-latest
+    needs: [version, base-arch]
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create Docker Manifest
+        uses: int128/docker-manifest-create-action@v2
+        with:
+          tags: |
+            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.date }}
+          sources: |
+            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}-amd64
+            ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}-arm64
+
+  base-java-arch:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - { os: ubuntu-24.04, arch: amd64 }
+            - { os: ubuntu-24.04-arm, arch: arm64 }
     needs: [version, base]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -109,27 +132,47 @@ jobs:
           push: true
           context: ./base-java
           tags: |
-            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-  jibri:
+  base-java:
     runs-on: ubuntu-latest
+    needs: [version, base-java-arch]
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create Docker Manifest
+        uses: int128/docker-manifest-create-action@v2
+        with:
+          tags: |
+            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.date }}
+          sources: |
+            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}-amd64
+            ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}-arm64
+
+  jibri-arch:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - { os: ubuntu-24.04, arch: amd64 }
+            - { os: ubuntu-24.04-arm, arch: arm64 }
     needs: [version, base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -141,28 +184,49 @@ jobs:
           push: true
           context: ./jibri
           tags: |
-            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.jibri_version }}
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.jibri_version }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-  jicofo:
+  jibri:
     runs-on: ubuntu-latest
+    needs: [version, jibri-arch]
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create Docker Manifest
+        uses: int128/docker-manifest-create-action@v2
+        with:
+          tags: |
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.jibri_version }}
+          sources: |
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}-amd64
+            ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}-arm64
+
+  jicofo-arch:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - { os: ubuntu-24.04, arch: amd64 }
+            - { os: ubuntu-24.04-arm, arch: arm64 }
     needs: [version, base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -174,28 +238,49 @@ jobs:
           push: true
           context: ./jicofo
           tags: |
-            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.jicofo_version }}
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.jicofo_version }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-  jigasi:
+  jicofo:
     runs-on: ubuntu-latest
+    needs: [version, jicofo-arch]
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create Docker Manifest
+        uses: int128/docker-manifest-create-action@v2
+        with:
+          tags: |
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.jicofo_version }}
+          sources: |
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}-amd64
+            ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}-arm64
+
+  jigasi-arch:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - { os: ubuntu-24.04, arch: amd64 }
+            - { os: ubuntu-24.04-arm, arch: arm64 }
     needs: [version, base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -207,28 +292,49 @@ jobs:
           push: true
           context: ./jigasi
           tags: |
-            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.jigasi_version }}
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.jigasi_version }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-  jvb:
+  jigasi:
     runs-on: ubuntu-latest
+    needs: [version, jigasi-arch]
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create Docker Manifest
+        uses: int128/docker-manifest-create-action@v2
+        with:
+          tags: |
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.jigasi_version }}
+          sources: |
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}-amd64
+            ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}-arm64
+
+  jvb-arch:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - { os: ubuntu-24.04, arch: amd64 }
+            - { os: ubuntu-24.04-arm, arch: arm64 }
     needs: [version, base-java]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -240,28 +346,49 @@ jobs:
           push: true
           context: ./jvb
           tags: |
-            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.jvb_version }}
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.jvb_version }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-  prosody:
+  jvb:
     runs-on: ubuntu-latest
+    needs: [version, jvb-arch]
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create Docker Manifest
+        uses: int128/docker-manifest-create-action@v2
+        with:
+          tags: |
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.jvb_version }}
+          sources: |
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}-amd64
+            ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}-arm64
+
+  prosody-arch:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - { os: ubuntu-24.04, arch: amd64 }
+            - { os: ubuntu-24.04-arm, arch: arm64 }
     needs: [version, base]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -273,28 +400,49 @@ jobs:
           push: true
           context: ./prosody
           tags: |
-            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.prosody_version }}
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.prosody_version }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
-  web:
+  prosody:
     runs-on: ubuntu-latest
+    needs: [version, prosody-arch]
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create Docker Manifest
+        uses: int128/docker-manifest-create-action@v2
+        with:
+          tags: |
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.prosody_version }}
+          sources: |
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}-amd64
+            ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}-arm64
+
+  web-arch:
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+        fail-fast: false
+        matrix:
+          config:
+            - { os: ubuntu-24.04, arch: amd64 }
+            - { os: ubuntu-24.04-arm, arch: arm64 }
     needs: [version, base]
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -306,12 +454,29 @@ jobs:
           push: true
           context: ./web
           tags: |
-            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}
-            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.date }}
-            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.web_version }}
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.date }}-${{ matrix.config.arch }}
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.web_version }}-${{ matrix.config.arch }}
           build-args: |
             JITSI_REPO=${{ secrets.JITSI_REPO }}
             BASE_TAG=${{ needs.version.outputs.base }}
-          platforms: linux/amd64,linux/arm64
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+
+  web:
+    runs-on: ubuntu-latest
+    needs: [version, web-arch]
+    steps:
+      - name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Create Docker Manifest
+        uses: int128/docker-manifest-create-action@v2
+        with:
+          tags: |
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.date }}
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.web_version }}
+          sources: |
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}-amd64
+            ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}-arm64
