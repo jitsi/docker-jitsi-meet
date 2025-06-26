@@ -375,6 +375,14 @@ config.dynamicBrandingUrl = '{{ .Env.DYNAMIC_BRANDING_URL }}';
 config.brandingDataUrl = '{{ .Env.BRANDING_DATA_URL }}';
 {{ end -}}
 
+{{ if .Env.FILESHARING_API_URL -}}
+// External API url used to share files within a meeting.
+config.fileSharing = {
+    apiUrl :"{{ .Env.FILESHARING_API_URL }}",
+    enabled: true
+};
+{{ end -}}
+
 {{ if .Env.TOKEN_AUTH_URL -}}
 // Authenticate using external service
 config.tokenAuthUrl = '{{ .Env.TOKEN_AUTH_URL }}';
