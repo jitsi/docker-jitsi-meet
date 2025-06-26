@@ -15,6 +15,9 @@
 {{ $GC_GEN_MIN_TH := .Env.GC_GEN_MIN_TH | default 20 -}}
 {{ $GC_GEN_MAX_TH := .Env.GC_GEN_MAX_TH | default 100 -}}
 {{ $LOG_LEVEL := .Env.LOG_LEVEL | default "info" }}
+{{ $JIBRI_XMPP_USER := .Env.JIBRI_XMPP_USER | default "jibri" -}}
+{{ $JIGASI_XMPP_USER := .Env.JIGASI_XMPP_USER | default "jigasi" -}}
+{{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
 {{ $PROSODY_C2S_LIMIT := .Env.PROSODY_C2S_LIMIT | default "10kb/s" -}}
 {{ $PROSODY_METRICS_ALLOWED_CIDR := .Env.PROSODY_METRICS_ALLOWED_CIDR | default "172.16.0.0/12" -}}
 {{ $PROSODY_HTTP_PORT := .Env.PROSODY_HTTP_PORT | default "5280" -}}
@@ -43,6 +46,7 @@
 {{ $VISITORS_XMPP_SERVER := .Env.VISITORS_XMPP_SERVER | default "" -}}
 {{ $VISITORS_XMPP_SERVERS := splitList "," $VISITORS_XMPP_SERVER | compact -}}
 {{ $VISITORS_XMPP_PORT := .Env.VISITORS_XMPP_PORT | default 52220 }}
+{{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
@@ -71,7 +75,20 @@
 -- for the server. Note that you must create the accounts separately
 -- (see http://prosody.im/doc/creating_accounts for info)
 -- Example: admins = { "user1@example.com", "user2@example.net" }
-admins = { {{ if .Env.PROSODY_ADMINS }}{{ range $index, $element := $PROSODY_ADMIN_LIST -}}{{ if $index }}, {{ end }}"{{ $element }}"{{ end }}{{ end }} }
+admins = {
+    {{ if .Env.PROSODY_ADMINS }} {{ range $index, $element := $PROSODY_ADMIN_LIST -}}{{ if $index }}, {{ end }}"{{ $element }}",{{ end }}{{ end }}
+
+    {{ if .Env.JIGASI_XMPP_PASSWORD }}
+    "{{ $JIGASI_XMPP_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    {{ end }}
+
+    {{ if .Env.JIBRI_XMPP_PASSWORD }}
+    "{{ $JIBRI_XMPP_USER }}@{{ $XMPP_AUTH_DOMAIN }}",
+    {{ end }}
+
+    "focus@{{ $XMPP_AUTH_DOMAIN }}",
+    "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
+}
 
 component_admins_as_room_owners = true
 
