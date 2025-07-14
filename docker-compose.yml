@@ -466,12 +466,15 @@ services:
             - JVB_AUTH_PASSWORD
             - JVB_BREWERY_MUC
             - JVB_CC_TRUST_BWE
+            - JVB_CONFERENCE_LAST_N_LIMITS
             - JVB_DISABLE_STUN
             - JVB_DISABLE_XMPP
+            - JVB_INITIAL_LAST_N
             - JVB_INSTANCE_ID
             - JVB_PORT
             - JVB_MUC_NICKNAME
             - JVB_STUN_SERVERS
+            - JVB_LAST_N
             - JVB_LOG_FILE
             - JVB_OCTO_BIND_ADDRESS
             - JVB_OCTO_REGION
