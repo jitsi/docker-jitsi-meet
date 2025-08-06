@@ -3,6 +3,9 @@ services:
   rtcstats-server:
     image: jitsi/rtcstats-server
     restart: ${RESTART_POLICY:-unless-stopped}
+    expose:
+      - '3000'
+      - '8095'
     env_file:
       - ./rtcstats/.env
       - ./rtcstats/rtcstats-server/.env
@@ -15,6 +18,8 @@ services:
   rtc-visualizer:
     image: jitsi/rtcstats-visualizer
     restart: ${RESTART_POLICY:-unless-stopped}
+    expose:
+      - '8087'
     volumes:
       - ./rtcstats/rtc-visualizer/.data:/rtc-visualizer/.data
     env_file:
