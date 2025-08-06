@@ -25,5 +25,5 @@ This section describes how to use MongoDB for rtcstats.
 
     From your `docker-jitsi-meet` directory, run the following command to start all services, including Jitsi Meet, rtcstats, and Localstack.
     ```shell
-    docker-compose -f docker-compose.yml -f rtcstats.yml -f ./rtcstats/mongodb/mongodb.yml up -d
+    docker compose -f docker-compose.yml -f rtcstats.yml -f ./rtcstats/mongodb/mongodb.yml up -d
     ```

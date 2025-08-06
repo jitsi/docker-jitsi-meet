@@ -51,7 +51,7 @@ This project demonstrates how to use rtcstats with Jitsi Meet to gather detailed
 
 	From your `docker-jitsi-meet` directory, run the following command to start all services.
 	```shell
-	docker-compose -f docker-compose.yml -f rtcstats.yml up -d
+	docker compose -f docker-compose.yml -f rtcstats.yml up -d
 	```
 
 
