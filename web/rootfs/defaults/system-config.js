@@ -5,6 +5,7 @@
 {{ $ENABLE_GUESTS := .Env.ENABLE_GUESTS | default "false" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool -}}
+{{ $DISABLE_HTTPS := .Env.DISABLE_HTTPS | default "0" | toBool -}}
 {{ $PUBLIC_URL_DOMAIN := .Env.PUBLIC_URL | default "https://localhost:8443" | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
@@ -60,9 +61,9 @@ config.bosh = 'https://{{ $PUBLIC_URL_DOMAIN}}/http-bind';
 
 {{ if $ENABLE_XMPP_WEBSOCKET -}}
 {{ if $ENABLE_SUBDOMAINS -}}
-config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/' + subdir + 'xmpp-websocket';
+config.websocket = '{{ if $DISABLE_HTTPS }}ws{{ else }}wss{{ end }}://{{ $PUBLIC_URL_DOMAIN }}/' + subdir + 'xmpp-websocket';
 {{ else -}}
-config.websocket = 'wss://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
+config.websocket = '{{ if $DISABLE_HTTPS }}ws{{ else }}wss{{ end }}://{{ $PUBLIC_URL_DOMAIN }}/xmpp-websocket';
 {{ end -}}
 {{ end -}}
 
