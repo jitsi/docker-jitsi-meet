@@ -17,7 +17,7 @@ services:
 
   otel-collector:
     container_name: otel
-    image: otel/opentelemetry-collector-contrib
+    image: otel/opentelemetry-collector-contrib:0.130.0
     user: "0" # required for reading docker container logs
     volumes:
       - ./log-analyser/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
