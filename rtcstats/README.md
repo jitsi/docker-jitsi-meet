@@ -39,7 +39,7 @@ This project demonstrates how to use rtcstats with Jitsi Meet to gather detailed
 	docker-jitsi-meet/rtcstats$ cp ./rtc-visualizer/env.example ./rtc-visualizer/.env
 	```
 
-	Next, edit `rtc-visualizer/.data/users.json` to add your users. The default credential is `admin:admin`.
+	Next, edit `rtc-visualizer/.data/users.json` to add your users. The default credential is `admin:CHANGE_ME`.
 	```json
 	{
 		"Alice": "XXX",
@@ -61,3 +61,23 @@ This project demonstrates how to use rtcstats with Jitsi Meet to gather detailed
 
 	Open [https://localhost:8443/rtc-visualizer](https://localhost:8443/rtc-visualizer) (or `PUBLIC_URL/rtc-visualizer`) in your browser.
 
+## Monitoring with Prometheus
+
+1. **Update Prometheus Configuration**
+
+	Add the rtcstats-server endpoint to `prometheus/prometheus.yml`.
+	```yml
+	scrape_configs:
+		- job_name: "prometheus"
+			# ... other configurations
+			static_configs:
+				- targets: ["...","rtcstats-server:8095"]
+	```
+
+2. **Run Docker Compose**
+
+	Restart your environment with the `prometheus.yml` and `grafana.yml` files to launch the monitoring services.
+
+	```shell
+	docker compose -f docker-compose.yml -f rtcstats.yml -f prometheus.yml -f grafana.yml up -d
+	```
