@@ -238,6 +238,16 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
     {{ if $ENABLE_VISITORS }}
     allow_anonymous_s2s = true
     {{ end }}
+    {{ if $ENABLE_LOBBY }}
+    lobby_muc = "lobby.{{ $XMPP_DOMAIN }}"
+    {{ end }}
+    {{ if $ENABLE_BREAKOUT_ROOMS }}
+    breakout_rooms_muc = "breakout.{{ $XMPP_DOMAIN }}"
+    {{ end }}
+
+    {{ if .Env.XMPP_CONFIGURATION -}}
+    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION | compact) }}
+    {{ end -}}
 
 {{ end }}
 
