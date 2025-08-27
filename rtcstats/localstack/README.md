@@ -31,3 +31,15 @@ This section describes how to use Localstack to test and verify your rtcstats se
     ```shell
     docker compose -f docker-compose.yml -f rtcstats.yml -f ./rtcstats/localstack/localstack.yml up -d
     ```
+
+
+### Troubleshooting
+
+- **502 Bad Gateway on RTC Visualizer**
+
+  If you encounter a `502 Bad Gateway` error when accessing the RTC Visualizer, you may need to restart the `jitsi/web` container.
+
+  Run the following command from your docker-jitsi-meet directory to resolve the issue:
+  ```shell
+  docker compose restart web
+  ```
