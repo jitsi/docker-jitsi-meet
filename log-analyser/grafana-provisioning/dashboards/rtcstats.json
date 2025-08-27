@@ -31,6 +31,7 @@
           "color": {
             "mode": "thresholds"
           },
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -49,8 +50,8 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "{__name__=\"rtcstats_session_count\", instance=\"rtcstats-server:8095\", job=\"prometheus\"}"
+              "id": "byFrameRefID",
+              "options": "session count"
             },
             "properties": [
               {
@@ -73,8 +74,8 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "{__name__=\"rtcstats_session_error_count\", instance=\"rtcstats-server:8095\", job=\"prometheus\"}"
+              "id": "byFrameRefID",
+              "options": "error count"
             },
             "properties": [
               {
@@ -108,7 +109,7 @@
         "colorMode": "value",
         "graphMode": "area",
         "justifyMode": "auto",
-        "orientation": "auto",
+        "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
             "lastNotNull"
@@ -126,9 +127,9 @@
             "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "rtcstats_session_count",
+          "expr": "increase(rtcstats_session_count[$__range])",
           "format": "time_series",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
@@ -144,8 +145,8 @@
             "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "rtcstats_session_error_count",
+          "editorMode": "code",
+          "expr": "increase(rtcstats_session_error_count[$__range])",
           "format": "time_series",
           "fullMetaSearch": false,
           "hide": false,
@@ -219,8 +220,8 @@
         "overrides": [
           {
             "matcher": {
-              "id": "byName",
-              "options": "{__name__=\"rtcstats_websocket_connections\", instance=\"rtcstats-server:8095\", job=\"prometheus\"}"
+              "id": "byFrameRefID",
+              "options": "A"
             },
             "properties": [
               {
@@ -231,8 +232,8 @@
           },
           {
             "matcher": {
-              "id": "byName",
-              "options": "{__name__=\"rtcstats_websocket_connection_error\", instance=\"rtcstats-server:8095\", job=\"prometheus\"}"
+              "id": "byFrameRefID",
+              "options": "B"
             },
             "properties": [
               {
@@ -269,7 +270,7 @@
             "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "expr": "rtcstats_websocket_connections",
           "fullMetaSearch": false,
           "hide": false,
@@ -286,8 +287,8 @@
             "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "rtcstats_websocket_connection_error",
+          "editorMode": "code",
+          "expr": "rate(rtcstats_websocket_connection_error[$__rate_interval])",
           "fullMetaSearch": false,
           "hide": false,
           "includeNullMetadata": true,
@@ -358,7 +359,80 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "rtcstats"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "rtcstats client"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "jvb"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "jvb"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "jicofo"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "jiconfo"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "jibri"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "jibri"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "jigasi"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "jigasi"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "unknown"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "unknow"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 8,
@@ -372,7 +446,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": false
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -386,15 +460,84 @@
             "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
-          "expr": "rtcstats_dump_size_bytes_count",
+          "editorMode": "code",
+          "expr": "increase(rtcstats_dump_size_bytes_count[$__rate_interval])",
           "fullMetaSearch": false,
           "includeNullMetadata": true,
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
-          "refId": "A",
+          "refId": "rtcstats",
           "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "expr": "increase(jvb_dump_size_bytes_count[$__rate_interval])",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "jvb",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+          },
+          "editorMode": "code",
+          "expr": "increase(jicofo_dump_size_bytes_count[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "jicofo"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+          },
+          "editorMode": "code",
+          "expr": "increase(jibri_dump_size_bytes_count[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "jibri"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+          },
+          "editorMode": "code",
+          "expr": "increase(jigasi_dump_size_bytes_count[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "jigasi"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
+          },
+          "editorMode": "code",
+          "expr": "increase(unknown_dump_size_bytes_count[$__rate_interval])",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "unknown"
         }
       ],
       "title": "Dump Size Bytes Count",
@@ -486,7 +629,7 @@
             "uid": "d301145e-8c4e-4027-bf6e-43e81f095020"
           },
           "disableTextWrap": false,
-          "editorMode": "builder",
+          "editorMode": "code",
           "exemplar": false,
           "expr": "rtcstats_disk_queue_size",
           "format": "time_series",
@@ -504,20 +647,20 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "5s",
+  "refresh": "30s",
   "schemaVersion": 38,
   "tags": [],
   "templating": {
     "list": []
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "rtcstats",
   "uid": "e4e8c548-c977-4f95-bc91-995d0a757f8e",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
