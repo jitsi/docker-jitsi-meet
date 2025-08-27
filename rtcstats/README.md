@@ -68,10 +68,10 @@ This project demonstrates how to use rtcstats with Jitsi Meet to gather detailed
 	Add the rtcstats-server endpoint to `prometheus/prometheus.yml`.
 	```yml
 	scrape_configs:
-		- job_name: "prometheus"
-			# ... other configurations
-			static_configs:
-				- targets: ["...","rtcstats-server:8095"]
+	  - job_name: "prometheus"
+      # ... other configurations
+      static_configs:
+        - targets: ["...","rtcstats-server:8095"]
 	```
 
 2. **Run Docker Compose**
