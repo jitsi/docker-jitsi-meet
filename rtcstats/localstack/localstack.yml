@@ -21,23 +21,18 @@ services:
     image: localstack/localstack
     ports:
       - 4566:4566
-      - 4510-4559:4510-4559
     env_file:
       - ./rtcstats/.env
     environment:
       # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
-      - SERVICES=lambda,iam,logs,s3,dynamodb,firehose
+      - SERVICES=s3,dynamodb
       - DEBUG=${DEBUG:-1}
       - AWS_ACCESS_KEY_ID=dummy
       - AWS_SECRET_ACCESS_KEY=dummy
       - AWS_DEFAULT_REGION=us-east-1
       - AWS_DEFAULT_OUTPUT=json
-      - AWS_ENDPOINT_URL=http://localhost.localstack.cloud:4566
-    volumes:
-      - "./rtcstats/localstack/${LOCALSTACK_VOLUME_DIR:-./volume}:/var/lib/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - AWS_ENDPOINT_URL=http://localstack:4566
     networks:
       meet.jitsi:
         aliases:
-          - localhost.localstack.cloud
-          - jitsi-micros-rtcstats-server.s3.localhost.localstack.cloud
+          - jitsi-micros-rtcstats-server.s3.localstack
