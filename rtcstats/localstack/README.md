@@ -18,12 +18,16 @@ This section describes how to use Localstack to test and verify your rtcstats se
         networks:
           meet.jitsi:
             aliases:
-              - localhost.localstack.cloud
-              # - jitsi-micros-rtcstats-server.s3.localhost.localstack.cloud # Default example
-              - YOUR_RTCSTATS_S3_BUCKET.localhost.localstack.cloud
+              # - jitsi-micros-rtcstats-server.s3.localstack # Default example
+              - YOUR_RTCSTATS_S3_BUCKET.s3.localstack
     ```
     **Note:** Replace `YOUR_RTCSTATS_S3_BUCKET` with the actual bucket name you defined in your environment variables.
 
+    To enable the AWS SDK to make Virtual-Hosted-Style requests to S3, you need to also configure the endpoints in `rtcstats/.env` as follows:
+    ```
+    RTCSTATS_S3_ENDPOINT=http://s3.localstack:4566
+    RTCSTATS_DYNAMODB_ENDPOINT=http://localstack:4566
+    ```
 
 2. **Run Docker Compose with Localstack**
 
