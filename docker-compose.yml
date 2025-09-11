@@ -9,6 +9,7 @@ services:
         volumes:
             - ${CONFIG}/web:/config:Z
             - ./custom-nginx.conf:/config/nginx/custom-nginx.conf:ro
+            - ./custom-nguyen-group.css:/config/custom-nguyen-group.css:ro
             - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
             - ${CONFIG}/web/load-test:/usr/share/jitsi-meet/load-test:Z

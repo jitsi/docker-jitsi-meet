@@ -629,3 +629,26 @@ config.whiteboard.userLimit = 25;
 config.testing = {
     enableCodecSelectionAPI: true
 };
+
+// === THANHNGUYEN.GROUP CUSTOMIZATION START ===
+config.customStyleUrl = '/custom-nguyen-group.css';
+
+// Slogan và thông điệp chào mừng
+config.welcomePage = {
+    disabled: false,
+    title: 'HỆ THỐNG THANH NGUYÊN NEXTGEN',
+    subtitle: 'Kiến tạo tương lai kinh doanh bằng sự cộng hưởng đột phá giữa Chiến Lược Nhân Bản, AI Thông Minh và Hệ Sinh Thái O2O Đẳng Cấp.'
+};
+
+// Footer bản quyền
+config.footer = {
+    text: '© 2025 Thanh Nguyên NextGen System. Phát triển bởi Thanh Nguyên Group. Kiến tạo tương lai. Dẫn đầu xu hướng.'
+};
+
+// Toolbar tối ưu
+config.toolbarButtons = [
+    'microphone', 'camera', 'desktop', 'chat', 'raisehand', 'tileview', 'hangup'
+];
+
+// Font và màu sắc sẽ được custom qua CSS
+// === THANHNGUYEN.GROUP CUSTOMIZATION END ===

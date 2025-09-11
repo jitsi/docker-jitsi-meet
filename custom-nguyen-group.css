@@ -1,0 +1,74 @@
+/* ThanhNguyen.Group Custom Theme */
+body, .welcome {
+    font-family: 'Montserrat', 'Roboto', 'Open Sans', Arial, sans-serif !important;
+    background: #f7fafd !important;
+    color: #222 !important;
+}
+
+#welcome-page-header, .welcome-page-title {
+    color: #0057b8 !important;
+    font-weight: 700;
+    font-size: 2.2em;
+    margin-top: 32px;
+}
+
+.welcome-page-subtitle, .welcome-page-description {
+    color: #222 !important;
+    font-size: 1.2em;
+    margin-bottom: 24px;
+}
+
+button, .toolbox-button {
+    background: linear-gradient(90deg, #0057b8 0%, #00c6fb 100%) !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0,87,184,0.08);
+    transition: background 0.2s;
+}
+button:hover, .toolbox-button:hover {
+    background: linear-gradient(90deg, #00c6fb 0%, #0057b8 100%) !important;
+}
+
+.footer, .footer__container {
+    background: #fff !important;
+    color: #0057b8 !important;
+    font-size: 1em;
+    text-align: center;
+    padding: 16px 0;
+    border-top: 1px solid #e0e7ef;
+    font-weight: 500;
+}
+
+/* Logo placeholder: bạn chỉ cần thay logo tại /usr/share/jitsi-meet/images/logo.png trong container */
+#welcome-page-logo, .welcome-page-logo {
+    background-image: url('/images/logo.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    height: 80px;
+    width: 220px;
+    margin: 0 auto 24px auto;
+}
+
+/* Tối ưu các khối giao diện */
+.welcome {
+    box-shadow: 0 4px 32px rgba(0,87,184,0.06);
+    border-radius: 16px;
+    background: #fff;
+    padding: 32px 24px;
+    margin-top: 48px;
+}
+
+/* Nút Join nổi bật */
+.button--primary, .welcome-page-button {
+    background: linear-gradient(90deg, #ffb300 0%, #ff6f00 100%) !important;
+    color: #fff !important;
+    border-radius: 8px !important;
+    font-size: 1.1em;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(255,183,0,0.08);
+}
+.button--primary:hover, .welcome-page-button:hover {
+    background: linear-gradient(90deg, #ff6f00 0%, #ffb300 100%) !important;
+}
