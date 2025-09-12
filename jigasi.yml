@@ -34,6 +34,7 @@ services:
             - PUBLIC_URL
             - JIGASI_CONFIGURATION
             - JIGASI_DISABLE_SIP
+            - JIGASI_ENABLE_REST
             - JIGASI_JVB_TIMEOUT
             - JIGASI_LOCAL_REGION
             - JIGASI_LOG_FILE
