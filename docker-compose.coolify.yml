@@ -1,0 +1,149 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./web
+    container_name: jitsi-meet-web
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - jitsi-meet-cfg:/config
+      - jitsi-meet-custom:/custom
+    environment:
+      - ENABLE_LETSENCRYPT=1
+      - LETSENCRYPT_DOMAIN=${LETSENCRYPT_DOMAIN}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      - PUBLIC_URL=${PUBLIC_URL}
+      - XMPP_DOMAIN=${XMPP_DOMAIN}
+      - XMPP_AUTH_DOMAIN=${XMPP_AUTH_DOMAIN}
+      - XMPP_MUC_DOMAIN=${XMPP_MUC_DOMAIN}
+      - XMPP_BOSH_URL_BASE=${XMPP_BOSH_URL_BASE}
+      - XMPP_SERVER=${XMPP_SERVER}
+      - JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}
+      - JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}
+      - JICOFO_AUTH_USER=${JICOFO_AUTH_USER}
+      - JVB_AUTH_USER=${JVB_AUTH_USER}
+      - JVB_PORT=${JVB_PORT}
+      - JVB_COLIBRI_PORT=${JVB_COLIBRI_PORT}
+      - JVB_DISABLE_STUN=${JVB_DISABLE_STUN}
+      - JVB_ADVERTISE_IPS=${JVB_ADVERTISE_IPS}
+      - DOCKER_HOST_ADDRESS=${DOCKER_HOST_ADDRESS}
+      - JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}
+      - SERVICE_FQDN_WEB=${SERVICE_FQDN_WEB}
+      - SERVICE_URL_WEB=${SERVICE_URL_WEB}
+      - TZ=${TZ}
+      - JITSI_IMAGE_VERSION=${JITSI_IMAGE_VERSION}
+      - ENABLE_GUESTS=${ENABLE_GUESTS}
+      - AUTH_TYPE=${AUTH_TYPE}
+      - DEFAULT_LANGUAGE=${DEFAULT_LANGUAGE}
+      - APP_NAME=${APP_NAME}
+      - LOGO_URL=${LOGO_URL}
+      - PRIMARY_COLOR=${PRIMARY_COLOR}
+    depends_on:
+      - prosody
+      - jicofo
+      - jvb
+
+  prosody:
+    build: ./prosody
+    container_name: jitsi-meet-prosody
+    restart: unless-stopped
+    volumes:
+      - jitsi-meet-cfg:/config
+      - jitsi-meet-custom:/custom
+    environment:
+      - XMPP_DOMAIN=${XMPP_DOMAIN}
+      - XMPP_AUTH_DOMAIN=${XMPP_AUTH_DOMAIN}
+      - XMPP_MUC_DOMAIN=${XMPP_MUC_DOMAIN}
+      - XMPP_BOSH_URL_BASE=${XMPP_BOSH_URL_BASE}
+      - XMPP_SERVER=${XMPP_SERVER}
+      - JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}
+      - JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}
+      - JICOFO_AUTH_USER=${JICOFO_AUTH_USER}
+      - JVB_AUTH_USER=${JVB_AUTH_USER}
+      - JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}
+      - JIGASI_XMPP_PASSWORD=${JIGASI_XMPP_PASSWORD}
+      - JIGASI_TRANSCRIBER_PASSWORD=${JIGASI_TRANSCRIBER_PASSWORD}
+      - JIBRI_RECORDER_PASSWORD=${JIBRI_RECORDER_PASSWORD}
+      - JIBRI_XMPP_PASSWORD=${JIBRI_XMPP_PASSWORD}
+      - TZ=${TZ}
+      - ENABLE_AUTH=${ENABLE_AUTH}
+      - ENABLE_GUESTS=${ENABLE_GUESTS}
+      - AUTH_TYPE=${AUTH_TYPE}
+      - ENABLE_LETSENCRYPT=${ENABLE_LETSENCRYPT}
+      - LETSENCRYPT_DOMAIN=${LETSENCRYPT_DOMAIN}
+      - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      - PUBLIC_URL=${PUBLIC_URL}
+      - XMPP_GUEST_DOMAIN=${XMPP_GUEST_DOMAIN}
+      - XMPP_MUC_DOMAIN_PREFIX=${XMPP_MUC_DOMAIN_PREFIX}
+
+  jicofo:
+    build: ./jicofo
+    container_name: jitsi-meet-jicofo
+    restart: unless-stopped
+    volumes:
+      - jitsi-meet-cfg:/config
+    environment:
+      - XMPP_DOMAIN=${XMPP_DOMAIN}
+      - XMPP_AUTH_DOMAIN=${XMPP_AUTH_DOMAIN}
+      - XMPP_MUC_DOMAIN=${XMPP_MUC_DOMAIN}
+      - XMPP_SERVER=${XMPP_SERVER}
+      - JICOFO_AUTH_PASSWORD=${JICOFO_AUTH_PASSWORD}
+      - JICOFO_AUTH_USER=${JICOFO_AUTH_USER}
+      - JICOFO_COMPONENT_SECRET=${JICOFO_COMPONENT_SECRET}
+      - JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}
+      - JVB_AUTH_USER=${JVB_AUTH_USER}
+      - JVB_PORT=${JVB_PORT}
+      - JVB_COLIBRI_PORT=${JVB_COLIBRI_PORT}
+      - JVB_DISABLE_STUN=${JVB_DISABLE_STUN}
+      - JVB_ADVERTISE_IPS=${JVB_ADVERTISE_IPS}
+      - DOCKER_HOST_ADDRESS=${DOCKER_HOST_ADDRESS}
+      - TZ=${TZ}
+      - ENABLE_AUTH=${ENABLE_AUTH}
+      - ENABLE_GUESTS=${ENABLE_GUESTS}
+      - AUTH_TYPE=${AUTH_TYPE}
+    depends_on:
+      - prosody
+
+  jvb:
+    build: ./jvb
+    container_name: jitsi-meet-jvb
+    restart: unless-stopped
+    ports:
+      - "10000:10000/udp"
+      - "10001:10001/udp"
+      - "10002:10002/udp"
+      - "10003:10003/udp"
+      - "10004:10004/udp"
+      - "10005:10005/udp"
+      - "10006:10006/udp"
+      - "10007:10007/udp"
+      - "10008:10008/udp"
+      - "10009:10009/udp"
+      - "10010:10010/udp"
+    volumes:
+      - jitsi-meet-cfg:/config
+    environment:
+      - XMPP_DOMAIN=${XMPP_DOMAIN}
+      - XMPP_AUTH_DOMAIN=${XMPP_AUTH_DOMAIN}
+      - XMPP_MUC_DOMAIN=${XMPP_MUC_DOMAIN}
+      - XMPP_SERVER=${XMPP_SERVER}
+      - JVB_AUTH_PASSWORD=${JVB_AUTH_PASSWORD}
+      - JVB_AUTH_USER=${JVB_AUTH_USER}
+      - JVB_PORT=${JVB_PORT}
+      - JVB_COLIBRI_PORT=${JVB_COLIBRI_PORT}
+      - JVB_DISABLE_STUN=${JVB_DISABLE_STUN}
+      - JVB_ADVERTISE_IPS=${JVB_ADVERTISE_IPS}
+      - DOCKER_HOST_ADDRESS=${DOCKER_HOST_ADDRESS}
+      - TZ=${TZ}
+      - ENABLE_AUTH=${ENABLE_AUTH}
+      - ENABLE_GUESTS=${ENABLE_GUESTS}
+      - AUTH_TYPE=${AUTH_TYPE}
+    depends_on:
+      - prosody
+
+volumes:
+  jitsi-meet-cfg:
+  jitsi-meet-custom:

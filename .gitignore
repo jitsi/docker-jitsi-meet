@@ -1,7 +1,62 @@
-*.bak
+# Environment files
+.env
+.env.local
+.env.production
+
+# Docker volumes
+jitsi-meet-cfg/
+jitsi-meet-custom/
+
+# Logs
+*.log
+logs/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
 *.swp
-.env*
-docker-compose.override.yml
-log-analyser/grafana
-**/.DS_Store
-**/.idea
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+
+# Backup files
+*.bak
+*.backup
+
+# Node modules (if any)
+node_modules/
+
+# Build artifacts
+dist/
+build/
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Cache files
+.cache/
+*.cache
+
+# Runtime files
+*.pid
+*.sock
