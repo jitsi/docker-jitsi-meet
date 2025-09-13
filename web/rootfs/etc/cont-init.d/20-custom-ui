@@ -1,0 +1,65 @@
+#!/usr/bin/with-contenv bash
+
+# Script cấu hình giao diện tùy chỉnh cho Jitsi Meet
+
+echo "Cấu hình giao diện tùy chỉnh..."
+
+# Copy các file cấu hình tùy chỉnh
+if [ -f "/defaults/interface_config.js" ]; then
+    cp /defaults/interface_config.js /config/interface_config.js
+    echo "Đã copy interface_config.js"
+fi
+
+if [ -f "/defaults/custom.css" ]; then
+    cp /defaults/custom.css /config/custom.css
+    echo "Đã copy custom.css"
+fi
+
+if [ -f "/defaults/index.html" ]; then
+    cp /defaults/index.html /config/index.html
+    echo "Đã copy index.html"
+fi
+
+# Tạo thư mục images nếu chưa có
+mkdir -p /config/images
+
+# Tạo file favicon mặc định nếu chưa có
+if [ ! -f "/config/images/favicon.ico" ]; then
+    echo "Tạo favicon mặc định..."
+    # Có thể thêm logic tạo favicon ở đây
+fi
+
+# Tạo file logo mặc định nếu chưa có
+if [ ! -f "/config/images/logo.png" ]; then
+    echo "Tạo logo mặc định..."
+    # Có thể thêm logic tạo logo ở đây
+fi
+
+# Cấu hình nginx để serve các file tùy chỉnh
+cat > /etc/nginx/conf.d/custom-ui.conf << 'EOF'
+# Cấu hình cho giao diện tùy chỉnh
+location /css/custom.css {
+    alias /config/custom.css;
+    add_header Content-Type text/css;
+    expires 1d;
+}
+
+location /images/ {
+    alias /config/images/;
+    expires 7d;
+}
+
+location /custom-index.html {
+    alias /config/index.html;
+    add_header Content-Type text/html;
+}
+
+# Serve interface_config.js
+location /interface_config.js {
+    alias /config/interface_config.js;
+    add_header Content-Type application/javascript;
+    expires 1d;
+}
+EOF
+
+echo "Hoàn thành cấu hình giao diện tùy chỉnh!"

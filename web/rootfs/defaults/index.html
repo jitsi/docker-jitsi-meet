@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh Nguyen Meet - Họp trực tuyến miễn phí</title>
+    <meta name="description" content="Nền tảng họp trực tuyến miễn phí, an toàn và dễ sử dụng. Tạo phòng họp ngay lập tức với Thanh Nguyen Meet.">
+    <meta name="keywords" content="họp trực tuyến, video call, meeting, jitsi, thanh nguyen">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="https://meet.thanhnguyen.group/images/favicon.ico">
+    <link rel="apple-touch-icon" href="https://meet.thanhnguyen.group/images/apple-touch-icon.png">
+    
+    <!-- CSS tùy chỉnh -->
+    <link rel="stylesheet" href="css/custom.css">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Thanh Nguyen Meet - Họp trực tuyến miễn phí">
+    <meta property="og:description" content="Nền tảng họp trực tuyến miễn phí, an toàn và dễ sử dụng.">
+    <meta property="og:image" content="https://meet.thanhnguyen.group/images/og-image.png">
+    <meta property="og:url" content="https://meet.thanhnguyen.group">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Thanh Nguyen Meet - Họp trực tuyến miễn phí">
+    <meta name="twitter:description" content="Nền tảng họp trực tuyến miễn phí, an toàn và dễ sử dụng.">
+    <meta name="twitter:image" content="https://meet.thanhnguyen.group/images/twitter-image.png">
+    
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        .logo {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: linear-gradient(135deg, #1976d2, #1565c0);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: white;
+            font-weight: 700;
+        }
+        
+        h1 {
+            color: #333;
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+        
+        .subtitle {
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+        
+        .room-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+        
+        .room-input:focus {
+            outline: none;
+            border-color: #1976d2;
+            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        }
+        
+        .join-button {
+            background: linear-gradient(135deg, #1976d2, #1565c0);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .join-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .feature {
+            padding: 20px;
+            background: rgba(25, 118, 210, 0.05);
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .feature-title {
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        
+        .feature-desc {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #1976d2;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 30px 20px;
+            }
+            
+            h1 {
+                font-size: 28px;
+            }
+            
+            .subtitle {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">TN</div>
+        <h1>Thanh Nguyen Meet</h1>
+        <p class="subtitle">Nền tảng họp trực tuyến miễn phí, an toàn và dễ sử dụng</p>
+        
+        <form id="joinForm">
+            <input type="text" class="room-input" id="roomName" placeholder="Nhập tên phòng họp..." autocomplete="off">
+            <button type="submit" class="join-button">Tham gia cuộc họp</button>
+        </form>
+        
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Bảo mật cao</div>
+                <div class="feature-desc">Mã hóa end-to-end</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🚀</div>
+                <div class="feature-title">Nhanh chóng</div>
+                <div class="feature-desc">Không cần cài đặt</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💬</div>
+                <div class="feature-title">Chat & Chia sẻ</div>
+                <div class="feature-desc">Tương tác đa dạng</div>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📱</div>
+                <div class="feature-title">Đa nền tảng</div>
+                <div class="feature-desc">Mọi thiết bị</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Được phát triển bởi <a href="https://thanhnguyen.group" target="_blank">Thanh Nguyen Group</a></p>
+            <p>Dựa trên nền tảng <a href="https://jitsi.org" target="_blank">Jitsi Meet</a> mã nguồn mở</p>
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('joinForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const roomName = document.getElementById('roomName').value.trim();
+            if (roomName) {
+                // Tạo tên phòng ngẫu nhiên nếu không nhập
+                const finalRoomName = roomName || 'phong-' + Math.random().toString(36).substr(2, 9);
+                window.location.href = '/meet/' + encodeURIComponent(finalRoomName);
+            }
+        });
+        
+        // Tạo tên phòng ngẫu nhiên khi load trang
+        document.addEventListener('DOMContentLoaded', function() {
+            const randomRoom = 'phong-' + Math.random().toString(36).substr(2, 9);
+            document.getElementById('roomName').placeholder = 'Ví dụ: ' + randomRoom;
+        });
+    </script>
+</body>
+</html>
