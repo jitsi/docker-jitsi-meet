@@ -52,6 +52,10 @@ var interfaceConfig = {
     WELCOME_PAGE_SHOW_LOGO: true,
     WELCOME_PAGE_TITLE: 'Chào mừng đến với Thanh Nguyen Meet',
     
+    // Cấu hình hình nền welcome page
+    WELCOME_PAGE_BACKGROUND_URL: 'https://meet.thanhnguyen.group/images/welcome-background.jpg',
+    WELCOME_PAGE_BACKGROUND_OPACITY: 0.3,
+    
     // Cấu hình bảo mật
     ENABLE_WELCOME_PAGE: true,
     ENABLE_CLOSE_PAGE: false,

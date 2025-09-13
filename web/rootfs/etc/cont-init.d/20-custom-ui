@@ -35,6 +35,12 @@ if [ ! -f "/config/images/logo.png" ]; then
     # Có thể thêm logic tạo logo ở đây
 fi
 
+# Tạo file welcome background mặc định nếu chưa có
+if [ ! -f "/config/images/welcome-background.jpg" ]; then
+    echo "Tạo welcome background mặc định..."
+    # Có thể thêm logic tạo background ở đây
+fi
+
 # Cấu hình nginx để serve các file tùy chỉnh
 cat > /etc/nginx/conf.d/custom-ui.conf << 'EOF'
 # Cấu hình cho giao diện tùy chỉnh

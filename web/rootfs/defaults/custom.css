@@ -82,8 +82,33 @@
 
 /* Tùy chỉnh welcome page */
 .welcome .welcome {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, rgba(245, 247, 250, 0.8) 0%, rgba(195, 207, 226, 0.8) 100%), 
+                url('https://meet.thanhnguyen.group/images/welcome-background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     min-height: 100vh;
+    position: relative;
+}
+
+/* Overlay cho welcome page */
+.welcome .welcome::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(1px);
+    z-index: 1;
+}
+
+/* Đảm bảo nội dung hiển thị trên overlay */
+.welcome .welcome > * {
+    position: relative;
+    z-index: 2;
 }
 
 .welcome .welcome .header {
