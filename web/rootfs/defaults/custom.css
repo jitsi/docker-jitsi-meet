@@ -83,7 +83,7 @@
 /* Tùy chỉnh welcome page */
 .welcome .welcome {
     background: linear-gradient(135deg, rgba(245, 247, 250, 0.8) 0%, rgba(195, 207, 226, 0.8) 100%), 
-                url('https://meet.thanhnguyen.group/images/welcome-background.jpg');
+                url('https://meet.thanhnguyen.group/images/welcome-background.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

@@ -1,0 +1,18 @@
+# Welcome Background Placeholder
+
+Để thêm ảnh nền welcome page:
+
+1. Thay thế file này bằng file ảnh thực tế
+2. Đặt tên file: welcome-background.png
+3. Kích thước khuyến nghị: 1920x1080px
+4. Định dạng: PNG hoặc JPG
+
+File ảnh sẽ được sử dụng làm hình nền cho:
+- Trang chào mừng (welcome page)
+- Trang chủ (index page)
+- Các trang khác của Jitsi Meet
+
+Sau khi thêm file ảnh, chạy:
+git add web/rootfs/defaults/images/welcome-background.png
+git commit -m "Add welcome background image"
+git push origin main
