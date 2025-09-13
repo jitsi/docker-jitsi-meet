@@ -1,0 +1,241 @@
+/* NextGen Meet CSS Variables */
+/* Hệ thống biến CSS dựa trên design tokens */
+
+:root {
+    /* === MÀU SẮC === */
+    
+    /* Background Colors */
+    --nextgen-bg-primary: #0A0A0A;
+    --nextgen-bg-secondary: #1A1A1A;
+    --nextgen-bg-tertiary: #2A2A2A;
+    --nextgen-bg-overlay: rgba(0, 0, 0, 0.8);
+    --nextgen-bg-glass: rgba(26, 26, 26, 0.8);
+    
+    /* Text Colors */
+    --nextgen-text-primary: #EAEAEA;
+    --nextgen-text-secondary: #A0A0A0;
+    --nextgen-text-on-primary: #FFFFFF;
+    --nextgen-text-on-secondary: #000000;
+    --nextgen-text-disabled: #666666;
+    
+    /* Accent Colors */
+    --nextgen-accent-primary: #00F5A0;
+    --nextgen-accent-primary-hover: #33FFB8;
+    --nextgen-accent-primary-glow: rgba(0, 245, 160, 0.5);
+    --nextgen-accent-secondary: #A32EFF;
+    --nextgen-accent-secondary-hover: #B84DFF;
+    --nextgen-accent-secondary-glow: rgba(163, 46, 255, 0.5);
+    --nextgen-accent-error: #FF4D4D;
+    --nextgen-accent-warning: #FFC107;
+    --nextgen-accent-success: #4CAF50;
+    
+    /* Brand Gradients */
+    --nextgen-gradient-primary: linear-gradient(90deg, #00F5A0, #A32EFF);
+    --nextgen-gradient-vertical: linear-gradient(180deg, #00F5A0, #A32EFF);
+    --nextgen-gradient-diagonal: linear-gradient(135deg, #00F5A0, #A32EFF);
+    
+    /* Border Colors */
+    --nextgen-border-default: #333333;
+    --nextgen-border-light: #444444;
+    --nextgen-border-accent: #00F5A0;
+    --nextgen-border-error: #FF4D4D;
+    
+    /* === TYPOGRAPHY === */
+    
+    /* Font Families */
+    --nextgen-font-primary: "Inter", "Roboto", "Helvetica Neue", Arial, sans-serif;
+    --nextgen-font-mono: "JetBrains Mono", "Fira Code", "Consolas", monospace;
+    
+    /* Font Sizes */
+    --nextgen-text-xs: 12px;
+    --nextgen-text-sm: 14px;
+    --nextgen-text-base: 16px;
+    --nextgen-text-lg: 18px;
+    --nextgen-text-xl: 24px;
+    --nextgen-text-2xl: 36px;
+    --nextgen-text-3xl: 48px;
+    --nextgen-text-4xl: 64px;
+    
+    /* Font Weights */
+    --nextgen-font-light: 300;
+    --nextgen-font-regular: 400;
+    --nextgen-font-medium: 500;
+    --nextgen-font-semibold: 600;
+    --nextgen-font-bold: 700;
+    --nextgen-font-extrabold: 800;
+    
+    /* Line Heights */
+    --nextgen-leading-tight: 1.2;
+    --nextgen-leading-normal: 1.5;
+    --nextgen-leading-relaxed: 1.75;
+    
+    /* === SPACING === */
+    
+    --nextgen-space-unit: 8px;
+    --nextgen-space-px: 1px;
+    --nextgen-space-0-5: 4px;
+    --nextgen-space-1: 8px;
+    --nextgen-space-1-5: 12px;
+    --nextgen-space-2: 16px;
+    --nextgen-space-3: 24px;
+    --nextgen-space-4: 32px;
+    --nextgen-space-5: 40px;
+    --nextgen-space-6: 48px;
+    --nextgen-space-8: 64px;
+    --nextgen-space-10: 80px;
+    --nextgen-space-12: 96px;
+    --nextgen-space-16: 128px;
+    --nextgen-space-20: 160px;
+    --nextgen-space-24: 192px;
+    
+    /* === BORDER RADIUS === */
+    
+    --nextgen-radius-none: 0;
+    --nextgen-radius-sm: 4px;
+    --nextgen-radius-base: 8px;
+    --nextgen-radius-md: 12px;
+    --nextgen-radius-lg: 16px;
+    --nextgen-radius-xl: 24px;
+    --nextgen-radius-2xl: 32px;
+    --nextgen-radius-full: 9999px;
+    --nextgen-radius-circle: 50%;
+    
+    /* === SHADOWS === */
+    
+    /* Glow Effects */
+    --nextgen-glow-primary: 0 0 15px rgba(0, 245, 160, 0.5);
+    --nextgen-glow-secondary: 0 0 15px rgba(163, 46, 255, 0.5);
+    --nextgen-glow-error: 0 0 15px rgba(255, 77, 77, 0.5);
+    --nextgen-glow-subtle: 0 0 8px rgba(0, 245, 160, 0.3);
+    
+    /* Traditional Shadows */
+    --nextgen-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --nextgen-shadow-base: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --nextgen-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --nextgen-shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1), 0 4px 6px rgba(0, 0, 0, 0.05);
+    --nextgen-shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
+    --nextgen-shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.25);
+    
+    /* Special Shadows */
+    --nextgen-shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+    --nextgen-shadow-focus: 0 0 0 3px rgba(0, 245, 160, 0.5);
+    --nextgen-shadow-popup: 0px 8px 24px rgba(0, 0, 0, 0.5);
+    
+    /* === TRANSITIONS === */
+    
+    --nextgen-transition-fast: 0.15s ease-in-out;
+    --nextgen-transition-base: 0.2s ease-in-out;
+    --nextgen-transition-slow: 0.3s ease-in-out;
+    --nextgen-transition-slower: 0.5s ease-in-out;
+    
+    /* Specific Transitions */
+    --nextgen-transition-color: color 0.2s ease-in-out;
+    --nextgen-transition-background: background-color 0.2s ease-in-out;
+    --nextgen-transition-border: border-color 0.2s ease-in-out;
+    --nextgen-transition-shadow: box-shadow 0.2s ease-in-out;
+    --nextgen-transition-transform: transform 0.2s ease-in-out;
+    --nextgen-transition-opacity: opacity 0.2s ease-in-out;
+    
+    /* === Z-INDEX === */
+    
+    --nextgen-z-hide: -1;
+    --nextgen-z-auto: auto;
+    --nextgen-z-base: 0;
+    --nextgen-z-docked: 10;
+    --nextgen-z-dropdown: 1000;
+    --nextgen-z-sticky: 1100;
+    --nextgen-z-banner: 1200;
+    --nextgen-z-overlay: 1300;
+    --nextgen-z-modal: 1400;
+    --nextgen-z-popover: 1500;
+    --nextgen-z-skip-link: 1600;
+    --nextgen-z-toast: 1700;
+    --nextgen-z-tooltip: 1800;
+    
+    /* === BREAKPOINTS === */
+    
+    --nextgen-bp-xs: 0px;
+    --nextgen-bp-sm: 640px;
+    --nextgen-bp-md: 768px;
+    --nextgen-bp-lg: 1024px;
+    --nextgen-bp-xl: 1280px;
+    --nextgen-bp-2xl: 1536px;
+    
+    /* === COMPONENT SPECIFIC === */
+    
+    /* Button Heights */
+    --nextgen-btn-height-sm: 32px;
+    --nextgen-btn-height-base: 40px;
+    --nextgen-btn-height-lg: 48px;
+    --nextgen-btn-height-xl: 56px;
+    
+    /* Input Heights */
+    --nextgen-input-height-sm: 32px;
+    --nextgen-input-height-base: 40px;
+    --nextgen-input-height-lg: 48px;
+    --nextgen-input-height-xl: 56px;
+    
+    /* Toolbar */
+    --nextgen-toolbar-height: 64px;
+    --nextgen-toolbar-radius: 12px;
+    --nextgen-toolbar-padding: 8px;
+    
+    /* Video Thumbnails */
+    --nextgen-thumbnail-radius: 12px;
+    --nextgen-thumbnail-border-width: 2px;
+    --nextgen-thumbnail-border-color: transparent;
+    --nextgen-thumbnail-border-color-active: #00F5A0;
+}
+
+/* === DARK MODE OVERRIDES === */
+/* Đảm bảo NextGen Meet luôn sử dụng dark mode */
+@media (prefers-color-scheme: light) {
+    :root {
+        /* Force dark mode even if user prefers light */
+        --nextgen-bg-primary: #0A0A0A;
+        --nextgen-bg-secondary: #1A1A1A;
+        --nextgen-bg-tertiary: #2A2A2A;
+        --nextgen-text-primary: #EAEAEA;
+        --nextgen-text-secondary: #A0A0A0;
+    }
+}
+
+/* === UTILITY CLASSES === */
+/* Các class tiện ích sử dụng CSS variables */
+
+/* Background Colors */
+.bg-primary { background-color: var(--nextgen-bg-primary); }
+.bg-secondary { background-color: var(--nextgen-bg-secondary); }
+.bg-tertiary { background-color: var(--nextgen-bg-tertiary); }
+.bg-glass { background-color: var(--nextgen-bg-glass); }
+
+/* Text Colors */
+.text-primary { color: var(--nextgen-text-primary); }
+.text-secondary { color: var(--nextgen-text-secondary); }
+.text-accent { color: var(--nextgen-accent-primary); }
+
+/* Glow Effects */
+.glow-primary { box-shadow: var(--nextgen-glow-primary); }
+.glow-secondary { box-shadow: var(--nextgen-glow-secondary); }
+.glow-subtle { box-shadow: var(--nextgen-glow-subtle); }
+
+/* Transitions */
+.transition-fast { transition: var(--nextgen-transition-fast); }
+.transition-base { transition: var(--nextgen-transition-base); }
+.transition-slow { transition: var(--nextgen-transition-slow); }
+
+/* Border Radius */
+.rounded-sm { border-radius: var(--nextgen-radius-sm); }
+.rounded-base { border-radius: var(--nextgen-radius-base); }
+.rounded-md { border-radius: var(--nextgen-radius-md); }
+.rounded-lg { border-radius: var(--nextgen-radius-lg); }
+.rounded-xl { border-radius: var(--nextgen-radius-xl); }
+.rounded-full { border-radius: var(--nextgen-radius-full); }
+
+/* Shadows */
+.shadow-sm { box-shadow: var(--nextgen-shadow-sm); }
+.shadow-base { box-shadow: var(--nextgen-shadow-base); }
+.shadow-md { box-shadow: var(--nextgen-shadow-md); }
+.shadow-lg { box-shadow: var(--nextgen-shadow-lg); }
+.shadow-xl { box-shadow: var(--nextgen-shadow-xl); }
+.shadow-focus { box-shadow: var(--nextgen-shadow-focus); }

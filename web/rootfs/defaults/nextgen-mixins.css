@@ -1,0 +1,386 @@
+/* NextGen Meet CSS Mixins */
+/* Hệ thống mixins tái sử dụng cho NextGen Meet */
+
+/* === GLOW EFFECTS === */
+/* Hiệu ứng phát sáng đặc trưng của NextGen Meet */
+
+@mixin glow-effect($color: var(--nextgen-accent-primary), $intensity: 0.5) {
+    transition: box-shadow var(--nextgen-transition-base);
+    
+    &:hover {
+        box-shadow: 0 0 15px rgba($color, $intensity);
+    }
+}
+
+@mixin glow-effect-primary {
+    @include glow-effect(var(--nextgen-accent-primary), 0.5);
+}
+
+@mixin glow-effect-secondary {
+    @include glow-effect(var(--nextgen-accent-secondary), 0.5);
+}
+
+@mixin glow-effect-subtle {
+    @include glow-effect(var(--nextgen-accent-primary), 0.3);
+}
+
+/* === FOCUS RINGS === */
+/* Hệ thống focus ring nhất quán */
+
+@mixin focus-ring($color: var(--nextgen-accent-primary)) {
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba($color, 0.5);
+    }
+}
+
+@mixin focus-ring-primary {
+    @include focus-ring(var(--nextgen-accent-primary));
+}
+
+@mixin focus-ring-secondary {
+    @include focus-ring(var(--nextgen-accent-secondary));
+}
+
+/* === GLASS EFFECTS === */
+/* Hiệu ứng kính mờ hiện đại */
+
+@mixin glass-effect($opacity: 0.8) {
+    background-color: rgba(26, 26, 26, $opacity);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+@mixin glass-effect-light {
+    @include glass-effect(0.6);
+}
+
+@mixin glass-effect-medium {
+    @include glass-effect(0.8);
+}
+
+@mixin glass-effect-heavy {
+    @include glass-effect(0.9);
+}
+
+/* === SMOOTH TRANSITIONS === */
+/* Hệ thống chuyển động mượt mà */
+
+@mixin smooth-transition($properties: all) {
+    transition: $properties var(--nextgen-transition-base);
+}
+
+@mixin smooth-transition-fast($properties: all) {
+    transition: $properties var(--nextgen-transition-fast);
+}
+
+@mixin smooth-transition-slow($properties: all) {
+    transition: $properties var(--nextgen-transition-slow);
+}
+
+/* === BUTTON BASE === */
+/* Thiết kế nút cơ sở cho NextGen Meet */
+
+@mixin button-base {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: var(--nextgen-radius-base);
+    cursor: pointer;
+    font-weight: var(--nextgen-font-medium);
+    font-family: var(--nextgen-font-primary);
+    @include smooth-transition(all);
+    
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+@mixin button-primary {
+    @include button-base;
+    background: var(--nextgen-gradient-primary);
+    color: var(--nextgen-text-on-secondary);
+    padding: var(--nextgen-space-2) var(--nextgen-space-4);
+    height: var(--nextgen-btn-height-base);
+    
+    &:hover:not(:disabled) {
+        transform: translateY(-1px);
+        box-shadow: var(--nextgen-glow-primary);
+    }
+    
+    &:active {
+        transform: translateY(0);
+    }
+}
+
+@mixin button-secondary {
+    @include button-base;
+    background-color: var(--nextgen-bg-tertiary);
+    color: var(--nextgen-text-primary);
+    border: 1px solid var(--nextgen-border-default);
+    padding: var(--nextgen-space-2) var(--nextgen-space-4);
+    height: var(--nextgen-btn-height-base);
+    
+    &:hover:not(:disabled) {
+        background-color: var(--nextgen-bg-secondary);
+        border-color: var(--nextgen-accent-primary);
+        box-shadow: var(--nextgen-glow-subtle);
+    }
+}
+
+@mixin button-ghost {
+    @include button-base;
+    background-color: transparent;
+    color: var(--nextgen-text-primary);
+    padding: var(--nextgen-space-2) var(--nextgen-space-4);
+    height: var(--nextgen-btn-height-base);
+    
+    &:hover:not(:disabled) {
+        background-color: var(--nextgen-bg-tertiary);
+        color: var(--nextgen-accent-primary);
+    }
+}
+
+/* === INPUT BASE === */
+/* Thiết kế input cơ sở */
+
+@mixin input-base {
+    width: 100%;
+    background-color: var(--nextgen-bg-secondary);
+    border: 1px solid var(--nextgen-border-default);
+    border-radius: var(--nextgen-radius-base);
+    color: var(--nextgen-text-primary);
+    font-family: var(--nextgen-font-primary);
+    font-size: var(--nextgen-text-base);
+    padding: var(--nextgen-space-2) var(--nextgen-space-3);
+    height: var(--nextgen-input-height-base);
+    @include smooth-transition(border-color, box-shadow);
+    @include focus-ring-primary;
+    
+    &::placeholder {
+        color: var(--nextgen-text-secondary);
+    }
+    
+    &:focus {
+        border-color: var(--nextgen-accent-primary);
+        box-shadow: var(--nextgen-glow-subtle);
+    }
+}
+
+/* === CARD BASE === */
+/* Thiết kế card cơ sở */
+
+@mixin card-base {
+    background-color: var(--nextgen-bg-secondary);
+    border: 1px solid var(--nextgen-border-default);
+    border-radius: var(--nextgen-radius-md);
+    padding: var(--nextgen-space-4);
+    box-shadow: var(--nextgen-shadow-base);
+    @include smooth-transition(box-shadow);
+}
+
+@mixin card-glass {
+    @include glass-effect-medium;
+    border-radius: var(--nextgen-radius-md);
+    padding: var(--nextgen-space-4);
+    box-shadow: var(--nextgen-shadow-lg);
+}
+
+/* === TOOLBAR BASE === */
+/* Thiết kế toolbar cơ sở */
+
+@mixin toolbar-base {
+    @include glass-effect-medium;
+    border-radius: var(--nextgen-radius-lg);
+    padding: var(--nextgen-toolbar-padding);
+    height: var(--nextgen-toolbar-height);
+    display: flex;
+    align-items: center;
+    gap: var(--nextgen-space-2);
+    box-shadow: var(--nextgen-shadow-lg);
+    backdrop-filter: blur(10px);
+}
+
+/* === VIDEO THUMBNAIL === */
+/* Thiết kế video thumbnail */
+
+@mixin video-thumbnail {
+    border-radius: var(--nextgen-thumbnail-radius);
+    border: var(--nextgen-thumbnail-border-width) solid var(--nextgen-thumbnail-border-color);
+    overflow: hidden;
+    @include smooth-transition(border-color, box-shadow);
+    
+    &.active {
+        border-color: var(--nextgen-thumbnail-border-color-active);
+        box-shadow: var(--nextgen-glow-subtle);
+    }
+}
+
+/* === MODAL BASE === */
+/* Thiết kế modal cơ sở */
+
+@mixin modal-base {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--nextgen-bg-overlay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: var(--nextgen-z-modal);
+    backdrop-filter: blur(4px);
+}
+
+@mixin modal-content {
+    @include card-glass;
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+/* === ANIMATIONS === */
+/* Các animation tùy chỉnh */
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: 0 0 5px var(--nextgen-accent-primary);
+    }
+    50% {
+        box-shadow: 0 0 20px var(--nextgen-accent-primary), 0 0 30px var(--nextgen-accent-primary);
+    }
+}
+
+/* === UTILITY MIXINS === */
+/* Các mixin tiện ích khác */
+
+@mixin truncate {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+@mixin center-absolute {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@mixin center-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@mixin custom-scrollbar {
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: var(--nextgen-bg-secondary);
+        border-radius: var(--nextgen-radius-base);
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: var(--nextgen-accent-primary);
+        border-radius: var(--nextgen-radius-base);
+        
+        &:hover {
+            background: var(--nextgen-accent-primary-hover);
+        }
+    }
+}
+
+/* === RESPONSIVE MIXINS === */
+/* Mixins cho responsive design */
+
+@mixin mobile {
+    @media (max-width: 768px) {
+        @content;
+    }
+}
+
+@mixin tablet {
+    @media (min-width: 769px) and (max-width: 1024px) {
+        @content;
+    }
+}
+
+@mixin desktop {
+    @media (min-width: 1025px) {
+        @content;
+    }
+}
+
+@mixin large-desktop {
+    @media (min-width: 1280px) {
+        @content;
+    }
+}

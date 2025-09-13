@@ -43,18 +43,59 @@ fi
 
 # Cấu hình nginx để serve các file tùy chỉnh
 cat > /etc/nginx/conf.d/custom-ui.conf << 'EOF'
-# Cấu hình cho giao diện tùy chỉnh
+# Cấu hình cho giao diện tùy chỉnh NextGen Meet
+
+# CSS Files
 location /css/custom.css {
     alias /config/custom.css;
     add_header Content-Type text/css;
     expires 1d;
 }
 
+location /css/nextgen-variables.css {
+    alias /config/nextgen-variables.css;
+    add_header Content-Type text/css;
+    expires 1d;
+}
+
+location /css/nextgen-mixins.css {
+    alias /config/nextgen-mixins.css;
+    add_header Content-Type text/css;
+    expires 1d;
+}
+
+location /css/nextgen-components.css {
+    alias /config/nextgen-components.css;
+    add_header Content-Type text/css;
+    expires 1d;
+}
+
+location /css/nextgen-toolbar.css {
+    alias /config/nextgen-toolbar.css;
+    add_header Content-Type text/css;
+    expires 1d;
+}
+
+location /css/nextgen-video.css {
+    alias /config/nextgen-video.css;
+    add_header Content-Type text/css;
+    expires 1d;
+}
+
+# JavaScript Files
+location /js/nextgen-design-tokens.js {
+    alias /config/nextgen-design-tokens.js;
+    add_header Content-Type application/javascript;
+    expires 1d;
+}
+
+# Images
 location /images/ {
     alias /config/images/;
     expires 7d;
 }
 
+# HTML Files
 location /custom-index.html {
     alias /config/index.html;
     add_header Content-Type text/html;

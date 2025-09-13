@@ -1,0 +1,410 @@
+/* NextGen Meet Toolbar Styles */
+/* Cách mạng hóa thanh công cụ với nền tối và hiệu ứng glow */
+
+/* === TOOLBAR CONTAINER === */
+.nextgen-toolbar {
+    position: fixed;
+    bottom: var(--nextgen-space-4);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--nextgen-z-docked);
+    
+    /* Glass effect */
+    background: var(--nextgen-bg-glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--nextgen-radius-xl);
+    
+    /* Layout */
+    display: flex;
+    align-items: center;
+    gap: var(--nextgen-space-1);
+    padding: var(--nextgen-space-2);
+    
+    /* Shadow and glow */
+    box-shadow: var(--nextgen-shadow-2xl);
+    
+    /* Animation */
+    animation: slideInUp 0.5s ease-out;
+    transition: var(--nextgen-transition-base);
+}
+
+.nextgen-toolbar:hover {
+    box-shadow: var(--nextgen-shadow-2xl), var(--nextgen-glow-subtle);
+    transform: translateX(-50%) translateY(-2px);
+}
+
+/* === TOOLBAR BUTTONS === */
+.nextgen-toolbar-button {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border: none;
+    border-radius: var(--nextgen-radius-md);
+    background: transparent;
+    color: var(--nextgen-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--nextgen-transition-base);
+    overflow: hidden;
+}
+
+/* Button states */
+.nextgen-toolbar-button:hover {
+    background: var(--nextgen-bg-tertiary);
+    color: var(--nextgen-text-primary);
+    transform: translateY(-1px);
+}
+
+.nextgen-toolbar-button:active {
+    transform: translateY(0);
+}
+
+/* Active/Toggled state */
+.nextgen-toolbar-button.active {
+    background: var(--nextgen-accent-primary);
+    color: var(--nextgen-text-on-secondary);
+    box-shadow: var(--nextgen-glow-primary);
+}
+
+.nextgen-toolbar-button.active:hover {
+    background: var(--nextgen-accent-primary-hover);
+    box-shadow: var(--nextgen-glow-primary);
+}
+
+/* Danger button (hangup) */
+.nextgen-toolbar-button.danger {
+    background: var(--nextgen-accent-error);
+    color: var(--nextgen-text-on-primary);
+}
+
+.nextgen-toolbar-button.danger:hover {
+    background: #ff6666;
+    box-shadow: var(--nextgen-glow-error);
+}
+
+/* === BUTTON ICONS === */
+.nextgen-toolbar-icon {
+    width: 24px;
+    height: 24px;
+    transition: var(--nextgen-transition-base);
+}
+
+.nextgen-toolbar-button:hover .nextgen-toolbar-icon {
+    transform: scale(1.1);
+}
+
+.nextgen-toolbar-button.active .nextgen-toolbar-icon {
+    transform: scale(1.05);
+}
+
+/* === BUTTON GROUPS === */
+.nextgen-toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: var(--nextgen-space-1);
+    padding: 0 var(--nextgen-space-2);
+    border-right: 1px solid var(--nextgen-border-default);
+}
+
+.nextgen-toolbar-group:last-child {
+    border-right: none;
+}
+
+/* === SPECIFIC BUTTON STYLES === */
+
+/* Microphone button */
+.nextgen-toolbar-button.microphone {
+    position: relative;
+}
+
+.nextgen-toolbar-button.microphone::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--nextgen-accent-error);
+    border-radius: var(--nextgen-radius-circle);
+    transform: translate(-50%, -50%);
+    transition: var(--nextgen-transition-base);
+}
+
+.nextgen-toolbar-button.microphone.muted::before {
+    width: 8px;
+    height: 8px;
+    animation: pulse 2s infinite;
+}
+
+/* Camera button */
+.nextgen-toolbar-button.camera {
+    position: relative;
+}
+
+.nextgen-toolbar-button.camera::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--nextgen-accent-error);
+    border-radius: var(--nextgen-radius-circle);
+    transform: translate(-50%, -50%);
+    transition: var(--nextgen-transition-base);
+}
+
+.nextgen-toolbar-button.camera.off::before {
+    width: 8px;
+    height: 8px;
+    animation: pulse 2s infinite;
+}
+
+/* Chat button */
+.nextgen-toolbar-button.chat {
+    position: relative;
+}
+
+.nextgen-toolbar-button.chat.has-messages::after {
+    content: '';
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 8px;
+    height: 8px;
+    background: var(--nextgen-accent-primary);
+    border-radius: var(--nextgen-radius-circle);
+    animation: pulse 2s infinite;
+}
+
+/* Screen share button */
+.nextgen-toolbar-button.screen-share {
+    position: relative;
+}
+
+.nextgen-toolbar-button.screen-share.active::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--nextgen-accent-primary);
+    border-radius: var(--nextgen-radius-circle);
+    transform: translate(-50%, -50%);
+    animation: pulse 2s infinite;
+}
+
+/* Participants button */
+.nextgen-toolbar-button.participants {
+    position: relative;
+}
+
+.nextgen-toolbar-button.participants::after {
+    content: attr(data-count);
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    min-width: 18px;
+    height: 18px;
+    background: var(--nextgen-accent-primary);
+    color: var(--nextgen-text-on-secondary);
+    border-radius: var(--nextgen-radius-full);
+    font-size: var(--nextgen-text-xs);
+    font-weight: var(--nextgen-font-bold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+}
+
+/* Settings button */
+.nextgen-toolbar-button.settings:hover {
+    transform: translateY(-1px) rotate(90deg);
+}
+
+/* More options button */
+.nextgen-toolbar-button.more-options {
+    position: relative;
+}
+
+.nextgen-toolbar-button.more-options::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 4px;
+    background: currentColor;
+    border-radius: var(--nextgen-radius-circle);
+    transform: translate(-50%, -50%);
+    box-shadow: 
+        -8px 0 0 currentColor,
+        8px 0 0 currentColor;
+}
+
+/* === TOOLBAR ANIMATIONS === */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(1.2);
+    }
+}
+
+@keyframes glow {
+    0%, 100% {
+        box-shadow: var(--nextgen-glow-subtle);
+    }
+    50% {
+        box-shadow: var(--nextgen-glow-primary);
+    }
+}
+
+/* === RESPONSIVE DESIGN === */
+@media (max-width: 768px) {
+    .nextgen-toolbar {
+        bottom: var(--nextgen-space-2);
+        left: var(--nextgen-space-2);
+        right: var(--nextgen-space-2);
+        transform: none;
+        justify-content: space-between;
+        padding: var(--nextgen-space-1);
+    }
+    
+    .nextgen-toolbar-button {
+        width: 44px;
+        height: 44px;
+    }
+    
+    .nextgen-toolbar-icon {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .nextgen-toolbar-group {
+        padding: 0 var(--nextgen-space-1);
+    }
+}
+
+@media (max-width: 480px) {
+    .nextgen-toolbar {
+        flex-wrap: wrap;
+        gap: var(--nextgen-space-1);
+    }
+    
+    .nextgen-toolbar-button {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .nextgen-toolbar-icon {
+        width: 18px;
+        height: 18px;
+    }
+}
+
+/* === DARK MODE ENHANCEMENTS === */
+/* Đảm bảo toolbar luôn hiển thị đẹp trên nền tối */
+.nextgen-toolbar {
+    /* Enhanced glass effect for dark mode */
+    background: rgba(26, 26, 26, 0.9);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* === ACCESSIBILITY === */
+.nextgen-toolbar-button:focus {
+    outline: none;
+    box-shadow: var(--nextgen-shadow-focus);
+}
+
+.nextgen-toolbar-button:focus-visible {
+    outline: 2px solid var(--nextgen-accent-primary);
+    outline-offset: 2px;
+}
+
+/* === TOOLTIP STYLES === */
+.nextgen-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--nextgen-bg-secondary);
+    color: var(--nextgen-text-primary);
+    padding: var(--nextgen-space-1) var(--nextgen-space-2);
+    border-radius: var(--nextgen-radius-base);
+    font-size: var(--nextgen-text-sm);
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--nextgen-transition-base);
+    z-index: var(--nextgen-z-tooltip);
+    margin-bottom: var(--nextgen-space-1);
+}
+
+.nextgen-toolbar-button:hover .nextgen-tooltip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+}
+
+/* === LOADING STATES === */
+.nextgen-toolbar-button.loading {
+    position: relative;
+    pointer-events: none;
+}
+
+.nextgen-toolbar-button.loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 16px;
+    border: 2px solid transparent;
+    border-top: 2px solid currentColor;
+    border-radius: var(--nextgen-radius-circle);
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+/* === CUSTOM SCROLLBAR FOR TOOLBAR === */
+.nextgen-toolbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--nextgen-accent-primary) var(--nextgen-bg-tertiary);
+}
+
+.nextgen-toolbar::-webkit-scrollbar {
+    height: 4px;
+}
+
+.nextgen-toolbar::-webkit-scrollbar-track {
+    background: var(--nextgen-bg-tertiary);
+    border-radius: var(--nextgen-radius-base);
+}
+
+.nextgen-toolbar::-webkit-scrollbar-thumb {
+    background: var(--nextgen-accent-primary);
+    border-radius: var(--nextgen-radius-base);
+}
+
+.nextgen-toolbar::-webkit-scrollbar-thumb:hover {
+    background: var(--nextgen-accent-primary-hover);
+}

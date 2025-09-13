@@ -30,24 +30,29 @@
     <meta name="twitter:description" content="Nền tảng họp trực tuyến miễn phí, an toàn và dễ sử dụng.">
     <meta name="twitter:image" content="https://meet.thanhnguyen.group/images/twitter-image.png">
     
+    <!-- NextGen Meet CSS Variables -->
+    <link rel="stylesheet" href="css/nextgen-variables.css">
+    <link rel="stylesheet" href="css/nextgen-mixins.css">
+    <link rel="stylesheet" href="css/nextgen-components.css">
+    
     <style>
+        /* Import Inter font */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: var(--nextgen-font-primary);
             margin: 0;
             padding: 0;
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.8) 0%, rgba(118, 75, 162, 0.8) 100%), 
-                        url('https://meet.thanhnguyen.group/images/welcome-background.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background: var(--nextgen-bg-primary);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             position: relative;
+            overflow: hidden;
         }
         
+        /* NextGen Welcome Background */
         body::before {
             content: '';
             position: absolute;
@@ -55,154 +60,255 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0, 0, 0, 0.2);
+            background-image: url('https://meet.thanhnguyen.group/images/welcome-background.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.3;
             z-index: 1;
         }
         
+        /* Gradient overlay */
+        body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--nextgen-gradient-diagonal);
+            opacity: 0.1;
+            z-index: 2;
+        }
+        
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: var(--nextgen-bg-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: var(--nextgen-radius-xl);
+            padding: var(--nextgen-space-10);
+            box-shadow: var(--nextgen-shadow-2xl);
             text-align: center;
             max-width: 500px;
             width: 90%;
             position: relative;
-            z-index: 2;
+            z-index: 3;
+            animation: fadeIn 0.8s ease-out;
         }
         
         .logo {
             width: 120px;
             height: 120px;
-            margin: 0 auto 30px;
-            background: linear-gradient(135deg, #1976d2, #1565c0);
-            border-radius: 50%;
+            margin: 0 auto var(--nextgen-space-6);
+            background: var(--nextgen-gradient-primary);
+            border-radius: var(--nextgen-radius-circle);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 48px;
-            color: white;
-            font-weight: 700;
+            font-size: var(--nextgen-text-4xl);
+            color: var(--nextgen-text-on-secondary);
+            font-weight: var(--nextgen-font-extrabold);
+            box-shadow: var(--nextgen-glow-primary);
+            animation: glow 3s ease-in-out infinite;
+            transition: var(--nextgen-transition-base);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+            box-shadow: var(--nextgen-glow-secondary);
         }
         
         h1 {
-            color: #333;
-            font-size: 32px;
-            font-weight: 300;
-            margin-bottom: 20px;
+            color: var(--nextgen-text-primary);
+            font-size: var(--nextgen-text-3xl);
+            font-weight: var(--nextgen-font-bold);
+            margin-bottom: var(--nextgen-space-2);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
         
         .subtitle {
-            color: #666;
-            font-size: 18px;
-            margin-bottom: 40px;
-            line-height: 1.6;
+            color: var(--nextgen-text-secondary);
+            font-size: var(--nextgen-text-lg);
+            margin-bottom: var(--nextgen-space-8);
+            line-height: var(--nextgen-leading-relaxed);
+            font-weight: var(--nextgen-font-regular);
         }
         
         .room-input {
             width: 100%;
-            padding: 15px 20px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 18px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
+            padding: var(--nextgen-space-3) var(--nextgen-space-4);
+            border: 2px solid var(--nextgen-border-default);
+            border-radius: var(--nextgen-radius-md);
+            font-size: var(--nextgen-text-lg);
+            margin-bottom: var(--nextgen-space-4);
+            background-color: var(--nextgen-bg-secondary);
+            color: var(--nextgen-text-primary);
+            font-family: var(--nextgen-font-primary);
+            transition: var(--nextgen-transition-base);
             box-sizing: border-box;
         }
         
         .room-input:focus {
             outline: none;
-            border-color: #1976d2;
-            box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+            border-color: var(--nextgen-accent-primary);
+            box-shadow: var(--nextgen-glow-subtle);
+            background-color: var(--nextgen-bg-tertiary);
+        }
+        
+        .room-input::placeholder {
+            color: var(--nextgen-text-secondary);
         }
         
         .join-button {
-            background: linear-gradient(135deg, #1976d2, #1565c0);
-            color: white;
+            background: var(--nextgen-gradient-primary);
+            color: var(--nextgen-text-on-secondary);
             border: none;
-            padding: 15px 40px;
-            border-radius: 12px;
-            font-size: 18px;
-            font-weight: 500;
+            padding: var(--nextgen-space-3) var(--nextgen-space-8);
+            border-radius: var(--nextgen-radius-md);
+            font-size: var(--nextgen-text-lg);
+            font-weight: var(--nextgen-font-semibold);
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--nextgen-transition-base);
             width: 100%;
-            margin-bottom: 20px;
+            margin-bottom: var(--nextgen-space-4);
+            font-family: var(--nextgen-font-primary);
+            box-shadow: var(--nextgen-shadow-md);
         }
         
         .join-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(25, 118, 210, 0.3);
+            box-shadow: var(--nextgen-glow-primary);
+        }
+        
+        .join-button:active {
+            transform: translateY(0);
         }
         
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 20px;
-            margin-top: 40px;
+            gap: var(--nextgen-space-4);
+            margin-top: var(--nextgen-space-8);
         }
         
         .feature {
-            padding: 20px;
-            background: rgba(25, 118, 210, 0.05);
-            border-radius: 12px;
+            padding: var(--nextgen-space-4);
+            background: var(--nextgen-bg-tertiary);
+            border: 1px solid var(--nextgen-border-default);
+            border-radius: var(--nextgen-radius-md);
             text-align: center;
+            transition: var(--nextgen-transition-base);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--nextgen-gradient-primary);
+            opacity: 0.1;
+            transition: var(--nextgen-transition-slow);
+        }
+        
+        .feature:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--nextgen-glow-subtle);
+            border-color: var(--nextgen-accent-primary);
+        }
+        
+        .feature:hover::before {
+            left: 0;
         }
         
         .feature-icon {
-            font-size: 32px;
-            margin-bottom: 10px;
+            font-size: var(--nextgen-text-2xl);
+            margin-bottom: var(--nextgen-space-2);
+            position: relative;
+            z-index: 1;
         }
         
         .feature-title {
-            font-weight: 500;
-            color: #333;
-            margin-bottom: 5px;
+            font-weight: var(--nextgen-font-semibold);
+            color: var(--nextgen-text-primary);
+            margin-bottom: var(--nextgen-space-1);
+            position: relative;
+            z-index: 1;
         }
         
         .feature-desc {
-            font-size: 14px;
-            color: #666;
+            font-size: var(--nextgen-text-sm);
+            color: var(--nextgen-text-secondary);
+            position: relative;
+            z-index: 1;
         }
         
         .footer {
-            margin-top: 40px;
-            padding-top: 20px;
-            border-top: 1px solid #e0e0e0;
-            color: #666;
-            font-size: 14px;
+            margin-top: var(--nextgen-space-8);
+            padding-top: var(--nextgen-space-4);
+            border-top: 1px solid var(--nextgen-border-default);
+            color: var(--nextgen-text-secondary);
+            font-size: var(--nextgen-text-sm);
         }
         
         .footer a {
-            color: #1976d2;
+            color: var(--nextgen-accent-primary);
             text-decoration: none;
+            transition: var(--nextgen-transition-color);
         }
         
         .footer a:hover {
-            text-decoration: underline;
+            color: var(--nextgen-accent-primary-hover);
+            text-shadow: var(--nextgen-glow-subtle);
         }
         
-        @media (max-width: 600px) {
+        /* Responsive Design */
+        @media (max-width: 768px) {
             .container {
-                padding: 30px 20px;
+                padding: var(--nextgen-space-6) var(--nextgen-space-4);
+                margin: var(--nextgen-space-4);
             }
             
             h1 {
-                font-size: 28px;
+                font-size: var(--nextgen-text-2xl);
             }
             
             .subtitle {
-                font-size: 16px;
+                font-size: var(--nextgen-text-base);
+            }
+            
+            .features {
+                grid-template-columns: repeat(2, 1fr);
+                gap: var(--nextgen-space-2);
+            }
+            
+            .feature {
+                padding: var(--nextgen-space-3);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .features {
+                grid-template-columns: 1fr;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
+                font-size: var(--nextgen-text-2xl);
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="logo">TN</div>
-        <h1>Thanh Nguyen Meet</h1>
-        <p class="subtitle">Nền tảng họp trực tuyến miễn phí, an toàn và dễ sử dụng</p>
+        <div class="logo">NG</div>
+        <h1>NextGen Meet</h1>
+        <p class="subtitle">Trải nghiệm Hội nghị Thế hệ Mới - Nền tảng họp trực tuyến đẳng cấp, bảo mật và tùy chỉnh cao</p>
         
         <form id="joinForm">
             <input type="text" class="room-input" id="roomName" placeholder="Nhập tên phòng họp..." autocomplete="off">
@@ -212,29 +318,32 @@
         <div class="features">
             <div class="feature">
                 <div class="feature-icon">🔒</div>
-                <div class="feature-title">Bảo mật cao</div>
-                <div class="feature-desc">Mã hóa end-to-end</div>
+                <div class="feature-title">Bảo mật Tuyệt đối</div>
+                <div class="feature-desc">Mã hóa end-to-end, không lưu trữ dữ liệu</div>
             </div>
             <div class="feature">
-                <div class="feature-icon">🚀</div>
-                <div class="feature-title">Nhanh chóng</div>
-                <div class="feature-desc">Không cần cài đặt</div>
+                <div class="feature-icon">⚡</div>
+                <div class="feature-title">Hiệu suất Cao</div>
+                <div class="feature-desc">Công nghệ WebRTC tiên tiến, độ trễ thấp</div>
             </div>
             <div class="feature">
-                <div class="feature-icon">💬</div>
-                <div class="feature-title">Chat & Chia sẻ</div>
-                <div class="feature-desc">Tương tác đa dạng</div>
+                <div class="feature-icon">🎨</div>
+                <div class="feature-title">Giao diện Đẳng cấp</div>
+                <div class="feature-desc">Thiết kế hiện đại, trải nghiệm mượt mà</div>
             </div>
             <div class="feature">
-                <div class="feature-icon">📱</div>
+                <div class="feature-icon">🌐</div>
                 <div class="feature-title">Đa nền tảng</div>
-                <div class="feature-desc">Mọi thiết bị</div>
+                <div class="feature-desc">Hoạt động trên mọi thiết bị, mọi trình duyệt</div>
             </div>
         </div>
         
         <div class="footer">
             <p>Được phát triển bởi <a href="https://thanhnguyen.group" target="_blank">Thanh Nguyen Group</a></p>
             <p>Dựa trên nền tảng <a href="https://jitsi.org" target="_blank">Jitsi Meet</a> mã nguồn mở</p>
+            <p style="margin-top: var(--nextgen-space-2); font-size: var(--nextgen-text-xs); opacity: 0.7;">
+                NextGen Meet - Kiến tạo Trải nghiệm Hội nghị Truyền hình Đẳng cấp
+            </p>
         </div>
     </div>
     
