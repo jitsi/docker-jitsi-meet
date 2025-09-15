@@ -85,6 +85,10 @@ asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSU
 asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES | compact) }}" }
 {{ end }}
 
+{{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_ALLOWNER_ISSUERS }}
+allowner_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ALLOWNER_ISSUERS | compact) }}" }
+{{ end }}
+
 consider_bosh_secure = true;
 consider_websocket_secure = true;
 
