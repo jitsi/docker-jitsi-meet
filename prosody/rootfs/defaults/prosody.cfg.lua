@@ -1,5 +1,6 @@
 {{ $C2S_REQUIRE_ENCRYPTION := .Env.PROSODY_C2S_REQUIRE_ENCRYPTION | default "1" | toBool -}}
 {{ $DISABLE_C2S_LIMIT := .Env.PROSODY_DISABLE_C2S_LIMIT | default "0" | toBool -}}
+{{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $DISABLE_S2S_LIMIT := .Env.PROSODY_DISABLE_S2S_LIMIT | default "0" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
@@ -242,6 +243,9 @@ s2s_whitelist = {
     '{{ $XMPP_MUC_DOMAIN }}'; -- needed for visitors to send messages to main room
     'visitors.{{ $XMPP_DOMAIN }}'; -- needed for sending promotion request to visitors.{{ $XMPP_DOMAIN }} component
     '{{ $XMPP_DOMAIN }}'; -- unavailable presences back to main room
+    {{- if not $DISABLE_POLLS }}
+    'polls.{{ $XMPP_DOMAIN }}';
+    {{- end }}
 	{{- end }}
 
     {{- if $ENABLE_GUEST_DOMAIN }}
@@ -267,12 +271,14 @@ s2sout_override = {
 {{ $DEFAULT_PORT := add $VISITORS_XMPP_PORT $index }}
         ["{{ $VISITORS_MUC_PREFIX }}.v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
         ["v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
+        ["polls.v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}"] = "tcp://{{ $SERVER._0 }}:{{ $SERVER._1 | default $DEFAULT_PORT }}";
 {{ end -}}
 };
 {{ if ne $PROSODY_MODE "visitors" -}}
 s2s_whitelist = {
 {{ range $index, $element := $VISITORS_XMPP_SERVERS -}}
 	"{{ $VISITORS_MUC_PREFIX }}.v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}";
+	"polls.v{{ $index }}.{{ $VISITORS_XMPP_DOMAIN }}";
 {{ end -}}
 };
 {{ end -}}
