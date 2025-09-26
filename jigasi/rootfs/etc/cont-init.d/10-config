@@ -103,3 +103,5 @@ fi
 if [[ -f /config/custom-logging.properties ]]; then
     cat /config/custom-logging.properties >> /config/logging.properties
 fi
+
+chown jigasi /config -R
