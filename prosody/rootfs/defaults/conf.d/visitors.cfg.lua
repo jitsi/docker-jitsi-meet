@@ -193,5 +193,5 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
     {{ end -}}
 
 {{ if not $DISABLE_POLLS -}}
-Component 'polls.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'' 'polls_component'
+Component 'polls.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}' 'polls_component'
 {{ end -}}
