@@ -21,6 +21,11 @@ receivers:
           attributes?.attrs?.service != "jitsi-jicofo" and 
           attributes?.attrs?.service != "jitsi-jvb" and
           attributes?.attrs?.service != "jitsi-prosody")
+        output: add_service_name
+      - type: add
+        id: add_service_name
+        field: resource["service.name"]
+        value: EXPR(attributes.attrs.service)
         output: regex_parser_choice
       - type: router
         id: regex_parser_choice
@@ -70,8 +75,8 @@ processors:
 exporters:
   debug:
     verbosity: detailed
-  loki:
-    endpoint: "http://loki:3100/loki/api/v1/push"
+  otlphttp:
+    endpoint: "http://loki:3100/otlp"
   prometheus:
     endpoint: "0.0.0.0:9464"
 
@@ -80,7 +85,7 @@ service:
     logs:
       receivers: [otlp, filelog/jitsi-containers]
       processors: [batch]
-      exporters: [loki]
+      exporters: [otlphttp]
     metrics:
       receivers: [docker_stats]
       processors: [batch]

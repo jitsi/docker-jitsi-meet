@@ -5,7 +5,7 @@ services:
 
   loki:
     container_name: loki
-    image: grafana/loki:3.0.0
+    image: grafana/loki
     command: -config.file=/conf/loki-config.yaml
     volumes:
       - ./log-analyser/loki/data:/data
@@ -17,7 +17,7 @@ services:
 
   otel-collector:
     container_name: otel
-    image: otel/opentelemetry-collector-contrib:0.130.0
+    image: otel/opentelemetry-collector-contrib
     user: "0" # required for reading docker container logs
     volumes:
       - ./log-analyser/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml
