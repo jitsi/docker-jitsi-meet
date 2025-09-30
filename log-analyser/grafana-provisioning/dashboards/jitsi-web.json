@@ -51,7 +51,7 @@
             "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
           },
           "editorMode": "code",
-          "expr": "{exporter=\"OTLP\"} | json | attributes_attrs_service=\"jitsi-web\"",
+          "expr": "{service_name=\"jitsi-web\"}",
           "queryType": "range",
           "refId": "A"
         }
@@ -118,8 +118,8 @@
             "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
           },
           "editorMode": "code",
-          "expr": "sum by (attributes_level) (\n  rate({exporter=\"OTLP\"} | json|attributes_attrs_service=\"jitsi-web\"| line_format \"{{.log}}\" | logfmt | pattern \"[<_>] <_level>: <_>\"[5m])\n)",
-          "legendFormat": "Level: {{attributes_level}}",
+          "expr": "sum by (level) (\n  rate({service_name=\"jitsi-web\"} | line_format \"{{.log}}\" | logfmt | pattern \"[<_>] <_level>: <_>\"[5m])\n)",
+          "legendFormat": "Level: {{level}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -185,8 +185,8 @@
             "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
           },
           "editorMode": "code",
-          "expr": "sum by (attributes_level, attributes_attrs_service) (\n  rate({exporter=\"OTLP\"} | json|attributes_attrs_service=\"jitsi-web\"| line_format \"{{.attributes_message}}\" | logfmt | pattern \"[<_>] <attributes_level>#<attributes_attrs_service>: <_>\"[5m]))",
-          "legendFormat": "Level: {{attributes_level}}",
+          "expr": "sum by (level, attrs_service) (\n  rate({service_name=\"jitsi-web\"} | line_format \"{{.message}}\" | logfmt | pattern \"[<_>] <level>#<attrs_service>: <_>\"[5m]))",
+          "legendFormat": "Level: {{level}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -247,7 +247,7 @@
             "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
           },
           "editorMode": "code",
-          "expr": "sum(count_over_time({exporter=\"OTLP\"} | json | attributes_attrs_service=\"jitsi-web\" |= \"GET\" [5m])) by (instance)",
+          "expr": "sum(count_over_time({service_name=\"jitsi-web\"} |= \"GET\" [5m])) by (instance)",
           "queryType": "range",
           "refId": "A"
         }

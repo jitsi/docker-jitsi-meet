@@ -107,8 +107,8 @@
             "uid": "b8130a28-4867-4668-917d-539c93852857"
           },
           "editorMode": "code",
-          "expr": "sum by (attributes_attrs_service) (\n  rate({exporter=\"OTLP\"} | json | line_format \"{{.attributes_message}}\" | logfmt | pattern \"[<_>] <_level>: <_>\"[5m]))",
-          "legendFormat": "{{attributes_attrs_service}}",
+          "expr": "sum by (attrs_service) (\n  rate({service_name=~\"jitsi-jicofo|jitsi-jvb|jitsi-prosody|jitsi-web\"} | line_format \"{{.message}}\" | logfmt | pattern \"[<_>] <_level>: <_>\"[5m]))",
+          "legendFormat": "{{attrs_service}}",
           "queryType": "range",
           "refId": "A"
         }
@@ -145,7 +145,7 @@
             "uid": "a4bdfb3e-762a-46e5-a79f-2e7bbe88d444"
           },
           "editorMode": "code",
-          "expr": "{exporter=\"OTLP\"} ",
+          "expr": "{service_name=~\"jitsi-jicofo|jitsi-jvb|jitsi-prosody|jitsi-web\"} ",
           "queryType": "range",
           "refId": "A"
         }
