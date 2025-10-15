@@ -45,7 +45,7 @@ resource "aws_lb_listener_rule" "jitsi" {
 }
 
 resource "aws_lb_target_group" "jvb_udp_tg_ip" {
-  name        = "${module.label.id}-jvb-udp10000-ip"
+  name        = "${module.label.id}-jvb-udp-ip"
   port        = 10000
   protocol    = "UDP"
   vpc_id      = var.vpc_id
