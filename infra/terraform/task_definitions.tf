@@ -26,7 +26,7 @@ resource "aws_ssm_parameter" "jicofo_auth_password" {
 }
 
 resource "aws_ssm_parameter" "jicofo_component_secret" {
-  name  = "/jitsi/jicofo_component_secret"
+  name  = "/${module.label.id}/jicofo_component_secret"
   type  = "SecureString"
   value = random_password.jicofo_component.result
 }
