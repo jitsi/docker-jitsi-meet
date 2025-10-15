@@ -1,6 +1,6 @@
 # Security group
 resource "aws_security_group" "jitsi" {
-  name        = "jitsi-sg"
+  name        = "${module.label.id}-sg"
   description = "Allow Jitsi traffic"
   vpc_id      = var.vpc_id
 

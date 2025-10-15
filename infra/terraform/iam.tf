@@ -104,7 +104,7 @@ data "aws_iam_policy_document" "ecs_ssm_access" {
 }
 
 resource "aws_iam_policy" "ecs_ssm_access" {
-  name   = "ecs-ssm-access"
+  name   = "${module.label.id}-ssm-access"
   policy = data.aws_iam_policy_document.ecs_ssm_access.json
 }
 
