@@ -16,13 +16,13 @@ COPY config/custom-config.js           /config/custom-config.js
 COPY config/custom-interface_config.js /config/custom-interface_config.js
 
 # Brand assets (replace stock files)
-# COPY ./assets/watermark.svg              /usr/share/jitsi-meet/images/watermark.svg
-# COPY ./assets/title.html                 /usr/share/jitsi-meet/title.html
-# COPY ./assets/favicon.ico                /usr/share/jitsi-meet/images/favicon.ico
-# COPY ./assets/apple-touch-icon.png       /usr/share/jitsi-meet/images/apple-touch-icon.png
-# COPY ./assets/images/virtual-background/ /usr/share/jitsi-meet/images/virtual-background/
-# COPY ./assets/lang/main.json             /usr/share/jitsi-meet/lang/main.json
-# COPY ./assets/close2.html                /usr/share/jitsi-meet/static/close2.html
+COPY assets/watermark.svg              /usr/share/jitsi-meet/images/watermark.svg
+COPY assets/title.html                 /usr/share/jitsi-meet/title.html
+COPY assets/favicon.ico                /usr/share/jitsi-meet/images/favicon.ico
+COPY assets/apple-touch-icon.png       /usr/share/jitsi-meet/images/apple-touch-icon.png
+COPY assets/images/virtual-background/ /usr/share/jitsi-meet/images/virtual-background/
+COPY assets/lang/main.json             /usr/share/jitsi-meet/lang/main.json
+COPY assets/close2.html                /usr/share/jitsi-meet/static/close2.html
 
 
 EXPOSE 80 443
