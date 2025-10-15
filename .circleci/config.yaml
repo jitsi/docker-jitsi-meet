@@ -1,0 +1,40 @@
+version: 2.1
+
+orbs:
+  codecov: codecov/codecov@1.0.2
+  aws-ecr: circleci/aws-ecr@9.0.2
+  aws-ecs: circleci/aws-ecs@4.0.0
+  aws-cli: circleci/aws-cli@4.0
+
+workflows:
+  deployment:
+    jobs:
+      - aws-ecr/build_and_push_image:
+          name: dev-ecr-build-push-app
+          account_id: ${AWS_ACCOUNT_ID}
+          auth:
+              - aws-cli/setup:
+                  role_arn: arn:aws:iam::233718569638:role/stella-circleci
+          dockerfile: Dockerfile
+          repo: portal-dev-jitsi'
+          tag: 'latest,$CIRCLE_SHA1'
+          filters:
+            branches:
+              only:
+                - develop
+      - aws-ecs/deploy_service_update:
+          name: 'dev-app-deployment'
+          auth:
+            - aws-cli/setup:
+                role_arn: arn:aws:iam::233718569638:role/stella-circleci
+          cluster: 'stella-dev'
+          family: 'portal-dev-jitsi'
+          container_image_name_updates: container=app,tag=${CIRCLE_SHA1}
+          service_name: 'jitsi'
+          force_new_deployment: true
+          requires:
+            - dev-ecr-build-push-app
+          filters:
+            branches:
+              only:
+                - develop
