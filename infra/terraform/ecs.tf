@@ -1,5 +1,5 @@
 resource "aws_ecs_service" "jitsi" {
-  name            = "jitsi2"
+  name            = "jitsi"
   task_definition = aws_ecs_task_definition.jitsi.arn
   cluster         = var.cluster_name
 
