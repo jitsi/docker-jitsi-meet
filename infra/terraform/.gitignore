@@ -1,0 +1,24 @@
+# Terraform state files
+*.tfstate
+*.tfstate.*backup
+
+# Terraform local configuration directory
+.terraform/
+
+# Terraform variable files (if they contain sensitive data and are not managed separately)
+# Note: If .tfvars files are part of your configuration and do not contain sensitive data,
+# you might choose to commit them.
+# *.tfvars
+
+# Terraform crash logs
+crash.log
+
+# Terraform CLI configuration files
+.terraformrc
+terraform.rc
+
+# OS and Editor specific files
+.DS_Store
+.vscode/
+*.swp
+*.bak
