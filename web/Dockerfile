@@ -1,6 +1,6 @@
 ARG JITSI_REPO=jitsi
 ARG BASE_TAG=latest
-FROM ${JITSI_REPO}/base:${BASE_TAG}
+FROM ${JITSI_REPO}/base:stable-10532-1
 
 ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/3.0.7/acme.sh /opt
 COPY rootfs/ /
