@@ -14,13 +14,13 @@ resource "random_password" "jicofo_component" {
 }
 
 resource "aws_ssm_parameter" "jvb_auth_password" {
-  name  = "/jitsi/jvb_auth_password"
+  name  = "/${module.label.id}/jvb_auth_password"
   type  = "SecureString"
   value = random_password.jvb_auth.result
 }
 
 resource "aws_ssm_parameter" "jicofo_auth_password" {
-  name  = "/jitsi/jicofo_auth_password"
+  name  = "/${module.label.id}/jicofo_auth_password"
   type  = "SecureString"
   value = random_password.jicofo_auth.result
 }
