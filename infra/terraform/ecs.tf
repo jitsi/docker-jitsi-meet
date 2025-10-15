@@ -1,5 +1,5 @@
 resource "aws_ecs_service" "jitsi" {
-  name            = "jitsi"
+  name            = "jitsi2"
   task_definition = aws_ecs_task_definition.jitsi.arn
   cluster         = var.cluster_name
 
@@ -19,7 +19,6 @@ resource "aws_ecs_service" "jitsi" {
     subnets         = var.private_subnets                 # e.g., public subnets used by your ALB/NLB
     security_groups = [aws_security_group.jitsi.id]
     assign_public_ip = false
-    # assign_public_ip is only for Fargate; omit or leave disabled on EC2.
   }
 
   launch_type                        = "EC2"
