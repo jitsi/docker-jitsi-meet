@@ -104,9 +104,7 @@
       { "sourceVolume": "config-jvb", "containerPath": "/config", "readOnly": false }
     ],
     "command": ["/bin/sh","-lc",
-      "TASK_IP=$(hostname -i); \
-      export XMPP_SERVER=$TASK_IP; \
-      exec /init"
+      "TASK_IP=$(hostname -i);export XMPP_SERVER=$TASK_IP;exec /init"
     ],
     "logConfiguration": {
       "logDriver": "awslogs",
