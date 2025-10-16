@@ -137,7 +137,7 @@
   },
   {
     "name": "web",
-    "image": "233718569638.dkr.ecr.us-east-1.amazonaws.com/portal-dev-jitsi-web:prod-20251007-210913-17821ca",
+    "image": "${ecr_web_image_uri}",
     "essential": true,
     "memory": 128,
     "dependsOn": [ { "containerName": "prosody", "condition": "START" } ],
