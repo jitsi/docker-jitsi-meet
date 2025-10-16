@@ -103,9 +103,6 @@
     "mountPoints": [
       { "sourceVolume": "config-jvb", "containerPath": "/config", "readOnly": false }
     ],
-    "command": ["/bin/sh","-lc",
-      "TASK_IP=$(hostname -i);export XMPP_SERVER=$TASK_IP;exec /init"
-    ],
     "logConfiguration": {
       "logDriver": "awslogs",
       "options": {
@@ -116,6 +113,7 @@
       }
     },
     "environment": [
+      { "name": "XMPP_SERVER", "value": "127.0.0.1" },
       { "name": "XMPP_DOMAIN", "value": "meet.jitsi" },
       { "name": "JVB_ENABLE_APIS", "value": "rest,xmpp" },
       { "name": "CONFIG", "value": "/config" },
