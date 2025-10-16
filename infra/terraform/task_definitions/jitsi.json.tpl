@@ -119,7 +119,7 @@
       { "name": "CONFIG", "value": "/config" },
       { "name": "JVB_PORT", "value": "10000" },
       { "name": "JVB_TCP_HARVESTER_DISABLED", "value": "true" },
-      { "name": "JVB_NLB_DNS", "value": "jvb-nlb-f68d358a1c45ec84.elb.us-east-1.amazonaws.com" },
+      { "name": "JVB_NLB_DNS", "value": "${jvb_nlb_dns}" },
       { "name": "JAVA_SYS_PROP_org.jitsi.videobridge.DISABLE_STUN", "value": "true" },
       { "name": "JVB_ADVERTISE_IPS", "value": "stun:stun.l.google.com:19302" },
       { "name": "JAVA_SYS_PROP_org.jitsi.videobridge.rest.jetty.enabled", "value": "true" },
