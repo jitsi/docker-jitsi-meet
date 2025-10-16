@@ -144,7 +144,7 @@
       "fi; " +
       "echo \"JVB_ADVERTISE_IPS=${JVB_ADVERTISE_IPS}\"; " +
       "exec /init"
-    ],
+    ]
   },
   {
     "name": "web",
