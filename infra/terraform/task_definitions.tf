@@ -44,6 +44,7 @@ resource "aws_ecs_task_definition" "jitsi" {
     event_sync_api_url          = var.event_sync_api_url
     jwt_app_id                  = var.jwt_app_id
     jwt_app_secret              = var.jwt_app_secret
+    letsencrypt_email           = var.letsencrypt_email
 
   })
 
