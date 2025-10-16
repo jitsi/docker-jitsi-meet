@@ -181,7 +181,9 @@
 
       { "name": "ENABLE_LETSENCRYPT","value": "1" },
       { "name": "LETSENCRYPT_DOMAIN","value": "${public_url}" },
-      { "name": "LETSENCRYPT_EMAIL","value": "${letsencrypt_email}" }
+      { "name": "LETSENCRYPT_EMAIL","value": "${letsencrypt_email}" },
+
+      { "name": "ENABLE_XMPP_WEBSOCKET","value": "1" }
     ]
   }
 ]
