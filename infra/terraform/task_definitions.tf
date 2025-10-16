@@ -46,6 +46,7 @@ resource "aws_ecs_task_definition" "jitsi" {
     jwt_app_secret              = var.jwt_app_secret
     letsencrypt_email           = var.letsencrypt_email
     jvb_nlb_dns                 = aws_lb.jvb_nlb.dns_name
+    ecr_app_image_uri           = "${module.ecr_web.repository_url}"
 
   })
 
