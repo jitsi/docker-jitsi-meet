@@ -133,7 +133,18 @@
       { "name": "JVB_AUTH_PASSWORD", "valueFrom": "${jvb_auth_password_arn}" },
       { "name": "JICOFO_AUTH_PASSWORD", "valueFrom": "${jicofo_auth_password_arn}" },
       { "name": "JICOFO_COMPONENT_SECRET", "valueFrom": "${jicofo_component_secret_arn}" }
-    ]
+    ],
+    "command": ["/bin/sh","-lc",
+      "set -e; " +
+      "TASK_IP=$(hostname -i); " +
+      "export XMPP_SERVER=$TASK_IP; " +                                     // talk to Prosody via task ENI IP
+      "if [ -n \"$JVB_NLB_DNS\" ]; then " +
+      "  IPS=$(getent hosts \"$JVB_NLB_DNS\" | awk '{print $1}' | sort -u | paste -sd, -); " +
+      "  if [ -n \"$IPS\" ]; then export JVB_ADVERTISE_IPS=\"$IPS\"; fi; " +
+      "fi; " +
+      "echo \"JVB_ADVERTISE_IPS=${JVB_ADVERTISE_IPS}\"; " +
+      "exec /init"
+    ],
   },
   {
     "name": "web",
