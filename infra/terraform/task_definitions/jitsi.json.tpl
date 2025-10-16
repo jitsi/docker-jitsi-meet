@@ -121,7 +121,7 @@
       { "name": "JVB_TCP_HARVESTER_DISABLED", "value": "true" },
       { "name": "JVB_NLB_DNS", "value": "${jvb_nlb_dns}" },
       { "name": "JAVA_SYS_PROP_org.jitsi.videobridge.DISABLE_STUN", "value": "true" },
-      { "name": "JVB_ADVERTISE_IPS", "value": "stun:stun.l.google.com:19302" },
+      { "name": "JVB_ADVERTISE_IPS", "value": "52.45.152.241,98.88.168.215,34.226.172.199" },
       { "name": "JAVA_SYS_PROP_org.jitsi.videobridge.rest.jetty.enabled", "value": "true" },
       { "name": "JAVA_SYS_PROP_org.jitsi.videobridge.rest.jetty.port",    "value": "8080" },
       { "name": "JAVA_SYS_PROP_org.ice4j.ice.harvest.DISABLE_STUN", "value": "true" },
