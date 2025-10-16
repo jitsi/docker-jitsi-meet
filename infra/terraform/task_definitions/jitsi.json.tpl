@@ -46,7 +46,7 @@
       { "name": "XMPP_MUC_MODULES", "value": "lobby_autostart_on_owner,event_sync_component" },
       { "name": "XMPP_MUC_CONFIGURATION", "value": "muc_component='muc.meet.jitsi', api_prefix='${event_sync_api_url}'" },
       { "name": "ENABLE_AUTO_OWNER","value": "0" },
-      { "name": "ENABLE_LETSENCRYPT","value": "1" },
+      { "name": "ENABLE_LETSENCRYPT","value": "0" },
       { "name": "LETSENCRYPT_DOMAIN","value": "${public_url}" },
       { "name": "LETSENCRYPT_EMAIL","value": "${letsencrypt_email}" }
 
@@ -179,7 +179,7 @@
       { "name": "JWT_ACCEPTED_ISSUERS", "value": "fth_iss" },
       { "name": "JWT_ACCEPTED_AUDIENCES", "value": "fth_aud" },
 
-      { "name": "ENABLE_LETSENCRYPT","value": "1" },
+      { "name": "ENABLE_LETSENCRYPT","value": "0" },
       { "name": "LETSENCRYPT_DOMAIN","value": "${public_url}" },
       { "name": "LETSENCRYPT_EMAIL","value": "${letsencrypt_email}" },
 
