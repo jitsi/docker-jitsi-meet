@@ -113,7 +113,7 @@
       }
     },
     "environment": [
-      { "name": "XMPP_SERVER", "value": "127.0.0.1" },
+      { "name": "XMPP_SERVER", "value": "prosody" },
       { "name": "XMPP_DOMAIN", "value": "meet.jitsi" },
       { "name": "JVB_ENABLE_APIS", "value": "rest,xmpp" },
       { "name": "CONFIG", "value": "/config" },
