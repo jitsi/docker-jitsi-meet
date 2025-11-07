@@ -317,6 +317,7 @@ services:
             - VISITORS_XMPP_DOMAIN
             - VISITORS_XMPP_SERVER
             - VISITORS_XMPP_PORT
+            - WAIT_FOR_HOST_DISABLE_AUTO_OWNERS
             - XMPP_BREAKOUT_MUC_MODULES
             - XMPP_CONFIGURATION
             - XMPP_DOMAIN
