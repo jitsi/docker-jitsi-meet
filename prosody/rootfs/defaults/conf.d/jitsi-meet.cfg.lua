@@ -42,6 +42,7 @@
 {{ $RATE_LIMIT_LOGIN_RATE := .Env.PROSODY_RATE_LIMIT_LOGIN_RATE | default "3" -}}
 {{ $RATE_LIMIT_SESSION_RATE := .Env.PROSODY_RATE_LIMIT_SESSION_RATE | default "200" -}}
 {{ $RATE_LIMIT_TIMEOUT := .Env.PROSODY_RATE_LIMIT_TIMEOUT | default "60" -}}
+{{ $WAIT_FOR_HOST_DISABLE_AUTO_OWNERS := .Env.WAIT_FOR_HOST_DISABLE_AUTO_OWNERS | default "false" | toBool -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -352,7 +353,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     }
     {{ end -}}
 
-	-- The size of the cache that saves state for IP addresses
+    -- The size of the cache that saves state for IP addresses
     rate_limit_cache_size = {{ $RATE_LIMIT_CACHE_SIZE }};
 
     muc_room_cache_size = 10000
@@ -375,15 +376,19 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     {{ end }}
     muc_password_whitelist = {
         "focus@{{ $XMPP_AUTH_DOMAIN }}";
-{{- if $ENABLE_RECORDING }}
+        {{- if $ENABLE_RECORDING }}
         "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
-{{- end }}
-{{- if $ENABLE_TRANSCRIPTIONS }}
+        {{- end }}
+        {{- if $ENABLE_TRANSCRIPTIONS }}
         "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
-{{- end }}
+        {{- end }}
     }
     muc_tombstones = false
     muc_room_allow_persistent = false
+
+    {{- if $WAIT_FOR_HOST_DISABLE_AUTO_OWNERS }}
+    wait_for_host_disable_auto_owners = true
+    {{- end }}
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
     target_address = "focus@{{ $XMPP_AUTH_DOMAIN }}"
