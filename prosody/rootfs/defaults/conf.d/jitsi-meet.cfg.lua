@@ -76,6 +76,8 @@ muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
 
 recorder_prefixes = { "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}" };
 
+transcriber_prefixes = { "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}" };
+
 http_default_host = "{{ $XMPP_DOMAIN }}"
 
 {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_ISSUERS }}
