@@ -5,7 +5,7 @@ variable "name" {
 
 variable "environment" {
   type        = string
-  default = "dev"
+  default = "test"
   description = "Environment of the namespace"
 }
 
