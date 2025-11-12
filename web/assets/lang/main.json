@@ -327,7 +327,7 @@
         "kickParticipantButton": "Kick",
         "kickParticipantDialog": "Are you sure you want to kick this participant?",
         "kickParticipantTitle": "Kick this participant?",
-        "kickTitle": "Ouch! {{participantDisplayName}} kicked you out of the meeting",
+        "kickTitle": "Sorry, but the moderator has removed you from the room. If you need assistance or have any concerns, please don't hesitate to reach out to us. We're here to help and support you.",
         "linkMeeting": "Link meeting",
         "linkMeetingTitle": "Link meeting to Salesforce",
         "liveStreaming": "Live Streaming",

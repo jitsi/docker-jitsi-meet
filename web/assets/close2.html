@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Leaving…</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    html,body{height:100%;margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial,sans-serif;background:#0b0f1a;color:#e6eaf2}
+    .wrap{min-height:100%;display:flex;align-items:center;justify-content:center;padding:24px;text-align:center}
+    .card{max-width:560px;width:100%;background:#131a2a;border:1px solid #1e2741;border-radius:14px;padding:28px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    h1{font-size:1.25rem;margin:0 0 .5rem}
+    p{opacity:.8;margin:.25rem 0}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Wrapping up your meeting…</h1>
+      <p>We’re redirecting you to a quick form.</p>
+      <p>If you're not redirected, <a id="fallback" href="#">click here</a>.</p>
+    </div>
+  </div>
+
+  <script>
+    // ---------- helpers ----------
+    function b64urlDecode(str){
+      try{
+        str = str.replace(/-/g,'+').replace(/_/g,'/');
+        const pad = str.length % 4; if (pad) str += '='.repeat(4 - pad);
+        return decodeURIComponent(escape(atob(str)));
+      }catch(e){ return null; }
+    }
+    function parseJWT(token){
+      if(!token || token.split('.').length < 2) return null;
+      const json = b64urlDecode(token.split('.')[1]);
+      try { return JSON.parse(json); } catch { return null; }
+    }
+
+    function parseFragment(url){
+      // Turn "#a=b&c=d" or "#config.token=..." into a URLSearchParams
+      const hash = url.hash || '';
+      const s = hash.startsWith('#') ? hash.slice(1) : hash;
+      return new URLSearchParams(s);
+    }
+
+    function getJWT(){
+      // 1) from referrer query (?jwt=...)
+      try {
+        const ref = new URL(document.referrer);
+        const q = ref.searchParams.get('jwt') || ref.searchParams.get('token');
+        if (q) return q;
+
+        // 2) from referrer hash (#jwt=..., #token=..., #config.token=...)
+        const fh = parseFragment(ref);
+        const fromHash =
+          fh.get('jwt') ||
+          fh.get('token') ||
+          fh.get('config.token') ||
+          // Some launchers put it as "config.token=<jwt>" inside the hash-like "config.xxx" params
+          (function(){
+            for (const [k,v] of fh.entries()){
+              if (k.endsWith('token') && v && v.split('.').length === 3) return v;
+            }
+            return null;
+          })();
+        if (fromHash) return fromHash;
+      } catch {}
+
+      // 3) localStorage (best-effort; Jitsi usually doesn’t persist the JWT)
+      const lsKeys = [
+        'jwt',                           // custom
+        'features/base/jwt',             // sometimes used by custom builds
+        'features/base/settings',        // might include token in some forks
+        'token'                          // legacy guesses
+      ];
+      for (const k of lsKeys){
+        try {
+          const raw = localStorage.getItem(k);
+          if (!raw) continue;
+          // direct token, or JSON with token field
+          if (raw.split('.').length === 3) return raw;
+          const obj = JSON.parse(raw);
+          if (obj && typeof obj === 'object'){
+            if (obj.token && obj.token.split('.').length === 3) return obj.token;
+            if (obj.jwt   && obj.jwt.split('.').length === 3)   return obj.jwt;
+          }
+        } catch {}
+      }
+
+      return null;
+    }
+
+    function toBool(v){
+      return v === true || v === 'true' || v === 1 || v === '1';
+    }
+
+    function getIsModerator(payload){
+      const u = payload?.context?.user || {};
+      if (toBool(u.moderator)) return true;                    // "true" in your token
+      if (toBool(u.security_bypass)) return true;              // treat as privileged
+      if ((u.role || '').toLowerCase() === 'moderator') return true;
+      if ((u.role || '').toLowerCase() === 'owner') return true;
+      if ((u.affiliation || '').toLowerCase() === 'owner') return true;
+      if (toBool(payload?.moderator)) return true;             // alternate claim
+      return false;
+    }
+
+    function getDisplayName(payload){
+      // 1) JWT
+      const u = payload?.context?.user || {};
+      if (u.name) return u.name;
+      if (u.displayName) return u.displayName;
+
+      // 2) Referrer param (if you pass userInfo.displayName)
+      try {
+        const ref = new URL(document.referrer);
+        const n = ref.searchParams.get('userInfo.displayName');
+        if (n) return n;
+      } catch {}
+
+      // 3) LocalStorage (Jitsi settings)
+      try {
+        const raw = localStorage.getItem('features/base/settings');
+        if (raw) {
+          const obj = JSON.parse(raw);
+          return obj?.user?.displayName || obj?.displayName || '';
+        }
+      } catch {}
+
+      // 4) Legacy keys
+      return localStorage.getItem('displayName') ||
+             localStorage.getItem('displayname') || '';
+    }
+
+    function go(){
+      const jwt  = getJWT();
+      const pay  = parseJWT(jwt);
+
+      const isMod = getIsModerator(pay);
+      const name  = getDisplayName(pay);
+
+      const u = new URL('https://form.jotform.com/241095885965271');
+      u.searchParams.set('isModerator', String(isMod));
+      if (name) u.searchParams.set('name', name);
+
+      document.getElementById('fallback').href = u.toString();
+      window.location.replace(u.toString());
+    }
+
+    // Give LS a beat to flush on some mobile browsers
+    setTimeout(go, 50);
+  </script>
+</body>
+</html>
