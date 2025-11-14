@@ -6,30 +6,9 @@ orbs:
   aws-ecs: circleci/aws-ecs@4.0.0
   aws-cli: circleci/aws-cli@4.0
 
-jobs:
-  checkout-with-submodules:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: Init & update git submodules
-          command: |
-            git submodule update --init --recursive
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .  # whole repo, including web/jitsi-meet
-
 workflows:
   deployment:
     jobs:
-      - checkout-with-submodules:
-          filters:
-            branches:
-              only:
-                - develop
-                - master
       - aws-ecr/build_and_push_image:
           name: dev-ecr-build-push-app
           account_id: ${AWS_ACCOUNT_ID}
@@ -41,8 +20,13 @@ workflows:
           build_path: web
           repo: portal-dev-jitsi-web
           tag: 'latest,$CIRCLE_SHA1'
-          requires:
-            - checkout-with-submodules
+          pre-steps:
+            - checkout
+            - run:
+                name: Init & update git submodules
+                command: |
+                  git submodule sync --recursive
+                  git submodule update --init --recursive
           filters:
             branches:
               only:
@@ -58,8 +42,6 @@ workflows:
           build_path: web
           repo: portal-prod-jitsi-web
           tag: 'latest,$CIRCLE_SHA1'
-          requires:
-            - checkout-with-submodules
           filters:
             branches:
               only:
