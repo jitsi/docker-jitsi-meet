@@ -4,6 +4,8 @@ USER root
 
 RUN apt-get update && apt-get -y install --reinstall build-essential && apt-get -y install curl gnupg git && curl -sL https://deb.nodesource.com/setup_lts.x | bash - && apt-get -y install nodejs
 
+ENV NODE_OPTIONS=--max_old_space_size=4096
+
 COPY ./jitsi-meet /usr/share/jitsi-meet
 
 RUN cd /usr/share/jitsi-meet && npm install && make all
