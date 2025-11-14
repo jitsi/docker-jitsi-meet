@@ -7,9 +7,9 @@ orbs:
   aws-cli: circleci/aws-cli@4.0
 
 executors:
-  big-docker:
+  big-machine:
     machine:
-      - image: ubuntu-2004:2023.07.1 
+      image: ubuntu-2004:2023.07.1
     resource_class: large   # or xlarge if you have it
 
 workflows:
@@ -22,7 +22,7 @@ workflows:
               - aws-cli/setup:
                   role_arn: arn:aws:iam::233718569638:role/stella-circleci
           dockerfile: Dockerfile
-          executor: big-docker
+          executor: big-machine
           path: web
           build_path: web
           repo: portal-dev-jitsi-web
