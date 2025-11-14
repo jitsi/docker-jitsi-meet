@@ -1,3 +1,6 @@
 [submodule "jitsi-meet-custom"]
 	path = jitsi-meet-custom
 	url = git@github.com:Stella-Center/jitsi-meet-custom.git
+[submodule "web/jitsi-meet"]
+	path = web/jitsi-meet
+	url = https://github.com/jitsi/jitsi-meet
