@@ -22,8 +22,8 @@ workflows:
               - aws-cli/setup:
                   role_arn: arn:aws:iam::233718569638:role/stella-circleci
           dockerfile: Dockerfile
-          path: web
           executor: big-docker
+          path: web
           build_path: web
           repo: portal-dev-jitsi-web
           tag: 'latest,$CIRCLE_SHA1'
