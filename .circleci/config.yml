@@ -11,6 +11,7 @@ workflows:
     jobs:
       - aws-ecr/build_and_push_image:
           name: dev-ecr-build-push-app
+          resource_class: large
           account_id: ${AWS_ACCOUNT_ID}
           auth:
               - aws-cli/setup:
@@ -33,6 +34,7 @@ workflows:
                 - develop
       - aws-ecr/build_and_push_image:
           name: prod-ecr-build-push-app
+          resource_class: large
           account_id: ${AWS_ACCOUNT_ID}
           auth:
               - aws-cli/setup:
