@@ -15,6 +15,9 @@ COPY assets/apple-touch-icon.png       /usr/share/jitsi-meet/images/apple-touch-
 COPY assets/images/virtual-background/ /usr/share/jitsi-meet/images/virtual-background/
 COPY assets/lang/main.json             /usr/share/jitsi-meet/lang/main.json
 COPY assets/close2.html                /usr/share/jitsi-meet/static/close2.html
+COPY assets/close2.html                /usr/share/jitsi-meet/static/close2.html
+COPY config/custom-config.js           /config/custom-config.js
+COPY config/custom-interface_config.js /config/custom-interface_config.js
 
 RUN cd /usr/share/jitsi-meet && npm install && make all
 
