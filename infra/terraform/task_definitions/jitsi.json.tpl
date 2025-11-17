@@ -183,7 +183,8 @@
       { "name": "LETSENCRYPT_DOMAIN","value": "${public_url}" },
       { "name": "LETSENCRYPT_EMAIL","value": "${letsencrypt_email}" },
 
-      { "name": "ENABLE_XMPP_WEBSOCKET","value": "1" }
+      { "name": "ENABLE_XMPP_WEBSOCKET","value": "1" },
+      { "name": "disableDeepLinking", "value": "true" }
     ]
   }
 ]
