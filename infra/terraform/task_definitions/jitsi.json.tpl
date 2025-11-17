@@ -43,7 +43,7 @@
       { "name": "ENABLE_LOBBY", "value": "1" },
       { "name": "LOBBY_MUC", "value": "lobby.meet.jitsi" },
       { "name": "ENABLE_AUTO_OWNER", "value": "0" },
-      { "name": "XMPP_MUC_MODULES", "value": "lobby_autostart_on_owner,event_sync_component" },
+      { "name": "XMPP_MUC_MODULES", "value": "event_sync_component" },
       { "name": "XMPP_MUC_CONFIGURATION", "value": "muc_component='muc.meet.jitsi', api_prefix='${event_sync_api_url}'" },
       { "name": "ENABLE_AUTO_OWNER","value": "0" },
       { "name": "ENABLE_LETSENCRYPT","value": "0" },
