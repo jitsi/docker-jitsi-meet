@@ -42,3 +42,5 @@ config.breakoutRooms = {
     // Hides the join breakout room button.
     hideJoinRoomButton: true,
 }
+
+config.hideLoginButton = true;
