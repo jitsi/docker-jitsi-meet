@@ -44,7 +44,7 @@
       { "name": "LOBBY_MUC", "value": "lobby.meet.jitsi" },
       { "name": "ENABLE_AUTO_OWNER", "value": "0" },
       { "name": "XMPP_MUC_MODULES", "value": "owner_restricted,event_sync_component" },
-      { "name": "XMPP_MUC_CONFIGURATION", "value": "muc_component='muc.meet.jitsi', api_prefix='${event_sync_api_url}'" },
+      { "name": "XMPP_MUC_CONFIGURATION", "value": "muc_component='muc.meet.jitsi', api_prefix='${event_sync_api_url}', role_timeout='10'" },
       { "name": "ENABLE_AUTO_OWNER","value": "0" },
       { "name": "ENABLE_LETSENCRYPT","value": "0" },
       { "name": "LETSENCRYPT_DOMAIN","value": "${public_url}" },
