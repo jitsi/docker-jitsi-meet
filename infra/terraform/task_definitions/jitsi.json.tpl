@@ -88,7 +88,7 @@
       { "name": "XMPP_MUC_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_INTERNAL_MUC_MODULES", "value": "${prosody_plugins}" },
-      { "name": "GLOBAL_MODULES", "value": "${prosody_plugins}" },
+      { "name": "GLOBAL_MODULES", "value": "${prosody_plugins}" }
     ],
     "secrets": [
       { "name": "JVB_AUTH_PASSWORD", "valueFrom": "${jvb_auth_password_arn}" },
