@@ -44,4 +44,7 @@ config.breakoutRooms = {
 }
 
 config.hideLoginButton = true;
-config.securityUi.disableLobbyPassword = true
+config.securityUi = {
+  ...(config.securityUi || {}),
+  disableLobbyPassword: true,
+};
