@@ -1,7 +1,7 @@
 [
   {
     "name": "prosody",
-    "image": "jitsi/prosody:${version}",
+    "image": "${ecr_prosody_image_uri}",
     "memory": 1024,
     "essential": true,
     "portMappings": [

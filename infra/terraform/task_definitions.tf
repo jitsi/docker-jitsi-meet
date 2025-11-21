@@ -48,7 +48,7 @@ resource "aws_ecs_task_definition" "jitsi" {
     letsencrypt_email           = var.letsencrypt_email
     jvb_nlb_dns                 = aws_lb.jvb_nlb.dns_name
     ecr_web_image_uri           = module.ecr_web.repository_url
-
+    ecr_prosody_image_uri       = module.ecr_prodosy.repository_url
   })
 
   volume {
