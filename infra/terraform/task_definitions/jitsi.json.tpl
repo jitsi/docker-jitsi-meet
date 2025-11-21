@@ -12,7 +12,7 @@
     ],
     "mountPoints": [
       { "sourceVolume": "config-prosody", "containerPath": "/config", "readOnly": false },
-      { "sourceVolume": "prosody-plugins",  "containerPath": "/prosody-plugins-custom",  "readOnly": true  }
+      { "sourceVolume": "prosody-plugins",  "containerPath": "/prosody-plugins",  "readOnly": true  }
     ],
     "logConfiguration": {
       "logDriver": "awslogs",
