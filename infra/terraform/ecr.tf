@@ -6,3 +6,12 @@ module "ecr_web" {
   name                   = "${module.label.name}-web"
   image_tag_mutability   = "MUTABLE"
 }
+
+module "ecr_prosody" {
+  source = "cloudposse/ecr/aws"
+  version                = "1.0.0"
+  namespace              = module.label.namespace
+  stage                  = module.label.environment
+  name                   = "${module.label.name}-prosody"
+  image_tag_mutability   = "MUTABLE"
+}
