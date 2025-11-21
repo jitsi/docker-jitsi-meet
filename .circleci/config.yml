@@ -85,6 +85,22 @@ workflows:
               only:
                 - develop
       - aws-ecs/deploy_service_update:
+          name: 'dev-prosody-deployment'
+          auth:
+            - aws-cli/setup:
+                role_arn: arn:aws:iam::233718569638:role/stella-circleci
+          cluster: 'stella-dev'
+          family: 'portal-dev-jitsi'
+          container_image_name_updates: container=prosody,tag=${CIRCLE_SHA1}
+          service_name: 'jitsi'
+          force_new_deployment: true
+          requires:
+            - dev-ecr-build-push-prosody
+          filters:
+            branches:
+              only:
+                - develop
+      - aws-ecs/deploy_service_update:
           name: 'prod-app-deployment'
           auth:
             - aws-cli/setup:
