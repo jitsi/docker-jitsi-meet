@@ -81,6 +81,7 @@
       { "name": "XMPP_DOMAIN", "value": "meet.jitsi" },
       { "name": "CONFIG", "value": "/config" },
       { "name": "ENABLE_AUTH", "value": "1" },
+      { "name": "ENABLE_AUTO_OWNER", "value": "0" },
       { "name": "AUTH_TYPE", "value": "jwt" },
       { "name": "XMPP_MUC_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_MODULES", "value": "${prosody_plugins}" },
