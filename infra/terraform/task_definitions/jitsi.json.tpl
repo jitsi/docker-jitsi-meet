@@ -195,10 +195,6 @@
                 "value": "meet.jitsi"
             },
             {
-                "name": "CONFIG",
-                "value": "/config"
-            },
-            {
                 "name": "ENABLE_AUTH",
                 "value": "1"
             },
@@ -225,7 +221,8 @@
             {
                 "name": "GLOBAL_MODULES",
                 "value": "${prosody_plugins}"
-            }
+            },
+            { "name": "JAVA_SYS_PROP_jicofo.conference.enable-auto-owner", "value": "false" }
         ],
         "secrets": [
             {
