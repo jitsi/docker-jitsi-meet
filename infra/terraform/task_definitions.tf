@@ -77,19 +77,6 @@ resource "aws_ecs_task_definition" "jitsi" {
   }
 
   volume {
-    name = "config-jicofo"
-    efs_volume_configuration {
-      file_system_id          = aws_efs_file_system.jitsi.id
-      root_directory          = "/"
-      transit_encryption      = "ENABLED"
-      authorization_config {
-        access_point_id = aws_efs_access_point.jicofo.id
-        iam                   = "ENABLED"
-      }
-    }
-  }
-
-  volume {
     name = "config-jvb"
     efs_volume_configuration {
       file_system_id          = aws_efs_file_system.jitsi.id
