@@ -47,7 +47,6 @@
       { "name": "XMPP_INTERNAL_MUC_MODULES", "value": "${prosody_plugins}" },
       { "name": "GLOBAL_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_MUC_CONFIGURATION", "value": "muc_component='muc.meet.jitsi', api_prefix='${event_sync_api_url}'" },
-      { "name": "ENABLE_AUTO_OWNER","value": "0" },
       { "name": "ENABLE_LETSENCRYPT","value": "0" },
       { "name": "LETSENCRYPT_DOMAIN","value": "${public_url}" },
       { "name": "LETSENCRYPT_EMAIL","value": "${letsencrypt_email}" }
@@ -87,7 +86,8 @@
       { "name": "XMPP_MUC_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_INTERNAL_MUC_MODULES", "value": "${prosody_plugins}" },
-      { "name": "GLOBAL_MODULES", "value": "${prosody_plugins}" }
+      { "name": "GLOBAL_MODULES", "value": "${prosody_plugins}" },
+      { "name": "ENABLE_AUTO_OWNER", "value": "0" }
     ],
     "secrets": [
       { "name": "JVB_AUTH_PASSWORD", "valueFrom": "${jvb_auth_password_arn}" },
