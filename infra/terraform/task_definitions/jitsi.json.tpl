@@ -28,8 +28,7 @@
       { "name": "LOG_LEVEL", "value": "info" },
       { "name": "XMPP_DOMAIN", "value": "meet.jitsi" },
       { "name": "XMPP_AUTH_DOMAIN", "value": "auth.meet.jitsi" },
-      { "name": "XMPP_MUC_DOMAIN", "value": "muc.meet.jitsi" }
-
+      { "name": "XMPP_MUC_DOMAIN", "value": "muc.meet.jitsi" },
       { "name": "XMPP_INTERNAL_MUC_DOMAIN", "value": "internal-muc.meet.jitsi" },
       { "name": "XMPP_GUEST_DOMAIN", "value": "guest.meet.jitsi" },
       { "name": "JWT_APP_ID", "value": "${jwt_app_id}" },
