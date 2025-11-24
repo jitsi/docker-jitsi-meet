@@ -176,13 +176,6 @@
                 "condition": "START"
             }
         ],
-        "mountPoints": [
-            {
-                "sourceVolume": "config-jicofo",
-                "containerPath": "/config",
-                "readOnly": false
-            }
-        ],
         "logConfiguration": {
             "logDriver": "awslogs",
             "options": {
