@@ -41,7 +41,6 @@
       { "name": "ENABLE_GUESTS", "value": "1" },
       { "name": "ENABLE_LOBBY", "value": "1" },
       { "name": "LOBBY_MUC", "value": "lobby.meet.jitsi" },
-      { "name": "ENABLE_AUTO_OWNER", "value": "0" },
       { "name": "XMPP_MUC_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_INTERNAL_MUC_MODULES", "value": "${prosody_plugins}" },
@@ -87,7 +86,6 @@
       { "name": "XMPP_MODULES", "value": "${prosody_plugins}" },
       { "name": "XMPP_INTERNAL_MUC_MODULES", "value": "${prosody_plugins}" },
       { "name": "GLOBAL_MODULES", "value": "${prosody_plugins}" },
-      { "name": "ENABLE_AUTO_OWNER", "value": "0" }
     ],
     "secrets": [
       { "name": "JVB_AUTH_PASSWORD", "valueFrom": "${jvb_auth_password_arn}" },
