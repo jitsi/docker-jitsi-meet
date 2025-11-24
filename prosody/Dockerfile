@@ -5,5 +5,6 @@ COPY custom/mod_owner_restricted.lua              /prosody-plugins-custom/mod_ow
 COPY custom/mod_token_security_ondemand.lua              /prosody-plugins-custom/mod_token_security_ondemand.lua
 COPY custom/mod_token_owner_party.lua              /prosody-plugins-custom/mod_token_owner_party.lua
 COPY custom/mod_lobby_autostart.lua              /prosody-plugins-custom/mod_lobby_autostart.lua
+COPY custom/mod_lobby_autostart_on_owner.lua              /prosody-plugins-custom/mod_lobby_autostart_on_owner.lua
 
 EXPOSE 5222 5280

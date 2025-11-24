@@ -38,7 +38,7 @@ resource "aws_ecs_task_definition" "jitsi" {
     region                      = var.region
     version                     = var.jitsi_version
     public_url                  = var.url
-    prosody_plugins             = "owner_restricted,persistent_lobby,muc_lobby_rooms,event_sync_component,token_owner_party"
+    prosody_plugins             = "owner_restricted,lobby_autostart_on_owner,persistent_lobby,muc_lobby_rooms,event_sync_component"
     jvb_auth_password_arn       = aws_ssm_parameter.jvb_auth_password.arn
     jicofo_auth_password_arn    = aws_ssm_parameter.jicofo_auth_password.arn
     jicofo_component_secret_arn = aws_ssm_parameter.jicofo_component_secret.arn
