@@ -6,7 +6,7 @@ RUN apt-get update && apt-get -y install --reinstall build-essential && apt-get 
 
 ENV NODE_OPTIONS=--max_old_space_size=4096
 
-COPY ./jitsi-meet-custom /usr/share/jitsi-meet
+COPY ./jitsi-meet /usr/share/jitsi-meet
 
 COPY assets/watermark.svg              /usr/share/jitsi-meet/images/watermark.svg
 COPY assets/title.html                 /usr/share/jitsi-meet/title.html
@@ -18,6 +18,8 @@ COPY assets/close2.html                /usr/share/jitsi-meet/static/close2.html
 COPY assets/close2.html                /usr/share/jitsi-meet/static/close2.html
 COPY config/custom-config.js           /config/custom-config.js
 COPY config/custom-interface_config.js /config/custom-interface_config.js
+COPY config/custom/middleware.ts       /usr/share/jitsi-meet/react/features/authentication/middleware.ts
+
 
 RUN cd /usr/share/jitsi-meet && npm install && make all
 
