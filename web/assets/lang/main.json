@@ -291,7 +291,7 @@
         "Submit": "Submit",
         "Understand": "I understand, keep me muted for now",
         "UnderstandAndUnmute": "I understand, please unmute me",
-        "WaitForHostNoAuthMsg": "The conference has not yet started because no moderators have yet arrived. Please wait.",
+        "WaitForHostNoAuthMsg": "Your Stella provider will be allowing you into your virtual session shortly. Once your provider has joined you will be prompted to enter your name and request entry into your virtual visit.",
         "WaitingForHostButton": "Wait for moderator",
         "WaitingForHostTitle": "Waiting for a moderator…",
         "Yes": "Yes",
