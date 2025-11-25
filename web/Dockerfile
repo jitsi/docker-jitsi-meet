@@ -6,7 +6,7 @@ RUN apt-get update && apt-get -y install --reinstall build-essential && apt-get 
 
 ENV NODE_OPTIONS=--max_old_space_size=4096
 
-COPY ./jitsi-meet /usr/share/jitsi-meet
+COPY ./jitsi-meet-custom /usr/share/jitsi-meet
 
 COPY assets/watermark.svg              /usr/share/jitsi-meet/images/watermark.svg
 COPY assets/title.html                 /usr/share/jitsi-meet/title.html
