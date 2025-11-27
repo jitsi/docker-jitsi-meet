@@ -64,6 +64,7 @@ workflows:
           build_path: web
           repo: portal-prod-jitsi-web
           tag: 'latest,$CIRCLE_SHA1'
+          executor: big-machine
           pre-steps:
             - checkout
             - run:
