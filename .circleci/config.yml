@@ -68,6 +68,21 @@ workflows:
             branches:
               only:
                 - master
+      - aws-ecr/build_and_push_image:
+          name: prod-ecr-build-push-prosody
+          account_id: ${AWS_ACCOUNT_ID}
+          auth:
+              - aws-cli/setup:
+                  role_arn: arn:aws:iam::233718569638:role/stella-circleci
+          dockerfile: Dockerfile
+          path: prosody
+          build_path: prosody
+          repo: portal-prod-jitsi-prosody
+          tag: 'latest,$CIRCLE_SHA1'
+          filters:
+            branches:
+              only:
+                - master
       - aws-ecs/deploy_service_update:
           name: 'dev-app-deployment'
           auth:
@@ -112,6 +127,22 @@ workflows:
           force_new_deployment: true
           requires:
             - prod-ecr-build-push-app
+          filters:
+            branches:
+              only:
+                - master
+      - aws-ecs/deploy_service_update:
+          name: 'prod-prosody-deployment'
+          auth:
+            - aws-cli/setup:
+                role_arn: arn:aws:iam::233718569638:role/stella-circleci
+          cluster: 'stella-prod'
+          family: 'portal-prod-jitsi'
+          container_image_name_updates: container=prosody,tag=${CIRCLE_SHA1}
+          service_name: 'jitsi'
+          force_new_deployment: true
+          requires:
+            - prod-ecr-build-push-prosody
           filters:
             branches:
               only:
