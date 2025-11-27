@@ -318,7 +318,7 @@
             },
             {
                 "name": "JVB_ADVERTISE_IPS",
-                "value": "52.45.152.241,98.88.168.215,34.226.172.199"
+                "value": "${jvb_nlb_public_ips}"
             },
             {
                 "name": "JAVA_SYS_PROP_org.jitsi.videobridge.rest.jetty.enabled",
