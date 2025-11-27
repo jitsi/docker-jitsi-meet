@@ -64,6 +64,13 @@ workflows:
           build_path: web
           repo: portal-prod-jitsi-web
           tag: 'latest,$CIRCLE_SHA1'
+          pre-steps:
+            - checkout
+            - run:
+                name: Init & update git submodules
+                command: |
+                  git submodule sync --recursive
+                  git submodule update --init --recursive
           filters:
             branches:
               only:
