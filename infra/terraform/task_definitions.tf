@@ -38,6 +38,7 @@ resource "aws_ecs_task_definition" "jitsi" {
     region                      = var.region
     version                     = var.jitsi_version
     public_url                  = var.url
+    prosody_plugins             = "owner_restricted,lobby_autostart_on_owner,event_sync_component"
     jvb_auth_password_arn       = aws_ssm_parameter.jvb_auth_password.arn
     jicofo_auth_password_arn    = aws_ssm_parameter.jicofo_auth_password.arn
     jicofo_component_secret_arn = aws_ssm_parameter.jicofo_component_secret.arn
@@ -47,6 +48,7 @@ resource "aws_ecs_task_definition" "jitsi" {
     letsencrypt_email           = var.letsencrypt_email
     jvb_nlb_dns                 = aws_lb.jvb_nlb.dns_name
     ecr_web_image_uri           = module.ecr_web.repository_url
+    ecr_prosody_image_uri       = module.ecr_prosody.repository_url
     jvb_nlb_public_ips          = var.jvb_nlb_public_ips
   })
 
@@ -71,19 +73,6 @@ resource "aws_ecs_task_definition" "jitsi" {
       authorization_config {
         access_point_id = aws_efs_access_point.prosody_plugins.id
         iam             = "ENABLED"
-      }
-    }
-  }
-
-  volume {
-    name = "config-jicofo"
-    efs_volume_configuration {
-      file_system_id          = aws_efs_file_system.jitsi.id
-      root_directory          = "/"
-      transit_encryption      = "ENABLED"
-      authorization_config {
-        access_point_id = aws_efs_access_point.jicofo.id
-        iam                   = "ENABLED"
       }
     }
   }

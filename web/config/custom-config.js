@@ -15,7 +15,7 @@ config.toolbarButtons = [
   // "invite",
   "feedback",
   // "shortcuts",
-  // "tileview",
+  "tileview",
   "select-background",
   "participants-pane",
   "download",
@@ -42,3 +42,9 @@ config.breakoutRooms = {
     // Hides the join breakout room button.
     hideJoinRoomButton: true,
 }
+
+config.hideLoginButton = true;
+config.securityUi = {
+  ...(config.securityUi || {}),
+  disableLobbyPassword: true,
+};
