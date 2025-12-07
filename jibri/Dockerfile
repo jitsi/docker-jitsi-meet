@@ -13,15 +13,19 @@ ARG USE_CHROMIUM=0
 # https://googlechromelabs.github.io/chrome-for-testing/
 ARG CHROME_RELEASE=130.0.6723.116
 
+#ARG JIBRI_VERSION=8.0-184-g4f57e90-1
+#ARG JITSI_UPLOAD_INTEGRATIONS_VERSION=0.15.15-1
+#ARG JITSI_AUTOSCALER_SIDECAR_VERSION=1.0-50-g5fef5f5-1
+
 COPY rootfs/ /
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
-        jibri \
+        jibri${JIBRI_VERSION:+=$JIBRI_VERSION} \
         libgl1-mesa-dri \
         procps \
-        jitsi-upload-integrations \
-        jitsi-autoscaler-sidecar \
+        jitsi-upload-integrations${JITSI_UPLOAD_INTEGRATIONS_VERSION:+=$JITSI_UPLOAD_INTEGRATIONS_VERSION} \
+        jitsi-autoscaler-sidecar${JITSI_AUTOSCALER_SIDECAR_VERSION:+=$JITSI_AUTOSCALER_SIDECAR_VERSION} \
         jq \
         pulseaudio \
         dbus \
