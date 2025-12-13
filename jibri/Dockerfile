@@ -30,7 +30,8 @@ RUN apt-dpkg-wrap apt-get update && \
         unzip \
         fonts-noto \
         fonts-noto-cjk \
-        libcap2-bin && \
+        libcap2-bin \
+        rclone && \
     /usr/bin/install-chrome.sh && \
     apt-cleanup && \
     adduser jibri rtkit && \
