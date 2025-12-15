@@ -339,7 +339,7 @@ config.chromeExtensionBanner = {{ .Env.CHROME_EXTENSION_BANNER_JSON }};
 config.disableProfile = {{ $DISABLE_PROFILE }};
 
 // When 'true', the user cannot edit the display name. Mainly used in conjunction with JWT.
-config.readOnlyName = {{ $ENABLE_READ_ONLY_NAME }}
+config.readOnlyName = {{ $ENABLE_READ_ONLY_NAME }};
 
 // Room password (false for anything, number for max digits)
 {{ if $ENABLE_JAAS_COMPONENTS -}}
