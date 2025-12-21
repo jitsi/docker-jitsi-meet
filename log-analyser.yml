@@ -1,5 +1,3 @@
-version: '3.5'
-
 services:
   # Log Analyser: used for setting up a log analysis system for visualization, log collection and log processing.
 
