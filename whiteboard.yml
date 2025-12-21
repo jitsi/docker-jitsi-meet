@@ -1,5 +1,3 @@
-version: '3.5'
-
 services:
     whiteboard:
         image: jitsi/excalidraw-backend:21
