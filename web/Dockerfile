@@ -8,11 +8,20 @@ LABEL org.opencontainers.image.url="https://jitsi.org/jitsi-meet/"
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
+#ARG JITSI_MEET_WEB_VERSION="1.0.8936-1"
+
 ADD https://raw.githubusercontent.com/acmesh-official/acme.sh/3.0.7/acme.sh /opt
 COPY rootfs/ /
 
 RUN apt-dpkg-wrap apt-get update && \
-    apt-dpkg-wrap apt-get install -y dnsutils cron nginx-extras jitsi-meet-web socat curl jq && \
+    apt-dpkg-wrap apt-get install -y \
+        dnsutils \
+        cron \
+        nginx-extras \
+        jitsi-meet-web${JITSI_MEET_WEB_VERSION:+=$JITSI_MEET_WEB_VERSION} \
+        socat \
+        curl \
+        jq && \
     mv /usr/share/jitsi-meet/interface_config.js /defaults && \
     rm -f /etc/nginx/conf.d/default.conf && \
     apt-cleanup
