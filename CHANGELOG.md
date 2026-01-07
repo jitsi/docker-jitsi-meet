@@ -2,6 +2,10 @@
 
 Look at the GH releases from now on.
 
+## unreleased
+
+* etherpad: bump image to 2.5.3 to fix timeslider breakage
+
 ## stable-10008
 
 Based on stable release 10008.
