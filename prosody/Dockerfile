@@ -29,7 +29,7 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
 ARG VERSION_JITSI_CONTRIB_PROSODY_PLUGINS="20250923"
 ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
-ARG PROSODY_PACKAGE="prosody==13.0.2"
+ARG PROSODY_PACKAGE="prosody=13.0.2"
 
 RUN set -x && \
     wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
