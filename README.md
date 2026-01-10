@@ -26,6 +26,14 @@ Tag | Description
 `unstable-YYYY-MM-DD` | Daily unstable release
 `latest` | Deprecated, no longer updated (will be removed)
 
+> ⚠️ **Note**
+>
+> Docker Hub no longer publishes or updates the `latest` Jitsi images.
+> docker-jitsi-meet defaults to a pinned `stable-*` image version to avoid
+> image pull failures. You can override this by setting
+> `JITSI_IMAGE_VERSION` in your `.env` file.
+
+
 ## Installation
 
 The installation manual is available [here](https://jitsi.github.io/handbook/docs/devops-guide/devops-guide-docker).
