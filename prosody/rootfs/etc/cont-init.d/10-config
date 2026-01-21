@@ -83,10 +83,7 @@ fi
 
 prosodyctl --config $PROSODY_CFG register focus $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
 
-# if we are in client mode, we need to subscribe the focus user to the focus component proxy
-if [[ "$PROSODY_MODE" == "client" ]]; then
-    prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN focus@$XMPP_AUTH_DOMAIN
-fi
+# Roster subscription is now handled by the 20-roster-setup service after prosody starts
 
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'

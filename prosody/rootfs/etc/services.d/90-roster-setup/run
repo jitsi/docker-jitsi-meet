@@ -1,0 +1,77 @@
+#!/usr/bin/with-contenv bash
+
+echo "[roster-setup] Service starting..."
+
+# Default to client mode if not set (matching init script behavior)
+[ -z "$PROSODY_MODE" ] && PROSODY_MODE="client"
+
+# Only run in client mode
+if [[ "$PROSODY_MODE" != "client" ]]; then
+    echo "[roster-setup] Not in client mode (PROSODY_MODE=$PROSODY_MODE), exiting..."
+    s6-svc -O /var/run/s6/services/90-roster-setup
+    exec sleep infinity
+fi
+
+echo "[roster-setup] Running in client mode, proceeding with roster setup"
+
+# Wait for prosody to be ready
+echo "[roster-setup] Waiting for prosody to be ready..."
+MAX_ATTEMPTS=60
+ATTEMPT=0
+
+while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+    if curl --fail --silent --output /dev/null http://127.0.0.1:5280/health 2>&1; then
+        echo "[roster-setup] Prosody is ready!"
+        break
+    fi
+    ATTEMPT=$((ATTEMPT + 1))
+    echo "[roster-setup] Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+    sleep 2
+done
+
+if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+    echo "[roster-setup] ERROR: Prosody did not become ready in time"
+    exit 1
+fi
+
+# Set defaults for XMPP domains (matching init script)
+[ -z "${XMPP_DOMAIN}" ] && XMPP_DOMAIN=meet.jitsi
+[ -z "${XMPP_AUTH_DOMAIN}" ] && XMPP_AUTH_DOMAIN=auth.meet.jitsi
+
+# Subscribe the focus user to the focus component proxy using prosodyctl shell
+echo "[roster-setup] Setting up roster subscription..."
+echo "[roster-setup] Command: prosodyctl shell roster subscribe_both focus@$XMPP_AUTH_DOMAIN focus.$XMPP_DOMAIN"
+PROSODY_CFG="/config/prosody.cfg.lua"
+
+# Capture both stdout and stderr
+OUTPUT=$(prosodyctl --config $PROSODY_CFG shell roster subscribe_both focus@$XMPP_AUTH_DOMAIN focus.$XMPP_DOMAIN 2>&1)
+RESULT=$?
+
+echo "[roster-setup] Command output:"
+echo "$OUTPUT"
+
+if [ $RESULT -eq 0 ]; then
+    echo "[roster-setup] Roster subscription completed successfully"
+
+    # Reload mod_client_proxy module to apply roster changes
+    echo "[roster-setup] Reloading client_proxy module..."
+    RELOAD_OUTPUT=$(prosodyctl --config $PROSODY_CFG shell module reload client_proxy 2>&1)
+    RELOAD_RESULT=$?
+
+    echo "[roster-setup] Module reload output:"
+    echo "$RELOAD_OUTPUT"
+
+    if [ $RELOAD_RESULT -eq 0 ]; then
+        echo "[roster-setup] Module reloaded successfully"
+    else
+        echo "[roster-setup] WARNING: Failed to reload module (exit code: $RELOAD_RESULT)"
+    fi
+else
+    echo "[roster-setup] ERROR: Failed to setup roster subscription (exit code: $RESULT)"
+    echo "[roster-setup] This is a oneshot service, will sleep to prevent restart loop"
+fi
+
+echo "[roster-setup] Oneshot service completed, sleeping..."
+# This is a oneshot service - tell s6 to stop supervising and sleep
+s6-svc -O /var/run/s6/services/90-roster-setup
+exec sleep infinity
