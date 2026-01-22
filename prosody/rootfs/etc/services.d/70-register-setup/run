@@ -4,11 +4,12 @@ echo "[register-setup] Service starting..."
 
 # Wait for prosody to be ready
 echo "[register-setup] Waiting for prosody to be ready..."
+[ -z "$PROSODY_HTTP_PORT" ] && PROSODY_HTTP_PORT="5280"
 MAX_ATTEMPTS=60
 ATTEMPT=0
 
 while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
-    if curl --fail --silent --output /dev/null http://127.0.0.1:5280/health 2>&1; then
+    if curl --fail --silent --output /dev/null http://127.0.0.1:${PROSODY_HTTP_PORT}/health 2>&1; then
         echo "[register-setup] Prosody is ready!"
         break
     fi
@@ -133,7 +134,35 @@ if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
     fi
 fi
 
-echo "[register-setup] All users registered, service completed"
+# Capture both stdout and stderr
+OUTPUT=$(prosodyctl --config $PROSODY_CFG shell roster subscribe_both focus@$XMPP_AUTH_DOMAIN focus.$XMPP_DOMAIN 2>&1)
+RESULT=$?
+
+echo "[register-setup] Roster command output:"
+echo "$OUTPUT"
+
+if [ $RESULT -eq 0 ]; then
+    echo "[register-setup] Roster subscription completed successfully"
+
+    # Reload mod_client_proxy module to apply roster changes
+    echo "[register-setup] Reloading client_proxy module..."
+    RELOAD_OUTPUT=$(prosodyctl --config $PROSODY_CFG shell module reload client_proxy 2>&1)
+    RELOAD_RESULT=$?
+
+    echo "[register-setup] Module reload output:"
+    echo "$RELOAD_OUTPUT"
+
+    if [ $RELOAD_RESULT -eq 0 ]; then
+        echo "[register-setup] Module reloaded successfully"
+    else
+        echo "[register-setup] WARNING: Failed to reload module (exit code: $RELOAD_RESULT)"
+    fi
+else
+    echo "[register-setup] ERROR: Failed to setup roster subscription (exit code: $RESULT)"
+fi
+
+echo "[register-setup] All users registered and roster modified, service completed"
+
 # This is a oneshot service - tell s6 to stop supervising and sleep
 s6-svc -O /var/run/s6/services/70-register-setup
 exec sleep infinity
