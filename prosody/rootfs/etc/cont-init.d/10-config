@@ -81,12 +81,7 @@ fi
 [ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
 [ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN=hidden.meet.jitsi
 
-prosodyctl --config $PROSODY_CFG register focus $XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD
-
-# if we are in client mode, we need to subscribe the focus user to the focus component proxy
-if [[ "$PROSODY_MODE" == "client" ]]; then
-    prosodyctl --config $PROSODY_CFG mod_roster_command subscribe focus.$XMPP_DOMAIN focus@$XMPP_AUTH_DOMAIN
-fi
+# User registration is now handled by the 70-register-setup service after prosody starts
 
 if [[ -z $JVB_AUTH_PASSWORD ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'
@@ -99,20 +94,12 @@ if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
     exit 1
 fi
 
-# we see the next register command to hang from time to time, suspect it's a race with mod_roster_command
-# Once this is released: https://issues.prosody.im/1908 we can remove this sleep and make sure prosody is running
-# and then use 'prosodyctl shell user create' to add user live and 'prosodyctl shell roster' to modify their roster live.
-sleep 1
-
-prosodyctl --config $PROSODY_CFG register $JVB_AUTH_USER $XMPP_AUTH_DOMAIN $JVB_AUTH_PASSWORD
-
 if [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
     OLD_JIBRI_XMPP_PASSWORD=passw0rd
     if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
         echo 'FATAL ERROR: Jibri auth password must be changed, check the README'
         exit 1
     fi
-    prosodyctl --config $PROSODY_CFG register $JIBRI_XMPP_USER $XMPP_AUTH_DOMAIN $JIBRI_XMPP_PASSWORD
 fi
 
 if [[ "$PROSODY_MODE" == "client" ]]; then
@@ -121,13 +108,6 @@ if [[ "$PROSODY_MODE" == "client" ]]; then
         if [[ "$JIBRI_RECORDER_PASSWORD" == "$OLD_JIBRI_RECORDER_PASSWORD" ]]; then
             echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
             exit 1
-        fi
-        prosodyctl --config $PROSODY_CFG register $JIBRI_RECORDER_USER $XMPP_HIDDEN_DOMAIN $JIBRI_RECORDER_PASSWORD
-    fi
-    if [[ "$(echo "$ENABLE_TRANSCRIPTIONS" | tr '[:upper:]' '[:lower:]')" == "true" ]] || [[ "$ENABLE_TRANSCRIPTIONS" == "1" ]]; then
-        if [[ ! -z $JIGASI_TRANSCRIBER_PASSWORD ]]; then
-            [ -z "$JIGASI_TRANSCRIBER_USER" ] && JIGASI_TRANSCRIBER_USER="transcriber"
-            prosodyctl --config $PROSODY_CFG register $JIGASI_TRANSCRIBER_USER $XMPP_HIDDEN_DOMAIN $JIGASI_TRANSCRIBER_PASSWORD
         fi
     fi
 fi
@@ -138,7 +118,6 @@ if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
         echo 'FATAL ERROR: Jigasi auth password must be changed, check the README'
         exit 1
     fi
-    prosodyctl --config $PROSODY_CFG register $JIGASI_XMPP_USER $XMPP_AUTH_DOMAIN $JIGASI_XMPP_PASSWORD
 fi
 
 if [[ "$PROSODY_MODE" == "visitors" ]]; then
