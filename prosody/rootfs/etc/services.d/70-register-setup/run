@@ -23,6 +23,22 @@ if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
     exit 1
 fi
 
+[ -z "$PROSODY_MODE" ] && export PROSODY_MODE="client"
+
+if [[ "$PROSODY_MODE" == "visitors" ]]; then
+    echo "Prosody visitor mode, using alternate config"
+    # force jicofo into auth domain for visitor-mode prosody
+    [ -z "$XMPP_AUTH_DOMAIN" ] && XMPP_AUTH_DOMAIN="auth.meet.jitsi"
+elif [[ "$PROSODY_MODE" == "brewery" ]]; then
+    echo "Prosody brewery mode, using alternate config"
+    # force jicofo into auth domain for brewer prosody
+    [ -z "$JVB_XMPP_AUTH_DOMAIN" ] && JVB_XMPP_AUTH_DOMAIN="auth.meet.jitsi"
+    # ensure proper certs are generated
+    export XMPP_AUTH_DOMAIN="$JVB_XMPP_AUTH_DOMAIN"
+else
+    echo "Prosody normal mode, using default config"
+fi
+
 # Set defaults (matching init script)
 [ -z "${JIBRI_RECORDER_USER}" ] && export JIBRI_RECORDER_USER=recorder
 [ -z "${JIBRI_XMPP_USER}" ] && export JIBRI_XMPP_USER=jibri
@@ -32,7 +48,6 @@ fi
 [ -z "${XMPP_AUTH_DOMAIN}" ] && XMPP_AUTH_DOMAIN=auth.meet.jitsi
 [ -z "${XMPP_HIDDEN_DOMAIN}" ] && XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
 [ -z "${XMPP_HIDDEN_DOMAIN}" ] && XMPP_HIDDEN_DOMAIN=hidden.meet.jitsi
-[ -z "$PROSODY_MODE" ] && PROSODY_MODE="client"
 
 PROSODY_CFG="/config/prosody.cfg.lua"
 
