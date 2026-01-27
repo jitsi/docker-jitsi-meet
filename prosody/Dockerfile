@@ -66,7 +66,7 @@ RUN set -x && \
     mkdir /prosody-plugins-contrib && \
     cp -a prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/*  /prosody-plugins-contrib && \
     rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
-    (apt-cache policy prosody | grep -Eq "13\.0\.[34]" && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua) || true
+    (apt-cache policy prosody | grep -Eq "13\.0\.[34]" && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true)
 
 COPY rootfs/ /
 
