@@ -90,6 +90,12 @@ modules_enabled = {
 		"saslauth"; -- Authentication for clients and servers. Recommended if you want to log in.
 		"tls"; -- Add support for secure TLS on c2s/s2s connections
 		"disco"; -- Service discovery
+
+	-- Admin interfaces
+		"admin_shell"; -- Enable admin shell for prosodyctl shell commands
+		-- "admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
+		--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
+
 {{- if eq $PROSODY_MODE "client" }}
 	-- Not essential, but recommended
 		"private"; -- Private XML storage (for room bookmarks, etc.)
@@ -98,10 +104,6 @@ modules_enabled = {
 	-- These are commented by default as they have a performance impact
 		--"privacy"; -- Support privacy lists
 		--"compression"; -- Stream compression (Debian: requires lua-zlib module to work)
-
-	-- Admin interfaces
-		-- "admin_adhoc"; -- Allows administration via an XMPP client that supports ad-hoc commands
-		--"admin_telnet"; -- Opens telnet console interface on localhost port 5582
 
 	-- Nice to have
 		"version"; -- Replies to server version requests
