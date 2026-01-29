@@ -48,6 +48,13 @@ RUN set -x && \
       lua-sec \
       lua-unbound && \
     apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
+    PROSODY_VERSION=$(apt-cache policy prosody | grep "Installed:" | awk '{print $2}' | cut -d'-' -f1) && \
+    echo "Detected Prosody version: $PROSODY_VERSION" && \
+    if [ "$PROSODY_VERSION" != "13.0.4" ]; then \
+        echo "ERROR: Prosody version must be 13.0.4, but found $PROSODY_VERSION" >&2; \
+        exit 1; \
+    fi && \
+    echo "Prosody version validated: $PROSODY_VERSION" && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
     mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
     rm -rf /tmp/pkg /var/cache/apt && \
@@ -66,7 +73,7 @@ RUN set -x && \
     mkdir /prosody-plugins-contrib && \
     cp -a prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/*  /prosody-plugins-contrib && \
     rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
-    (apt-cache policy prosody | grep -Eq "13\.0\.[34]" && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true)
+    (apt-cache policy prosody | grep -Eq "13\.0\.4" && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true)
 
 COPY rootfs/ /
 
