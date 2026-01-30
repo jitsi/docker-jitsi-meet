@@ -138,6 +138,13 @@ services:
             - RESOLUTION_MIN
             - RESOLUTION_WIDTH
             - RESOLUTION_WIDTH_MIN
+            - RTCSTATS_ENABLED
+            - RTCSTATS_STORE_LOGS
+            - RTCSTATS_POLL_INTERVAL
+            - RTCSTATS_SEND_SDP
+            - RTCSTATS_URL_BASE
+            - RTC_VISUALIZER_URL_BASE
+            - RTC_VISUALIZER_PATH
             - START_AUDIO_MUTED
             - START_AUDIO_ONLY
             - START_SILENT
