@@ -30,6 +30,7 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 ARG VERSION_JITSI_CONTRIB_PROSODY_PLUGINS="20250923"
 ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
 ARG PROSODY_PACKAGE="prosody"
+ARG PROSODY_PACKAGE_VERSION="13.*"
 
 RUN set -x && \
     wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
@@ -37,7 +38,7 @@ RUN set -x && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
-      $PROSODY_PACKAGE \
+      $PROSODY_PACKAGE=$PROSODY_PACKAGE_VERSION \
       libldap-common \
       sasl2-bin \
       libsasl2-modules-ldap \
