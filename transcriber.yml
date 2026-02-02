@@ -1,6 +1,6 @@
 services:
     transcriber:
-        image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-stable-10741}
+        image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ${CONFIG}/transcriber:/config:Z
