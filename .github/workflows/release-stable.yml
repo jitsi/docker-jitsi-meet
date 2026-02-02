@@ -8,9 +8,53 @@ on:
         required: true
         type: string
 jobs:
+  version:
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ github.event.inputs.version }}
+      prosody_version: prosody-${{ steps.prosody_version.outputs.version }}
+      jicofo_version: jicofo-${{ steps.jicofo_version.outputs.version }}
+      web_version: web-${{ steps.web_version.outputs.version }}
+      jvb_version: jvb-${{ steps.jvb_version.outputs.version }}
+      jibri_version: jibri-${{ steps.jibri_version.outputs.version }}
+      jigasi_version: jigasi-${{ steps.jigasi_version.outputs.version }}
+    steps:
+      - name: Prosody gpg key
+        id: prosody_gpg_key
+        run: curl --location --silent --show-error https://prosody.im/files/prosody-debian-packages.key | sudo dd of=/etc/apt/keyrings/prosody.gpg
+      - name: Prosody dsa1024 key support
+        run: echo 'APT::Key::Assert-Pubkey-Algo ">=rsa2048,ed25519,ed448,dsa1024";' | sudo tee /etc/apt/apt.conf.d/99weakkey-warning
+      - name: Prosody repo
+        id: prosody_repo
+        run: echo "deb [signed-by=/etc/apt/keyrings/prosody.gpg] https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
+      - name: Jitsi repo
+        uses: myci-actions/add-deb-repo@11
+        with:
+          repo: deb https://download.jitsi.org/ stable/
+          repo-name: jitsi
+          keys-asc: https://download.jitsi.org/jitsi-key.gpg.key
+      - name: Get current jicofo versions
+        id: jicofo_version
+        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Depends:' | tr ',' '\n' | grep jicofo | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
+      - name: Get current jitsi-meet-web versions
+        id: web_version
+        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Depends:' | tr ',' '\n' | grep 'jitsi-meet-web ' | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
+      - name: Get current jvb versions
+        id: jvb_version
+        run: echo "version=$( apt-cache show jitsi-meet | head -10 | grep '^Pre-Depends:'| tr ',' '\n' | grep 'jitsi-videobridge2' | cut -d'=' -f2 | tr -d ')' | awk '{print $1}' )" >> $GITHUB_OUTPUT
+      - name: Get current prosody versions
+        id: prosody_version
+        run: echo "version=$( apt-cache madison prosody | awk '{print $3;}' | head -1 |  cut -d'-' -f1 )" >> $GITHUB_OUTPUT
+      - name: Get current jibri version
+        id: jibri_version
+        run: echo "version=$( apt-cache show jibri | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
+      - name: Get current jigasi version
+        id: jigasi_version
+        run: echo "version=$( apt-cache show jigasi | head -10 | grep Version | awk '{print $2}' )" >> $GITHUB_OUTPUT
+
   gh-release:
     runs-on: ubuntu-latest
-    needs: [base, base-java, jibri, jicofo, jigasi, jvb, prosody, web]
+    needs: [version, base, base-java, jibri, jicofo, jigasi, jvb, prosody, web]
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
       contents: write
@@ -20,7 +64,17 @@ jobs:
           sed -i".bak" -e "s/unstable/stable-${{ github.event.inputs.version }}/" *.yml
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-            commit_message: "release: stable-${{ github.event.inputs.version }}"
+            # multiline commit message including the version numbers for all components
+            commit_message: |
+              release: stable-${{ github.event.inputs.version }}
+              
+              Using versions
+              - Prosody = ${{ needs.version.outputs.prosody_version }}
+              - Jicofo = ${{ needs.version.outputs.jicofo_version }}
+              - Web = ${{ needs.version.outputs.web_version }}
+              - JVB = ${{ needs.version.outputs.jvb_version }}
+              - Jibri = ${{ needs.version.outputs.jibri_version }}
+              - Jigasi = ${{ needs.version.outputs.jigasi_version }}
       - name: release
         uses: softprops/action-gh-release@v2
         with:
