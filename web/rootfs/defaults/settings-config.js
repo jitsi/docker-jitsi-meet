@@ -61,6 +61,7 @@
 {{ $ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT := .Env.ENABLE_LOCAL_RECORDING_NOTIFY_ALL_PARTICIPANT | default "false" | toBool -}}
 {{ $ENABLE_LOCAL_RECORDING_SELF_START := .Env.ENABLE_LOCAL_RECORDING_SELF_START | default "false" | toBool -}}
 {{ $DISABLE_PROFILE := .Env.DISABLE_PROFILE | default "false" | toBool -}}
+{{ $ENABLE_READ_ONLY_NAME := .Env.ENABLE_READ_ONLY_NAME | default "false" | toBool - }}
 {{ $ROOM_PASSWORD_DIGITS := .Env.ROOM_PASSWORD_DIGITS | default "false" -}}
 {{ $WHITEBOARD_ENABLED := or (.Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" | toBool) (.Env.WHITEBOARD_COLLAB_SERVER_URL_BASE | default "" | toBool) }}
 {{ $CODEC_ORDER_JVB := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
@@ -335,6 +336,9 @@ config.chromeExtensionBanner = {{ .Env.CHROME_EXTENSION_BANNER_JSON }};
 
 // Disables profile and the edit of all fields from the profile settings (display name and email)
 config.disableProfile = {{ $DISABLE_PROFILE }};
+
+// When 'true', the user cannot edit the display name. Mainly used in conjunction with JWT.
+config.readOnlyName = {{ $ENABLE_READ_ONLY_NAME }};
 
 // Room password (false for anything, number for max digits)
 {{ if $ENABLE_JAAS_COMPONENTS -}}
