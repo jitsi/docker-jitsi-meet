@@ -6,12 +6,6 @@ if [[ -z $JVB_DISABLE_XMPP ]]; then
         exit 1
     fi
 
-    OLD_JVB_AUTH_PASSWORD=passw0rd
-    if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
-        echo 'FATAL ERROR: JVB auth password must be changed, check the README'
-        exit 1
-    fi
-
     [ -z "${XMPP_SERVER}" ] && export XMPP_SERVER=xmpp.meet.jitsi
 
     # On environments like Swarm the IP address used by the default gateway need not be
