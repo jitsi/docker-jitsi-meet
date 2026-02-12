@@ -2,7 +2,7 @@
 
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jigasi | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
-if [[ -z $JIGASI_XMPP_PASSWORD ]]; then
+if [[ -z "$JIGASI_XMPP_PASSWORD" ]]; then
     echo 'FATAL ERROR: Jigasi auth password must be set'
     exit 1
 fi
@@ -65,7 +65,7 @@ elif [[ "$JIGASI_MODE" == "transcriber" ]]; then
     chown jigasi:jitsi /tmp/transcripts
 
     # Create Google Cloud Credentials
-    if [[ -z $GC_PROJECT_ID || -z $GC_PRIVATE_KEY_ID || -z $GC_PRIVATE_KEY || -z $GC_CLIENT_EMAIL || -z $GC_CLIENT_ID || -z $GC_CLIENT_CERT_URL ]]; then
+    if [[ -z "$GC_PROJECT_ID" || -z "$GC_PRIVATE_KEY_ID" || -z "$GC_PRIVATE_KEY" || -z "$GC_CLIENT_EMAIL" || -z "$GC_CLIENT_ID" || -z "$GC_CLIENT_CERT_URL" ]]; then
         echo 'Transcriptions: One or more gcloud environment variables are undefined, skipping gcloud credentials file /config/key.json'
     else
         jq -n \

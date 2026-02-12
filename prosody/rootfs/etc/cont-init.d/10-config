@@ -65,7 +65,7 @@ fi
 tpl /defaults/prosody.cfg.lua > $PROSODY_CFG
 tpl /defaults/conf.d/$PROSODY_SITE_CFG > /config/conf.d/$PROSODY_SITE_CFG
 
-if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
+if [[ -z "$JICOFO_AUTH_PASSWORD" ]]; then
     echo 'FATAL ERROR: Jicofo auth password must be set'
     exit 1
 fi
@@ -83,7 +83,7 @@ fi
 
 # User registration is now handled by the 70-register-setup service after prosody starts
 
-if [[ -z $JVB_AUTH_PASSWORD ]]; then
+if [[ -z "$JVB_AUTH_PASSWORD" ]]; then
     echo 'FATAL ERROR: JVB auth password must be set'
     exit 1
 fi
