@@ -27,7 +27,7 @@ export LOCAL_ADDRESS=$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1
 
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jitsi-videobridge2 | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
-if [[ -f /config/custom-sip-communicator.properties ]]; then
+if [[ -f "/config/custom-sip-communicator.properties" ]]; then
     cat /config/custom-sip-communicator.properties > /config/sip-communicator.properties
 fi
 
