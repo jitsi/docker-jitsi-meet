@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
-if [[ -z $JVB_DISABLE_XMPP ]]; then
-    if [[ -z $JVB_AUTH_PASSWORD ]]; then
+if [[ -z "$JVB_DISABLE_XMPP" ]]; then
+    if [[ -z "$JVB_AUTH_PASSWORD" ]]; then
         echo 'FATAL ERROR: JVB auth password must be set'
         exit 1
     fi

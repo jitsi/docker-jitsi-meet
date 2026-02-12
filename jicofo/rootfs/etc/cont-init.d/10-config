@@ -2,7 +2,7 @@
 
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jicofo | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
-if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
+if [[ -z "$JICOFO_AUTH_PASSWORD" ]]; then
     echo 'FATAL ERROR: Jicofo auth password must be set'
     exit 1
 fi

@@ -52,12 +52,12 @@ fi
 PROSODY_CFG="/config/prosody.cfg.lua"
 
 # Validate required passwords
-if [[ -z $JICOFO_AUTH_PASSWORD ]]; then
+if [[ -z "$JICOFO_AUTH_PASSWORD" ]]; then
     echo '[register-setup] FATAL ERROR: Jicofo auth password must be set'
     exit 1
 fi
 
-if [[ -z $JVB_AUTH_PASSWORD ]]; then
+if [[ -z "$JVB_AUTH_PASSWORD" ]]; then
     echo '[register-setup] FATAL ERROR: JVB auth password must be set'
     exit 1
 fi
