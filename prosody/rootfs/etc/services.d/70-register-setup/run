@@ -62,12 +62,6 @@ if [[ -z $JVB_AUTH_PASSWORD ]]; then
     exit 1
 fi
 
-OLD_JVB_AUTH_PASSWORD=passw0rd
-if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
-    echo '[register-setup] FATAL ERROR: JVB auth password must be changed, check the README'
-    exit 1
-fi
-
 # Register focus user
 echo "[register-setup] Registering focus user..."
 OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create focus@$XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD 2>&1)
@@ -88,11 +82,6 @@ fi
 
 # Register Jibri user if password is set
 if [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
-    OLD_JIBRI_XMPP_PASSWORD=passw0rd
-    if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
-        echo '[register-setup] FATAL ERROR: Jibri auth password must be changed, check the README'
-        exit 1
-    fi
     echo "[register-setup] Registering Jibri user..."
     OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create $JIBRI_XMPP_USER@$XMPP_AUTH_DOMAIN $JIBRI_XMPP_PASSWORD 2>&1)
     if [ $? -eq 0 ]; then
@@ -132,11 +121,6 @@ fi
 
 # Register Jigasi user if password is set
 if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
-    OLD_JIGASI_XMPP_PASSWORD=passw0rd
-    if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
-        echo '[register-setup] FATAL ERROR: Jigasi auth password must be changed, check the README'
-        exit 1
-    fi
     echo "[register-setup] Registering Jigasi user..."
     OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create $JIGASI_XMPP_USER@$XMPP_AUTH_DOMAIN $JIGASI_XMPP_PASSWORD 2>&1)
     if [ $? -eq 0 ]; then

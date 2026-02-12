@@ -88,38 +88,6 @@ if [[ -z $JVB_AUTH_PASSWORD ]]; then
     exit 1
 fi
 
-OLD_JVB_AUTH_PASSWORD=passw0rd
-if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
-    echo 'FATAL ERROR: JVB auth password must be changed, check the README'
-    exit 1
-fi
-
-if [[ ! -z $JIBRI_XMPP_PASSWORD ]]; then
-    OLD_JIBRI_XMPP_PASSWORD=passw0rd
-    if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
-        echo 'FATAL ERROR: Jibri auth password must be changed, check the README'
-        exit 1
-    fi
-fi
-
-if [[ "$PROSODY_MODE" == "client" ]]; then
-    if [[ ! -z $JIBRI_RECORDER_PASSWORD ]]; then
-        OLD_JIBRI_RECORDER_PASSWORD=passw0rd
-        if [[ "$JIBRI_RECORDER_PASSWORD" == "$OLD_JIBRI_RECORDER_PASSWORD" ]]; then
-            echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
-            exit 1
-        fi
-    fi
-fi
-
-if [[ ! -z $JIGASI_XMPP_PASSWORD ]]; then
-    OLD_JIGASI_XMPP_PASSWORD=passw0rd
-    if [[ "$JIGASI_XMPP_PASSWORD" == "$OLD_JIGASI_XMPP_PASSWORD" ]]; then
-        echo 'FATAL ERROR: Jigasi auth password must be changed, check the README'
-        exit 1
-    fi
-fi
-
 if [[ "$PROSODY_MODE" == "visitors" ]]; then
     [ -z "$VISITORS_XMPP_DOMAIN" ] && VISITORS_XMPP_DOMAIN="meet.jitsi"
     [ -z "$PROSODY_VISITOR_INDEX" ] && PROSODY_VISITOR_INDEX=0
