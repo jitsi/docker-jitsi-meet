@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-if [[ ! -f /etc/saslauthd.conf ]] && [[ "$AUTH_TYPE" == "ldap" ]]; then
+if [[ ! -f "/etc/saslauthd.conf" ]] && [[ "$AUTH_TYPE" == "ldap" ]]; then
   tpl /defaults/saslauthd.conf > /etc/saslauthd.conf
   mkdir -pm777 /var/run/saslauthd
   adduser prosody sasl
@@ -92,20 +92,20 @@ if [[ "$PROSODY_MODE" == "visitors" ]]; then
     [ -z "$VISITORS_XMPP_DOMAIN" ] && VISITORS_XMPP_DOMAIN="meet.jitsi"
     [ -z "$PROSODY_VISITOR_INDEX" ] && PROSODY_VISITOR_INDEX=0
     FULL_VISITORS_XMPP_DOMAIN="v$PROSODY_VISITOR_INDEX.$VISITORS_XMPP_DOMAIN"
-    if [[ ! -f /config/certs/$FULL_VISITORS_XMPP_DOMAIN.crt ]]; then
+    if [[ ! -f "/config/certs/$FULL_VISITORS_XMPP_DOMAIN.crt" ]]; then
         # echo for using all default values
         echo | prosodyctl --config $PROSODY_CFG cert generate $FULL_VISITORS_XMPP_DOMAIN
     fi
 elif [[ "$PROSODY_MODE" == "brewery" ]]; then
     echo "No need to generate certs for main XMPP domain in brewery mode"
 else
-    if [[ ! -f /config/certs/$XMPP_DOMAIN.crt ]]; then
+    if [[ ! -f "/config/certs/$XMPP_DOMAIN.crt" ]]; then
         # echo for using all default values
         echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_DOMAIN
     fi
 fi
 
-if [[ ! -f /config/certs/$XMPP_AUTH_DOMAIN.crt ]]; then
+if [[ ! -f "/config/certs/$XMPP_AUTH_DOMAIN.crt" ]]; then
     # echo for using all default values
     echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_AUTH_DOMAIN
 fi
