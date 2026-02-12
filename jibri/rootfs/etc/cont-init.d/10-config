@@ -22,7 +22,7 @@ fi
 && ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
 
 # script for finalizing must have executing bit.
-[ ! -z "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
+[ -n "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && [ -f "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && [ ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}
