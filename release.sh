@@ -10,7 +10,7 @@ set -e
 # Don't start a release if the tree is dirty
 #
 
-if [[ ! -z $(git status -s) ]]; then
+if [[ -n $(git status -s) ]]; then
     echo "Git tree is not clean, aborting release!"
     exit 1
 fi

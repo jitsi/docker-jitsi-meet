@@ -1,14 +1,8 @@
 #!/usr/bin/with-contenv bash
 
-if [[ -z $JVB_DISABLE_XMPP ]]; then
-    if [[ -z $JVB_AUTH_PASSWORD ]]; then
+if [[ -z "$JVB_DISABLE_XMPP" ]]; then
+    if [[ -z "$JVB_AUTH_PASSWORD" ]]; then
         echo 'FATAL ERROR: JVB auth password must be set'
-        exit 1
-    fi
-
-    OLD_JVB_AUTH_PASSWORD=passw0rd
-    if [[ "$JVB_AUTH_PASSWORD" == "$OLD_JVB_AUTH_PASSWORD" ]]; then
-        echo 'FATAL ERROR: JVB auth password must be changed, check the README'
         exit 1
     fi
 
@@ -22,7 +16,7 @@ fi
 
 # Migration from DOCKER_HOST_ADDRESS to JVB_ADVERTISE_IPS
 if [[ -z "${JVB_ADVERTISE_IPS}" ]]; then
-    if [[ ! -z "${DOCKER_HOST_ADDRESS}" ]]; then
+    if [[ -n "${DOCKER_HOST_ADDRESS}" ]]; then
         echo "WARNING: DOCKER_HOST_ADDRESS is deprecated, migrate to JVB_ADVERTISE_IPS"
         export JVB_ADVERTISE_IPS=${DOCKER_HOST_ADDRESS}
     fi
@@ -33,7 +27,7 @@ export LOCAL_ADDRESS=$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1
 
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jitsi-videobridge2 | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
-if [[ -f /config/custom-sip-communicator.properties ]]; then
+if [[ -f "/config/custom-sip-communicator.properties" ]]; then
     cat /config/custom-sip-communicator.properties > /config/sip-communicator.properties
 fi
 

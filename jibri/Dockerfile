@@ -11,7 +11,7 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 ARG USE_CHROMIUM=0
 #ARG CHROME_RELEASE=latest
 # https://googlechromelabs.github.io/chrome-for-testing/
-ARG CHROME_RELEASE=130.0.6723.116
+ARG CHROME_RELEASE=143.0.7499.40
 
 #ARG JIBRI_VERSION=8.0-184-g4f57e90-1
 #ARG JITSI_UPLOAD_INTEGRATIONS_VERSION=0.15.15-1
@@ -34,7 +34,8 @@ RUN apt-dpkg-wrap apt-get update && \
         unzip \
         fonts-noto \
         fonts-noto-cjk \
-        libcap2-bin && \
+        libcap2-bin \
+        rclone && \
     /usr/bin/install-chrome.sh && \
     apt-cleanup && \
     adduser jibri rtkit && \

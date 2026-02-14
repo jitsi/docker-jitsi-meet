@@ -30,6 +30,7 @@ LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 ARG VERSION_JITSI_CONTRIB_PROSODY_PLUGINS="20250923"
 ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
 ARG PROSODY_PACKAGE="prosody"
+ARG PROSODY_PACKAGE_VERSION="13.*"
 
 #ARG JITSI_MEET_PROSODY_VERSION="1.0.8936-1"
 
@@ -39,7 +40,7 @@ RUN set -x && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
-      $PROSODY_PACKAGE \
+      $PROSODY_PACKAGE=$PROSODY_PACKAGE_VERSION \
       libldap-common \
       sasl2-bin \
       libsasl2-modules-ldap \
@@ -68,7 +69,8 @@ RUN set -x && \
     tar -xf v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
     mkdir /prosody-plugins-contrib && \
     cp -a prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/*  /prosody-plugins-contrib && \
-    rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz
+    rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
+    (apt-cache policy prosody | grep -Eq "13\.0\.[34]" && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true)
 
 COPY rootfs/ /
 
