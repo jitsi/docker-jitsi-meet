@@ -1,0 +1,38 @@
+services:
+
+  rtcstats-setup:
+      image: jitsi/rtcstats-server
+      env_file:
+        - ./rtcstats/.env
+      entrypoint: /bin/sh
+      command: >
+        -c '
+        node ./infra-samples/aws/create-dynamodb-table.js && 
+        node ./infra-samples/aws/create-s3-bucket.js
+        '
+      networks:
+        meet.jitsi:
+      depends_on:
+        - localstack
+
+
+  localstack:
+    container_name: localstack
+    image: localstack/localstack
+    ports:
+      - 4566:4566
+    env_file:
+      - ./rtcstats/.env
+    environment:
+      # LocalStack configuration: https://docs.localstack.cloud/references/configuration/
+      - SERVICES=s3,dynamodb
+      - DEBUG=${DEBUG:-1}
+      - AWS_ACCESS_KEY_ID=dummy
+      - AWS_SECRET_ACCESS_KEY=dummy
+      - AWS_DEFAULT_REGION=us-east-1
+      - AWS_DEFAULT_OUTPUT=json
+      - AWS_ENDPOINT_URL=http://localstack:4566
+    networks:
+      meet.jitsi:
+        aliases:
+          - jitsi-micros-rtcstats-server.s3.localstack
