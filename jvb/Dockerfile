@@ -12,6 +12,11 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jitsi-videobridge2 jitsi-autoscaler-sidecar jq curl iproute2 dnsutils libpcap0.8 && \
     apt-cleanup
 
+# The jitsi-videobridge2 package ships the Sentry core JAR but not the JUL handler needed for logging integration.
+RUN SENTRY_VERSION=$(basename /usr/share/jitsi-videobridge/lib/sentry-[0-9]*.jar | grep -oP '\d+\.\d+\.\d+') && \
+    curl -sfL "https://repo1.maven.org/maven2/io/sentry/sentry-jul/${SENTRY_VERSION}/sentry-jul-${SENTRY_VERSION}.jar" \
+        -o "/usr/share/jitsi-videobridge/lib/sentry-jul-${SENTRY_VERSION}.jar"
+
 COPY rootfs/ /
 
 VOLUME /config

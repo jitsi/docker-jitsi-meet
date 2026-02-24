@@ -12,6 +12,11 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jicofo && \
     apt-cleanup
 
+# The jicofo package ships the Sentry core JAR but not the JUL handler needed for logging integration.
+RUN SENTRY_VERSION=$(basename /usr/share/jicofo/lib/sentry-[0-9]*.jar | grep -oP '\d+\.\d+\.\d+') && \
+    curl -sfL "https://repo1.maven.org/maven2/io/sentry/sentry-jul/${SENTRY_VERSION}/sentry-jul-${SENTRY_VERSION}.jar" \
+        -o "/usr/share/jicofo/lib/sentry-jul-${SENTRY_VERSION}.jar"
+
 COPY rootfs/ /
 
 VOLUME /config
