@@ -457,6 +457,9 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ if .Env.XMPP_BREAKOUT_MUC_MODULES -}}
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_BREAKOUT_MUC_MODULES | compact) }}";
         {{ end -}}
+        {{ if $ENABLE_FILTER_MESSAGES -}}
+        "filter_messages";
+        {{ end -}}
     }
 {{ end }}
 
