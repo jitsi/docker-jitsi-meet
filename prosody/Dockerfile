@@ -32,6 +32,8 @@ ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
 ARG PROSODY_PACKAGE="prosody"
 ARG PROSODY_PACKAGE_VERSION="13.*"
 
+#ARG JITSI_MEET_PROSODY_VERSION="1.0.8936-1"
+
 RUN set -x && \
     wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
     echo "deb http://packages.prosody.im/debian bookworm main" > /etc/apt/sources.list.d/prosody.list && \
@@ -48,7 +50,8 @@ RUN set -x && \
       lua-luaossl \
       lua-sec \
       lua-unbound && \
-    apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
+    apt-dpkg-wrap apt-get -d install -y \
+        jitsi-meet-prosody${JITSI_MEET_PROSODY_VERSION:+=$JITSI_MEET_PROSODY_VERSION} && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
     mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
     rm -rf /tmp/pkg /var/cache/apt && \
