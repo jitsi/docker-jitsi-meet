@@ -61,11 +61,11 @@ RUN set -x && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_auth_matrix_user_verification.lua /prosody-plugins && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_matrix_power_sync.lua /prosody-plugins && \
     rm -rf prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
-    VERSION_JITSI_CONTRIB_PROSODY_PLUGINS=$(curl -s https://api.github.com/repos/jitsi-contrib/prosody-plugins/tags |  jq -r '.[0].name') && \
-    wget -q https://github.com/jitsi-contrib/prosody-plugins/archive/refs/tags/$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
+    VERSION_PROSODY_CONTRIB_PLUGINS=$(wget -q -O - https://api.github.com/repos/jitsi-contrib/prosody-plugins/tags | grep -m 1 '"name":' | cut -d '"' -f4) && \
+    wget -q https://github.com/jitsi-contrib/prosody-plugins/archive/refs/tags/$VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
     mkdir /prosody-plugins-contrib && \
-    tar --strip-components=1 -C /prosody-plugins-contrib -xf $VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
-    rm -f $VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
+    tar --strip-components=1 -C /prosody-plugins-contrib -xf $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
+    rm -f $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
     (apt-cache policy prosody | grep Installed | grep -Eq " 13\." && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true)
 
 COPY rootfs/ /
