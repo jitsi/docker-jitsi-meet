@@ -27,7 +27,6 @@ LABEL org.opencontainers.image.url="https://prosody.im/"
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
-ARG VERSION_JITSI_CONTRIB_PROSODY_PLUGINS="20260227"
 ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
 ARG PROSODY_PACKAGE="prosody"
 ARG PROSODY_PACKAGE_VERSION="13.*"
@@ -62,11 +61,11 @@ RUN set -x && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_auth_matrix_user_verification.lua /prosody-plugins && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_matrix_power_sync.lua /prosody-plugins && \
     rm -rf prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
-    wget -q https://github.com/jitsi-contrib/prosody-plugins/archive/refs/tags/v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
-    tar -xf v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
+    VERSION_PROSODY_CONTRIB_PLUGINS=$(wget -q -O - https://api.github.com/repos/jitsi-contrib/prosody-plugins/tags | grep -m 1 '"name":' | cut -d '"' -f4) && \
+    wget -q https://github.com/jitsi-contrib/prosody-plugins/archive/refs/tags/$VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
     mkdir /prosody-plugins-contrib && \
-    cp -a prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/*  /prosody-plugins-contrib && \
-    rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
+    tar --strip-components=1 -C /prosody-plugins-contrib -xf $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
+    rm -f $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
     (apt-cache policy prosody | grep Installed | grep -Eq " 13\." && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true)
 
 COPY rootfs/ /
