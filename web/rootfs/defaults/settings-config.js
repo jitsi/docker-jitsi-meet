@@ -30,6 +30,7 @@
 {{ $PREFERRED_LANGUAGE := .Env.PREFERRED_LANGUAGE | default "en-US" -}}
 {{ $DISABLE_START_FOR_ALL := .Env.DISABLE_START_FOR_ALL | default "false" | toBool -}}
 {{ $AUTO_CAPTION_ON_RECORD := .Env.AUTO_CAPTION_ON_RECORD | default "false" | toBool -}}
+{{ $TRANSCRIPTION_CUSTOM_LANGUAGES := .Env.TRANSCRIPTION_CUSTOM_LANGUAGES | default "" -}}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
 {{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
@@ -364,6 +365,9 @@ config.transcription = {
     preferredLanguage: '{{ $PREFERRED_LANGUAGE }}',
     disableStartForAll: {{ $DISABLE_START_FOR_ALL }},
     autoCaptionOnRecord: {{ $AUTO_CAPTION_ON_RECORD }},
+{{ if $TRANSCRIPTION_CUSTOM_LANGUAGES -}}
+    customLanguages: {{ $TRANSCRIPTION_CUSTOM_LANGUAGES }},
+{{ end -}}
 };
 
 // Dynamic branding
