@@ -1,5 +1,3 @@
-version: '3.5'
-
 services:
     transcriber:
         image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}

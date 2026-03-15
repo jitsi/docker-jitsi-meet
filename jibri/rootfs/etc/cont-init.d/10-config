@@ -12,20 +12,8 @@ if ! shm-check; then
     exit 1
 fi
 
-if [[ -z $JIBRI_RECORDER_PASSWORD || -z $JIBRI_XMPP_PASSWORD ]]; then
+if [[ -z "$JIBRI_RECORDER_PASSWORD" || -z "$JIBRI_XMPP_PASSWORD" ]]; then
     echo 'FATAL ERROR: Jibri recorder password and auth password must be set'
-    exit 1
-fi
-
-OLD_JIBRI_RECORDER_PASSWORD=passw0rd
-if [[ "$JIBRI_RECORDER_PASSWORD" == "$OLD_JIBRI_RECORDER_PASSWORD" ]]; then
-    echo 'FATAL ERROR: Jibri recorder password must be changed, check the README'
-    exit 1
-fi
-
-OLD_JIBRI_XMPP_PASSWORD=passw0rd
-if [[ "$JIBRI_XMPP_PASSWORD" == "$OLD_JIBRI_XMPP_PASSWORD" ]]; then
-    echo 'FATAL ERROR: Jibri auth password must be changed, check the README'
     exit 1
 fi
 
@@ -34,7 +22,7 @@ fi
 && ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
 
 # script for finalizing must have executing bit.
-[ ! -z "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
+[ -n "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && [ -f "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && [ ! -x "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
 && chmod +x ${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}

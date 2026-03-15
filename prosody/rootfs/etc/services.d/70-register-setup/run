@@ -1,0 +1,164 @@
+#!/usr/bin/with-contenv bash
+
+echo "[register-setup] Service starting..."
+
+# Wait for prosody to be ready
+echo "[register-setup] Waiting for prosody to be ready..."
+[ -z "$PROSODY_HTTP_PORT" ] && PROSODY_HTTP_PORT="5280"
+MAX_ATTEMPTS=60
+ATTEMPT=0
+
+while [ $ATTEMPT -lt $MAX_ATTEMPTS ]; do
+    if curl --fail --silent --output /dev/null http://127.0.0.1:${PROSODY_HTTP_PORT}/health 2>&1; then
+        echo "[register-setup] Prosody is ready!"
+        break
+    fi
+    ATTEMPT=$((ATTEMPT + 1))
+    echo "[register-setup] Attempt $ATTEMPT/$MAX_ATTEMPTS..."
+    sleep 2
+done
+
+if [ $ATTEMPT -eq $MAX_ATTEMPTS ]; then
+    echo "[register-setup] ERROR: Prosody did not become ready in time"
+    exit 1
+fi
+
+[ -z "$PROSODY_MODE" ] && export PROSODY_MODE="client"
+
+if [[ "$PROSODY_MODE" == "visitors" ]]; then
+    echo "Prosody visitor mode, using alternate config"
+    # force jicofo into auth domain for visitor-mode prosody
+    [ -z "$XMPP_AUTH_DOMAIN" ] && XMPP_AUTH_DOMAIN="auth.meet.jitsi"
+elif [[ "$PROSODY_MODE" == "brewery" ]]; then
+    echo "Prosody brewery mode, using alternate config"
+    # force jicofo into auth domain for brewer prosody
+    [ -z "$JVB_XMPP_AUTH_DOMAIN" ] && JVB_XMPP_AUTH_DOMAIN="auth.meet.jitsi"
+    # ensure proper certs are generated
+    export XMPP_AUTH_DOMAIN="$JVB_XMPP_AUTH_DOMAIN"
+else
+    echo "Prosody normal mode, using default config"
+fi
+
+# Set defaults (matching init script)
+[ -z "${JIBRI_RECORDER_USER}" ] && export JIBRI_RECORDER_USER=recorder
+[ -z "${JIBRI_XMPP_USER}" ] && export JIBRI_XMPP_USER=jibri
+[ -z "${JIGASI_XMPP_USER}" ] && export JIGASI_XMPP_USER=jigasi
+[ -z "${JVB_AUTH_USER}" ] && export JVB_AUTH_USER=jvb
+[ -z "${XMPP_DOMAIN}" ] && XMPP_DOMAIN=meet.jitsi
+[ -z "${XMPP_AUTH_DOMAIN}" ] && XMPP_AUTH_DOMAIN=auth.meet.jitsi
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
+[ -z "${XMPP_HIDDEN_DOMAIN}" ] && XMPP_HIDDEN_DOMAIN=hidden.meet.jitsi
+
+PROSODY_CFG="/config/prosody.cfg.lua"
+
+# Validate required passwords
+if [[ -z "$JICOFO_AUTH_PASSWORD" ]]; then
+    echo '[register-setup] FATAL ERROR: Jicofo auth password must be set'
+    exit 1
+fi
+
+if [[ -z "$JVB_AUTH_PASSWORD" ]]; then
+    echo '[register-setup] FATAL ERROR: JVB auth password must be set'
+    exit 1
+fi
+
+# Register focus user
+echo "[register-setup] Registering focus user..."
+OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create focus@$XMPP_AUTH_DOMAIN $JICOFO_AUTH_PASSWORD 2>&1)
+if [ $? -eq 0 ]; then
+    echo "[register-setup] Focus user registered successfully"
+else
+    echo "[register-setup] Focus user registration output: $OUTPUT"
+fi
+
+# Register JVB user
+echo "[register-setup] Registering JVB user..."
+OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create $JVB_AUTH_USER@$XMPP_AUTH_DOMAIN $JVB_AUTH_PASSWORD 2>&1)
+if [ $? -eq 0 ]; then
+    echo "[register-setup] JVB user registered successfully"
+else
+    echo "[register-setup] JVB user registration output: $OUTPUT"
+fi
+
+# Register Jibri user if password is set
+if [[ -n "$JIBRI_XMPP_PASSWORD" ]]; then
+    echo "[register-setup] Registering Jibri user..."
+    OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create $JIBRI_XMPP_USER@$XMPP_AUTH_DOMAIN $JIBRI_XMPP_PASSWORD 2>&1)
+    if [ $? -eq 0 ]; then
+        echo "[register-setup] Jibri user registered successfully"
+    else
+        echo "[register-setup] Jibri user registration output: $OUTPUT"
+    fi
+fi
+
+# Register Jibri recorder and Jigasi transcriber in client mode only
+if [[ "$PROSODY_MODE" == "client" ]]; then
+    if [[ "$(echo "$ENABLE_RECORDING" | tr '[:upper:]' '[:lower:]')" == "true" ]] || [[ "$ENABLE_RECORDING" == "1" ]]; then
+        if [[ -n "$JIBRI_RECORDER_PASSWORD" ]]; then
+            echo "[register-setup] Registering Jibri recorder user..."
+            OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create $JIBRI_RECORDER_USER@$XMPP_HIDDEN_DOMAIN $JIBRI_RECORDER_PASSWORD 2>&1)
+            if [ $? -eq 0 ]; then
+                echo "[register-setup] Jibri recorder user registered successfully"
+            else
+                echo "[register-setup] Jibri recorder user registration output: $OUTPUT"
+            fi
+        fi
+    fi
+
+    if [[ "$(echo "$ENABLE_TRANSCRIPTIONS" | tr '[:upper:]' '[:lower:]')" == "true" ]] || [[ "$ENABLE_TRANSCRIPTIONS" == "1" ]]; then
+        if [[ -n "$JIGASI_TRANSCRIBER_PASSWORD" ]]; then
+            [ -z "$JIGASI_TRANSCRIBER_USER" ] && JIGASI_TRANSCRIBER_USER="transcriber"
+            echo "[register-setup] Registering Jigasi transcriber user..."
+            OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create $JIGASI_TRANSCRIBER_USER@$XMPP_HIDDEN_DOMAIN $JIGASI_TRANSCRIBER_PASSWORD 2>&1)
+            if [ $? -eq 0 ]; then
+                echo "[register-setup] Jigasi transcriber user registered successfully"
+            else
+                echo "[register-setup] Jigasi transcriber user registration output: $OUTPUT"
+            fi
+        fi
+    fi
+fi
+
+# Register Jigasi user if password is set
+if [[ -n "$JIGASI_XMPP_PASSWORD" ]]; then
+    echo "[register-setup] Registering Jigasi user..."
+    OUTPUT=$(prosodyctl --config $PROSODY_CFG shell user create $JIGASI_XMPP_USER@$XMPP_AUTH_DOMAIN $JIGASI_XMPP_PASSWORD 2>&1)
+    if [ $? -eq 0 ]; then
+        echo "[register-setup] Jigasi user registered successfully"
+    else
+        echo "[register-setup] Jigasi user registration output: $OUTPUT"
+    fi
+fi
+
+# Capture both stdout and stderr
+OUTPUT=$(prosodyctl --config $PROSODY_CFG shell roster subscribe_both focus@$XMPP_AUTH_DOMAIN focus.$XMPP_DOMAIN 2>&1)
+RESULT=$?
+
+echo "[register-setup] Roster command output:"
+echo "$OUTPUT"
+
+if [ $RESULT -eq 0 ]; then
+    echo "[register-setup] Roster subscription completed successfully"
+
+    # Reload mod_client_proxy module to apply roster changes
+    echo "[register-setup] Reloading client_proxy module..."
+    RELOAD_OUTPUT=$(prosodyctl --config $PROSODY_CFG shell module reload client_proxy 2>&1)
+    RELOAD_RESULT=$?
+
+    echo "[register-setup] Module reload output:"
+    echo "$RELOAD_OUTPUT"
+
+    if [ $RELOAD_RESULT -eq 0 ]; then
+        echo "[register-setup] Module reloaded successfully"
+    else
+        echo "[register-setup] WARNING: Failed to reload module (exit code: $RELOAD_RESULT)"
+    fi
+else
+    echo "[register-setup] ERROR: Failed to setup roster subscription (exit code: $RESULT)"
+fi
+
+echo "[register-setup] All users registered and roster modified, service completed"
+
+# This is a oneshot service - tell s6 to stop supervising and sleep
+s6-svc -O /var/run/s6/services/70-register-setup
+exec sleep infinity

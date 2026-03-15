@@ -1,3 +1,4 @@
+{{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
 {{ $ENABLE_RATE_LIMITS := .Env.PROSODY_ENABLE_RATE_LIMITS | default "0" | toBool -}}
@@ -79,6 +80,9 @@ s2sout_override = {
     ["{{ $vhost }}"] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
   {{ end -}}
 {{ end -}}
+{{ if not $DISABLE_POLLS -}}
+    ['polls.{{ $XMPP_DOMAIN }}'] = "tcp://{{ $XMPP_SERVER }}:{{ $XMPP_SERVER_S2S_PORT }}";
+{{ end -}}
 
 }
 
@@ -102,6 +106,7 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
       {{ if .Env.XMPP_MODULES }}
       "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES | compact) }}";
       {{ end }}
+      'features_identity';
     }
     main_muc = '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}';
     shard_name = "{{ $SHARD_NAME }}"
@@ -186,3 +191,7 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
     {{ if .Env.XMPP_MUC_CONFIGURATION -}}
     {{ join "\n" (splitList "," .Env.XMPP_MUC_CONFIGURATION | compact) }}
     {{ end -}}
+
+{{ if not $DISABLE_POLLS -}}
+Component 'polls.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}' 'polls_component'
+{{ end -}}

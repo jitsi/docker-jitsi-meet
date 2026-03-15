@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bash
 
-if [[ ! -z "$TZ" ]]; then
-    if [[ -f /usr/share/zoneinfo/$TZ ]]; then
+if [[ -n "$TZ" ]]; then
+    if [[ -f "/usr/share/zoneinfo/$TZ" ]]; then
          ln -sf /usr/share/zoneinfo/$TZ /etc/localtime
          echo "$TZ" >  /etc/timezone
     else

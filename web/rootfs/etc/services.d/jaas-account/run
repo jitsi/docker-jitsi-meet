@@ -17,9 +17,9 @@ function stop_service() {
   exit 0
 }
 
-if [[ $DISABLE_HTTPS -ne 1 ]] && [[ $ENABLE_LETSENCRYPT -eq 1 ]] && [[ $ENABLE_JAAS_COMPONENTS -eq 1 ]]  && [[ ! -z $EMAIL ]] && [[ ! -z $DOMAIN ]]; then
+if [[ "$DISABLE_HTTPS" -ne 1 ]] && [[ "$ENABLE_LETSENCRYPT" -eq 1 ]] && [[ "$ENABLE_JAAS_COMPONENTS" -eq 1 ]]  && [[ -n "$EMAIL" ]] && [[ -n "$DOMAIN" ]]; then
 
-if [ -f $JAAS_ACCOUNT_FILE ]; then
+if [ -f "$JAAS_ACCOUNT_FILE" ]; then
     echo "JaaS account already exists"
     stop_service
 fi

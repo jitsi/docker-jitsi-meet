@@ -17,7 +17,6 @@
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "0" | toBool -}}
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool -}}
-{{ $ENV := .Env -}}
 {{ $GUEST_AUTH_TYPE := .Env.PROSODY_GUEST_AUTH_TYPE | default "jitsi-anonymous" -}}
 {{ $JIBRI_RECORDER_USER := .Env.JIBRI_RECORDER_USER | default "recorder" -}}
 {{ $JIBRI_XMPP_USER := .Env.JIBRI_XMPP_USER | default "jibri" -}}
@@ -42,6 +41,7 @@
 {{ $RATE_LIMIT_LOGIN_RATE := .Env.PROSODY_RATE_LIMIT_LOGIN_RATE | default "3" -}}
 {{ $RATE_LIMIT_SESSION_RATE := .Env.PROSODY_RATE_LIMIT_SESSION_RATE | default "200" -}}
 {{ $RATE_LIMIT_TIMEOUT := .Env.PROSODY_RATE_LIMIT_TIMEOUT | default "60" -}}
+{{ $WAIT_FOR_HOST_DISABLE_AUTO_OWNERS := .Env.WAIT_FOR_HOST_DISABLE_AUTO_OWNERS | default "false" | toBool -}}
 {{ $XMPP_AUTH_DOMAIN := .Env.XMPP_AUTH_DOMAIN | default "auth.meet.jitsi" -}}
 {{ $XMPP_DOMAIN := .Env.XMPP_DOMAIN | default "meet.jitsi" -}}
 {{ $XMPP_GUEST_DOMAIN := .Env.XMPP_GUEST_DOMAIN | default "guest.meet.jitsi" -}}
@@ -68,12 +68,14 @@ unlimited_jids = {
     "{{ $JVB_AUTH_USER }}@{{ $XMPP_AUTH_DOMAIN }}"
 }
 
-plugin_paths = { "/prosody-plugins/", "/prosody-plugins-custom", "/prosody-plugins-contrib" }
+plugin_paths = { "/prosody-plugins-custom", "/prosody-plugins/", "/prosody-plugins-contrib" }
 
 muc_mapper_domain_base = "{{ $XMPP_DOMAIN }}";
 muc_mapper_domain_prefix = "{{ $XMPP_MUC_DOMAIN_PREFIX }}";
 
 recorder_prefixes = { "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}" };
+
+transcriber_prefixes = { "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}" };
 
 http_default_host = "{{ $XMPP_DOMAIN }}"
 
@@ -83,6 +85,10 @@ asap_accepted_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ISSU
 
 {{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_AUDIENCES }}
 asap_accepted_audiences = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_AUDIENCES | compact) }}" }
+{{ end }}
+
+{{ if and $ENABLE_AUTH (or (eq $PROSODY_AUTH_TYPE "jwt") (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token")) .Env.JWT_ACCEPTED_ALLOWNER_ISSUERS }}
+allowner_issuers = { "{{ join "\",\"" (splitList "," .Env.JWT_ACCEPTED_ALLOWNER_ISSUERS | compact) }}" }
 {{ end }}
 
 consider_bosh_secure = true;
@@ -238,6 +244,16 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
     {{ if $ENABLE_VISITORS }}
     allow_anonymous_s2s = true
     {{ end }}
+    {{ if $ENABLE_LOBBY }}
+    lobby_muc = "lobby.{{ $XMPP_DOMAIN }}"
+    {{ end }}
+    {{ if $ENABLE_BREAKOUT_ROOMS }}
+    breakout_rooms_muc = "breakout.{{ $XMPP_DOMAIN }}"
+    {{ end }}
+
+    {{ if .Env.XMPP_CONFIGURATION -}}
+    {{ join "\n    " (splitList "," .Env.XMPP_CONFIGURATION | compact) }}
+    {{ end -}}
 
 {{ end }}
 
@@ -302,9 +318,6 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if and $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "hybrid_matrix_token") $MATRIX_LOBBY_BYPASS -}}
         "matrix_lobby_bypass";
         {{ end -}}
-        {{ if not $DISABLE_POLLS -}}
-        "polls";
-        {{ end -}}
         {{ if $ENABLE_SUBDOMAINS -}}
         "muc_domain_mapper";
         {{ end -}}
@@ -341,7 +354,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     }
     {{ end -}}
 
-	-- The size of the cache that saves state for IP addresses
+    -- The size of the cache that saves state for IP addresses
     rate_limit_cache_size = {{ $RATE_LIMIT_CACHE_SIZE }};
 
     muc_room_cache_size = 10000
@@ -364,15 +377,19 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     {{ end }}
     muc_password_whitelist = {
         "focus@{{ $XMPP_AUTH_DOMAIN }}";
-{{- if $ENABLE_RECORDING }}
+        {{- if $ENABLE_RECORDING }}
         "{{ $JIBRI_RECORDER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
-{{- end }}
-{{- if $ENABLE_TRANSCRIPTIONS }}
+        {{- end }}
+        {{- if $ENABLE_TRANSCRIPTIONS }}
         "{{ $JIGASI_TRANSCRIBER_USER }}@{{ $XMPP_HIDDEN_DOMAIN }}";
-{{- end }}
+        {{- end }}
     }
     muc_tombstones = false
     muc_room_allow_persistent = false
+
+    {{- if $WAIT_FOR_HOST_DISABLE_AUTO_OWNERS }}
+    wait_for_host_disable_auto_owners = true
+    {{- end }}
 
 Component "focus.{{ $XMPP_DOMAIN }}" "client_proxy"
     target_address = "focus@{{ $XMPP_AUTH_DOMAIN }}"
@@ -434,14 +451,14 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
     modules_enabled = {
         "muc_hide_all";
         "muc_meeting_id";
-        {{ if not $DISABLE_POLLS -}}
-        "polls";
-        {{ end -}}
         {{ if $ENABLE_RATE_LIMITS -}}
         "muc_rate_limit";
         {{ end -}}
         {{ if .Env.XMPP_BREAKOUT_MUC_MODULES -}}
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_BREAKOUT_MUC_MODULES | compact) }}";
+        {{ end -}}
+        {{ if $ENABLE_FILTER_MESSAGES -}}
+        "filter_messages";
         {{ end -}}
     }
 {{ end }}
@@ -456,3 +473,7 @@ Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
     auto_allow_visitor_promotion = true
     always_visitors_enabled = true
 {{ end }}
+
+{{ if not $DISABLE_POLLS -}}
+Component "polls.{{ $XMPP_DOMAIN }}" "polls_component"
+{{ end -}}
