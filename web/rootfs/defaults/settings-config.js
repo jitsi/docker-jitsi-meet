@@ -263,8 +263,8 @@ config.analytics.whiteListedEvents = [ '{{ join "','" (splitList "," .Env.ANALYT
 //
 
 {{ if $ENABLE_JAAS_COMPONENTS }}
-config.dialInConfCodeUrl = 'https://conference-mapper.jitsi.net/v1/access';
-config.dialInNumbersUrl = 'https://conference-mapper.jitsi.net/v1/access/dids';
+config.dialInConfCodeUrl = 'https://api-vo.cloudflare.jitsi.net/vmms-conference-mapper/v1/access';
+config.dialInNumbersUrl = 'https://api-vo.cloudflare.jitsi.net/vmms-conference-mapper/v1/access/dids';
 {{ else }}
 {{ if .Env.CONFCODE_URL -}}
 config.dialInConfCodeUrl = '{{ .Env.CONFCODE_URL }}';
