@@ -30,7 +30,7 @@ jobs:
         id: prosody_repo
         run: echo "deb [signed-by=/etc/apt/keyrings/prosody.gpg] https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
       - name: Jitsi repo
-        uses: myci-actions/add-deb-repo@11
+        uses: myci-actions/add-deb-repo@43408b9f0225d1c64ba667d59e337c6140383bbe  # 11
         with:
           repo: deb https://download.jitsi.org/ unstable/
           repo-name: jitsi
@@ -65,18 +65,18 @@ jobs:
     needs: version
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
         with:
           driver: docker
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./base
@@ -91,12 +91,12 @@ jobs:
     needs: [version, base-arch]
     steps:
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Docker Manifest
-        uses: int128/docker-manifest-create-action@v2
+        uses: int128/docker-manifest-create-action@44422a4b046d55dc036df622039ed3aec43c613c  # v2
         with:
           tags: |
             ${{ secrets.JITSI_REPO }}/base:${{ needs.version.outputs.base }}
@@ -116,18 +116,18 @@ jobs:
     needs: [version, base]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
         with:
           driver: docker
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./base-java
@@ -143,12 +143,12 @@ jobs:
     needs: [version, base-java-arch]
     steps:
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Docker Manifest
-        uses: int128/docker-manifest-create-action@v2
+        uses: int128/docker-manifest-create-action@44422a4b046d55dc036df622039ed3aec43c613c  # v2
         with:
           tags: |
             ${{ secrets.JITSI_REPO }}/base-java:${{ needs.version.outputs.base }}
@@ -168,18 +168,18 @@ jobs:
     needs: [version, base-java]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
         with:
           driver: docker
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./jibri
@@ -196,12 +196,12 @@ jobs:
     needs: [version, jibri-arch]
     steps:
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Docker Manifest
-        uses: int128/docker-manifest-create-action@v2
+        uses: int128/docker-manifest-create-action@44422a4b046d55dc036df622039ed3aec43c613c  # v2
         with:
           tags: |
             ${{ secrets.JITSI_REPO }}/jibri:${{ needs.version.outputs.base }}
@@ -222,18 +222,18 @@ jobs:
     needs: [version, base-java]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
         with:
           driver: docker
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./jicofo
@@ -250,12 +250,12 @@ jobs:
     needs: [version, jicofo-arch]
     steps:
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Docker Manifest
-        uses: int128/docker-manifest-create-action@v2
+        uses: int128/docker-manifest-create-action@44422a4b046d55dc036df622039ed3aec43c613c  # v2
         with:
           tags: |
             ${{ secrets.JITSI_REPO }}/jicofo:${{ needs.version.outputs.base }}
@@ -276,18 +276,18 @@ jobs:
     needs: [version, base-java]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
         with:
           driver: docker
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./jigasi
@@ -304,12 +304,12 @@ jobs:
     needs: [version, jigasi-arch]
     steps:
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Docker Manifest
-        uses: int128/docker-manifest-create-action@v2
+        uses: int128/docker-manifest-create-action@44422a4b046d55dc036df622039ed3aec43c613c  # v2
         with:
           tags: |
             ${{ secrets.JITSI_REPO }}/jigasi:${{ needs.version.outputs.base }}
@@ -330,18 +330,18 @@ jobs:
     needs: [version, base-java]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
         with:
           driver: docker
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./jvb
@@ -358,12 +358,12 @@ jobs:
     needs: [version, jvb-arch]
     steps:
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Docker Manifest
-        uses: int128/docker-manifest-create-action@v2
+        uses: int128/docker-manifest-create-action@44422a4b046d55dc036df622039ed3aec43c613c  # v2
         with:
           tags: |
             ${{ secrets.JITSI_REPO }}/jvb:${{ needs.version.outputs.base }}
@@ -384,18 +384,18 @@ jobs:
     needs: [version, base]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
         with:
           driver: docker
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./prosody
@@ -412,12 +412,12 @@ jobs:
     needs: [version, prosody-arch]
     steps:
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Docker Manifest
-        uses: int128/docker-manifest-create-action@v2
+        uses: int128/docker-manifest-create-action@44422a4b046d55dc036df622039ed3aec43c613c  # v2
         with:
           tags: |
             ${{ secrets.JITSI_REPO }}/prosody:${{ needs.version.outputs.base }}
@@ -438,18 +438,18 @@ jobs:
     needs: [version, base]
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
         with:
           driver: docker
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./web
@@ -466,12 +466,12 @@ jobs:
     needs: [version, web-arch]
     steps:
       - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Create Docker Manifest
-        uses: int128/docker-manifest-create-action@v2
+        uses: int128/docker-manifest-create-action@44422a4b046d55dc036df622039ed3aec43c613c  # v2
         with:
           tags: |
             ${{ secrets.JITSI_REPO }}/web:${{ needs.version.outputs.base }}
