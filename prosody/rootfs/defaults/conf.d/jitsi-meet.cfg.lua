@@ -341,6 +341,9 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
 
     {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
     anonymous_strict = {{ if $MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT }}true{{ else }}false{{ end }};
+    {{ if .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS -}}
+    anonymous_auth_methods = { "{{ join "\"; \"" (splitList "," .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS | compact) }}" };
+    {{ end -}}
     {{ end -}}
     {{ if $ENABLE_RATE_LIMITS -}}
     -- Max allowed join/login rate in events per second.
