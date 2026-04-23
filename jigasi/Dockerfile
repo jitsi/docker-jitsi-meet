@@ -14,6 +14,11 @@ RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y jigasi jq jitsi-autoscaler-sidecar && \
     apt-cleanup
 
+# The jigasi package ships the Sentry core JAR but not the JUL handler needed for logging integration.
+RUN SENTRY_VERSION=$(basename /usr/share/jigasi/lib/sentry-[0-9]*.jar | grep -oP '\d+\.\d+\.\d+') && \
+    curl -sfL "https://repo1.maven.org/maven2/io/sentry/sentry-jul/${SENTRY_VERSION}/sentry-jul-${SENTRY_VERSION}.jar" \
+        -o "/usr/share/jigasi/lib/sentry-jul-${SENTRY_VERSION}.jar"
+
 COPY rootfs/ /
 
 VOLUME ["/config", "/tmp/transcripts"]

@@ -57,7 +57,7 @@ services:
             - JIGASI_VISITORS_QUEUE_SERVICE_PRIVATE_KEY_PATH
             - JIGASI_VISITORS_QUEUE_SERVICE_PRIVATE_KEY_ID
             - SHUTDOWN_REST_ENABLED
-            - SENTRY_DSN="${JIGASI_SENTRY_DSN:-0}"
+            - SENTRY_DSN=${JIGASI_SENTRY_DSN:-}
             - SENTRY_ENVIRONMENT
             - SENTRY_RELEASE
             - TZ
