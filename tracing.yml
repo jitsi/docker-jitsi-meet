@@ -1,0 +1,62 @@
+services:
+    tempo:
+        image: grafana/tempo:latest
+        restart: ${RESTART_POLICY:-unless-stopped}
+        command:
+            - -config.file=/etc/tempo/tempo.yaml
+        volumes:
+            - ./tracing/tempo/:/etc/tempo/
+        ports:
+            - "3200:3200"
+        environment:
+            - OTEL_EXPORTER_OTLP_ENDPOINT=http://alloy:4318
+
+    alloy:
+        image: grafana/alloy:latest
+        restart: ${RESTART_POLICY:-unless-stopped}
+        volumes:
+            - ./tracing/alloy/:/etc/alloy/
+        command:
+            - run
+            - /etc/alloy/config.alloy
+            - --server.http.listen-addr=0.0.0.0:12345
+        environment:
+            - ALLOY_OTLP_UPSTREAM=tempo:4317
+        ports:
+            - "12345:12345"
+            - "4317:4317"
+        depends_on:
+            - tempo
+
+    grafana:
+        image: grafana/grafana:latest
+        restart: ${RESTART_POLICY:-unless-stopped}
+        volumes:
+            - ./tracing/grafana-provisioning/:/etc/grafana/provisioning
+        environment:
+            - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
+        ports:
+            - "3000:3000"
+
+    prometheus:
+        image: prom/prometheus:latest
+        restart: ${RESTART_POLICY:-unless-stopped}
+        command:
+            - --config.file=/etc/prometheus/prometheus.yaml
+            - --web.enable-remote-write-receiver
+            - --enable-feature=exemplar-storage
+            - --enable-feature=native-histograms
+        volumes:
+            - ./tracing/prometheus/:/etc/prometheus/
+        ports:
+            - "9090:9090"
+
+    vulture:
+        image: grafana/tempo-vulture:latest
+        restart: ${RESTART_POLICY:-unless-stopped}
+        command:
+            - -prometheus-listen-address=:8080
+            - -tempo-query-url=http://tempo:3200
+            - -tempo-push-url=http://tempo:4317
+        depends_on:
+           - tempo
