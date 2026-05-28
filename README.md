@@ -29,3 +29,47 @@ The installation manual is available [here](https://jitsi.github.io/handbook/doc
 
 If you plan to install the jitsi-meet stack on a Kubernetes cluster you can find tools and tutorials in the project [Jitsi on Kubernetes](https://github.com/jitsi-contrib/jitsi-kubernetes).
 
+## TODO
+
+* Builtin TURN server.
+
+## Development
+
+Configure `.env`:
+```env
+JVB_ADVERTISE_IPS=localhost
+JITSI_IMAGE_VERSION=latest
+PROSODY_ENABLE_METRICS=true
+```
+
+Initialize configuration:
+```bash
+./gen-passwords.sh
+mkdir -p ~/.jitsi-meet-cfg/{web,transcripts,prosody/config,prosody/prosody-plugins-custom,jicofo,jvb,jigasi,jibri}
+```
+
+Start docker-jitsi-meet:
+```
+make
+docker compose up
+```
+
+Shutdown docker-jitsi-meet.
+
+Disable jicofo service and expose prosody port:
+```
+prosody:
+  ports:
+    - 5222:5222
+```
+
+Modify ~/.jitsi-meet-cfg/jicofo/jicofo.conf
+```
+xmpp {
+  client {
+    hostname = "127.0.0.1"
+  }
+}
+```
+
+Run jicofo locally.

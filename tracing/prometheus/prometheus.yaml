@@ -18,3 +18,11 @@ scrape_configs:
   - job_name: 'vulture'
     static_configs:
       - targets: [ 'vulture:8080' ]
+
+  - job_name: 'prosody'
+    static_configs:
+      - targets: [ 'prosody:5280' ]
+
+  - job_name: 'jvb'
+    static_configs:
+      - targets: [ 'jvb:8080' ]
