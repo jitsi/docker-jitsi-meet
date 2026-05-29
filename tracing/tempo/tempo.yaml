@@ -19,6 +19,7 @@ metrics_generator:
       source: tempo
       cluster: docker-compose
   storage:
+    path: /var/tempo/generator/wal
     remote_write:
       - url: http://prometheus:9090/api/v1/write
         send_exemplars: true
@@ -29,6 +30,8 @@ query_frontend:
 
 storage:
   trace:
+    wal:
+      path: /var/tempo/wal
     backend: local
     local:
       path: /var/tempo/blocks
@@ -39,4 +42,5 @@ overrides:
       processors: ["span-metrics", "service-graphs"]
       generate_native_histograms: both
 
-
+usage_report:
+  reporting_enabled: false
