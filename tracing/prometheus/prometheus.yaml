@@ -26,3 +26,7 @@ scrape_configs:
   - job_name: 'jvb'
     static_configs:
       - targets: [ 'jvb:8080' ]
+
+  - job_name: 'loki'
+    static_configs:
+      - targets: [ 'loki:3100' ]

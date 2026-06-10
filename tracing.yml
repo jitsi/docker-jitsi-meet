@@ -19,6 +19,7 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ./tracing/alloy/:/etc/alloy/
+            - /var/run/docker.sock:/var/run/docker.sock
         command:
             - run
             - /etc/alloy/config.alloy
@@ -40,6 +41,9 @@ services:
             - ./tracing/grafana-provisioning/:/etc/grafana/provisioning
         environment:
             - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
+            - GF_AUTH_ANONYMOUS_ENABLED=true
+            - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
+            - GF_AUTH_DISABLE_LOGIN_FORM=true
         ports:
             - "3000:3000"
         networks:
@@ -69,5 +73,15 @@ services:
             - -tempo-push-url=http://tempo:4317
         depends_on:
            - tempo
+        networks:
+            meet.jitsi:
+
+    loki:
+        image: grafana/loki:3.0.0
+        command: -config.file=/etc/loki/config.yaml
+        volumes:
+            - ./tracing/loki/:/etc/loki/
+        ports:
+            - "3100:3100"
         networks:
             meet.jitsi:

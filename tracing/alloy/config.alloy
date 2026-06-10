@@ -1,4 +1,4 @@
-otelcol.receiver.otlp "otlp_receiver" {
+otelcol.receiver.otlp "default" {
   grpc {
     endpoint = "0.0.0.0:4317"
   }
@@ -17,5 +17,31 @@ otelcol.exporter.otlp "tempo" {
     tls {
 			insecure = true
 		}
+  }
+}
+
+discovery.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+}
+
+loki.source.docker "containers" {
+  host = "unix:///var/run/docker.sock"
+  targets    = discovery.docker.containers.targets
+  forward_to = [loki.write.default.receiver]
+  relabel_rules = loki.relabel.default.rules
+}
+
+loki.relabel "default" {
+  forward_to = []
+
+  rule {
+    source_labels = [ "__meta_docker_container_name" ]
+    target_label = "container"
+  }
+}
+
+loki.write "default" {
+  endpoint {
+    url = "http://loki:3100/loki/api/v1/push"
   }
 }
