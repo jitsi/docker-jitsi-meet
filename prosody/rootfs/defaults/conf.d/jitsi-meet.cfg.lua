@@ -496,4 +496,7 @@ Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
 
 {{ if not $DISABLE_POLLS -}}
 Component "polls.{{ $XMPP_DOMAIN }}" "polls_component"
+modules_enabled = {
+    "polls_tracer";
+}
 {{ end -}}
