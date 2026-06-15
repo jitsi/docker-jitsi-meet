@@ -33,7 +33,7 @@ ARG PROSODY_PACKAGE_VERSION="13.*"
 
 RUN set -x && \
     wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
-    echo "deb http://packages.prosody.im/debian bookworm main" > /etc/apt/sources.list.d/prosody.list && \
+    echo "deb http://packages.prosody.im/debian trixie main" > /etc/apt/sources.list.d/prosody.list && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
@@ -54,8 +54,6 @@ RUN set -x && \
     apt-cleanup && \
     rm -rf /etc/prosody && \
     mv /usr/share/lua/5.3/inspect.lua /usr/share/lua/5.4/ && \
-    rm -rf /usr/lib/lua/{5.1,5.2,5.3} && \
-    rm -rf /usr/share/lua/{5.1,5.2,5.3} && \
     wget https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification/archive/refs/tags/v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     tar -xf v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_auth_matrix_user_verification.lua /prosody-plugins && \
