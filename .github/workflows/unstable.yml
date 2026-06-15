@@ -28,7 +28,7 @@ jobs:
         run: echo 'APT::Key::Assert-Pubkey-Algo ">=rsa2048,ed25519,ed448,dsa1024";' | sudo tee /etc/apt/apt.conf.d/99weakkey-warning
       - name: Prosody repo
         id: prosody_repo
-        run: echo "deb [signed-by=/etc/apt/keyrings/prosody.gpg] https://packages.prosody.im/debian bookworm main" | sudo tee /etc/apt/sources.list.d/prosody.list
+        run: echo "deb [signed-by=/etc/apt/keyrings/prosody.gpg] https://packages.prosody.im/debian trixie main" | sudo tee /etc/apt/sources.list.d/prosody.list
       - name: Jitsi repo
         uses: myci-actions/add-deb-repo@43408b9f0225d1c64ba667d59e337c6140383bbe  # 11
         with:
