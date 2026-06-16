@@ -56,14 +56,14 @@ docker compose up
 
 Shutdown docker-jitsi-meet.
 
-Disable jicofo service and expose prosody port:
+Disable jicofo/jvb service and expose prosody port:
 ```
 prosody:
   ports:
     - 5222:5222
 ```
 
-Modify ~/.jitsi-meet-cfg/jicofo/jicofo.conf
+For jicofo, modify ~/.jitsi-meet-cfg/jicofo/jicofo.conf
 ```
 xmpp {
   client {
@@ -72,4 +72,15 @@ xmpp {
 }
 ```
 
-Run jicofo locally.
+For jvb, modify ~/.jitsi-meet-cfg/jvb/jvb.conf
+```
+xmpp-client {
+  configs {
+    shard0 {
+      HOSTNAME = "127.0.0.1"
+    }
+  }
+}
+```
+
+Run compose and local services.
