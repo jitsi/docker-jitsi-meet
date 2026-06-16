@@ -165,7 +165,7 @@ trusted_proxies = {
 
 {{ if eq $PROSODY_MODE "brewery" -}}
 firewall_scripts = {
-    "/config/rules.d/jvb_muc_presence_filter.pfw";
+    "/run/prosody/config/rules.d/jvb_muc_presence_filter.pfw";
 };
 {{ end -}}
 
@@ -220,7 +220,7 @@ gc = {
 }
 {{ end }}
 
-pidfile = "/config/data/prosody.pid";
+pidfile = "/run/prosody/prosody.pid";
 
 -- Force clients to use encrypted connections? This option will
 -- prevent clients from authenticating unless they are using encryption.
@@ -436,6 +436,6 @@ http_interfaces = { "*", "::" }
 http_interfaces = { "*" }
 {{ end }}
 
-data_path = "/config/data"
+data_path = "/var/lib/prosody"
 
 Include "conf.d/*.cfg.lua"

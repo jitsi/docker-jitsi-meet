@@ -2,11 +2,14 @@ services:
     jibri:
         image: jitsi/jibri:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
+        read_only: true
+        tmpfs:
+            - /run:size=256M,mode=1750,exec
+            - /tmp:size=256M,mode=1777,noexec
         volumes:
             - ${CONFIG}/jibri:/config:Z
+            - ${CONFIG}/storage/jibri:/storage:Z
         shm_size: '2gb'
-        cap_add:
-            - SYS_ADMIN
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID

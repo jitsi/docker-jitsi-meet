@@ -8,7 +8,7 @@ server {
 	{{ if .Env.ENABLE_HTTP_REDIRECT | default "0" | toBool }}
 	return 301 https://$host$request_uri;
 	{{ else }}
-	include /config/nginx/meet.conf;
+	include /run/web/config/nginx/meet.conf;
 	{{ end }}
 }
 
@@ -20,7 +20,7 @@ server {
 	listen [::]:443 ssl http2;
 	{{ end }}
 
-	include /config/nginx/ssl.conf;
-	include /config/nginx/meet.conf;
+	include /run/web/config/nginx/ssl.conf;
+	include /run/web/config/nginx/meet.conf;
 }
 {{ end }}
