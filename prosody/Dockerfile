@@ -3,6 +3,8 @@ ARG BASE_TAG=latest
 
 FROM ${JITSI_REPO}/base:${BASE_TAG} AS builder
 
+USER root
+
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
       build-essential \
@@ -21,6 +23,8 @@ RUN apt-dpkg-wrap apt-get update && \
 
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
+USER root
+
 LABEL org.opencontainers.image.title="Prosody IM"
 LABEL org.opencontainers.image.description="XMPP server used for signalling."
 LABEL org.opencontainers.image.url="https://prosody.im/"
@@ -31,9 +35,11 @@ ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
 ARG PROSODY_PACKAGE="prosody"
 ARG PROSODY_PACKAGE_VERSION="13.*"
 
+COPY rootfs/ /
+
 RUN set -x && \
-    wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
-    echo "deb http://packages.prosody.im/debian trixie main" > /etc/apt/sources.list.d/prosody.list && \
+    wget -qO - https://prosody.im/files/prosody-debian-packages.key | \
+      gpg --dearmour > /usr/share/keyrings/prosody.gpg && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
@@ -64,9 +70,10 @@ RUN set -x && \
     mkdir /prosody-plugins-contrib && \
     tar --strip-components=1 -C /prosody-plugins-contrib -xf $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
     rm -f $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
-    (apt-cache policy prosody | grep Installed | grep -Eq " 13\." && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true)
-
-COPY rootfs/ /
+    (apt-cache policy prosody | grep Installed | grep -Eq " 13\." && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true) && \
+    usermod -a -G prosody,sasl s6 && \
+    chown s6:s6 /var/lib/prosody && \
+    echo "TLS_REQCERT allow" >> /etc/ldap/ldap.conf
 
 COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
 COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
@@ -74,3 +81,5 @@ COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
 EXPOSE 5222 5280
 
 VOLUME ["/config", "/prosody-plugins-custom"]
+
+USER s6

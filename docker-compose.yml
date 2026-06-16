@@ -3,14 +3,19 @@ services:
     web:
         image: jitsi/web:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
+        read_only: true
+        tmpfs:
+            - /run:size=16M,mode=1750,exec
+            - /tmp:size=16M,mode=1777,noexec
         ports:
             - '${HTTP_PORT}:80'
             - '${HTTPS_PORT}:443'
         volumes:
             - ${CONFIG}/web:/config:Z
-            - ${CONFIG}/web/crontabs:/var/spool/cron/crontabs:Z
-            - ${CONFIG}/transcripts:/usr/share/jitsi-meet/transcripts:Z
-            - ${CONFIG}/web/load-test:/usr/share/jitsi-meet/load-test:Z
+            - ${CONFIG}/storage/web:/storage:Z
+            - ${CONFIG}/storage/transcripts:/usr/share/jitsi-meet/transcripts:ro,z
+            - ${CONFIG}/tmp/web-crontabs:/var/spool/cron/crontabs:Z
+            - ${CONFIG}/tmp/web-load-test:/usr/share/jitsi-meet/load-test:Z
         labels:
             service: "jitsi-web"
         environment:
@@ -201,6 +206,10 @@ services:
     prosody:
         image: jitsi/prosody:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
+        read_only: true
+        tmpfs:
+            - /run:size=16M,mode=1750,exec
+            - /tmp:size=16M,mode=1777,noexec
         expose:
             - '${XMPP_PORT:-5222}'
             - '${PROSODY_S2S_PORT:-5269}'
@@ -211,6 +220,7 @@ services:
         volumes:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
+            - ${CONFIG}/storage/prosody:/var/lib/prosody:Z
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS
@@ -355,6 +365,10 @@ services:
     jicofo:
         image: jitsi/jicofo:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
+        read_only: true
+        tmpfs:
+            - /run:size=16M,mode=1750,exec
+            - /tmp:size=16M,mode=1777,noexec
         ports:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
         volumes:
@@ -451,6 +465,10 @@ services:
     jvb:
         image: jitsi/jvb:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
+        read_only: true
+        tmpfs:
+            - /run:size=16M,mode=1750,exec
+            - /tmp:size=16M,mode=1777,noexec
         ports:
             - '${JVB_PORT:-10000}:${JVB_PORT:-10000}/udp'
             - '127.0.0.1:${JVB_COLIBRI_PORT:-8080}:8080'

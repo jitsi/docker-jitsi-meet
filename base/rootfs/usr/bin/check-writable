@@ -1,0 +1,29 @@
+#!/bin/bash
+
+# Verify that a directory exists and is writable by the current (unprivileged)
+# user, failing fast with an actionable message otherwise. The containers run as
+# an unprivileged user (uid 1000), so host volumes they need to write to must be
+# owned by / writable by that uid. A real write probe is used so it accounts for
+# ownership, mode and ACLs rather than just permission bits.
+#
+# Usage: check-writable <dir> [<host-path-hint>]
+
+dir="$1"
+hint="${2:-$dir}"
+uid="$(id -u)"
+
+if [ ! -d "$dir" ]; then
+    echo "FATAL ERROR: required directory '$dir' is missing."
+    echo "It maps to a host volume that must exist and be writable by uid ${uid}."
+    echo "On the host, e.g.:  mkdir -p '${hint}' && chmod 777 '${hint}'"
+    exit 1
+fi
+
+probe="${dir}/.docker-jitsi-meet-write-test.$$"
+if ! touch "$probe" 2>/dev/null; then
+    echo "FATAL ERROR: directory '$dir' is not writable by the container user (uid ${uid})."
+    echo "It maps to a host volume; make it writable by uid ${uid}."
+    echo "On the host, e.g.:  chmod 777 '${hint}'   (or: chown -R ${uid}:${uid} '${hint}')"
+    exit 1
+fi
+rm -f "$probe"
