@@ -8,8 +8,8 @@ services:
             - /run:size=16M,mode=1750,exec
             - /tmp:size=16M,mode=1777,noexec
         ports:
-            - '${HTTP_PORT}:80'
-            - '${HTTPS_PORT}:443'
+            - '${HTTP_PORT}:8000'
+            - '${HTTPS_PORT}:8443'
         volumes:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/storage/web:/storage:Z
@@ -298,8 +298,6 @@ services:
             - PROSODY_DISABLE_S2S_LIMIT
             - PROSODY_ENABLE_FILTER_MESSAGES
             - PROSODY_ENABLE_MUC_RESOURCE_VALIDATE
-            - PROSODY_MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT
-            - PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS
             - PROSODY_ENABLE_RATE_LIMITS
             - PROSODY_ENABLE_RECORDING_METADATA
             - PROSODY_ENABLE_STANZA_COUNTS
@@ -310,6 +308,8 @@ services:
             - PROSODY_LOG_CONFIG
             - PROSODY_METRICS_ALLOWED_CIDR
             - PROSODY_MODE
+            - PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS
+            - PROSODY_MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT
             - PROSODY_RATE_LIMIT_LOGIN_RATE
             - PROSODY_RATE_LIMIT_SESSION_RATE
             - PROSODY_RATE_LIMIT_TIMEOUT
