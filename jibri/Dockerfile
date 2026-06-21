@@ -51,10 +51,11 @@ RUN \
   usermod -a -G audio,jibri,jitsi,rtkit,video s6 && \
   cp -r /home/jibri/. /home/s6 && \
   rm -rf /home/jibri && \
-  rm -rf /home/s6/.config /home/s6/.local && \
+  rm -rf /home/s6/.cache /home/s6/.config /home/s6/.local && \
+  ln -s /run/tmp/s6-cache /home/s6/.cache && \
   ln -s /run/tmp/s6-config /home/s6/.config && \
   ln -s /run/tmp/s6-local /home/s6/.local && \
-  chown -h s6:s6 /home/s6/.config /home/s6/.local && \
+  chown -h s6:s6 /home/s6/.cache /home/s6/.config /home/s6/.local && \
   chown s6:s6 /home/s6 -R && \
 \
   dpkgArch="$(dpkg --print-architecture)" && \
