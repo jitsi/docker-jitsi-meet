@@ -1,5 +1,6 @@
 #!/command/with-contenv bash
 
+mkdir -p /run/jvb/tmp
 mkdir -p /run/jvb/config
 cp -r /config/. /run/jvb/config
 
