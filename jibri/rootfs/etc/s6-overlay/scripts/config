@@ -80,8 +80,9 @@ JIBRI_LOGS_DIR=/storage/logs
 mkdir -p ${JIBRI_LOGS_DIR}
 chown -R s6 ${JIBRI_LOGS_DIR}
 
-# make .config and .local dirs
-# these are temporary folders linked to /home/s6/.config and /home/s6/.local
-mkdir -p /run/tmp/s6-local
+# make .cache, .config and .local dirs
+# these are temporary folders linked to /home/s6/.cache, /home/s6/.config and /home/s6/.local
+mkdir -p /run/tmp/s6-cache
 mkdir -p /run/tmp/s6-config
+mkdir -p /run/tmp/s6-local
 cp -r /home/s6/config/. /run/tmp/s6-config
