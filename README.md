@@ -83,6 +83,6 @@ xmpp-client {
 }
 ```
 
-For jitsi-meet, do not disable the docker jitsi-meet service. Instead, setup jitsi-meet in development mode, and proxy requests to the docker jitsi-meet server.
+For jitsi-meet, do not disable the docker jitsi-meet service. Instead, setup jitsi-meet in development mode, and proxy requests to the docker jitsi-meet server. Also, copy the docker's `config.js` to the local repository.
 
 Run compose and local services.
