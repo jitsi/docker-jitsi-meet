@@ -51,7 +51,7 @@ mkdir -p ~/.jitsi-meet-cfg/{web,transcripts,prosody/config,prosody/prosody-plugi
 Start docker-jitsi-meet:
 ```
 make
-docker compose up
+docker compose -f docker-compose.yml -f tracing.yml up
 ```
 
 Shutdown docker-jitsi-meet.
@@ -82,5 +82,7 @@ xmpp-client {
   }
 }
 ```
+
+For jitsi-meet, do not disable the docker jitsi-meet service. Instead, setup jitsi-meet in development mode, and proxy requests to the docker jitsi-meet server.
 
 Run compose and local services.
