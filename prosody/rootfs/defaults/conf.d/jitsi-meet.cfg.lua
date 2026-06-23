@@ -342,6 +342,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
         "muc_resource_validate";
         {{ end -}}
+        "muc_tracer";
     }
 
     {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
