@@ -24,6 +24,7 @@
 {{ $ENABLE_TALK_WHILE_MUTED := .Env.ENABLE_TALK_WHILE_MUTED | default "false" | toBool -}}
 {{ $ENABLE_TCC := .Env.ENABLE_TCC | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "false" | toBool -}}
+{{ $ENABLE_VIRTUAL_BACKGROUND_V2 := .Env.ENABLE_VIRTUAL_BACKGROUND_V2 | default "false" | toBool -}}
 {{ $TRANSLATION_LANGUAGES := .Env.TRANSLATION_LANGUAGES | default "[]" -}}
 {{ $TRANSLATION_LANGUAGES_HEAD := .Env.TRANSLATION_LANGUAGES_HEAD | default "['en']" -}}
 {{ $USE_APP_LANGUAGE := .Env.USE_APP_LANGUAGE | default "true" | toBool -}}
@@ -577,6 +578,11 @@ config.e2eping.maxConferenceSize = {{ .Env.E2EPING_MAX_CONFERENCE_SIZE }};
 {{ if .Env.E2EPING_MAX_MESSAGE_PER_SECOND -}}
 config.e2eping.maxMessagePerSecond = {{ .Env.E2EPING_MAX_MESSAGE_PER_SECOND }};
 {{ end }}
+
+// Virtual background.
+config.virtualBackground = {
+    enableV2: {{ $ENABLE_VIRTUAL_BACKGROUND_V2 }}
+};
 
 // Settings for the Excalidraw whiteboard integration.
 config.whiteboard = {
