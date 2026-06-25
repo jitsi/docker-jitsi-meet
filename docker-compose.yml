@@ -425,6 +425,8 @@ services:
             - JICOFO_TRUSTED_DOMAINS
             - JIBRI_BREWERY_MUC
             - JIBRI_REQUEST_RETRIES
+            - JIBRI_BUSY_RETRIES
+            - JIBRI_BUSY_RETRY_DELAY
             - JIBRI_PENDING_TIMEOUT
             - JIGASI_BREWERY_MUC
             - JIGASI_SIP_URI
