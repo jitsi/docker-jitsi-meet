@@ -93,7 +93,7 @@ jobs:
           context: ./base
           load: true
           tags: |
-            jitsi/base:latest
+            ghcr.io/jitsi/base:latest
           build-args: |
             JITSI_RELEASE=unstable
 
@@ -103,7 +103,7 @@ jobs:
           context: ./base-java
           load: true
           tags: |
-            jitsi/base-java:latest
+            ghcr.io/jitsi/base-java:latest
 
       - name: Build jibri
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
@@ -111,7 +111,7 @@ jobs:
           context: ./jibri
           load: true
           tags: |
-            jitsi/jibri:latest
+            ghcr.io/jitsi/jibri:latest
 
       - name: Build jicofo
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
@@ -119,7 +119,7 @@ jobs:
           context: ./jicofo
           load: true
           tags: |
-            jitsi/jicofo:latest
+            ghcr.io/jitsi/jicofo:latest
 
       - name: Build jigasi
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
@@ -127,7 +127,7 @@ jobs:
           context: ./jigasi
           load: true
           tags: |
-            jitsi/jigasi:latest
+            ghcr.io/jitsi/jigasi:latest
 
       - name: Build jvb
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
@@ -135,7 +135,7 @@ jobs:
           context: ./jvb
           load: true
           tags: |
-            jitsi/jvb:latest
+            ghcr.io/jitsi/jvb:latest
 
       - name: Build prosody
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
@@ -143,7 +143,7 @@ jobs:
           context: ./prosody
           load: true
           tags: |
-            jitsi/prosody:latest
+            ghcr.io/jitsi/prosody:latest
 
       - name: Build web
         uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
@@ -151,4 +151,4 @@ jobs:
           context: ./web
           load: true
           tags: |
-            jitsi/web:latest
+            ghcr.io/jitsi/web:latest
