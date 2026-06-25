@@ -8,7 +8,7 @@
 
 This repository contains the necessary tools to run a Jitsi Meet stack on [Docker](https://www.docker.com) using [Docker Compose](https://docs.docker.com/compose/).
 
-All our images are published on [DockerHub](https://hub.docker.com/u/jitsi/).
+All our images are published on the [GitHub Container Registry (GHCR)](https://github.com/orgs/jitsi/packages).
 
 ## Supported architectures
 
