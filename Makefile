@@ -1,7 +1,7 @@
 FORCE_REBUILD ?= 0
 JITSI_RELEASE ?= stable
 JITSI_BUILD ?= unstable
-JITSI_REPO ?= jitsi
+JITSI_REPO ?= ghcr.io/jitsi
 
 JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
 

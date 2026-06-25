@@ -1,6 +1,6 @@
 services:
     transcriber:
-        image: jitsi/jigasi:${JITSI_IMAGE_VERSION:-unstable}
+        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/jigasi:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
