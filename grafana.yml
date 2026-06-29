@@ -1,9 +1,16 @@
 services:
   # Grafana: used for visualization of metrics and log data through customizable dashboards.
   grafana:
-    image: grafana/grafana:10.2.0
+    image: grafana/grafana:10.4.0
     environment:
       - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_SERVER_ROOT_URL='${PUBLIC_URL}/monitoring'
+      - GF_SECURITY_ADMIN_USER: gadmin
+      - GF_SECURITY_ADMIN_PASSWORD: new-admin-password
+      - GF_SECURITY_CONTENT_SECURITY_POLICY: 'true'
+      - GF_SECURITY_COOKIE_SECURE: 'true'
+      - GF_SECURITY_COOKIE_SAMESITE: 'true'
+      
     volumes:
       - ./log-analyser/grafana:/var/lib/grafana
       - ./log-analyser/grafana-provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
