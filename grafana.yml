@@ -4,12 +4,12 @@ services:
     image: grafana/grafana:10.4.0
     environment:
       - GF_ANALYTICS_REPORTING_ENABLED=false
-      - GF_SERVER_ROOT_URL='${PUBLIC_URL}/monitoring'
-      - GF_SECURITY_ADMIN_USER: gadmin
-      - GF_SECURITY_ADMIN_PASSWORD: new-admin-password
-      - GF_SECURITY_CONTENT_SECURITY_POLICY: 'true'
-      - GF_SECURITY_COOKIE_SECURE: 'true'
-      - GF_SECURITY_COOKIE_SAMESITE: 'true'
+      - GF_SERVER_ROOT_URL
+      - GF_SECURITY_ADMIN_USER
+      - GF_SECURITY_ADMIN_PASSWORD
+      - GF_SECURITY_CONTENT_SECURITY_POLICY
+      - GF_SECURITY_COOKIE_SECURE
+      - GF_SECURITY_COOKIE_SAMESITE
       
     volumes:
       - ./log-analyser/grafana:/var/lib/grafana
