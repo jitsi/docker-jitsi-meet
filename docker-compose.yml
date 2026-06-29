@@ -197,6 +197,7 @@ services:
             - XMPP_RECORDER_DOMAIN
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
             - WHITEBOARD_COLLAB_SERVER_URL_BASE
+            - GF_SERVER_ROOT_URL
         networks:
             meet.jitsi:
         depends_on:
