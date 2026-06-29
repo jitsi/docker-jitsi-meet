@@ -1,7 +1,7 @@
 services:
   # Grafana: used for visualization of metrics and log data through customizable dashboards.
   grafana:
-    image: grafana/grafana:10.4.0
+    image: grafana/grafana:10.4.19
     environment:
       - GF_ANALYTICS_REPORTING_ENABLED=false
       - GF_SERVER_ROOT_URL
