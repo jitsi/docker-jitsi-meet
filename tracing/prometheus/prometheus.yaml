@@ -15,10 +15,6 @@ scrape_configs:
     static_configs:
       - targets: [ 'tempo:3200' ]
 
-  - job_name: 'vulture'
-    static_configs:
-      - targets: [ 'vulture:8080' ]
-
   - job_name: 'prosody'
     static_configs:
       - targets: [ 'prosody:5280' ]

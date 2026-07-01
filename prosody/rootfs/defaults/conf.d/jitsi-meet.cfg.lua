@@ -342,7 +342,6 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
         "muc_resource_validate";
         {{ end -}}
-        "muc_tracer";
     }
 
     {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
@@ -497,7 +496,4 @@ Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
 
 {{ if not $DISABLE_POLLS -}}
 Component "polls.{{ $XMPP_DOMAIN }}" "polls_component"
-modules_enabled = {
-    "polls_tracer";
-}
 {{ end -}}

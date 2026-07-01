@@ -62,18 +62,6 @@ services:
         networks:
             meet.jitsi:
 
-    # vulture:
-    #     image: grafana/tempo-vulture:latest
-    #     restart: ${RESTART_POLICY:-unless-stopped}
-    #     command:
-    #         - -prometheus-listen-address=:8080
-    #         - -tempo-query-url=http://tempo:3200
-    #         - -tempo-push-url=http://tempo:4317
-    #     depends_on:
-    #        - tempo
-    #     networks:
-    #         meet.jitsi:
-
     loki:
         image: grafana/loki:3.0.0
         command: -config.file=/etc/loki/config.yaml
