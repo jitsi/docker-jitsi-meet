@@ -4,11 +4,19 @@ services:
     image: grafana/grafana:10.2.0
     environment:
       - GF_ANALYTICS_REPORTING_ENABLED=false
+      - GF_SERVER_ROOT_URL
+      - GF_SECURITY_ADMIN_USER
+      - GF_SECURITY_ADMIN_PASSWORD
+      - GF_SECURITY_CONTENT_SECURITY_POLICY
+      - GF_SECURITY_COOKIE_SECURE
+      - GF_SECURITY_COOKIE_SAMESITE    
     volumes:
-      - ./log-analyser/grafana:/var/lib/grafana
+      - ${CONFIG}/grafana:/var/lib/grafana
       - ./log-analyser/grafana-provisioning/dashboards/:/etc/grafana/provisioning/dashboards/
       - ./log-analyser/grafana-provisioning/datasources/:/etc/grafana/provisioning/datasources/
     ports:
       - "3000:3000"
     networks:
       meet.jitsi:
+        aliases:
+          - grafana.meet.jitsi
