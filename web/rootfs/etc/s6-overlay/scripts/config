@@ -29,7 +29,11 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
         check-writable /var/spool/cron/crontabs '${CONFIG}/tmp/web-crontabs' || exit 1
         mkdir -p /storage/acme.sh
         pushd /opt
-        sh ./acme.sh --install --home /storage/acme.sh --accountemail $LETSENCRYPT_EMAIL
+        # --noprofile: skip writing the shell alias into $HOME/.profile, which
+        # lives on the read-only root filesystem. It is only an interactive
+        # convenience; this script always calls acme.sh by full path with
+        # LE_WORKING_DIR exported, so nothing here needs it.
+        sh ./acme.sh --install --noprofile --home /storage/acme.sh --accountemail $LETSENCRYPT_EMAIL
         popd
 
         STAGING=""
