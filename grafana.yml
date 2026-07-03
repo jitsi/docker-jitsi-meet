@@ -4,7 +4,7 @@ services:
     image: grafana/grafana:10.2.0
     environment:
       - GF_ANALYTICS_REPORTING_ENABLED=false
-      - GF_SERVER_ROOT_URL
+      - GF_SERVER_ROOT_URL='${PUBLIC_URL}/${GRAFANA_SUB_URI}'
       - GF_SECURITY_ADMIN_USER
       - GF_SECURITY_ADMIN_PASSWORD
       - GF_SECURITY_CONTENT_SECURITY_POLICY
