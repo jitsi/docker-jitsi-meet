@@ -59,11 +59,12 @@ local Span = {}
 Span.__index = Span
 m.Span = Span
 
-function Span.new(name, tracer)
+function Span.new(name, tracer, opts)
 	local self = {
 		name = name,
 		tracer = tracer,
-		trace_id = random_hex(16),
+		parent = opts.parent,
+		trace_id = opts.parent and opts.parent.trace_id or random_hex(16),
 		span_id = random_hex(8),
 		start_time = time.now(),
 		attributes = array {},
@@ -86,6 +87,7 @@ function Span:encode()
 	return {
 		trace_id = self.trace_id,
 		span_id = self.span_id,
+		parent_span_id = self.parent and self.parent.parent_id,
 		name = self.name,
 		start_time_unix_nano = to_nanoseconds(self.start_time),
 		end_time_unix_nano = to_nanoseconds(self.end_time),
@@ -195,8 +197,8 @@ function Tracer.new(processor, service, name)
 	}, Tracer)
 end
 
-function Tracer:start_span(name)
-	return Span.new(name, self)
+function Tracer:start_span(name, parent)
+	return Span.new(name, self, { parent = parent })
 end
 
 return m
