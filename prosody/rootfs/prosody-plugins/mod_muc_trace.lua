@@ -13,15 +13,9 @@ local function find_tag(tags, name)
 	return nil
 end
 
-module:hook("muc-broadcast-presence", function(event)
+module:hook("muc-room-created", function(event)
 	local traceparent = find_tag(event.stanza.tags, "traceparent")
-	if not traceparent then
-		return
-	end
-
-	local span = tracer:start_span("muc.presence", traceparent.attr)
+	local span = tracer:start_span("muc.room-created", traceparent and traceparent.attr)
 			:set_attribute("room", otel.Attribute.string(event.room.jid))
-			:set_attribute("from", otel.Attribute.string(event.stanza.attr.from))
-
 	span:end_span()
 end, -1)
