@@ -1,5 +1,6 @@
 #!/command/with-contenv bash
 
+mkdir -p /run/jigasi/tmp
 mkdir -p /run/jigasi/config
 cp -r /config/. /run/jigasi/config
 

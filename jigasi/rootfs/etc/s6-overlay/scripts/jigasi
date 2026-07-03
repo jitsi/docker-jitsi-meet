@@ -1,6 +1,6 @@
 #!/command/with-contenv bash
 
-JAVA_SYS_PROPS="-Djava.util.logging.config.file=/run/jigasi/config/logging.properties"
+JAVA_SYS_PROPS="-Djava.util.logging.config.file=/run/jigasi/config/logging.properties -Djava.io.tmpdir=/run/jigasi/tmp -Djna.tmpdir=/run/jigasi/tmp"
 
 DAEMON=/usr/share/jigasi/jigasi.sh
 DAEMON_OPTS="--nocomponent=true --configdir=/run/jigasi --configdirname=config --min-port=${JIGASI_PORT_MIN:-20000} --max-port=${JIGASI_PORT_MAX:-20050}"
