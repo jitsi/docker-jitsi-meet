@@ -225,6 +225,7 @@ services:
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS
+            - ENABLE_AUDIO_TRANSLATION
             - ENABLE_AUTH
             - ENABLE_AV_MODERATION
             - ENABLE_BREAKOUT_ROOMS
