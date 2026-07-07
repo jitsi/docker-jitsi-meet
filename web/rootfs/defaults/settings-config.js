@@ -1,5 +1,6 @@
 {{ $ENABLE_ADAPTIVE_MODE := .Env.ENABLE_ADAPTIVE_MODE | default "true" | toBool -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
+{{ $ENABLE_AUDIO_TRANSLATION := .Env.ENABLE_AUDIO_TRANSLATION | default "false" | toBool -}}
 {{ $ENABLE_AUTOMATIC_GAIN_CONTROL := .Env.ENABLE_AUTOMATIC_GAIN_CONTROL | default "true" | toBool -}}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
@@ -379,6 +380,10 @@ config.transcription = {
     preferredLanguage: '{{ $PREFERRED_LANGUAGE }}',
     disableStartForAll: {{ $DISABLE_START_FOR_ALL }},
     autoCaptionOnRecord: {{ $AUTO_CAPTION_ON_RECORD }},
+};
+
+config.audioTranslation = {
+    enabled: {{ $ENABLE_AUDIO_TRANSLATION }}
 };
 
 // Dynamic branding
