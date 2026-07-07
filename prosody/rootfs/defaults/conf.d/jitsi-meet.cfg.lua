@@ -2,6 +2,7 @@
 {{ $C2S_REQUIRE_ENCRYPTION := .Env.PROSODY_C2S_REQUIRE_ENCRYPTION | default "1" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $ENABLE_APP_SECRET := .Env.JWT_APP_SECRET | default "false" | toBool -}}
+{{ $ENABLE_AUDIO_TRANSLATION := .Env.ENABLE_AUDIO_TRANSLATION | default "0" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_AV_MODERATION := .Env.ENABLE_AV_MODERATION | default "true" | toBool -}}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
@@ -478,6 +479,10 @@ Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"
     muc_component = "{{ $XMPP_MUC_DOMAIN }}"
     breakout_rooms_component = "breakout.{{ $XMPP_DOMAIN }}"
 
+{{ if $ENABLE_AUDIO_TRANSLATION }}
+Component "audiotranslation.{{ $XMPP_DOMAIN }}" "audio_translation_component"
+    muc_component = "{{ $XMPP_MUC_DOMAIN }}"
+{{ end }}
 
 {{ if $ENABLE_VISITORS }}
 Component "visitors.{{ $XMPP_DOMAIN }}" "visitors_component"
