@@ -103,6 +103,10 @@ smacks_hibernation_time = 60;
 smacks_max_old_sessions = 1;
 {{ end }}
 
+-- Keep the mod_smacks hibernation queue store in memory; all other stores
+-- fall back to the default "internal" backend.
+storage = { smacks_h = "memory" }
+
 {{ if $ENABLE_JAAS_COMPONENTS }}
 VirtualHost "jigasi.meet.jitsi"
     modules_enabled = {
