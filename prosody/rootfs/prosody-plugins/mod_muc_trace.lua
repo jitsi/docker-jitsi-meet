@@ -1,4 +1,5 @@
 local otel = module:require "otel"
+local jid = require "util.jid";
 
 local exporter = otel.Exporter.new("http://alloy:4318/v1/traces")
 local processor = otel.Processor.new(exporter)
@@ -16,6 +17,6 @@ end
 module:hook("muc-room-created", function(event)
 	local traceparent = find_tag(event.stanza.tags, "traceparent")
 	local span = tracer:start_span("muc.room-created", traceparent and traceparent.attr)
-			:set_attribute("room", otel.Attribute.string(event.room.jid))
+			:set_attribute("room.name", otel.Attribute.string(jid.node(event.room.jid)))
 	span:end_span()
 end, -1)
