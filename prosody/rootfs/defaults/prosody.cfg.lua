@@ -63,6 +63,7 @@
 -- The only thing left to do is rename this file to remove the .dist ending, and fill in the
 -- blanks. Good luck, and happy Jabbering!
 
+otlp_endpoint = "http://alloy:4318/v1/traces"
 
 ---------- Server-wide settings ----------
 -- Settings in this section apply to the whole server and are the default settings
