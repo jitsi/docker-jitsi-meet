@@ -29,10 +29,6 @@ The installation manual is available [here](https://jitsi.github.io/handbook/doc
 
 If you plan to install the jitsi-meet stack on a Kubernetes cluster you can find tools and tutorials in the project [Jitsi on Kubernetes](https://github.com/jitsi-contrib/jitsi-kubernetes).
 
-## TODO
-
-* Builtin TURN server.
-
 ## Development
 
 Configure `.env`:
