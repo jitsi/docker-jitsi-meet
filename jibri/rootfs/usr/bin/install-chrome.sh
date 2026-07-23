@@ -16,7 +16,7 @@ else
         apt-dpkg-wrap apt-get install -y google-chrome-stable
     else
         CHROME_DEB="/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
-        curl -4so ${CHROME_DEB} "http://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
+        curl -4so ${CHROME_DEB} "https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
         apt-dpkg-wrap apt-get install -y ${CHROME_DEB}
         rm -f ${CHROME_DEB}
     fi
