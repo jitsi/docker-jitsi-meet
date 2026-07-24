@@ -295,6 +295,7 @@ Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
         {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES | compact) }}";
         {{ end -}}
+        "trace";
     }
     restrict_room_creation = true
     muc_filter_whitelist="{{ $XMPP_AUTH_DOMAIN }}"
@@ -342,7 +343,6 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
         "muc_resource_validate";
         {{ end -}}
-        "muc_trace";
     }
 
     {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
