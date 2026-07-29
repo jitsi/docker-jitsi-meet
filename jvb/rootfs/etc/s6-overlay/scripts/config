@@ -9,13 +9,13 @@ if [[ -z "$JVB_DISABLE_XMPP" ]]; then
         echo 'FATAL ERROR: JVB auth password must be set'
         exit 1
     fi
+fi
 
-    [ -z "${XMPP_SERVER}" ] && export XMPP_SERVER=xmpp.meet.jitsi
-
-    # On environments like Swarm the IP address used by the default gateway need not be
-    # the one used for inter-container traffic. Use that one for our fallback ID.
-    XMPP_SERVER_IP=$(dig +short +search ${XMPP_SERVER})
-    export JVB_WS_SERVER_ID_FALLBACK=$(ip route get ${XMPP_SERVER_IP} | grep -oP '(?<=src ).*' | awk '{ print $1 '})
+if [[ "$ENABLE_COLIBRI_WEBSOCKET" == "1" || "$ENABLE_COLIBRI_WEBSOCKET" == "true" ]]; then
+    echo "WARNING: colibri websockets are no longer supported, ENABLE_COLIBRI_WEBSOCKET is ignored"
+    if [[ "$ENABLE_SCTP" == "0" || "$ENABLE_SCTP" == "false" ]]; then
+        echo "WARNING: SCTP is disabled and colibri websockets are no longer available, so clients will have NO bridge channel; unset ENABLE_SCTP (or set it to 1) to restore the bridge channel over SCTP data channels"
+    fi
 fi
 
 # Migration from DOCKER_HOST_ADDRESS to JVB_ADVERTISE_IPS
