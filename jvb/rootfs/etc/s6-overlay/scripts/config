@@ -11,13 +11,6 @@ if [[ -z "$JVB_DISABLE_XMPP" ]]; then
     fi
 fi
 
-if [[ "$ENABLE_COLIBRI_WEBSOCKET" == "1" || "$ENABLE_COLIBRI_WEBSOCKET" == "true" ]]; then
-    echo "WARNING: colibri websockets are no longer supported, ENABLE_COLIBRI_WEBSOCKET is ignored"
-    if [[ "$ENABLE_SCTP" == "0" || "$ENABLE_SCTP" == "false" ]]; then
-        echo "WARNING: SCTP is disabled and colibri websockets are no longer available, so clients will have NO bridge channel; unset ENABLE_SCTP (or set it to 1) to restore the bridge channel over SCTP data channels"
-    fi
-fi
-
 # Migration from DOCKER_HOST_ADDRESS to JVB_ADVERTISE_IPS
 if [[ -z "${JVB_ADVERTISE_IPS}" ]]; then
     if [[ -n "${DOCKER_HOST_ADDRESS}" ]]; then

@@ -122,10 +122,6 @@ fi
 
 echo "Using Nginx resolver: =$NGINX_RESOLVER="
 
-if [[ "$ENABLE_COLIBRI_WEBSOCKET" == "1" || "$ENABLE_COLIBRI_WEBSOCKET" == "true" ]]; then
-    echo "WARNING: colibri websockets are no longer supported, ENABLE_COLIBRI_WEBSOCKET is ignored"
-fi
-
 # maintain backward compatibility with older variable
 [ -z "${XMPP_HIDDEN_DOMAIN}" ] && export XMPP_HIDDEN_DOMAIN="$XMPP_RECORDER_DOMAIN"
 

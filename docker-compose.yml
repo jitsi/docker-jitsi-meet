@@ -69,7 +69,6 @@ services:
             - ENABLE_AUTH_DOMAIN
             - ENABLE_BREAKOUT_ROOMS
             - ENABLE_CALENDAR
-            - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_E2EPING
             - ENABLE_FILE_RECORDING_SHARING
             - ENABLE_GUESTS
@@ -385,9 +384,7 @@ services:
             - ENABLE_CODEC_OPUS_RED
             - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
-            - ENABLE_OCTO_SCTP
             - ENABLE_RECORDING
-            - ENABLE_SCTP
             - ENABLE_SHARED_DOCUMENT_RANDOM_NAME
             - ENABLE_TRANSCRIPTIONS
             - ENABLE_VISITORS
@@ -487,10 +484,8 @@ services:
             - AUTOSCALER_SIDECAR_STATS_POLLING_INTERVAL
             - DISABLE_AWS_HARVESTER
             - DOCKER_HOST_ADDRESS
-            - ENABLE_COLIBRI_WEBSOCKET
             - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
-            - ENABLE_SCTP
             - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER
