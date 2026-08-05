@@ -1,5 +1,6 @@
 #!/command/with-contenv bash
 
+mkdir -p /run/jibri/tmp
 mkdir -p /run/jibri/config
 find /config -maxdepth 1 -type f -exec cp {} /run/jibri/config \;
 

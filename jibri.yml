@@ -6,6 +6,7 @@ services:
         tmpfs:
             - /run:size=256M,mode=1750,exec
             - /tmp:size=256M,mode=1777,noexec
+            - /var/log/jitsi/jibri:size=256M,mode=1777,noexec
         volumes:
             - ${CONFIG}/jibri:/config:Z
             - ${CONFIG}/storage/jibri:/storage:Z
