@@ -1,11 +1,19 @@
 #!/command/with-contenv bash
 
-# we have to set it, otherwise chrome won't find ~/.asoundrc file
-HOME=/home/s6
-
-DAEMON=/opt/jitsi/jibri/launch.sh
+# pre-warm google chrome before jibri launches to ensure fast chrome launch during recordings
 CHROME_BIN_PATH="$(which google-chrome)"
 [ $? -ne 0 ] && CHROME_BIN_PATH="$(which chromium)"
-# pre-warm google chrome before jibri launches to ensure fast chrome launch during recordings
 [ -n "$CHROME_BIN_PATH" ] && $CHROME_BIN_PATH --timeout=1000 --headless --no-sandbox about:blank
-exec /bin/bash -c "exec $DAEMON"
+
+# selenium throws away chromedriver's output, so allow wrapping it to find out why it failed
+CHROMEDRIVER=/usr/bin/chromedriver
+[ "${JIBRI_CHROMEDRIVER_DEBUG}" = "true" ] && CHROMEDRIVER=/usr/bin/chromedriver-debug
+
+exec java \
+    -Djava.util.logging.config.file=/run/jibri/config/logging.properties \
+    -Dconfig.file=/run/jibri/config/jibri.conf \
+    -Djava.io.tmpdir=/run/jibri/tmp \
+    -Dwebdriver.chrome.driver=${CHROMEDRIVER} \
+    -Dwebdriver.chrome.logfile=/storage/logs/chromedriver.log \
+    -jar /opt/jitsi/jibri/jibri.jar
+

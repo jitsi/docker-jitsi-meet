@@ -45,6 +45,9 @@ RUN \
   rm -rf /etc/jitsi/jibri && \
   ln -s /run/jibri/config /etc/jitsi/jibri && \
 \
+  rm -rf /var/log/jitsi/jibri && \
+  ln -s /storage/logs /var/log/jitsi/jibri && \
+\
   mkdir -p /storage && \
   chown s6:s6 /storage && \
 \
