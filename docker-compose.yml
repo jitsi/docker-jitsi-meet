@@ -1,7 +1,7 @@
 services:
     # Frontend
     web:
-        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/web:${JITSI_IMAGE_VERSION:-stable-11146-1}
+        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/web:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
@@ -198,7 +198,7 @@ services:
 
     # XMPP server
     prosody:
-        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/prosody:${JITSI_IMAGE_VERSION:-stable-11146-1}
+        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/prosody:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
@@ -358,7 +358,7 @@ services:
 
     # Focus component
     jicofo:
-        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/jicofo:${JITSI_IMAGE_VERSION:-stable-11146-1}
+        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/jicofo:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
@@ -459,7 +459,7 @@ services:
 
     # Video bridge
     jvb:
-        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/jvb:${JITSI_IMAGE_VERSION:-stable-11146-1}
+        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/jvb:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
