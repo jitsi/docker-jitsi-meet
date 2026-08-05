@@ -1,6 +1,7 @@
 #!/command/with-contenv bash
 
 mkdir -p /run/jibri/config
+mkdir -p /run/jibri/tmp
 find /config -maxdepth 1 -type f -exec cp {} /run/jibri/config \;
 
 # Check if /dev/shm is large enough (2GB at least)

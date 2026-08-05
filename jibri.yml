@@ -25,6 +25,8 @@ services:
             - DISPLAY=:0
             - ENABLE_STATS_D
             - IGNORE_CERTIFICATE_ERRORS
+            - JIBRI_CHROMEDRIVER_DEBUG
+            - JIBRI_CHROMEDRIVER_DEBUG_LOG
             - JIBRI_WEBHOOK_SUBSCRIBERS
             - JIBRI_INSTANCE_ID
             - JIBRI_ENABLE_PROMETHEUS

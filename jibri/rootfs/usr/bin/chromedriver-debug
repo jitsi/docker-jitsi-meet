@@ -1,0 +1,25 @@
+#!/bin/bash
+
+# Debug wrapper around chromedriver, used when JIBRI_CHROMEDRIVER_DEBUG=true.
+#
+# Selenium discards chromedriver's stdout and stderr whenever a log file is configured, which
+# jibri always does, so a chromedriver which fails to start leaves nothing behind other than
+# jibri's "Driver server process died prematurely, exit value: 1".  Run the real chromedriver
+# with its output captured, along with the context it was launched in.
+
+LOG="${JIBRI_CHROMEDRIVER_DEBUG_LOG:-/run/jibri/tmp/chromedriver-debug.log}"
+
+{
+    echo "=== chromedriver invoked at $(date -Is) ==="
+    echo "ARGV: $*"
+    echo "UID=$(id -u) GID=$(id -g) GROUPS=$(id -G)"
+    echo "CWD=$(pwd) HOME=${HOME}"
+    echo "--- resource limits ---"
+    ulimit -a
+    echo "--- environment ---"
+    env | sort
+    echo "--- chromedriver output ---"
+} >>"${LOG}" 2>&1
+
+# exec, so the process selenium tracks is chromedriver itself, as it is without this wrapper
+exec /usr/bin/chromedriver "$@" >>"${LOG}" 2>&1
