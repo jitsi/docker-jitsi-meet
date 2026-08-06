@@ -49,6 +49,7 @@
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
 {{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
+{{ $ENABLE_TRACING := .Env.ENABLE_TRACING | default "0" | toBool -}}
 
 -- Prosody Example Configuration File
 --
@@ -63,7 +64,9 @@
 -- The only thing left to do is rename this file to remove the .dist ending, and fill in the
 -- blanks. Good luck, and happy Jabbering!
 
+{{ if $ENABLE_TRACING }}
 otlp_endpoint = "http://alloy:4318/v1/traces"
+{{ end -}}
 
 ---------- Server-wide settings ----------
 -- Settings in this section apply to the whole server and are the default settings
