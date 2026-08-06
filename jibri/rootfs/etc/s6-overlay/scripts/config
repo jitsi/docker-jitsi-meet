@@ -15,9 +15,17 @@ if [[ -z "$JIBRI_RECORDER_PASSWORD" || -z "$JIBRI_XMPP_PASSWORD" ]]; then
     exit 1
 fi
 
-# DISPLAY is necessary for start
-[ -z "${DISPLAY}" ] \
-&& ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
+export JIBRI_USE_WAYLAND="${JIBRI_USE_WAYLAND:-false}"
+
+if [ "$JIBRI_USE_WAYLAND" = "true" ]; then
+    # Wayland clients require XDG_RUNTIME_DIR to exist and be private; /run is
+    # our writable tmpfs, so the socket lives there.
+    mkdir -pm 700 "${XDG_RUNTIME_DIR:-/run/tmp/xdg}"
+else
+    # DISPLAY is necessary for start
+    [ -z "${DISPLAY}" ] \
+    && ( echo -e "\e[31mERROR: Please set DISPLAY variable.\e[39m"; kill 1; exit 1 )
+fi
 
 # script for finalizing must have executing bit.
 [ -n "${JIBRI_FINALIZE_RECORDING_SCRIPT_PATH}" ] \
@@ -66,7 +74,8 @@ fi
 tpl /defaults/jibri.conf > /run/jibri/config/jibri.conf
 tpl /defaults/xmpp.conf > /run/jibri/config/xmpp.conf
 tpl /defaults/logging.properties > /run/jibri/config/logging.properties
-tpl /defaults/xorg-video-dummy.conf > /run/jibri/config/xorg-video-dummy.conf
+[ "$JIBRI_USE_WAYLAND" = "true" ] \
+    || tpl /defaults/xorg-video-dummy.conf > /run/jibri/config/xorg-video-dummy.conf
 
 # fail fast if the storage volume is not writable by the container user
 check-writable /storage '${CONFIG}/storage/jibri' || exit 1

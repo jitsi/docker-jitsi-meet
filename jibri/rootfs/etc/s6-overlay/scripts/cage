@@ -1,0 +1,53 @@
+#!/command/with-contenv bash
+
+: "${JIBRI_USE_WAYLAND:=false}"
+
+if [[ "${JIBRI_USE_WAYLAND}" != "true" ]]; then
+    echo "JIBRI_USE_WAYLAND is not true, running the X11 capture path instead"
+    exec /bin/sleep infinity
+fi
+
+: "${JIBRI_RECORDING_RESOLUTION:=1280x720}"
+: "${JIBRI_RECORDING_FRAMERATE:=30}"
+: "${JIBRI_WAYLAND_OUTPUT:=HEADLESS-1}"
+
+# wlroots hardcodes headless outputs to 1280x720 -- there is no env var for the
+# size -- so the resolution has to be applied with wlr-randr once cage is up.
+# Headless outputs have no mode list, only WLR_OUTPUT_STATE_MODE_CUSTOM, hence
+# --custom-mode rather than --mode.
+#
+# This runs in the background because s6 supervises cage itself; racing
+# wlr-randr against a compositor that has not created its output yet is the
+# classic way to get "no output named HEADLESS-1" (cage#407), so poll first.
+(
+    for _ in $(seq 1 50); do
+        if wlr-randr 2>/dev/null | grep -q "^${JIBRI_WAYLAND_OUTPUT}"; then
+            break
+        fi
+        sleep 0.1
+    done
+
+    if ! wlr-randr 2>/dev/null | grep -q "^${JIBRI_WAYLAND_OUTPUT}"; then
+        echo "ERROR: output ${JIBRI_WAYLAND_OUTPUT} never appeared; capture will use the wrong resolution"
+        exit 1
+    fi
+
+    # Some wlroots versions reject an explicit refresh rate on a headless
+    # output; the capture framerate is enforced by wf-recorder anyway, so fall
+    # back to setting the size alone.
+    if ! wlr-randr --output "${JIBRI_WAYLAND_OUTPUT}" \
+            --custom-mode "${JIBRI_RECORDING_RESOLUTION}@${JIBRI_RECORDING_FRAMERATE}Hz"; then
+        echo "wlr-randr: refresh rate rejected, setting size only"
+        wlr-randr --output "${JIBRI_WAYLAND_OUTPUT}" \
+            --custom-mode "${JIBRI_RECORDING_RESOLUTION}" \
+            || echo "ERROR: failed to set ${JIBRI_WAYLAND_OUTPUT} to ${JIBRI_RECORDING_RESOLUTION}"
+    fi
+
+    wlr-randr
+) &
+
+# Cage exits when its child exits, so park a process that never does. Chrome is
+# started later by Jibri via chromedriver and connects to the same Wayland
+# socket, where cage fullscreens it -- which is the kiosk behaviour icewm was
+# there to provide under X11.
+exec /usr/bin/cage -- /bin/sleep infinity
