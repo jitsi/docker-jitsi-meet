@@ -54,6 +54,7 @@ if [[ $DISABLE_HTTPS -ne 1 ]]; then
             $ACME_SERVER \
             --issue \
             --standalone \
+            --httpport 8000 \
             --pre-hook "if [[ -d /run/service/nginx ]]; then s6-svc -d /run/service/nginx; fi" \
             --post-hook "if [[ -d /run/service/nginx ]]; then s6-svc -u /run/service/nginx; fi" \
             -d $LETSENCRYPT_DOMAIN
