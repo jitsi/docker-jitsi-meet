@@ -15,8 +15,8 @@ otelcol.exporter.otlp "tempo" {
   client {
     endpoint = env("ALLOY_OTLP_UPSTREAM")
     tls {
-			insecure = true
-		}
+      insecure = true
+    }
   }
 }
 
