@@ -46,28 +46,3 @@ services:
             - "3000:3000"
         networks:
             meet.jitsi:
-
-    prometheus:
-        image: prom/prometheus:latest
-        restart: ${RESTART_POLICY:-unless-stopped}
-        command:
-            - --config.file=/etc/prometheus/prometheus.yaml
-            - --web.enable-remote-write-receiver
-            - --enable-feature=exemplar-storage
-            - --enable-feature=native-histograms
-        volumes:
-            - ./tracing/prometheus/:/etc/prometheus/
-        ports:
-            - "9090:9090"
-        networks:
-            meet.jitsi:
-
-    loki:
-        image: grafana/loki:3.0.0
-        command: -config.file=/etc/loki/config.yaml
-        volumes:
-            - ./tracing/loki/:/etc/loki/
-        ports:
-            - "3100:3100"
-        networks:
-            meet.jitsi:
