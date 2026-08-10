@@ -13,6 +13,13 @@ fi
 # fail fast if the persistent data volume is not writable by the container user
 check-writable /var/lib/prosody '${CONFIG}/storage/prosody' || exit 1
 
+# prosody's data folder is created at runtime by the container user (uid 1000)
+# so it is owned by that user even when /var/lib/prosody itself is a root-owned
+# mount point (e.g. a Kubernetes volume)
+PROSODY_DATA_DIR="/var/lib/prosody/data"
+mkdir -p "$PROSODY_DATA_DIR"
+check-writable "$PROSODY_DATA_DIR" '${CONFIG}/storage/prosody' || exit 1
+
 PROSODY_CFG="/run/prosody/config/prosody.cfg.lua"
 
 mkdir -pm 750 /run/prosody/config/certs
@@ -20,8 +27,8 @@ mkdir -pm 750 /run/prosody/config/conf.d
 cp -r /config/. /run/prosody/config
 
 # copy existing prosody accounts from the old setup if this is the initial run
-if [[ -z $(ls /var/lib/prosody) ]] && [[ -d /config/data ]]; then
-    cp -r /config/data/. /var/lib/prosody
+if [[ -z $(ls "$PROSODY_DATA_DIR") ]] && [[ -d /config/data ]]; then
+    cp -r /config/data/. "$PROSODY_DATA_DIR"
 fi
 
 [ -z "$PROSODY_MODE" ] && export PROSODY_MODE="client"
@@ -96,6 +103,6 @@ if [[ ! -f "/run/prosody/config/certs/$XMPP_AUTH_DOMAIN.crt" ]]; then
     echo | prosodyctl --config $PROSODY_CFG cert generate $XMPP_AUTH_DOMAIN
 fi
 
-# certs will be created in /var/lib/prosody
-mv /var/lib/prosody/*.{crt,key} /run/prosody/config/certs/ || true
-rm -f /var/lib/prosody/*.cnf
+# certs will be created in the prosody data folder
+mv "$PROSODY_DATA_DIR"/*.{crt,key} /run/prosody/config/certs/ || true
+rm -f "$PROSODY_DATA_DIR"/*.cnf

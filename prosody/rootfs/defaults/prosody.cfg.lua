@@ -436,6 +436,6 @@ http_interfaces = { "*", "::" }
 http_interfaces = { "*" }
 {{ end }}
 
-data_path = "/var/lib/prosody"
+data_path = "/var/lib/prosody/data"
 
 Include "conf.d/*.cfg.lua"
