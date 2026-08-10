@@ -1,0 +1,174 @@
+{
+  "id": null,
+  "uid": "jitsi",
+  "title": "Jitsi",
+  "description": "Conference lifecycle and latency dashboard.",
+  "schemaVersion": 39,
+  "version": 2,
+  "editable": true,
+  "graphTooltip": 1,
+  "timezone": "browser",
+  "time": { "from": "now-6h", "to": "now" },
+  "refresh": "30s",
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "type": "datasource",
+        "label": "Tempo datasource",
+        "query": "tempo",
+        "current": {},
+        "hide": 0,
+        "refresh": 1
+      }
+    ]
+  },
+  "panels": [
+    { "id": 100, "type": "row", "title": "Conference Lifecycle", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 }, "collapsed": false, "panels": [] },
+
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "Member Joined - rate",
+      "description": "Rate of participants joining",
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 1 },
+      "datasource": { "type": "tempo", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "datasource": { "type": "tempo", "uid": "${datasource}" },
+          "query": "{ name = \"conference.member-joined\" } | rate()"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "type": "timeseries",
+      "title": "Member Left - rate",
+      "description": "Rate of participants leaving",
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 1 },
+      "datasource": { "type": "tempo", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "datasource": { "type": "tempo", "uid": "${datasource}" },
+          "query": "{ name = \"conference.member-left\" } | rate()"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "timeseries",
+      "title": "Rooms Destroyed - rate",
+      "description": "Rate of conferences ending",
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 1 },
+      "datasource": { "type": "tempo", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "datasource": { "type": "tempo", "uid": "${datasource}" },
+          "query": "{ name = \"conference.room-destroyed\" } | rate()"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "table",
+      "title": "Recent Lifecycle Events",
+      "description": "Join/leave/invite/teardown events",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 9 },
+      "datasource": { "type": "tempo", "uid": "${datasource}" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "datasource": { "type": "tempo", "uid": "${datasource}" },
+          "query": "{ name =~ \"conference.member-joined|conference.member-left|conference.room-destroyed|conference.participant-invite\" }",
+          "limit": 50,
+          "tableType": "traces"
+        }
+      ]
+    },
+
+    { "id": 101, "type": "row", "title": "Latency", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 17 }, "collapsed": false, "panels": [] },
+
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "colibri.allocate duration (p50/p95)",
+      "description": "JVB resource allocation latency",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
+      "datasource": { "type": "tempo", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "ns" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "datasource": { "type": "tempo", "uid": "${datasource}" },
+          "query": "{ name = \"colibri.allocate\" } | quantile_over_time(duration, .5, .95)"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "timeseries",
+      "title": "Participant invite duration (p50/p95)",
+      "description": "End-to-end time to invite and connect a participant",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
+      "datasource": { "type": "tempo", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "ns" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "datasource": { "type": "tempo", "uid": "${datasource}" },
+          "query": "{ name = \"conference.participant-invite\" } | quantile_over_time(duration, .5, .95)"
+        }
+      ]
+    },
+
+    { "id": 102, "type": "row", "title": "Errors", "gridPos": { "h": 1, "w": 24, "x": 0, "y": 34 }, "collapsed": false, "panels": [] },
+
+    {
+      "id": 7,
+      "type": "timeseries",
+      "title": "Error span rate by service",
+      "description": "Rate of error spans per service",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 35 },
+      "datasource": { "type": "tempo", "uid": "${datasource}" },
+      "fieldConfig": { "defaults": { "unit": "reqps" }, "overrides": [] },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "datasource": { "type": "tempo", "uid": "${datasource}" },
+          "query": "{ status = error } | rate() by (resource.service.name)"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "table",
+      "title": "Failed spans",
+      "description": "Spans with error status",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 35 },
+      "datasource": { "type": "tempo", "uid": "${datasource}" },
+      "targets": [
+        {
+          "refId": "A",
+          "queryType": "traceql",
+          "datasource": { "type": "tempo", "uid": "${datasource}" },
+          "query": "{ status = error }",
+          "limit": 50,
+          "tableType": "traces"
+        }
+      ]
+    }
+  ]
+}
