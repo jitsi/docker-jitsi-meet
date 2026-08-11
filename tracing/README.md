@@ -17,12 +17,12 @@ ENABLE_TRACING=1
 
 Start the docker compose:
 ```sh
-docker compose -f docker-compose.yml -f tracing.yml up
+docker compose -f docker-compose.yml -f tracing.yml -f grafana.yml up
 ```
 
 To stop all services:
 ```sh
-docker compose -f docker-compose.yml -f tracing.yml down
+docker compose -f docker-compose.yml -f tracing.yml -f grafana.yml down
 ```
 
 ## Visualization
