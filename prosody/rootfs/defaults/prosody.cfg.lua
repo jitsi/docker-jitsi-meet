@@ -50,6 +50,7 @@
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
 {{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
 {{ $ENABLE_TRACING := .Env.ENABLE_TRACING | default "0" | toBool -}}
+{{ $TRACING_ENDPOINT := .Env.TRACING_OTLP_ENDPOINT | default "http://alloy:4318" -}}
 
 -- Prosody Example Configuration File
 --
@@ -65,7 +66,7 @@
 -- blanks. Good luck, and happy Jabbering!
 
 {{ if $ENABLE_TRACING }}
-otlp_endpoint = "http://alloy:4318/v1/traces"
+otlp_endpoint = "{{ $TRACING_ENDPOINT }}/v1/traces"
 {{ end -}}
 
 ---------- Server-wide settings ----------
