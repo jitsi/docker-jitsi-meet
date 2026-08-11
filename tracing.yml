@@ -31,18 +31,3 @@ services:
             - tempo
         networks:
             meet.jitsi:
-
-    grafana:
-        image: grafana/grafana:latest
-        restart: ${RESTART_POLICY:-unless-stopped}
-        volumes:
-            - ./tracing/grafana-provisioning/:/etc/grafana/provisioning
-        environment:
-            - GF_FEATURE_TOGGLES_ENABLE=traceqlEditor
-            - GF_AUTH_ANONYMOUS_ENABLED=true
-            - GF_AUTH_ANONYMOUS_ORG_ROLE=Admin
-            - GF_AUTH_DISABLE_LOGIN_FORM=true
-        ports:
-            - "3000:3000"
-        networks:
-            meet.jitsi:

@@ -1,7 +1,6 @@
 {
-  "id": null,
-  "uid": "jitsi",
-  "title": "Jitsi",
+  "uid": "7779f02d-4dd8-4300-9ea6-023d77238b2c",
+  "title": "Tracing",
   "description": "Conference lifecycle and latency dashboard.",
   "schemaVersion": 39,
   "version": 2,
