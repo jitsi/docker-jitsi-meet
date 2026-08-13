@@ -7,7 +7,7 @@ datasources:
   orgId: 1
   url: http://tempo:3200
   basicAuth: false
-  isDefault: true
+  isDefault: false
   version: 1
   editable: false
   apiVersion: 1
@@ -15,7 +15,7 @@ datasources:
   jsonData:
     httpMethod: GET
     serviceMap:
-      datasourceUid: prometheus
+      datasourceUid: d301145e-8c4e-4027-bf6e-43e81f095020
     streamingEnabled:
       search: true
       metrics: true
