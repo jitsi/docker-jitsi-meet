@@ -14,7 +14,6 @@ services:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/storage/web:/storage:Z
             - ${CONFIG}/storage/transcripts:/usr/share/jitsi-meet/transcripts:ro,z
-            - ${CONFIG}/tmp/web-crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/tmp/web-load-test:/usr/share/jitsi-meet/load-test:Z
         labels:
             service: "jitsi-web"
