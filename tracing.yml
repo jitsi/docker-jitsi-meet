@@ -6,7 +6,7 @@ services:
             - -config.file=/etc/tempo/tempo.yaml
         volumes:
             - ./tracing/tempo/:/etc/tempo/
-            - tempo-data:/var/tempo
+            - ./tracing/tempo-data:/var/tempo
         networks:
             meet.jitsi:
 
@@ -26,6 +26,3 @@ services:
             - tempo
         networks:
             meet.jitsi:
-
-volumes:
-    tempo-data:

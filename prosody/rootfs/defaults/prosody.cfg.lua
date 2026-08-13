@@ -50,7 +50,7 @@
 {{ $XMPP_PORT := .Env.XMPP_PORT | default "5222" -}}
 {{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
 {{ $ENABLE_TRACING := .Env.ENABLE_TRACING | default "0" | toBool -}}
-{{ $TRACING_ENDPOINT := .Env.TRACING_OTLP_ENDPOINT | default "http://alloy:4318" -}}
+{{ $TRACING_ENDPOINT := .Env.TRACING_HTTP_ENDPOINT | default "http://alloy:4318" -}}
 
 -- Prosody Example Configuration File
 --
