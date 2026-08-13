@@ -1,3 +1,0 @@
-#!/command/execlineb -P
-
-/etc/s6-overlay/scripts/cron
