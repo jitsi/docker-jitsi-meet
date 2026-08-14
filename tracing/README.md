@@ -7,6 +7,7 @@ This directory contains all required files to enable tracing to Jitsi.
 - **Tempo**: Tracing backend.
 - **Alloy**: Open Telemetry collector.
 - **Grafana**: Observability frontend.
+- **Prometheus**: Backend for Tempo's metrics generator.
 
 ## Usage
 
@@ -14,15 +15,16 @@ Set the following environment variable:
 ```env
 ENABLE_TRACING=1
 ```
+See `env.example` for more related variables.
 
 Start the docker compose:
 ```sh
-docker compose -f docker-compose.yml -f tracing.yml -f grafana.yml up
+docker compose -f docker-compose.yml -f tracing.yml -f prometheus.yml -f grafana.yml up
 ```
 
 To stop all services:
 ```sh
-docker compose -f docker-compose.yml -f tracing.yml -f grafana.yml down
+docker compose -f docker-compose.yml -f tracing.yml -f prometheus.yml -f grafana.yml down
 ```
 
 ## Visualization

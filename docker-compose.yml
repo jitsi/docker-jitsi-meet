@@ -233,6 +233,7 @@ services:
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
             - ENABLE_TRACING
+            - TRACING_HTTP_ENDPOINT
             - GC_TYPE
             - GC_INC_TH
             - GC_INC_SPEED
@@ -391,6 +392,8 @@ services:
             - ENABLE_VISITORS
             - ENABLE_AUTO_LOGIN
             - ENABLE_TRACING
+            - TRACING_ENDPOINT
+            - TRACING_PROTOCOL
             - JICOFO_AUTH_LIFETIME
             - JICOFO_AUTH_PASSWORD
             - JICOFO_AUTH_TYPE
@@ -489,6 +492,8 @@ services:
             - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
             - ENABLE_TRACING
+            - TRACING_ENDPOINT
+            - TRACING_PROTOCOL
             - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER

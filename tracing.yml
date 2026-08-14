@@ -1,32 +1,27 @@
 services:
     tempo:
-        image: grafana/tempo:latest
+        image: grafana/tempo:3.0.2
         restart: ${RESTART_POLICY:-unless-stopped}
         command:
             - -config.file=/etc/tempo/tempo.yaml
         volumes:
             - ./tracing/tempo/:/etc/tempo/
-        ports:
-            - "3200:3200"
+            - ./tracing/tempo-data:/var/tempo
         networks:
             meet.jitsi:
 
 
     alloy:
-        image: grafana/alloy:latest
+        image: grafana/alloy:v1.18.1
         restart: ${RESTART_POLICY:-unless-stopped}
         volumes:
             - ./tracing/alloy/:/etc/alloy/
-            - /var/run/docker.sock:/var/run/docker.sock
         command:
             - run
             - /etc/alloy/config.alloy
             - --server.http.listen-addr=0.0.0.0:12345
         environment:
             - ALLOY_OTLP_UPSTREAM=tempo:4317
-        ports:
-            - "12345:12345"
-            - "4317:4317"
         depends_on:
             - tempo
         networks:

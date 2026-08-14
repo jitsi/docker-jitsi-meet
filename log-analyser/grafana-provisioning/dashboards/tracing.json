@@ -104,7 +104,7 @@
       "description": "JVB resource allocation latency",
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 18 },
       "datasource": { "type": "tempo", "uid": "${datasource}" },
-      "fieldConfig": { "defaults": { "unit": "ns" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
       "targets": [
         {
           "refId": "A",
@@ -121,7 +121,7 @@
       "description": "End-to-end time to invite and connect a participant",
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 18 },
       "datasource": { "type": "tempo", "uid": "${datasource}" },
-      "fieldConfig": { "defaults": { "unit": "ns" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
       "targets": [
         {
           "refId": "A",
