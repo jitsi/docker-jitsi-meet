@@ -20,6 +20,7 @@ COPY rootfs/ /
 RUN \
   apt-dpkg-wrap apt-get update && \
   apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+    cage \
     dbus \
     dbus-x11 \
     fonts-noto \
@@ -35,6 +36,8 @@ RUN \
     rclone \
     rtkit \
     unzip \
+    wf-recorder \
+    wlr-randr \
     && \
   /usr/bin/install-chrome.sh && \
   apt-get purge -y \
@@ -69,6 +72,22 @@ RUN \
   esac && \
   wget -qO /usr/bin/shm-check https://github.com/saghul/shm-check/releases/download/v1.0.0/shm-check-${SC_ARCH} && \
   chmod +x /usr/bin/shm-check
+
+# Wayland capture path (JIBRI_USE_WAYLAND). These live here rather than in the
+# config script because s6 oneshots cannot export into sibling services, and
+# Chrome only inherits them by being a grandchild of the jibri service.
+# The headless wlroots backend needs no DRM device, seat or logind, which is
+# what makes this work in a rootless container with no capabilities.
+# WAYLAND_DISPLAY must match what cage actually creates: it calls
+# wl_display_add_socket_auto(), which takes the first free name in a freshly
+# mounted XDG_RUNTIME_DIR, i.e. wayland-0. Chrome and wf-recorder are not cage
+# children so they do not inherit the name from it -- if this disagrees, they
+# silently fail to connect and capture falls back to a blank 1280x720.
+ENV XDG_RUNTIME_DIR=/run/tmp/xdg \
+    WAYLAND_DISPLAY=wayland-0 \
+    WLR_BACKENDS=headless \
+    WLR_LIBINPUT_NO_DEVICES=1 \
+    WLR_RENDERER=pixman
 
 VOLUME /config
 

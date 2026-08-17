@@ -40,6 +40,9 @@ services:
             - JIBRI_RECORDING_QUEUE_SIZE
             - JIBRI_RECORDING_STREAMING_MAX_BITRATE
             - JIBRI_USAGE_TIMEOUT
+            - JIBRI_USE_WAYLAND
+            - JIBRI_WAYLAND_OUTPUT
+            - JIBRI_WAYLAND_STALL_TIMEOUT
             - JIBRI_XMPP_USER
             - JIBRI_XMPP_PASSWORD
             - JIBRI_XORG_HORIZ_SYNC

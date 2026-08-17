@@ -1,4 +1,13 @@
 #!/command/with-contenv bash
 
+# Both capture paths ship in the same image so they can be A/B'd on one host;
+# the losing side parks here instead of being removed from s6-rc.
+: "${JIBRI_USE_WAYLAND:=false}"
+
+if [[ "${JIBRI_USE_WAYLAND}" == "true" ]]; then
+    echo "JIBRI_USE_WAYLAND is true, running the Wayland capture path instead"
+    exec /bin/sleep infinity
+fi
+
 DAEMON="/usr/bin/Xorg -nocursor -noreset  +extension RANDR +extension RENDER -logfile /storage/logs/xorg.log  -config /run/jibri/config/xorg-video-dummy.conf ${DISPLAY}"
 exec /bin/bash -c "exec $DAEMON"

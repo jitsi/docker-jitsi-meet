@@ -1,0 +1,217 @@
+#!/bin/bash
+#
+# Stand-in for ffmpeg when Jibri records a Wayland session.
+#
+# Jibri builds its capture command entirely from HOCON
+# (jibri.ffmpeg.command-linux-recording / -streaming), so instead of parsing an
+# x11grab command line we let jibri.conf hand us a declarative argument list and
+# translate it into wf-recorder, which grabs the Cage output via wlr-screencopy
+# and encodes with libx264 in the same process.
+#
+# Usage (the trailing positional argument is the sink path Jibri appends):
+#   jibri-wf-capture --mode recording|streaming --output HEADLESS-1
+#                    --resolution WxH --framerate N --audio-device DEV
+#                    --preset P --crf N [--gop N] [--maxrate R] [--bufsize B]
+#                    --muxer mp4|flv  <file-or-rtmp-url>
+#
+# Jibri only understands ffmpeg's output, so we also have to speak it:
+#   - a line of "key=value" pairs means "encoding, healthy"
+#   - "Exiting ... signal 2" means "stopped cleanly"
+#   - exiting while Jibri last saw an encoding line means "died unexpectedly"
+# See OutputParser.kt / FfmpegStatusStateMachine.kt in jitsi/jibri.
+
+set -o pipefail
+
+LOG=/storage/logs/jibri-wf-capture.log
+STALL_TIMEOUT="${JIBRI_WAYLAND_STALL_TIMEOUT:-60}"
+STOP_TIMEOUT="${JIBRI_WAYLAND_STOP_TIMEOUT:-8}"
+
+log() {
+    echo "$(date -Is) $*" >> "$LOG"
+}
+
+log "invoked: $0 $(printf '%q ' "$@")"
+
+MODE=
+OUTPUT=
+RESOLUTION=
+FRAMERATE=30
+AUDIO_DEVICE=
+PRESET=
+CRF=
+GOP=
+MAXRATE=
+BUFSIZE=
+MUXER=
+DEST=
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --mode) MODE="$2"; shift 2 ;;
+        --output) OUTPUT="$2"; shift 2 ;;
+        --resolution) RESOLUTION="$2"; shift 2 ;;
+        --framerate) FRAMERATE="$2"; shift 2 ;;
+        --audio-device) AUDIO_DEVICE="$2"; shift 2 ;;
+        --preset) PRESET="$2"; shift 2 ;;
+        --crf) CRF="$2"; shift 2 ;;
+        --gop) GOP="$2"; shift 2 ;;
+        --maxrate) MAXRATE="$2"; shift 2 ;;
+        --bufsize) BUFSIZE="$2"; shift 2 ;;
+        --muxer) MUXER="$2"; shift 2 ;;
+        *) DEST="$1"; shift ;;
+    esac
+done
+
+log "parsed: mode=$MODE output=$OUTPUT res=$RESOLUTION fps=$FRAMERATE audio=$AUDIO_DEVICE preset=$PRESET crf=$CRF gop=$GOP maxrate=$MAXRATE bufsize=$BUFSIZE muxer=$MUXER dest=$DEST"
+
+if [[ -z "$DEST" ]]; then
+    echo "jibri-wf-capture: no output destination given" >&2
+    log "FATAL: no output destination"
+    exit 1
+fi
+
+# libavcodec's maxrate/bufsize are plain integers; Jibri hands us ffmpeg CLI
+# style values like "2976k", so expand the SI suffix ourselves.
+expand_rate() {
+    local v="${1,,}"
+    case "$v" in
+        *k) echo $(( ${v%k} * 1000 )) ;;
+        *m) echo $(( ${v%m} * 1000000 )) ;;
+        *) echo "$v" ;;
+    esac
+}
+
+WF=(wf-recorder
+    --output "$OUTPUT"
+    --codec libx264
+    --pixel-format yuv420p
+    --framerate "$FRAMERATE"
+    --muxer "$MUXER"
+    --file "$DEST"
+    --overwrite)
+
+[[ -n "$PRESET" ]] && WF+=(--codec-param "preset=$PRESET")
+[[ -n "$CRF" ]] && WF+=(--codec-param "crf=$CRF")
+[[ -n "$GOP" ]] && WF+=(--codec-param "g=$GOP")
+[[ -n "$MAXRATE" ]] && WF+=(--codec-param "maxrate=$(expand_rate "$MAXRATE")")
+[[ -n "$BUFSIZE" ]] && WF+=(--codec-param "bufsize=$(expand_rate "$BUFSIZE")")
+
+# Streaming wants a predictable latency profile; recording keeps wf-recorder's
+# own default (which is also zerolatency) rather than inventing a new knob.
+#
+# --no-damage for streaming only. wlr-screencopy is damage-driven, which is the
+# main reason this is cheaper than x11grab -- but on a static screen it emits
+# *zero* frames, not merely fewer, and --framerate cannot paper over that (it
+# is an fps filter, so it can only duplicate a frame that actually arrived).
+# A recording tolerates that fine, since VFR playback just holds the last
+# frame; RTMP ingest does not, so streaming pays for a steady cadence.
+if [[ "$MODE" == "streaming" ]]; then
+    WF+=(--codec-param "tune=zerolatency" --no-damage)
+fi
+
+# --audio takes an *optional* argument, so it has to be attached rather than
+# passed as a separate argv element. "default" means "whatever PulseAudio's
+# default source is" (jibri-loop.monitor here), which is what a bare --audio
+# already does.
+if [[ -z "$AUDIO_DEVICE" || "$AUDIO_DEVICE" == "default" ]]; then
+    WF+=(--audio)
+else
+    WF+=("--audio=$AUDIO_DEVICE")
+fi
+
+log "exec: $(printf '%q ' "${WF[@]}")"
+
+# Process substitution keeps $! pointing at wf-recorder itself. Its stderr is
+# forwarded to our stdout on purpose: Jibri classifies "rtmp://... Input/output
+# error" and "Broken pipe" as real errors, so streaming failures propagate for
+# free instead of being swallowed here.
+"${WF[@]}" > >(tee -a "$LOG") 2>&1 &
+WF_PID=$!
+
+STOPPING=0
+
+# SIGTERM rather than SIGINT: wf-recorder finalizes cleanly on either, but bash
+# makes background jobs ignore SIGINT, and a signal that gets swallowed here
+# would leave the mp4 without its moov atom.
+on_stop() {
+    STOPPING=1
+    log "received stop signal, forwarding SIGTERM to wf-recorder ($WF_PID)"
+    kill -TERM "$WF_PID" 2>/dev/null
+}
+trap on_stop INT TERM
+
+# Never block forever waiting for wf-recorder to finish writing the trailer;
+# Jibri gives us 10s before it reaches for destroyForcibly.
+wait_for_wf() {
+    local waited=0
+    local deadline=$(( STOP_TIMEOUT * 10 ))
+    while kill -0 "$WF_PID" 2>/dev/null && [[ "$waited" -lt "$deadline" ]]; do
+        sleep 0.1
+        waited=$(( waited + 1 ))
+    done
+    if kill -0 "$WF_PID" 2>/dev/null; then
+        echo "jibri-wf-capture: wf-recorder did not exit within ${STOP_TIMEOUT}s, killing it" >&2
+        log "wf-recorder did not exit within ${STOP_TIMEOUT}s, sending SIGKILL"
+        kill -KILL "$WF_PID" 2>/dev/null
+    fi
+    wait "$WF_PID" 2>/dev/null
+}
+
+# Jibri's health check is a state machine, not a watchdog: it only reports a
+# problem when we *exit* after having emitted an encoding line. So an encoding
+# line must not be printed unless capture is genuinely alive, and a wedged
+# capture has to be turned into an exit (see the stall watchdog below).
+dest_size() {
+    [[ -f "$DEST" ]] && stat -c %s "$DEST" 2>/dev/null || echo ""
+}
+
+START=$SECONDS
+LAST_SIZE=$(dest_size)
+LAST_GROWTH=$SECONDS
+
+while kill -0 "$WF_PID" 2>/dev/null; do
+    ELAPSED=$(( SECONDS - START ))
+    SIZE=$(dest_size)
+
+    if [[ -n "$SIZE" ]]; then
+        if [[ "$SIZE" != "$LAST_SIZE" ]]; then
+            LAST_SIZE="$SIZE"
+            LAST_GROWTH=$SECONDS
+        elif [[ "$STALL_TIMEOUT" -gt 0 && $(( SECONDS - LAST_GROWTH )) -ge "$STALL_TIMEOUT" ]]; then
+            echo "jibri-wf-capture: $DEST has not grown in ${STALL_TIMEOUT}s, capture is wedged" >&2
+            log "FATAL: stalled for ${STALL_TIMEOUT}s at ${SIZE} bytes, killing wf-recorder"
+            kill -TERM "$WF_PID" 2>/dev/null
+            wait_for_wf
+            exit 1
+        fi
+        SIZE_KB=$(( SIZE / 1024 ))
+    else
+        # Streaming to an RTMP URL: no file to measure.
+        SIZE_KB=0
+    fi
+
+    printf 'frame=%d fps=%s q=-1.0 size=%dkB time=%02d:%02d:%02d.00 bitrate=N/A speed=1x\n' \
+        "$(( ELAPSED * FRAMERATE ))" "$FRAMERATE" "$SIZE_KB" \
+        "$(( ELAPSED / 3600 ))" "$(( ELAPSED % 3600 / 60 ))" "$(( ELAPSED % 60 ))"
+
+    # Plain `sleep 1` would delay signal handling until it returns; backgrounding
+    # it lets the trap fire immediately.
+    sleep 1 &
+    wait $! 2>/dev/null
+    [[ "$STOPPING" -eq 1 ]] && break
+done
+
+wait_for_wf
+RC=$?
+
+if [[ "$STOPPING" -eq 1 ]]; then
+    # Signal 2 is what Jibri sends and what it looks for to call this a clean
+    # finish; without this line a normal stop is reported as a crash.
+    echo "Exiting normally, received signal 2."
+    log "stopped cleanly (wf-recorder rc=$RC)"
+    exit 0
+fi
+
+echo "jibri-wf-capture: wf-recorder exited unexpectedly with $RC" >&2
+log "wf-recorder exited unexpectedly with $RC"
+exit "${RC:-1}"
