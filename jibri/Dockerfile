@@ -11,9 +11,9 @@ LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-mee
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
 ARG USE_CHROMIUM=0
-#ARG CHROME_RELEASE=latest
 # https://googlechromelabs.github.io/chrome-for-testing/
-ARG CHROME_RELEASE=149.0.7827.114
+ARG USE_CHROME_CANARY=1
+ARG CHROME_RELEASE=153.0.8009.0
 
 COPY rootfs/ /
 
