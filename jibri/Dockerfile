@@ -10,10 +10,11 @@ LABEL org.opencontainers.image.url="https://github.com/jitsi/jibri"
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
-ARG USE_CHROMIUM=0
-#ARG CHROME_RELEASE=latest
-# https://googlechromelabs.github.io/chrome-for-testing/
-ARG CHROME_RELEASE=149.0.7827.114
+# Chrome and chromedriver are pulled from chrome-for-testing, pinned by version.
+# To use a different channel (stable/beta/dev/canary), look up its current
+# version at https://googlechromelabs.github.io/chrome-for-testing/ and set
+# CHROME_RELEASE to it. Defaults to the latest stable at time of writing.
+ARG CHROME_RELEASE=153.0.8010.36
 
 COPY rootfs/ /
 
@@ -28,8 +29,12 @@ RUN \
     jitsi-autoscaler-sidecar \
     jitsi-upload-integrations \
     jq \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libatspi2.0-0 \
     libcap2-bin \
     libgl1-mesa-dri \
+    libgtk-3-0 \
     procps \
     pulseaudio \
     rclone \
@@ -37,9 +42,6 @@ RUN \
     unzip \
     && \
   /usr/bin/install-chrome.sh && \
-  apt-get purge -y \
-    unzip \
-    && \
   apt-cleanup && \
 \
   rm -rf /etc/jitsi/jibri && \
