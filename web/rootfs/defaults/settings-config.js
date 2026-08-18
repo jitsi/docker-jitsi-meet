@@ -5,6 +5,8 @@
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SHARING := .Env.ENABLE_FILE_RECORDING_SHARING | default "false" | toBool -}}
+{{ $ENABLE_ICE_RESTART := .Env.ENABLE_ICE_RESTART | default "false" | toBool -}}
+{{ $ENABLE_ICE_RESTART_ON_NETWORK_CHANGE := .Env.ENABLE_ICE_RESTART_ON_NETWORK_CHANGE | default "false" | toBool -}}
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "true" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "true" | toBool -}}
@@ -131,6 +133,8 @@ config.startSilent = {{ $START_SILENT }};
 config.enableOpusRed = {{ $ENABLE_OPUS_RED }};
 config.disableAudioLevels = {{ $DISABLE_AUDIO_LEVELS }};
 config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
+config.enableIceRestart = {{ $ENABLE_ICE_RESTART }};
+config.enableIceRestartOnNetworkChange = {{ $ENABLE_ICE_RESTART_ON_NETWORK_CHANGE }};
 
 
 // Peer-to-Peer options.
