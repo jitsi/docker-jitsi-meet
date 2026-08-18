@@ -73,6 +73,8 @@ services:
             - ENABLE_GUESTS
             - ENABLE_HSTS
             - ENABLE_HTTP_REDIRECT
+            - ENABLE_ICE_RESTART
+            - ENABLE_ICE_RESTART_ON_NETWORK_CHANGE
             - ENABLE_IPV6
             - ENABLE_LETSENCRYPT
             - ENABLE_NO_AUDIO_DETECTION
