@@ -192,6 +192,7 @@ services:
             - XMPP_RECORDER_DOMAIN
             - WHITEBOARD_COLLAB_SERVER_PUBLIC_URL
             - WHITEBOARD_COLLAB_SERVER_URL_BASE
+            - ENABLE_GRAFANA
         networks:
             meet.jitsi:
         depends_on:
