@@ -102,6 +102,7 @@ services:
             - ENABLE_SUBDOMAINS
             - ENABLE_TALK_WHILE_MUTED
             - ENABLE_TCC
+            - ENABLE_THIRD_PARTY_REQUESTS
             - ENABLE_TRANSCRIPTIONS
             - ENABLE_VLA
             - ENABLE_XMPP_WEBSOCKET
