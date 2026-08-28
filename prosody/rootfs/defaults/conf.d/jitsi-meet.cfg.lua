@@ -52,6 +52,7 @@
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 -}}
 {{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
+{{ $ENABLE_TRACING := .Env.ENABLE_TRACING | default "0" | toBool -}}
 
 admins = {
     {{ if .Env.JIGASI_XMPP_PASSWORD }}
@@ -294,6 +295,9 @@ Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
         "muc_filter_access";
         {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES | compact) }}";
+        {{ end -}}
+        {{ if $ENABLE_TRACING }}
+        "trace";
         {{ end -}}
     }
     restrict_room_creation = true

@@ -1,0 +1,28 @@
+services:
+    tempo:
+        image: grafana/tempo:3.0.2
+        restart: ${RESTART_POLICY:-unless-stopped}
+        command:
+            - -config.file=/etc/tempo/tempo.yaml
+        volumes:
+            - ./tracing/tempo/:/etc/tempo/
+            - ./tracing/tempo-data:/var/tempo
+        networks:
+            meet.jitsi:
+
+
+    alloy:
+        image: grafana/alloy:v1.18.1
+        restart: ${RESTART_POLICY:-unless-stopped}
+        volumes:
+            - ./tracing/alloy/:/etc/alloy/
+        command:
+            - run
+            - /etc/alloy/config.alloy
+            - --server.http.listen-addr=0.0.0.0:12345
+        environment:
+            - ALLOY_OTLP_UPSTREAM=tempo:4317
+        depends_on:
+            - tempo
+        networks:
+            meet.jitsi:
