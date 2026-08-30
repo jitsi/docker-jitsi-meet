@@ -72,7 +72,7 @@ RUN set -x && \
     rm -f $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
     (apt-cache policy prosody | grep Installed | grep -Eq " 13\." && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true) && \
     usermod -a -G prosody,sasl s6 && \
-    chown s6:s6 /var/lib/prosody && \
+    chown s6:s6 /var/lib/prosody /var/run/saslauthd && \
     echo "TLS_REQCERT allow" >> /etc/ldap/ldap.conf
 
 COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
