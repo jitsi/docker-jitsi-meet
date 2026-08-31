@@ -1,4 +1,13 @@
 #!/command/with-contenv bash
 
+# Cage is a kiosk compositor and fullscreens Chrome itself, so the Wayland path
+# needs no window manager at all.
+: "${JIBRI_USE_WAYLAND:=false}"
+
+if [[ "${JIBRI_USE_WAYLAND}" == "true" ]]; then
+    echo "JIBRI_USE_WAYLAND is true, cage handles window management"
+    exec /bin/sleep infinity
+fi
+
 DAEMON="/usr/bin/icewm-session"
 exec /bin/bash -c "exec $DAEMON"
