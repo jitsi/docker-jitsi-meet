@@ -27,6 +27,7 @@
 {{ $ENABLE_OPUS_RED := .Env.ENABLE_OPUS_RED | default "false" | toBool -}}
 {{ $ENABLE_TALK_WHILE_MUTED := .Env.ENABLE_TALK_WHILE_MUTED | default "false" | toBool -}}
 {{ $ENABLE_TCC := .Env.ENABLE_TCC | default "true" | toBool -}}
+{{ $ENABLE_THIRD_PARTY_REQUESTS := .Env.ENABLE_THIRD_PARTY_REQUESTS | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "false" | toBool -}}
 {{ $ENABLE_VIRTUAL_BACKGROUND_V2 := .Env.ENABLE_VIRTUAL_BACKGROUND_V2 | default "true" | toBool -}}
 {{ $TRANSLATION_LANGUAGES := .Env.TRANSLATION_LANGUAGES | default "[]" -}}
@@ -363,6 +364,10 @@ config.roomPasswordNumberOfDigits = 10;
 {{ else -}}
 config.roomPasswordNumberOfDigits = {{ $ROOM_PASSWORD_DIGITS }};
 {{ end -}}
+
+// Generate avatars locally and disable third-party requests.
+config.disableThirdPartyRequests = {{ not $ENABLE_THIRD_PARTY_REQUESTS }};
+
 
 // Advanced.
 //
