@@ -1,6 +1,7 @@
 {{ $ENABLE_ADAPTIVE_MODE := .Env.ENABLE_ADAPTIVE_MODE | default "true" | toBool -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
 {{ $ENABLE_AUDIO_TRANSLATION := .Env.ENABLE_AUDIO_TRANSLATION | default "false" | toBool -}}
+{{ $AUDIO_TRANSLATION_DUCKED_VOLUME := .Env.AUDIO_TRANSLATION_DUCKED_VOLUME | default "0.15" -}}
 {{ $ENABLE_AUTOMATIC_GAIN_CONTROL := .Env.ENABLE_AUTOMATIC_GAIN_CONTROL | default "true" | toBool -}}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
@@ -387,7 +388,9 @@ config.transcription = {
 };
 
 config.audioTranslation = {
-    enabled: {{ $ENABLE_AUDIO_TRANSLATION }}
+    enabled: {{ $ENABLE_AUDIO_TRANSLATION }},
+    duckedVolume: {{ $AUDIO_TRANSLATION_DUCKED_VOLUME }},
+    enableSendingChangeEvents: true
 };
 
 // Dynamic branding
