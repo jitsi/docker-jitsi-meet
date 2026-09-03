@@ -1,4 +1,5 @@
 {{ $ENABLE_ADAPTIVE_MODE := .Env.ENABLE_ADAPTIVE_MODE | default "true" | toBool -}}
+{{ $ENABLE_ADVANCED_AUDIO_SETTINGS := .Env.ENABLE_ADVANCED_AUDIO_SETTINGS | default "true" | toBool -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
 {{ $ENABLE_AUDIO_TRANSLATION := .Env.ENABLE_AUDIO_TRANSLATION | default "false" | toBool -}}
 {{ $AUDIO_TRANSLATION_DUCKED_VOLUME := .Env.AUDIO_TRANSLATION_DUCKED_VOLUME | default "0.15" -}}
@@ -120,6 +121,7 @@ config.disableAP = {{ not $ENABLE_AUDIO_PROCESSING }};
 config.disableAGC = {{ not $ENABLE_AUTOMATIC_GAIN_CONTROL }};
 
 config.audioQuality = {
+    enableAdvancedAudioSettings: {{ $ENABLE_ADVANCED_AUDIO_SETTINGS }},
     stereo: {{ $ENABLE_STEREO }}
 };
 
