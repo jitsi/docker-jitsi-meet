@@ -4,40 +4,49 @@ set -o pipefail -xeu
 
 dpkgArch="$(dpkg --print-architecture)"
 
-if [ "${USE_CHROMIUM}" = 1 -o "${dpkgArch##*-}" = "arm64" ]; then
+case "${dpkgArch##*-}" in
+    "amd64")
+        CHROMEDRIVER_ARCH=linux64
+        ;;
+    "arm64")
+        CHROMEDRIVER_ARCH=linux-arm64
+        ;;
+    *)
+        echo "unsupported architecture"
+        exit 1
+        ;;
+esac
+
+if [ "${USE_CHROMIUM}" = 1 ]; then
     echo "Using Debian's Chromium"
     apt-dpkg-wrap apt-get install -y chromium chromium-driver chromium-sandbox
     chromium --version
 else
-    if  [ "${CHROME_RELEASE}" = "latest" ]; then
-        wget -qO - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmour > /etc/apt/trusted.gpg.d/google.gpg
-        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-        apt-dpkg-wrap apt-get update
-        apt-dpkg-wrap apt-get install -y google-chrome-stable
+    CHROME_BASE_URL="https://dl.google.com/linux/chrome/deb/pool/main/g"
+    CHROME_DEB="/tmp/google-chrome.deb"
+    if [ "${USE_CHROME_CANARY}" = 1 ]; then
+        CHROME_PKG="google-chrome-canary"
     else
-        CHROME_DEB="/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
-        curl -4so ${CHROME_DEB} "https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
-        apt-dpkg-wrap apt-get install -y ${CHROME_DEB}
-        rm -f ${CHROME_DEB}
+        CHROME_PKG="google-chrome-stable"
     fi
+    curl -4so ${CHROME_DEB} "${CHROME_BASE_URL}/${CHROME_PKG}/${CHROME_PKG}_${CHROME_RELEASE}-1_${dpkgArch}.deb"
+    apt-dpkg-wrap apt-get install -y ${CHROME_DEB}
+    rm -f ${CHROME_DEB}
 
     google-chrome --version
 
     BASE_URL=https://googlechromelabs.github.io/chrome-for-testing
 
-    if [ "${CHROME_RELEASE}" = "latest" ]; then
-        CHROMEDRIVER_RELEASE="$(curl -4Ls ${BASE_URL}/LATEST_RELEASE_STABLE)"
-    else
-        CHROMEDRIVER_MAJOR_RELEASE=$(echo $CHROME_RELEASE | cut -d. -f1)
-        CHROMEDRIVER_RELEASE="$(curl -4Ls ${BASE_URL}/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
-    fi
+    CHROMEDRIVER_MAJOR_RELEASE=$(echo $CHROME_RELEASE | cut -d. -f1)
+    CHROMEDRIVER_RELEASE="$(curl -4Ls ${BASE_URL}/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
 
-    CHROMEDRIVER_ZIP="/tmp/chromedriver_linux64.zip"
-    curl -4Lso ${CHROMEDRIVER_ZIP} "https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_RELEASE}/linux64/chromedriver-linux64.zip"
+    CHROMEDRIVER_ZIP="/tmp/chromedriver.zip"
+    curl -4Lso ${CHROMEDRIVER_ZIP} "https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_RELEASE}/${CHROMEDRIVER_ARCH}/chromedriver-${CHROMEDRIVER_ARCH}.zip"
     unzip ${CHROMEDRIVER_ZIP} -d /tmp/
-    mv /tmp/chromedriver-linux64/chromedriver /usr/bin/
+    mv /tmp/chromedriver-${CHROMEDRIVER_ARCH}/chromedriver /usr/bin/
     chmod +x /usr/bin/chromedriver
     rm -rf /tmp/chromedriver*
 fi
 
 chromedriver --version
+
