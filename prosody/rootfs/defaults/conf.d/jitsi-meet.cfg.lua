@@ -11,6 +11,7 @@
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool -}}
 {{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool -}}
+{{ $ENABLE_MESSAGE_MODERATION := .Env.ENABLE_MESSAGE_MODERATION | default "true" | toBool -}}
 {{ $ENABLE_MUC_RESOURCE_VALIDATE := .Env.PROSODY_ENABLE_MUC_RESOURCE_VALIDATE | default "true" | toBool -}}
 {{ $MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT := .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT | default "false" | toBool -}}
 {{ $ENABLE_RATE_LIMITS := .Env.PROSODY_ENABLE_RATE_LIMITS | default "0" | toBool -}}
@@ -342,6 +343,9 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
         "muc_resource_validate";
         {{ end -}}
+        {{ if $ENABLE_MESSAGE_MODERATION -}}
+        "muc_message_moderation";
+        {{ end -}}
     }
 
     {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
@@ -476,6 +480,9 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ end -}}
         {{ if $ENABLE_FILTER_MESSAGES -}}
         "filter_messages";
+        {{ end -}}
+        {{ if $ENABLE_MESSAGE_MODERATION -}}
+        "muc_message_moderation";
         {{ end -}}
     }
 {{ end }}
