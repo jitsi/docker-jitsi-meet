@@ -485,6 +485,18 @@ config.videoQuality.av1.maxBitratesVideo.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_
 config.videoQuality.av1.maxBitratesVideo.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH }};
 {{ end -}}
 
+{{ if .Env.VIDEOQUALITY_AV1_SCALABILITY_MODE_ENABLED -}}
+config.videoQuality.av1.scalabilityModeEnabled = {{ .Env.VIDEOQUALITY_AV1_SCALABILITY_MODE_ENABLED | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_AV1_USE_SIMULCAST -}}
+config.videoQuality.av1.useSimulcast = {{ .Env.VIDEOQUALITY_AV1_USE_SIMULCAST | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_AV1_USE_KSVC -}}
+config.videoQuality.av1.useKSVC = {{ .Env.VIDEOQUALITY_AV1_USE_KSVC | toBool }};
+{{ end -}}
+
 config.videoQuality.h264 = {};
 config.videoQuality.h264.maxBitratesVideo = {};
 
@@ -510,6 +522,10 @@ config.videoQuality.h264.maxBitratesVideo.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE
 
 {{ if .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }}
 config.videoQuality.h264.maxBitratesVideo.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_H264_SCALABILITY_MODE_ENABLED -}}
+config.videoQuality.h264.scalabilityModeEnabled = {{ .Env.VIDEOQUALITY_H264_SCALABILITY_MODE_ENABLED | toBool }};
 {{ end -}}
 
 config.videoQuality.vp8 = {};
@@ -539,6 +555,10 @@ config.videoQuality.vp8.maxBitratesVideo.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_
 config.videoQuality.vp8.maxBitratesVideo.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH }};
 {{ end -}}
 
+{{ if .Env.VIDEOQUALITY_VP8_SCALABILITY_MODE_ENABLED -}}
+config.videoQuality.vp8.scalabilityModeEnabled = {{ .Env.VIDEOQUALITY_VP8_SCALABILITY_MODE_ENABLED | toBool }};
+{{ end -}}
+
 config.videoQuality.vp9 = {};
 config.videoQuality.vp9.maxBitratesVideo = {};
 
@@ -564,6 +584,18 @@ config.videoQuality.vp9.maxBitratesVideo.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }}
 config.videoQuality.vp9.maxBitratesVideo.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_VP9_SCALABILITY_MODE_ENABLED -}}
+config.videoQuality.vp9.scalabilityModeEnabled = {{ .Env.VIDEOQUALITY_VP9_SCALABILITY_MODE_ENABLED | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_VP9_USE_SIMULCAST -}}
+config.videoQuality.vp9.useSimulcast = {{ .Env.VIDEOQUALITY_VP9_USE_SIMULCAST | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_VP9_USE_KSVC -}}
+config.videoQuality.vp9.useKSVC = {{ .Env.VIDEOQUALITY_VP9_USE_KSVC | toBool }};
 {{ end -}}
 
  // Reactions
