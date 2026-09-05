@@ -598,6 +598,10 @@ config.videoQuality.vp9.useSimulcast = {{ .Env.VIDEOQUALITY_VP9_USE_SIMULCAST | 
 config.videoQuality.vp9.useKSVC = {{ .Env.VIDEOQUALITY_VP9_USE_KSVC | toBool }};
 {{ end -}}
 
+{{ if .Env.VIDEOQUALITY_MIN_HEIGHT_FOR_QUALITY_LVL -}}
+config.videoQuality.minHeightForQualityLvl = {{ .Env.VIDEOQUALITY_MIN_HEIGHT_FOR_QUALITY_LVL }};
+{{ end -}}
+
  // Reactions
 config.disableReactions = {{ $DISABLE_REACTIONS }};
 
