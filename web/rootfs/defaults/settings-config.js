@@ -450,6 +450,14 @@ config.videoQuality.enableAdaptiveMode = {{ $ENABLE_ADAPTIVE_MODE }};
 config.videoQuality.preferredCodec = '{{ .Env.VIDEOQUALITY_PREFERRED_CODEC }}';
 {{ end -}}
 
+{{ if .Env.VIDEOQUALITY_SCREENSHARE_CODEC -}}
+config.videoQuality.screenshareCodec = '{{ .Env.VIDEOQUALITY_SCREENSHARE_CODEC }}';
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_MOBILE_SCREENSHARE_CODEC -}}
+config.videoQuality.mobileScreenshareCodec = '{{ .Env.VIDEOQUALITY_MOBILE_SCREENSHARE_CODEC }}';
+{{ end -}}
+
 config.videoQuality.av1 = {};
 config.videoQuality.av1.maxBitratesVideo = {};
 
