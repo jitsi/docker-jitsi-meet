@@ -72,8 +72,8 @@
 {{ $WHITEBOARD_ENABLED := or (.Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" | toBool) (.Env.WHITEBOARD_COLLAB_SERVER_URL_BASE | default "" | toBool) }}
 {{ $CODEC_ORDER_JVB := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
 {{ $CODEC_ORDER_JVB_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "[\"VP8\", \"VP9\", \"H264\", \"AV1\"]" -}}
-{{ $CODEC_ORDER_P2P := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
-{{ $CODEC_ORDER_P2P_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "[\"VP8\", \"VP9\", \"H264\", \"AV1\"]" -}}
+{{ $CODEC_ORDER_P2P := .Env.CODEC_ORDER_P2P | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
+{{ $CODEC_ORDER_P2P_MOBILE := .Env.CODEC_ORDER_P2P_MOBILE | default "[\"H264\", \"VP8\", \"VP9\", \"AV1\"]" -}}
 {{ $RTCSTATS_ENABLED := .Env.RTCSTATS_ENABLED | default "false" | toBool -}}
 {{ $RTCSTATS_STORE_LOGS := .Env.RTCSTATS_STORE_LOGS | default "false" | toBool -}}
 {{ $RTCSTATS_POLL_INTERVAL := .Env.RTCSTATS_POLL_INTERVAL | default 10000 -}}
