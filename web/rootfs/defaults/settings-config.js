@@ -57,6 +57,7 @@
 {{ $DESKTOP_SHARING_FRAMERATE_MIN := .Env.DESKTOP_SHARING_FRAMERATE_MIN | default 5 -}}
 {{ $DESKTOP_SHARING_FRAMERATE_MAX := .Env.DESKTOP_SHARING_FRAMERATE_MAX | default 5 -}}
 {{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
+{{ $DISABLE_AV1_DECODE_FOR_FF := .Env.DISABLE_AV1_DECODE_FOR_FF | default "true" | toBool -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $DISABLE_REACTIONS := .Env.DISABLE_REACTIONS | default "false" | toBool -}}
@@ -713,5 +714,6 @@ config.whiteboard.userLimit = 25;
 
 // Testing
 config.testing = {
+    disableAV1DecodeForFF: {{ $DISABLE_AV1_DECODE_FOR_FF }},
     enableCodecSelectionAPI: true
 };
