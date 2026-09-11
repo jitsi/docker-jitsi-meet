@@ -380,7 +380,7 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
-            - /run:size=16M,mode=1750,exec
+            - /run:size=32M,mode=1750,exec
             - /tmp:size=16M,mode=1777,noexec
         ports:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
@@ -484,7 +484,7 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
-            - /run:size=16M,mode=1750,exec
+            - /run:size=32M,mode=1750,exec
             - /tmp:size=16M,mode=1777,noexec
         ports:
             - '${JVB_PORT:-10000}:${JVB_PORT:-10000}/udp'
