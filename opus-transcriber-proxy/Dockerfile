@@ -47,7 +47,7 @@ LABEL org.opencontainers.image.url="https://github.com/jitsi/opus-transcriber-pr
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
-# Native libopus only. The WASM backend needs Emscripten, which is amd64-only.
+# Native libopus only. The WASM backend is for Cloudflare Workers, which we do not use.
 ENV OPUS_BACKEND=native
 
 COPY rootfs/ /
