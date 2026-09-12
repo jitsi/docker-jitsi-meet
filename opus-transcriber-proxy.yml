@@ -1,0 +1,29 @@
+services:
+    # WebSocket proxy to cloud speech-to-text providers
+    opus-transcriber-proxy:
+        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/opus-transcriber-proxy:${JITSI_IMAGE_VERSION:-unstable}
+        restart: ${RESTART_POLICY:-unless-stopped}
+        read_only: true
+        tmpfs:
+            - /run:size=16M,mode=1750,exec
+            - /tmp:size=16M,mode=1777,noexec
+        expose:
+            - '8080'
+        environment:
+            - DEEPGRAM_API_KEY
+            - DEEPGRAM_LANGUAGE
+            - DEEPGRAM_MODEL
+            - ENABLE_DUMMY_PROVIDER
+            - ENABLE_OPENAI_CUSTOM_PROVIDER
+            - ENABLE_TRANSCRIBE
+            - ENABLE_TRANSLATE
+            - GEMINI_API_KEY
+            - GEMINI_MODEL
+            - LOG_LEVEL=${OPUS_TRANSCRIBER_PROXY_LOG_LEVEL:-info}
+            - OPENAI_API_KEY
+            - OPENAI_MODEL
+            - PROVIDERS_PRIORITY
+            - TZ
+            - XAI_API_KEY
+        networks:
+            meet.jitsi:
