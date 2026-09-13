@@ -1,4 +1,8 @@
 services:
+    jicofo:
+        environment:
+            - OPUS_TRANSCRIBER_PROXY_URL_TEMPLATE=ws://opus-transcriber-proxy:8080/transcribe?sessionId={{MEETING_ID}}&sendBack=true
+
     # WebSocket proxy to cloud speech-to-text providers
     opus-transcriber-proxy:
         image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/opus-transcriber-proxy:${JITSI_IMAGE_VERSION:-unstable}
