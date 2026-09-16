@@ -145,6 +145,9 @@ if [[ -f "/run/web/config/custom-config.js" ]]; then
 fi
 
 cp /defaults/interface_config.js /run/web/config/interface_config.js
+if [[ -v JITSI_WATERMARK_LINK ]]; then
+    echo "interfaceConfig.JITSI_WATERMARK_LINK = '$JITSI_WATERMARK_LINK';" >> /run/web/config/interface_config.js
+fi
 if [[ -f "/run/web/config/custom-interface_config.js" ]]; then
     cat /run/web/config/custom-interface_config.js >> /run/web/config/interface_config.js
 fi
