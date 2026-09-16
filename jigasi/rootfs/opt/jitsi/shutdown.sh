@@ -7,5 +7,11 @@ if [ -n "$AUTOSCALER_URL" ]; then
     sleep 10
 fi
 
-# shutdown everything
-s6-svscanctl -t /run/service
+# shutdown everything.
+#
+# Under s6-overlay v3 this must go through halt: PID 1 is s6-linux-init's wait
+# for a halt/poweroff/reboot event, and only halt wakes it. The v2 idiom
+# `s6-svscanctl -t /run/service` stops s6-svscan and every s6-supervise but
+# leaves PID 1 running, so the container never exits and the services it was
+# supervising keep running, orphaned to PID 1.
+/run/s6/basedir/bin/halt
