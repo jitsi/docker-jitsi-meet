@@ -36,6 +36,7 @@ services:
             - CORS_HEADER_ACCESS_CONTROL_ALLOW_ORIGIN
             - CSP_HEADER
             - DEFAULT_LANGUAGE
+            - DEFAULT_LOGO_URL
             - DEPLOYMENTINFO_ENVIRONMENT
             - DEPLOYMENTINFO_ENVIRONMENT_TYPE
             - DEPLOYMENTINFO_REGION
@@ -269,6 +270,7 @@ services:
             - JIGASI_TRANSCRIBER_USER
             - JIGASI_XMPP_USER
             - JIGASI_XMPP_PASSWORD
+            - JITSI_WATERMARK_LINK
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
             - JWT_APP_ID
