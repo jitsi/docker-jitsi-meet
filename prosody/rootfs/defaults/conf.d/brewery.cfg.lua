@@ -1,6 +1,7 @@
 {{ $JVB_XMPP_AUTH_DOMAIN := .Env.JVB_XMPP_AUTH_DOMAIN | default "auth.jvb.meet.jitsi" -}}
 {{ $JVB_XMPP_INTERNAL_MUC_DOMAIN := .Env.JVB_XMPP_INTERNAL_MUC_DOMAIN | default "muc.jvb.meet.jitsi" -}}
 {{ $JVB_AUTH_USER := .Env.JVB_AUTH_USER | default "jvb" -}}
+{{ $ENABLE_TRACING := .Env.ENABLE_TRACING | default "0" | toBool -}}
 
 admins = {
     "focus@{{ $JVB_XMPP_AUTH_DOMAIN }}",
@@ -15,14 +16,17 @@ VirtualHost "{{ $JVB_XMPP_AUTH_DOMAIN }}"
     }
     authentication = "internal_hashed"
     ssl = {
-        key = "/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.key";
-        certificate = "/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.crt";
+        key = "/run/prosody/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.key";
+        certificate = "/run/prosody/config/certs/{{ $JVB_XMPP_AUTH_DOMAIN }}.crt";
     }
     smacks_hibernation_time = 15;
 
 Component "{{ $JVB_XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
     modules_enabled = {
       "muc_hide_all";
+      {{ if $ENABLE_TRACING }}
+      "trace";
+      {{ end -}}
       "muc_filter_access";
     }
     storage = "memory"

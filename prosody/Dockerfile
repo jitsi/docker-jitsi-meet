@@ -1,7 +1,9 @@
-ARG JITSI_REPO=jitsi
+ARG JITSI_REPO=ghcr.io/jitsi
 ARG BASE_TAG=latest
 
 FROM ${JITSI_REPO}/base:${BASE_TAG} AS builder
+
+USER root
 
 RUN apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
@@ -21,20 +23,23 @@ RUN apt-dpkg-wrap apt-get update && \
 
 FROM ${JITSI_REPO}/base:${BASE_TAG}
 
+USER root
+
 LABEL org.opencontainers.image.title="Prosody IM"
 LABEL org.opencontainers.image.description="XMPP server used for signalling."
 LABEL org.opencontainers.image.url="https://prosody.im/"
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
-ARG VERSION_JITSI_CONTRIB_PROSODY_PLUGINS="20260227"
 ARG VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN="1.8.0"
 ARG PROSODY_PACKAGE="prosody"
 ARG PROSODY_PACKAGE_VERSION="13.*"
 
+COPY rootfs/ /
+
 RUN set -x && \
-    wget -qO /etc/apt/trusted.gpg.d/prosody.gpg https://prosody.im/files/prosody-debian-packages.key && \
-    echo "deb http://packages.prosody.im/debian bookworm main" > /etc/apt/sources.list.d/prosody.list && \
+    wget -qO - https://prosody.im/files/prosody-debian-packages.key | \
+      gpg --dearmour > /usr/share/keyrings/prosody.gpg && \
     apt-dpkg-wrap apt-get update && \
     apt-dpkg-wrap apt-get install -y \
       lua5.4 \
@@ -50,26 +55,25 @@ RUN set -x && \
       lua-unbound && \
     apt-dpkg-wrap apt-get -d install -y jitsi-meet-prosody && \
     dpkg -x /var/cache/apt/archives/jitsi-meet-prosody*.deb /tmp/pkg && \
-    mv /tmp/pkg/usr/share/jitsi-meet/prosody-plugins /prosody-plugins && \
+    cp -a /tmp/pkg/usr/share/jitsi-meet/prosody-plugins/* /prosody-plugins && \
     rm -rf /tmp/pkg /var/cache/apt && \
     apt-cleanup && \
     rm -rf /etc/prosody && \
     mv /usr/share/lua/5.3/inspect.lua /usr/share/lua/5.4/ && \
-    rm -rf /usr/lib/lua/{5.1,5.2,5.3} && \
-    rm -rf /usr/share/lua/{5.1,5.2,5.3} && \
     wget https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification/archive/refs/tags/v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     tar -xf v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_auth_matrix_user_verification.lua /prosody-plugins && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_matrix_power_sync.lua /prosody-plugins && \
     rm -rf prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
-    wget -q https://github.com/jitsi-contrib/prosody-plugins/archive/refs/tags/v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
-    tar -xf v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
+    VERSION_PROSODY_CONTRIB_PLUGINS=$(wget -q -O - https://api.github.com/repos/jitsi-contrib/prosody-plugins/tags | grep -m 1 '"name":' | cut -d '"' -f4) && \
+    wget -q https://github.com/jitsi-contrib/prosody-plugins/archive/refs/tags/$VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
     mkdir /prosody-plugins-contrib && \
-    cp -a prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS/*  /prosody-plugins-contrib && \
-    rm -rf prosody-plugins-$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS v$VERSION_JITSI_CONTRIB_PROSODY_PLUGINS.tar.gz && \
-    (apt-cache policy prosody | grep Installed | grep -Eq " 13\." && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true)
-
-COPY rootfs/ /
+    tar --strip-components=1 -C /prosody-plugins-contrib -xf $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
+    rm -f $VERSION_PROSODY_CONTRIB_PLUGINS.tar.gz && \
+    (apt-cache policy prosody | grep Installed | grep -Eq " 13\." && sed -i '/idna_to_ascii/d' /usr/share/lua/5.4/prosody/util/jid.lua || true) && \
+    usermod -a -G prosody,sasl s6 && \
+    chown s6:s6 /var/lib/prosody /var/run/saslauthd && \
+    echo "TLS_REQCERT allow" >> /etc/ldap/ldap.conf
 
 COPY --from=builder /usr/local/lib/lua/5.4 /usr/local/lib/lua/5.4
 COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
@@ -77,3 +81,5 @@ COPY --from=builder /usr/local/share/lua/5.4 /usr/local/share/lua/5.4
 EXPOSE 5222 5280
 
 VOLUME ["/config", "/prosody-plugins-custom"]
+
+USER s6

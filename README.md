@@ -8,11 +8,7 @@
 
 This repository contains the necessary tools to run a Jitsi Meet stack on [Docker](https://www.docker.com) using [Docker Compose](https://docs.docker.com/compose/).
 
-All our images are published on [DockerHub](https://hub.docker.com/u/jitsi/).
-
-## Supported architectures
-
-Starting with `stable-7439` the published images are available for `amd64` and `arm64`.
+All our images are published on the [GitHub Container Registry (GHCR)](https://github.com/orgs/jitsi/packages).
 
 ## Tags
 
@@ -24,7 +20,6 @@ Tag | Description
 `stable-NNNN-X` | A stable release
 `unstable` | Points to the latest unstable release
 `unstable-YYYY-MM-DD` | Daily unstable release
-`latest` | Deprecated, no longer updated (will be removed)
 
 ## Installation
 
@@ -34,6 +29,3 @@ The installation manual is available [here](https://jitsi.github.io/handbook/doc
 
 If you plan to install the jitsi-meet stack on a Kubernetes cluster you can find tools and tutorials in the project [Jitsi on Kubernetes](https://github.com/jitsi-contrib/jitsi-kubernetes).
 
-## TODO
-
-* Builtin TURN server.

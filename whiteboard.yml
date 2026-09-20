@@ -1,6 +1,6 @@
 services:
     whiteboard:
-        image: jitsi/excalidraw-backend:21
+        image: jitsi/excalidraw-backend:2026.3.0
         restart: ${RESTART_POLICY:-unless-stopped}
         depends_on:
             - web

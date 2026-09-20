@@ -1,9 +1,14 @@
 {{ $ENABLE_ADAPTIVE_MODE := .Env.ENABLE_ADAPTIVE_MODE | default "true" | toBool -}}
+{{ $ENABLE_ADVANCED_AUDIO_SETTINGS := .Env.ENABLE_ADVANCED_AUDIO_SETTINGS | default "true" | toBool -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
+{{ $ENABLE_AUDIO_TRANSLATION := .Env.ENABLE_AUDIO_TRANSLATION | default "false" | toBool -}}
+{{ $AUDIO_TRANSLATION_DUCKED_VOLUME := .Env.AUDIO_TRANSLATION_DUCKED_VOLUME | default "0.15" -}}
 {{ $ENABLE_AUTOMATIC_GAIN_CONTROL := .Env.ENABLE_AUTOMATIC_GAIN_CONTROL | default "true" | toBool -}}
 {{ $ENABLE_BREAKOUT_ROOMS := .Env.ENABLE_BREAKOUT_ROOMS | default "true" | toBool -}}
 {{ $ENABLE_CALENDAR := .Env.ENABLE_CALENDAR | default "false" | toBool -}}
 {{ $ENABLE_FILE_RECORDING_SHARING := .Env.ENABLE_FILE_RECORDING_SHARING | default "false" | toBool -}}
+{{ $ENABLE_ICE_RESTART := .Env.ENABLE_ICE_RESTART | default "false" | toBool -}}
+{{ $ENABLE_ICE_RESTART_ON_NETWORK_CHANGE := .Env.ENABLE_ICE_RESTART_ON_NETWORK_CHANGE | default "false" | toBool -}}
 {{ $ENABLE_NO_AUDIO_DETECTION := .Env.ENABLE_NO_AUDIO_DETECTION | default "true" | toBool -}}
 {{ $ENABLE_P2P := .Env.ENABLE_P2P | default "true" | toBool -}}
 {{ $ENABLE_PREJOIN_PAGE := .Env.ENABLE_PREJOIN_PAGE | default "true" | toBool -}}
@@ -23,7 +28,9 @@
 {{ $ENABLE_OPUS_RED := .Env.ENABLE_OPUS_RED | default "false" | toBool -}}
 {{ $ENABLE_TALK_WHILE_MUTED := .Env.ENABLE_TALK_WHILE_MUTED | default "false" | toBool -}}
 {{ $ENABLE_TCC := .Env.ENABLE_TCC | default "true" | toBool -}}
+{{ $ENABLE_THIRD_PARTY_REQUESTS := .Env.ENABLE_THIRD_PARTY_REQUESTS | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "false" | toBool -}}
+{{ $ENABLE_VIRTUAL_BACKGROUND_V2 := .Env.ENABLE_VIRTUAL_BACKGROUND_V2 | default "true" | toBool -}}
 {{ $TRANSLATION_LANGUAGES := .Env.TRANSLATION_LANGUAGES | default "[]" -}}
 {{ $TRANSLATION_LANGUAGES_HEAD := .Env.TRANSLATION_LANGUAGES_HEAD | default "['en']" -}}
 {{ $USE_APP_LANGUAGE := .Env.USE_APP_LANGUAGE | default "true" | toBool -}}
@@ -34,6 +41,7 @@
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool }}
 {{ $HIDE_PREJOIN_DISPLAY_NAME := .Env.HIDE_PREJOIN_DISPLAY_NAME | default "false" | toBool -}}
 {{ $PUBLIC_URL := .Env.PUBLIC_URL | default "https://localhost:8443" -}}
+{{ $PUBLIC_URL_DOMAIN := .Env.PUBLIC_URL | default "https://localhost:8443" | trimPrefix "https://" | trimSuffix "/" -}}
 {{ $RESOLUTION := .Env.RESOLUTION | default "720" -}}
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
@@ -50,6 +58,7 @@
 {{ $DESKTOP_SHARING_FRAMERATE_MIN := .Env.DESKTOP_SHARING_FRAMERATE_MIN | default 5 -}}
 {{ $DESKTOP_SHARING_FRAMERATE_MAX := .Env.DESKTOP_SHARING_FRAMERATE_MAX | default 5 -}}
 {{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
+{{ $DISABLE_AV1_DECODE_FOR_FF := .Env.DISABLE_AV1_DECODE_FOR_FF | default "true" | toBool -}}
 {{ $DISABLE_DEEP_LINKING  := .Env.DISABLE_DEEP_LINKING | default "false" | toBool -}}
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $DISABLE_REACTIONS := .Env.DISABLE_REACTIONS | default "false" | toBool -}}
@@ -66,8 +75,12 @@
 {{ $WHITEBOARD_ENABLED := or (.Env.WHITEBOARD_COLLAB_SERVER_PUBLIC_URL | default "" | toBool) (.Env.WHITEBOARD_COLLAB_SERVER_URL_BASE | default "" | toBool) }}
 {{ $CODEC_ORDER_JVB := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
 {{ $CODEC_ORDER_JVB_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "[\"VP8\", \"VP9\", \"H264\", \"AV1\"]" -}}
-{{ $CODEC_ORDER_P2P := .Env.CODEC_ORDER_JVB | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
-{{ $CODEC_ORDER_P2P_MOBILE := .Env.CODEC_ORDER_JVB_MOBILE | default "[\"VP8\", \"VP9\", \"H264\", \"AV1\"]" -}}
+{{ $CODEC_ORDER_P2P := .Env.CODEC_ORDER_P2P | default "[\"AV1\", \"VP9\", \"VP8\", \"H264\"]" -}}
+{{ $CODEC_ORDER_P2P_MOBILE := .Env.CODEC_ORDER_P2P_MOBILE | default "[\"H264\", \"VP8\", \"VP9\", \"AV1\"]" -}}
+{{ $RTCSTATS_ENABLED := .Env.RTCSTATS_ENABLED | default "false" | toBool -}}
+{{ $RTCSTATS_STORE_LOGS := .Env.RTCSTATS_STORE_LOGS | default "false" | toBool -}}
+{{ $RTCSTATS_POLL_INTERVAL := .Env.RTCSTATS_POLL_INTERVAL | default 10000 -}}
+{{ $RTCSTATS_SEND_SDP := .Env.RTCSTATS_SEND_SDP | default "false" | toBool -}}
 
 // Video configuration.
 //
@@ -111,6 +124,7 @@ config.disableAP = {{ not $ENABLE_AUDIO_PROCESSING }};
 config.disableAGC = {{ not $ENABLE_AUTOMATIC_GAIN_CONTROL }};
 
 config.audioQuality = {
+    enableAdvancedAudioSettings: {{ $ENABLE_ADVANCED_AUDIO_SETTINGS }},
     stereo: {{ $ENABLE_STEREO }}
 };
 
@@ -125,6 +139,8 @@ config.startSilent = {{ $START_SILENT }};
 config.enableOpusRed = {{ $ENABLE_OPUS_RED }};
 config.disableAudioLevels = {{ $DISABLE_AUDIO_LEVELS }};
 config.enableNoisyMicDetection = {{ $ENABLE_NOISY_MIC_DETECTION }};
+config.enableIceRestart = {{ $ENABLE_ICE_RESTART }};
+config.enableIceRestartOnNetworkChange = {{ $ENABLE_ICE_RESTART_ON_NETWORK_CHANGE }};
 
 
 // Peer-to-Peer options.
@@ -215,6 +231,15 @@ config.localRecording = {
 //
 
 config.analytics = {};
+
+{{ if $RTCSTATS_ENABLED -}}
+// RTCStats configuration.
+config.analytics.rtcstatsEnabled = true;
+config.analytics.rtcstatsStoreLogs = {{ $RTCSTATS_STORE_LOGS }};
+config.analytics.rtcstatsEndpoint = 'wss://{{ $PUBLIC_URL_DOMAIN }}/rtcstats-ws';
+config.analytics.rtcstatsPollInterval = {{ $RTCSTATS_POLL_INTERVAL }};
+config.analytics.rtcstatsSendSdp = {{ $RTCSTATS_SEND_SDP }};
+{{ end -}}
 
 {{ if .Env.AMPLITUDE_ID -}}
 // The Amplitude APP Key:
@@ -344,6 +369,10 @@ config.roomPasswordNumberOfDigits = 10;
 config.roomPasswordNumberOfDigits = {{ $ROOM_PASSWORD_DIGITS }};
 {{ end -}}
 
+// Generate avatars locally and disable third-party requests.
+config.disableThirdPartyRequests = {{ not $ENABLE_THIRD_PARTY_REQUESTS }};
+
+
 // Advanced.
 //
 
@@ -368,6 +397,12 @@ config.transcription = {
 {{ if $TRANSCRIPTION_CUSTOM_LANGUAGES -}}
     customLanguages: {{ $TRANSCRIPTION_CUSTOM_LANGUAGES }},
 {{ end -}}
+};
+
+config.audioTranslation = {
+    enabled: {{ $ENABLE_AUDIO_TRANSLATION }},
+    duckedVolume: {{ $AUDIO_TRANSLATION_DUCKED_VOLUME }},
+    enableSendingChangeEvents: true
 };
 
 // Dynamic branding
@@ -425,108 +460,156 @@ config.videoQuality.enableAdaptiveMode = {{ $ENABLE_ADAPTIVE_MODE }};
 config.videoQuality.preferredCodec = '{{ .Env.VIDEOQUALITY_PREFERRED_CODEC }}';
 {{ end -}}
 
+{{ if .Env.VIDEOQUALITY_SCREENSHARE_CODEC -}}
+config.videoQuality.screenshareCodec = '{{ .Env.VIDEOQUALITY_SCREENSHARE_CODEC }}';
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_MOBILE_SCREENSHARE_CODEC -}}
+config.videoQuality.mobileScreenshareCodec = '{{ .Env.VIDEOQUALITY_MOBILE_SCREENSHARE_CODEC }}';
+{{ end -}}
+
 config.videoQuality.av1 = {};
+config.videoQuality.av1.maxBitratesVideo = {};
 
 {{ if .Env.VIDEOQUALITY_BITRATE_AV1_LOW }}
-config.videoQuality.av1.low = {{ .Env.VIDEOQUALITY_BITRATE_AV1_LOW }};
+config.videoQuality.av1.maxBitratesVideo.low = {{ .Env.VIDEOQUALITY_BITRATE_AV1_LOW }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }}
-config.videoQuality.av1.standard = {{ .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }};
+config.videoQuality.av1.maxBitratesVideo.standard = {{ .Env.VIDEOQUALITY_BITRATE_AV1_STANDARD }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_AV1_HIGH }}
-config.videoQuality.av1.high = {{ .Env.VIDEOQUALITY_BITRATE_AV1_HIGH }};
+config.videoQuality.av1.maxBitratesVideo.high = {{ .Env.VIDEOQUALITY_BITRATE_AV1_HIGH }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_AV1_FULL }}
-config.videoQuality.av1.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_AV1_FULL }};
+config.videoQuality.av1.maxBitratesVideo.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_AV1_FULL }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_AV1_ULTRA }}
-config.videoQuality.av1.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_AV1_ULTRA }};
+config.videoQuality.av1.maxBitratesVideo.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_AV1_ULTRA }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH }}
-config.videoQuality.av1.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH }};
+config.videoQuality.av1.maxBitratesVideo.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_AV1_SS_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_AV1_SCALABILITY_MODE_ENABLED -}}
+config.videoQuality.av1.scalabilityModeEnabled = {{ .Env.VIDEOQUALITY_AV1_SCALABILITY_MODE_ENABLED | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_AV1_USE_SIMULCAST -}}
+config.videoQuality.av1.useSimulcast = {{ .Env.VIDEOQUALITY_AV1_USE_SIMULCAST | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_AV1_USE_KSVC -}}
+config.videoQuality.av1.useKSVC = {{ .Env.VIDEOQUALITY_AV1_USE_KSVC | toBool }};
 {{ end -}}
 
 config.videoQuality.h264 = {};
+config.videoQuality.h264.maxBitratesVideo = {};
 
 {{ if .Env.VIDEOQUALITY_BITRATE_H264_LOW }}
-config.videoQuality.h264.low = {{ .Env.VIDEOQUALITY_BITRATE_H264_LOW }};
+config.videoQuality.h264.maxBitratesVideo.low = {{ .Env.VIDEOQUALITY_BITRATE_H264_LOW }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }}
-config.videoQuality.h264.standard = {{ .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }};
+config.videoQuality.h264.maxBitratesVideo.standard = {{ .Env.VIDEOQUALITY_BITRATE_H264_STANDARD }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_H264_HIGH }}
-config.videoQuality.h264.high = {{ .Env.VIDEOQUALITY_BITRATE_H264_HIGH }};
+config.videoQuality.h264.maxBitratesVideo.high = {{ .Env.VIDEOQUALITY_BITRATE_H264_HIGH }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_H264_FULL }}
-config.videoQuality.h264.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_H264_FULL }};
+config.videoQuality.h264.maxBitratesVideo.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_H264_FULL }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_H264_ULTRA }}
-config.videoQuality.h264.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_H264_ULTRA }};
+config.videoQuality.h264.maxBitratesVideo.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_H264_ULTRA }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }}
-config.videoQuality.h264.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }};
+config.videoQuality.h264.maxBitratesVideo.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_H264_SS_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_H264_SCALABILITY_MODE_ENABLED -}}
+config.videoQuality.h264.scalabilityModeEnabled = {{ .Env.VIDEOQUALITY_H264_SCALABILITY_MODE_ENABLED | toBool }};
 {{ end -}}
 
 config.videoQuality.vp8 = {};
+config.videoQuality.vp8.maxBitratesVideo = {};
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP8_LOW }}
-config.videoQuality.vp8.low = {{ .Env.VIDEOQUALITY_BITRATE_VP8_LOW }};
+config.videoQuality.vp8.maxBitratesVideo.low = {{ .Env.VIDEOQUALITY_BITRATE_VP8_LOW }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }}
-config.videoQuality.vp8.standard = {{ .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }};
+config.videoQuality.vp8.maxBitratesVideo.standard = {{ .Env.VIDEOQUALITY_BITRATE_VP8_STANDARD }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }}
-config.videoQuality.vp8.high = {{ .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }};
+config.videoQuality.vp8.maxBitratesVideo.high = {{ .Env.VIDEOQUALITY_BITRATE_VP8_HIGH }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP8_FULL }}
-config.videoQuality.vp8.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_VP8_FULL }};
+config.videoQuality.vp8.maxBitratesVideo.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_VP8_FULL }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP8_ULTRA }}
-config.videoQuality.vp8.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_VP8_ULTRA }};
+config.videoQuality.vp8.maxBitratesVideo.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_VP8_ULTRA }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH }}
-config.videoQuality.vp8.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH }};
+config.videoQuality.vp8.maxBitratesVideo.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_VP8_SS_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_VP8_SCALABILITY_MODE_ENABLED -}}
+config.videoQuality.vp8.scalabilityModeEnabled = {{ .Env.VIDEOQUALITY_VP8_SCALABILITY_MODE_ENABLED | toBool }};
 {{ end -}}
 
 config.videoQuality.vp9 = {};
+config.videoQuality.vp9.maxBitratesVideo = {};
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP9_LOW }}
-config.videoQuality.vp9.low = {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }};
+config.videoQuality.vp9.maxBitratesVideo.low = {{ .Env.VIDEOQUALITY_BITRATE_VP9_LOW }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }}
-config.videoQuality.vp9.standard = {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }};
+config.videoQuality.vp9.maxBitratesVideo.standard = {{ .Env.VIDEOQUALITY_BITRATE_VP9_STANDARD }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }}
-config.videoQuality.vp9.high = {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }};
+config.videoQuality.vp9.maxBitratesVideo.high = {{ .Env.VIDEOQUALITY_BITRATE_VP9_HIGH }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP9_FULL }}
-config.videoQuality.vp9.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_VP9_FULL }};
+config.videoQuality.vp9.maxBitratesVideo.fullHd = {{ .Env.VIDEOQUALITY_BITRATE_VP9_FULL }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP9_ULTRA }}
-config.videoQuality.vp9.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_VP9_ULTRA }};
+config.videoQuality.vp9.maxBitratesVideo.ultraHd = {{ .Env.VIDEOQUALITY_BITRATE_VP9_ULTRA }};
 {{ end -}}
 
 {{ if .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }}
-config.videoQuality.vp9.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }};
+config.videoQuality.vp9.maxBitratesVideo.ssHigh = {{ .Env.VIDEOQUALITY_BITRATE_VP9_SS_HIGH }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_VP9_SCALABILITY_MODE_ENABLED -}}
+config.videoQuality.vp9.scalabilityModeEnabled = {{ .Env.VIDEOQUALITY_VP9_SCALABILITY_MODE_ENABLED | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_VP9_USE_SIMULCAST -}}
+config.videoQuality.vp9.useSimulcast = {{ .Env.VIDEOQUALITY_VP9_USE_SIMULCAST | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_VP9_USE_KSVC -}}
+config.videoQuality.vp9.useKSVC = {{ .Env.VIDEOQUALITY_VP9_USE_KSVC | toBool }};
+{{ end -}}
+
+{{ if .Env.VIDEOQUALITY_MIN_HEIGHT_FOR_QUALITY_LVL -}}
+config.videoQuality.minHeightForQualityLvl = {{ .Env.VIDEOQUALITY_MIN_HEIGHT_FOR_QUALITY_LVL }};
 {{ end -}}
 
  // Reactions
@@ -567,6 +650,11 @@ config.e2eping.maxConferenceSize = {{ .Env.E2EPING_MAX_CONFERENCE_SIZE }};
 {{ if .Env.E2EPING_MAX_MESSAGE_PER_SECOND -}}
 config.e2eping.maxMessagePerSecond = {{ .Env.E2EPING_MAX_MESSAGE_PER_SECOND }};
 {{ end }}
+
+// Virtual background.
+config.virtualBackground = {
+    enableV2: {{ $ENABLE_VIRTUAL_BACKGROUND_V2 }}
+};
 
 // Settings for the Excalidraw whiteboard integration.
 config.whiteboard = {
@@ -630,5 +718,6 @@ config.whiteboard.userLimit = 25;
 
 // Testing
 config.testing = {
+    disableAV1DecodeForFF: {{ $DISABLE_AV1_DECODE_FOR_FF }},
     enableCodecSelectionAPI: true
 };

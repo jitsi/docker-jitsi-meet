@@ -1,0 +1,10 @@
+#!/command/with-contenv bash
+
+if [[ -n "$AUTOSCALER_URL" ]] && [[ -f "/run/autoscaler-sidecar/config" ]]; then
+    DAEMON="/usr/bin/node /usr/share/jitsi-autoscaler-sidecar/app.js"
+    exec /bin/bash -c ". /run/autoscaler-sidecar/config && exec $DAEMON"
+else
+    # if autoscaler-sidecar should not be started,
+    # prevent s6 from restarting this script again and again
+    s6-svc -O /run/service/50-autoscaler-sidecar
+fi

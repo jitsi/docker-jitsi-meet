@@ -93,8 +93,8 @@ muc_limit_messages_check_token = {{ $LIMIT_MESSAGES_CHECK_TOKEN }};
 VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
     authentication = 'jitsi-anonymous'
     ssl = {
-        key = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.key";
-        certificate = "/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.crt";
+        key = "/run/prosody/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.key";
+        certificate = "/run/prosody/config/certs/v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}.crt";
     }
     modules_enabled = {
       'bosh';
@@ -172,6 +172,7 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
     -- List of regular expressions for IP addresses that are not limited by this module.
     rate_limit_whitelist = {
         "127.0.0.1";
+        "::1";
         {{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES) -}}
         "{{ $cidr }}";
         {{ end -}}

@@ -1,6 +1,8 @@
-ARG JITSI_REPO=jitsi
+ARG JITSI_REPO=ghcr.io/jitsi
 ARG BASE_TAG=latest
 FROM ${JITSI_REPO}/base-java:${BASE_TAG}
+
+USER root
 
 LABEL org.opencontainers.image.title="Jitsi Broadcasting Infrastructure (jibri)"
 LABEL org.opencontainers.image.description="Components for recording and/or streaming a conference."
@@ -8,40 +10,68 @@ LABEL org.opencontainers.image.url="https://github.com/jitsi/jibri"
 LABEL org.opencontainers.image.source="https://github.com/jitsi/docker-jitsi-meet"
 LABEL org.opencontainers.image.documentation="https://jitsi.github.io/handbook/"
 
-ARG USE_CHROMIUM=0
-#ARG CHROME_RELEASE=latest
-# https://googlechromelabs.github.io/chrome-for-testing/
-ARG CHROME_RELEASE=143.0.7499.40
+# Chrome and chromedriver are pulled from chrome-for-testing, pinned by version.
+# To use a different channel (stable/beta/dev/canary), look up its current
+# version at https://googlechromelabs.github.io/chrome-for-testing/ and set
+# CHROME_RELEASE to it. Defaults to the latest stable at time of writing.
+ARG CHROME_RELEASE=153.0.8010.36
 
 COPY rootfs/ /
 
-RUN apt-dpkg-wrap apt-get update && \
-    apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
-        jibri \
-        libgl1-mesa-dri \
-        procps \
-        jitsi-upload-integrations \
-        jitsi-autoscaler-sidecar \
-        jq \
-        pulseaudio \
-        dbus \
-        dbus-x11 \
-        rtkit \
-        unzip \
-        fonts-noto \
-        fonts-noto-cjk \
-        libcap2-bin \
-        rclone && \
-    /usr/bin/install-chrome.sh && \
-    apt-cleanup && \
-    adduser jibri rtkit && \
-    dpkgArch="$(dpkg --print-architecture)" && \
-    case "${dpkgArch##*-}" in \
-        "amd64") SC_ARCH=x86_64 ;; \
-        "arm64") SC_ARCH=aarch64 ;; \
-        *) echo "unsupported architecture"; exit 1 ;; \
-    esac && \
-    wget -qO /usr/bin/shm-check https://github.com/saghul/shm-check/releases/download/v1.0.0/shm-check-${SC_ARCH} && \
-    chmod +x /usr/bin/shm-check
+RUN \
+  apt-dpkg-wrap apt-get update && \
+  apt-dpkg-wrap apt-get install -y -o Dpkg::Options::="--force-confdef" -o Dpkg::Options::="--force-confold" \
+    dbus \
+    dbus-x11 \
+    fonts-noto \
+    fonts-noto-cjk \
+    jibri \
+    jitsi-autoscaler-sidecar \
+    jitsi-upload-integrations \
+    jq \
+    libatk-bridge2.0-0 \
+    libatk1.0-0 \
+    libatspi2.0-0 \
+    libcap2-bin \
+    libgl1-mesa-dri \
+    libgtk-3-0 \
+    procps \
+    pulseaudio \
+    rclone \
+    rtkit \
+    unzip \
+    && \
+  /usr/bin/install-chrome.sh && \
+  apt-cleanup && \
+\
+  rm -rf /etc/jitsi/jibri && \
+  ln -s /run/jibri/config /etc/jitsi/jibri && \
+\
+  rm -rf /var/log/jitsi/jibri && \
+  ln -s /storage/logs /var/log/jitsi/jibri && \
+\
+  mkdir -p /storage && \
+  chown s6:s6 /storage && \
+\
+  usermod -a -G audio,jibri,jitsi,rtkit,video s6 && \
+  cp -r /home/jibri/. /home/s6 && \
+  rm -rf /home/jibri && \
+  rm -rf /home/s6/.cache /home/s6/.config /home/s6/.local && \
+  ln -s /run/tmp/s6-cache /home/s6/.cache && \
+  ln -s /run/tmp/s6-config /home/s6/.config && \
+  ln -s /run/tmp/s6-local /home/s6/.local && \
+  chown -h s6:s6 /home/s6/.cache /home/s6/.config /home/s6/.local && \
+  chown s6:s6 /home/s6 -R && \
+\
+  dpkgArch="$(dpkg --print-architecture)" && \
+  case "${dpkgArch##*-}" in \
+    "amd64") SC_ARCH=x86_64 ;; \
+    "arm64") SC_ARCH=aarch64 ;; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac && \
+  wget -qO /usr/bin/shm-check https://github.com/saghul/shm-check/releases/download/v1.0.0/shm-check-${SC_ARCH} && \
+  chmod +x /usr/bin/shm-check
 
 VOLUME /config
+
+USER s6

@@ -7,6 +7,14 @@ on:
         description: Version number
         required: true
         type: string
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  JITSI_REPO: ghcr.io/jitsi
+
 jobs:
   gh-release:
     runs-on: ubuntu-latest
@@ -15,21 +23,21 @@ jobs:
       # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - run: |
           sed -i".bak" -e "s/unstable/stable-${{ github.event.inputs.version }}/" *.yml
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403  # v5
         with:
             commit_message: "release: stable-${{ github.event.inputs.version }}"
       - name: release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65  # v2
         with:
             tag_name: stable-${{ github.event.inputs.version }}
             generate_release_notes: true
             make_latest: true
       - run: |
           sed -i".bak" -e "s/stable-${{ github.event.inputs.version }}/unstable/" *.yml
-      - uses: stefanzweifel/git-auto-commit-action@v5
+      - uses: stefanzweifel/git-auto-commit-action@b863ae1933cb653a53c021fe36dbb774e1fb9403  # v5
         with:
             commit_message: "misc: working on unstable"
 
@@ -37,26 +45,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130  # v3
         with:
           platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./base
           tags: |
-            ${{ secrets.JITSI_REPO }}/base:stable-${{ github.event.inputs.version }}
-            ${{ secrets.JITSI_REPO }}/base:stable
+            ${{ env.JITSI_REPO }}/base:stable-${{ github.event.inputs.version }}
+            ${{ env.JITSI_REPO }}/base:stable
           build-args: |
             JITSI_RELEASE=stable
           platforms: linux/amd64,linux/arm64
@@ -68,28 +77,29 @@ jobs:
     needs: base
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130  # v3
         with:
           platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./base-java
           tags: |
-            ${{ secrets.JITSI_REPO }}/base-java:stable-${{ github.event.inputs.version }}
-            ${{ secrets.JITSI_REPO }}/base-java:stable
+            ${{ env.JITSI_REPO }}/base-java:stable-${{ github.event.inputs.version }}
+            ${{ env.JITSI_REPO }}/base-java:stable
           build-args: |
-            JITSI_REPO=${{ secrets.JITSI_REPO }}
+            JITSI_REPO=${{ env.JITSI_REPO }}
             BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -100,28 +110,29 @@ jobs:
     needs: base-java
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130  # v3
         with:
           platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./jibri
           tags: |
-            ${{ secrets.JITSI_REPO }}/jibri:stable-${{ github.event.inputs.version }}
-            ${{ secrets.JITSI_REPO }}/jibri:stable
+            ${{ env.JITSI_REPO }}/jibri:stable-${{ github.event.inputs.version }}
+            ${{ env.JITSI_REPO }}/jibri:stable
           build-args: |
-            JITSI_REPO=${{ secrets.JITSI_REPO }}
+            JITSI_REPO=${{ env.JITSI_REPO }}
             BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -132,28 +143,29 @@ jobs:
     needs: base-java
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130  # v3
         with:
           platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./jicofo
           tags: |
-            ${{ secrets.JITSI_REPO }}/jicofo:stable-${{ github.event.inputs.version }}
-            ${{ secrets.JITSI_REPO }}/jicofo:stable
+            ${{ env.JITSI_REPO }}/jicofo:stable-${{ github.event.inputs.version }}
+            ${{ env.JITSI_REPO }}/jicofo:stable
           build-args: |
-            JITSI_REPO=${{ secrets.JITSI_REPO }}
+            JITSI_REPO=${{ env.JITSI_REPO }}
             BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -164,28 +176,29 @@ jobs:
     needs: base-java
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130  # v3
         with:
           platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./jigasi
           tags: |
-            ${{ secrets.JITSI_REPO }}/jigasi:stable-${{ github.event.inputs.version }}
-            ${{ secrets.JITSI_REPO }}/jigasi:stable
+            ${{ env.JITSI_REPO }}/jigasi:stable-${{ github.event.inputs.version }}
+            ${{ env.JITSI_REPO }}/jigasi:stable
           build-args: |
-            JITSI_REPO=${{ secrets.JITSI_REPO }}
+            JITSI_REPO=${{ env.JITSI_REPO }}
             BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -196,28 +209,29 @@ jobs:
     needs: base-java
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130  # v3
         with:
           platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./jvb
           tags: |
-            ${{ secrets.JITSI_REPO }}/jvb:stable-${{ github.event.inputs.version }}
-            ${{ secrets.JITSI_REPO }}/jvb:stable
+            ${{ env.JITSI_REPO }}/jvb:stable-${{ github.event.inputs.version }}
+            ${{ env.JITSI_REPO }}/jvb:stable
           build-args: |
-            JITSI_REPO=${{ secrets.JITSI_REPO }}
+            JITSI_REPO=${{ env.JITSI_REPO }}
             BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -228,28 +242,29 @@ jobs:
     needs: base
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130  # v3
         with:
           platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./prosody
           tags: |
-            ${{ secrets.JITSI_REPO }}/prosody:stable-${{ github.event.inputs.version }}
-            ${{ secrets.JITSI_REPO }}/prosody:stable
+            ${{ env.JITSI_REPO }}/prosody:stable-${{ github.event.inputs.version }}
+            ${{ env.JITSI_REPO }}/prosody:stable
           build-args: |
-            JITSI_REPO=${{ secrets.JITSI_REPO }}
+            JITSI_REPO=${{ env.JITSI_REPO }}
             BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
@@ -260,28 +275,29 @@ jobs:
     needs: base
     steps:
       - name: Check out code
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130  # v3
         with:
           platforms: linux/amd64,linux/arm64
       - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
-      - name: Login to DockerHub
-        uses: docker/login-action@v3
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f  # v3
+      - name: Login to GHCR
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9  # v3
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push
-        uses: docker/build-push-action@v6
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8  # v6
         with:
           push: true
           context: ./web
           tags: |
-            ${{ secrets.JITSI_REPO }}/web:stable-${{ github.event.inputs.version }}
-            ${{ secrets.JITSI_REPO }}/web:stable
+            ${{ env.JITSI_REPO }}/web:stable-${{ github.event.inputs.version }}
+            ${{ env.JITSI_REPO }}/web:stable
           build-args: |
-            JITSI_REPO=${{ secrets.JITSI_REPO }}
+            JITSI_REPO=${{ env.JITSI_REPO }}
             BASE_TAG=stable-${{ github.event.inputs.version }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha

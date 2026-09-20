@@ -1,7 +1,7 @@
 FORCE_REBUILD ?= 0
 JITSI_RELEASE ?= stable
 JITSI_BUILD ?= unstable
-JITSI_REPO ?= jitsi
+JITSI_REPO ?= ghcr.io/jitsi
 
 JITSI_SERVICES := base base-java web prosody jicofo jvb jigasi jibri
 
@@ -14,7 +14,8 @@ ifeq ($(FORCE_REBUILD), 1)
 endif
 
 
-all: build-all
+all:
+	$(MAKE) build-all JITSI_REPO="jitsi"
 
 release:
 	@$(foreach SERVICE, $(JITSI_SERVICES), $(MAKE) --no-print-directory JITSI_SERVICE=$(SERVICE) buildx;)
@@ -34,7 +35,7 @@ $(addprefix buildx_,$(JITSI_SERVICES)):
 
 build:
 	docker buildx build \
-		$(BUILD_ARGS) \
+		$(BUILD_ARGS) --build-arg BASE_TAG=latest \
 		--load \
 		--progress plain \
 		--tag $(JITSI_REPO)/$(JITSI_SERVICE) \

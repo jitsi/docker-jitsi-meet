@@ -1,0 +1,33 @@
+#!/command/with-contenv bash
+
+ACME_HOME="/storage/acme.sh"
+# check twice a day, acme.sh renews a certificate only when it is due
+RENEWAL_INTERVAL=43200
+
+if [[ $DISABLE_HTTPS -eq 1 ]] || [[ $ENABLE_LETSENCRYPT -ne 1 ]]; then
+    # nothing to renew, prevent s6 from restarting this script again and again
+    s6-svc -O /run/service/acme-renewal
+    exit 0
+fi
+
+if [[ ! -x $ACME_HOME/acme.sh ]]; then
+    echo "acme.sh is not installed in $ACME_HOME, skipping renewals"
+    s6-svc -O /run/service/acme-renewal
+    exit 0
+fi
+
+export LE_WORKING_DIR="$ACME_HOME"
+
+# react to SIGTERM right away instead of waiting for the current sleep to end
+trap 'exit 0' TERM INT
+
+# the certificate is issued by the config service on start, wait a little
+# before the first renewal check
+sleep 60 &
+wait $!
+
+while true; do
+    "$ACME_HOME/acme.sh" --cron --home "$ACME_HOME"
+    sleep $RENEWAL_INTERVAL &
+    wait $!
+done

@@ -1,12 +1,15 @@
 services:
     jibri:
-        image: jitsi/jibri:${JITSI_IMAGE_VERSION:-unstable}
+        image: ${JITSI_IMAGE_REPO:-ghcr.io/jitsi}/jibri:${JITSI_IMAGE_VERSION:-unstable}
         restart: ${RESTART_POLICY:-unless-stopped}
+        read_only: true
+        tmpfs:
+            - /run:size=256M,mode=1750,exec
+            - /tmp:size=256M,mode=1777,noexec
         volumes:
             - ${CONFIG}/jibri:/config:Z
+            - ${CONFIG}/storage/jibri:/storage:Z
         shm_size: '2gb'
-        cap_add:
-            - SYS_ADMIN
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
@@ -22,6 +25,8 @@ services:
             - DISPLAY=:0
             - ENABLE_STATS_D
             - IGNORE_CERTIFICATE_ERRORS
+            - JIBRI_CHROMEDRIVER_DEBUG
+            - JIBRI_CHROMEDRIVER_DEBUG_LOG
             - JIBRI_WEBHOOK_SUBSCRIBERS
             - JIBRI_INSTANCE_ID
             - JIBRI_ENABLE_PROMETHEUS

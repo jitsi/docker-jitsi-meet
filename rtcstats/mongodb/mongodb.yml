@@ -1,0 +1,13 @@
+services:
+
+  mongodb:
+    image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    volumes:
+      - ./rtcstats/mongodb/data:/data/db
+    networks:
+        meet.jitsi:
+          aliases:
+            - mongodb.meet.jitsi
