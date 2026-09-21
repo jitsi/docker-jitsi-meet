@@ -20,7 +20,8 @@ if [[ -z "${JVB_ADVERTISE_IPS}" ]]; then
 fi
 
 # Local IP for the ice4j mapping harvester.
-export LOCAL_ADDRESS=$(ip route get 1 | grep -oP '(?<=src ).*' | awk '{ print $1 '})
+export LOCAL_ADDRESS=$(ip route get 1 | grep -oP '(?<=src )[^ ]+')
+export LOCAL_ADDRESS6=$(ip -6 route get :: | grep -oP '(?<=src )[^ ]+')
 
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jitsi-videobridge2 | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
