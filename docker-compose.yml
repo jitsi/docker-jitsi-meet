@@ -150,7 +150,7 @@ services:
             - RTC_VISUALIZER_URL_BASE
             - RTC_VISUALIZER_PATH
             - START_AUDIO_MUTED
-            - START_AUDIO_ONLY
+            - START_LOW_BANDWIDTH_MODE
             - START_SILENT
             - START_WITH_AUDIO_MUTED
             - START_VIDEO_MUTED
