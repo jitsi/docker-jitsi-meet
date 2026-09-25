@@ -383,6 +383,7 @@ services:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
+            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
         labels:
             service: "jitsi-jicofo"
         environment:

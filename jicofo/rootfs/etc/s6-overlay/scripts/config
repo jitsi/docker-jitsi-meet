@@ -1,5 +1,8 @@
 #!/command/with-contenv bash
 
+# trust the custom CA certificates, if any
+setup-custom-ca || exit 1
+
 export SENTRY_RELEASE="${SENTRY_RELEASE:-$(apt-cache policy jicofo | sed -n '/Installed/p' | sed -e 's/[^:]*: //')}"
 
 if [[ -z "$JICOFO_AUTH_PASSWORD" ]]; then
