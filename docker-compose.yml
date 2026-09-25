@@ -13,6 +13,7 @@ services:
         volumes:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/storage/web:/storage:Z
+            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
             - ${CONFIG}/storage/transcripts:/usr/share/jitsi-meet/transcripts:ro,z
             - ${CONFIG}/tmp/web-load-test:/usr/share/jitsi-meet/load-test:Z
         labels:
