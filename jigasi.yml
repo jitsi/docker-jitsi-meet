@@ -11,6 +11,7 @@ services:
             - '${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}:${JIGASI_PORT_MIN:-20000}-${JIGASI_PORT_MAX:-20050}/udp'
         volumes:
             - ${CONFIG}/jigasi:/config:Z
+            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
