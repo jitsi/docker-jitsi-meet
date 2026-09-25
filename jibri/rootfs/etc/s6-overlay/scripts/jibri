@@ -1,5 +1,7 @@
 #!/command/with-contenv bash
 
+[ -f /run/ca/env ] && . /run/ca/env
+
 # pre-warm google chrome before jibri launches to ensure fast chrome launch during recordings
 CHROME_BIN_PATH="$(which google-chrome)"
 [ $? -ne 0 ] && CHROME_BIN_PATH="$(which chromium)"
@@ -15,5 +17,6 @@ exec java \
     -Djava.io.tmpdir=/run/jibri/tmp \
     -Dwebdriver.chrome.driver=${CHROMEDRIVER} \
     -Dwebdriver.chrome.logfile=/storage/logs/chromedriver.log \
+    $CUSTOM_CA_JAVA_PROPS \
     -jar /opt/jitsi/jibri/jibri.jar
 
