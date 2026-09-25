@@ -13,7 +13,7 @@ services:
         volumes:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/storage/web:/storage:Z
-            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
+            - ${CONFIG}/web/custom-ca:/usr/local/share/ca-certificates:ro,z
             - ${CONFIG}/storage/transcripts:/usr/share/jitsi-meet/transcripts:ro,z
             - ${CONFIG}/tmp/web-load-test:/usr/share/jitsi-meet/load-test:Z
         labels:
@@ -228,7 +228,7 @@ services:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
             - ${CONFIG}/storage/prosody:/var/lib/prosody:Z
-            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
+            - ${CONFIG}/prosody/custom-ca:/usr/local/share/ca-certificates:ro,z
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS
@@ -384,7 +384,7 @@ services:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
-            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
+            - ${CONFIG}/jicofo/custom-ca:/usr/local/share/ca-certificates:ro,z
         labels:
             service: "jitsi-jicofo"
         environment:
@@ -490,7 +490,7 @@ services:
             - '127.0.0.1:${JVB_COLIBRI_PORT:-8080}:8080'
         volumes:
             - ${CONFIG}/jvb:/config:Z
-            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
+            - ${CONFIG}/jvb/custom-ca:/usr/local/share/ca-certificates:ro,z
         labels:
             service: "jitsi-jvb"
         environment:

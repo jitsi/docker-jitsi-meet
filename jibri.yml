@@ -9,7 +9,7 @@ services:
         volumes:
             - ${CONFIG}/jibri:/config:Z
             - ${CONFIG}/storage/jibri:/storage:Z
-            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
+            - ${CONFIG}/jibri/custom-ca:/usr/local/share/ca-certificates:ro,z
         shm_size: '2gb'
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
