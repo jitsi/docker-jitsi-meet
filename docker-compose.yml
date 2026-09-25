@@ -227,6 +227,7 @@ services:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
             - ${CONFIG}/storage/prosody:/var/lib/prosody:Z
+            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS

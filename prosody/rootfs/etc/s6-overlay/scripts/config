@@ -1,5 +1,10 @@
 #!/command/with-contenv bash
 
+# trust the custom CA certificates, if any. The env file is sourced before any
+# template is rendered, they use SSL_CERT_FILE to find the merged bundle
+setup-custom-ca || exit 1
+[ -f /run/ca/env ] && . /run/ca/env
+
 if [[ "$AUTH_TYPE" == "ldap" ]]; then
   if [[ ! -f /etc/saslauthd.conf ]]; then
     tpl /defaults/saslauthd.conf > /run/saslauthd.conf
