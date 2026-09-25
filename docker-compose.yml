@@ -489,6 +489,7 @@ services:
             - '127.0.0.1:${JVB_COLIBRI_PORT:-8080}:8080'
         volumes:
             - ${CONFIG}/jvb:/config:Z
+            - ${CONFIG}/custom-ca:/usr/local/share/ca-certificates:ro,z
         labels:
             service: "jitsi-jvb"
         environment:

@@ -1,5 +1,8 @@
 #!/command/with-contenv bash
 
+# trust the custom CA certificates, if any
+setup-custom-ca || exit 1
+
 mkdir -p /run/jvb/tmp
 mkdir -p /run/jvb/config
 cp -r /config/. /run/jvb/config

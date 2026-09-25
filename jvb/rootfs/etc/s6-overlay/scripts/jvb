@@ -1,6 +1,8 @@
 #!/command/with-contenv bash
 
-export JAVA_SYS_PROPS="-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/run/jvb -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=config -Djava.util.logging.config.file=/run/jvb/config/logging.properties -Dconfig.file=/run/jvb/config/jvb.conf -Djava.io.tmpdir=/run/jvb/tmp -Djna.tmpdir=/run/jvb/tmp"
+[ -f /run/ca/env ] && . /run/ca/env
+
+export JAVA_SYS_PROPS="-Dnet.java.sip.communicator.SC_HOME_DIR_LOCATION=/run/jvb -Dnet.java.sip.communicator.SC_HOME_DIR_NAME=config -Djava.util.logging.config.file=/run/jvb/config/logging.properties -Dconfig.file=/run/jvb/config/jvb.conf -Djava.io.tmpdir=/run/jvb/tmp -Djna.tmpdir=/run/jvb/tmp $CUSTOM_CA_JAVA_PROPS"
 
 DAEMON=/usr/share/jitsi-videobridge/jvb.sh
 
