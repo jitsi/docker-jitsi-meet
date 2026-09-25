@@ -107,8 +107,7 @@ fi
     echo "export CURL_CA_BUNDLE=$dst/ca-certificates.crt"
     echo "export NODE_EXTRA_CA_CERTS=$dst/ca-certificates.crt"
     if [ -n "$java" ]; then
-        echo "CUSTOM_CA_JAVA_PROPS=\"-Djavax.net.ssl.trustStore=$dst/cacerts" \
-            "-Djavax.net.ssl.trustStorePassword=changeit\""
+        echo "CUSTOM_CA_JAVA_PROPS=\"-Djavax.net.ssl.trustStore=$dst/cacerts\""
     fi
 } > "$dst/env" || fail "cannot write $dst/env."
 
