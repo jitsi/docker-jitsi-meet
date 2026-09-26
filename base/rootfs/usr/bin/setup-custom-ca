@@ -8,9 +8,9 @@
 # is left behind when something fails.
 #
 # Accepted files are *.crt, *.cer and *.pem in any letter case, either PEM with
-# one or more certificates or a single DER certificate. Subdirectories are
-# scanned and symlinks are followed. Hidden files and directories are skipped,
-# such as the "..data" copies in a Kubernetes ConfigMap or Secret mount.
+# one or more certificates or a single DER certificate. Only files directly in
+# the folder are used, subfolders are ignored. Symlinks are followed and hidden
+# files are skipped, so a Kubernetes ConfigMap or Secret mount works too.
 #
 # Usage: setup-custom-ca
 
@@ -29,19 +29,22 @@ fail() {
 
 rm -rf "$dst" || fail "cannot remove the old $dst."
 [ -d "$src" ] || exit 0
+[ -r "$src" ] && [ -x "$src" ] || fail "cannot read '$src'."
 
-scan=(find -L "$src" -mindepth 1 -name '.*' -prune -o -type f
-    \( -iname '*.crt' -o -iname '*.cer' -o -iname '*.pem' \) -print0)
-err="$("${scan[@]}" 2>&1 >/dev/null)" || fail "cannot scan '$src': $err"
-mapfile -d '' files < <("${scan[@]}" | sort -z)
+# regular files only, a directory or a broken symlink with a matching name is
+# skipped. The glob does not match hidden files
+shopt -s nullglob nocaseglob
+files=()
+for f in "$src"/*.crt "$src"/*.cer "$src"/*.pem; do
+    [ -f "$f" ] && files+=("$f")
+done
 [ ${#files[@]} -eq 0 ] && exit 0
 
 [ -r "$bundle" ] || fail "cannot read the system trust store $bundle."
 mkdir -p "$dst/raw" "$dst/certs" || fail "cannot create $dst."
-shopt -s nullglob
 
 # split every file into single certificates, keytool imports one per call.
-# names only use numbers, the alias keeps the readable path
+# names only use numbers, the alias keeps the readable file name
 certs=()
 aliases=()
 sources=()
@@ -49,7 +52,7 @@ n=0
 for f in "${files[@]}"; do
     n=$((n + 1))
     [ -r "$f" ] || fail "cannot read '$f'."
-    name="$(printf '%s' "${f#"$src"/}" | tr -c 'A-Za-z0-9._-' '_')"
+    name="$(printf '%s' "${f##*/}" | tr -c 'A-Za-z0-9._-' '_')"
 
     # put each marker on its own line and drop a UTF-8 BOM, CR and surrounding
     # whitespace, so indented, Windows or carelessly joined files still split
