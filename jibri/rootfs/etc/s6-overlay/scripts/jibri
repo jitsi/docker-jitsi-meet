@@ -17,6 +17,6 @@ exec java \
     -Djava.io.tmpdir=/run/jibri/tmp \
     -Dwebdriver.chrome.driver=${CHROMEDRIVER} \
     -Dwebdriver.chrome.logfile=/storage/logs/chromedriver.log \
-    $CUSTOM_CA_JAVA_PROPS \
+    $JAVA_CUSTOM_CA_PROPS \
     -jar /opt/jitsi/jibri/jibri.jar
 
