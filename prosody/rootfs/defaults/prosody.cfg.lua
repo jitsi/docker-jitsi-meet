@@ -441,6 +441,11 @@ http_interfaces = { "*", "::" }
 http_interfaces = { "*" }
 {{ end }}
 
+{{ if .Env.SSL_CERT_FILE }}
+-- trust the custom CA certificates for outgoing HTTPS, e.g. JWT key servers
+client_https_ssl = { cafile = "{{ .Env.SSL_CERT_FILE }}" }
+{{ end }}
+
 data_path = "/var/lib/prosody/data"
 
 Include "conf.d/*.cfg.lua"

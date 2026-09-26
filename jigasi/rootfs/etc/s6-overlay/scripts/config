@@ -1,5 +1,8 @@
 #!/command/with-contenv bash
 
+# trust the custom CA certificates, if any
+setup-custom-ca || exit 1
+
 mkdir -p /run/jigasi/tmp
 mkdir -p /run/jigasi/config
 cp -r /config/. /run/jigasi/config

@@ -1,6 +1,8 @@
 #!/command/with-contenv bash
 
-JAVA_SYS_PROPS="-Djava.util.logging.config.file=/run/jicofo/config/logging.properties -Dconfig.file=/run/jicofo/config/jicofo.conf"
+[ -f /run/ca/env ] && . /run/ca/env
+
+JAVA_SYS_PROPS="-Djava.util.logging.config.file=/run/jicofo/config/logging.properties -Dconfig.file=/run/jicofo/config/jicofo.conf $JAVA_CUSTOM_CA_PROPS"
 DAEMON=/usr/share/jicofo/jicofo.sh
 DAEMON_DIR=/usr/share/jicofo/
 
