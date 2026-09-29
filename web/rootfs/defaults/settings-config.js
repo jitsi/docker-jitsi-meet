@@ -401,8 +401,7 @@ config.transcription = {
 
 config.audioTranslation = {
     enabled: {{ $ENABLE_AUDIO_TRANSLATION }},
-    duckedVolume: {{ $AUDIO_TRANSLATION_DUCKED_VOLUME }},
-    enableSendingChangeEvents: true
+    duckedVolume: {{ $AUDIO_TRANSLATION_DUCKED_VOLUME }}
 };
 
 // Dynamic branding
