@@ -1,0 +1,117 @@
+#!/bin/bash
+
+# Build runtime trust stores that also trust the custom CA certificates found
+# in /usr/local/share/ca-certificates. The root filesystem is read-only, so the
+# system trust stores cannot be updated in place. Instead they are merged with
+# the custom certificates into /run/ca and services source /run/ca/env to use
+# them. Nothing is created when there are no custom certificates, and nothing
+# is left behind when something fails.
+#
+# Accepted files are *.crt, *.cer and *.pem in any letter case, either PEM with
+# one or more certificates or a single DER certificate. Only files directly in
+# the folder are used, subfolders are ignored. Symlinks are followed and hidden
+# files are skipped, so a Kubernetes ConfigMap or Secret mount works too.
+#
+# Usage: setup-custom-ca
+
+set -o pipefail
+
+src=/usr/local/share/ca-certificates
+dst=/run/ca
+bundle=/etc/ssl/certs/ca-certificates.crt
+cacerts=/etc/ssl/certs/java/cacerts
+
+fail() {
+    echo "FATAL ERROR: $1"
+    rm -rf "$dst"
+    exit 1
+}
+
+rm -rf "$dst" || fail "cannot remove the old $dst."
+[ -d "$src" ] || exit 0
+[ -r "$src" ] && [ -x "$src" ] || fail "cannot read '$src'."
+
+# regular files only, a directory or a broken symlink with a matching name is
+# skipped. The glob does not match hidden files
+shopt -s nullglob nocaseglob
+files=()
+for f in "$src"/*.crt "$src"/*.cer "$src"/*.pem; do
+    [ -f "$f" ] && files+=("$f")
+done
+[ ${#files[@]} -eq 0 ] && exit 0
+
+[ -r "$bundle" ] || fail "cannot read the system trust store $bundle."
+mkdir -p "$dst/raw" "$dst/certs" || fail "cannot create $dst."
+
+# split every file into single certificates, keytool imports one per call.
+# names only use numbers, the alias keeps the readable file name
+certs=()
+aliases=()
+sources=()
+n=0
+for f in "${files[@]}"; do
+    n=$((n + 1))
+    [ -r "$f" ] || fail "cannot read '$f'."
+    name="$(printf '%s' "${f##*/}" | tr -c 'A-Za-z0-9._-' '_')"
+
+    # put each marker on its own line and drop a UTF-8 BOM, CR and surrounding
+    # whitespace, so indented, Windows or carelessly joined files still split
+    sed -e 's/^\xef\xbb\xbf//' -e 's/^[[:space:]]*//' -e 's/[[:space:]]*$//' \
+        -e 's/-----\(BEGIN\|END\) CERTIFICATE-----/\n&\n/g' "$f" |
+        awk -v prefix="$dst/raw/$n" '
+            /^-----BEGIN CERTIFICATE-----$/ { i++; out = prefix "-" i }
+            out && length { print > out }
+            /^-----END CERTIFICATE-----$/ { close(out); out = "" }
+        ' || fail "cannot read '$f'."
+    blocks=("$dst/raw/$n"-*)
+
+    # no PEM block, so try it as a single DER certificate
+    [ ${#blocks[@]} -eq 0 ] && blocks=(DER)
+
+    i=0
+    for b in "${blocks[@]}"; do
+        i=$((i + 1))
+        c="$dst/certs/$n-$i.pem"
+        # re-encode as clean PEM, which also validates the certificate
+        if [ "$b" = DER ]; then
+            openssl x509 -inform DER -in "$f" -out "$c" 2>/dev/null ||
+                fail "no certificate found in '$f'."
+        else
+            openssl x509 -in "$b" -out "$c" 2>/dev/null ||
+                fail "invalid certificate in '$f'."
+        fi
+        certs+=("$c")
+        aliases+=("custom-$n-$i-$name")
+        sources+=("$f")
+    done
+done
+rm -rf "$dst/raw" || fail "cannot clean up $dst/raw."
+
+{ cat "$bundle" && cat "${certs[@]}"; } > "$dst/ca-certificates.crt" ||
+    fail "cannot write $dst/ca-certificates.crt."
+
+java=
+if command -v keytool >/dev/null; then
+    [ -r "$cacerts" ] || fail "cannot read the Java trust store $cacerts."
+    { cp "$cacerts" "$dst/cacerts" && chmod u+w "$dst/cacerts"; } ||
+        fail "cannot copy the Java trust store to $dst."
+    for i in "${!certs[@]}"; do
+        out="$(keytool -importcert -noprompt -storepass changeit \
+            -keystore "$dst/cacerts" -file "${certs[$i]}" \
+            -alias "${aliases[$i]}" 2>&1)" ||
+            fail "cannot add '${sources[$i]}' to the Java trust store: $out"
+    done
+    java=yes
+fi
+
+# written last, services only use /run/ca when this file exists
+{
+    echo "export SSL_CERT_FILE=$dst/ca-certificates.crt"
+    echo "export CURL_CA_BUNDLE=$dst/ca-certificates.crt"
+    echo "export NODE_EXTRA_CA_CERTS=$dst/ca-certificates.crt"
+    if [ -n "$java" ]; then
+        echo "JAVA_CUSTOM_CA_PROPS=\"-Djavax.net.ssl.trustStore=$dst/cacerts\""
+    fi
+} > "$dst/env" || fail "cannot write $dst/env."
+
+echo "Trusting ${#certs[@]} custom CA certificate(s) from $src"

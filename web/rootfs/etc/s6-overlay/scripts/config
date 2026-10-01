@@ -1,5 +1,9 @@
 #!/command/with-contenv bash
 
+# trust the custom CA certificates, if any, e.g. for a private ACME server
+setup-custom-ca || exit 1
+[ -f /run/ca/env ] && . /run/ca/env
+
 # make our folders
 mkdir -p /run/web/tmp
 mkdir -p /run/web/config/keys

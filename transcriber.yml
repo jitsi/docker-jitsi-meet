@@ -9,6 +9,7 @@ services:
         volumes:
             - ${CONFIG}/transcriber:/config:Z
             - ${CONFIG}/storage/transcripts:/tmp/transcripts:z
+            - ${CONFIG}/transcriber/custom-ca:/usr/local/share/ca-certificates:ro,z
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID
