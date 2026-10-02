@@ -208,6 +208,10 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
         "jibri_session";
         {{- end }}
+        -- Keeps client messages on the routes that the rooms control: a client
+        -- can address a message to a MUC or to a component, not to the JID of
+        -- an account.
+        "filter_direct_messages";
 
     }
 
@@ -247,6 +251,10 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MODULES | compact) }}";
         {{ end }}
+        -- Keeps client messages on the routes that the rooms control: a client
+        -- can address a message to a MUC or to a component, not to the JID of
+        -- an account.
+        "filter_direct_messages";
     }
     main_muc = "{{ $XMPP_MUC_DOMAIN }}"
     c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }}
