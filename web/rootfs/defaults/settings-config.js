@@ -81,6 +81,7 @@
 {{ $RTCSTATS_STORE_LOGS := .Env.RTCSTATS_STORE_LOGS | default "false" | toBool -}}
 {{ $RTCSTATS_POLL_INTERVAL := .Env.RTCSTATS_POLL_INTERVAL | default 10000 -}}
 {{ $RTCSTATS_SEND_SDP := .Env.RTCSTATS_SEND_SDP | default "false" | toBool -}}
+{{ $DEFAULT_LOGO_URL := .Env.DEFAULT_LOGO_URL | default "images/watermark.svg" -}}
 
 // Video configuration.
 //
@@ -648,6 +649,9 @@ config.whiteboard = {
     collabServerBaseUrl: '{{ $PUBLIC_URL }}'
 {{ end -}}
 };
+
+// Configure application logo url
+config.defaultLogoUrl = '{{ $DEFAULT_LOGO_URL }}';
 
 // JaaS support: pre-configure image if JAAS_APP_ID was set.
 {{ if .Env.JAAS_APP_ID -}}
