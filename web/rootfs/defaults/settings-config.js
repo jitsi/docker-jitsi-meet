@@ -46,8 +46,8 @@
 {{ $RESOLUTION_MIN := .Env.RESOLUTION_MIN | default "180" -}}
 {{ $RESOLUTION_WIDTH := .Env.RESOLUTION_WIDTH | default "1280" -}}
 {{ $RESOLUTION_WIDTH_MIN := .Env.RESOLUTION_WIDTH_MIN | default "320" -}}
-{{ $START_AUDIO_ONLY := .Env.START_AUDIO_ONLY | default "false" | toBool -}}
 {{ $START_AUDIO_MUTED := .Env.START_AUDIO_MUTED | default 10 -}}
+{{ $START_LOW_BANDWIDTH_MODE := .Env.START_LOW_BANDWIDTH_MODE | default "false" | toBool -}}
 {{ $START_WITH_AUDIO_MUTED := .Env.START_WITH_AUDIO_MUTED | default "false" | toBool -}}
 {{ $START_SILENT := .Env.START_SILENT | default "false" | toBool -}}
 {{ $DISABLE_AUDIO_LEVELS := .Env.DISABLE_AUDIO_LEVELS | default "false" | toBool -}}
@@ -132,7 +132,7 @@ config.audioQuality = {
 config.audioQuality.opusMaxAverageBitrate = '{{ .Env.AUDIO_QUALITY_OPUS_BITRATE }}';
 {{ end -}}
 
-config.startAudioOnly = {{ $START_AUDIO_ONLY }};
+config.startLowBandwidthMode = {{ $START_LOW_BANDWIDTH_MODE }};
 config.startAudioMuted = {{ $START_AUDIO_MUTED }};
 config.startWithAudioMuted = {{ $START_WITH_AUDIO_MUTED }};
 config.startSilent = {{ $START_SILENT }};
