@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Recordings · Jitsi Meet</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <span class="brand"><span class="brand-mark" aria-hidden="true">J</span>Jitsi <strong>Meet</strong></span>
+        <span class="eyebrow">Recording library</span>
+      </header>
+      <section class="intro" aria-labelledby="title">
+        <p class="eyebrow">Jibri recordings</p>
+        <h1 id="title">Meetings, ready to revisit.</h1>
+        <p>Completed recordings from this Jitsi server. Select a recording to play it, or download the original MP4.</p>
+      </section>
+      <section class="library" aria-labelledby="library-title">
+        <div class="library-heading">
+          <div><h2 id="library-title">Available recordings</h2><p id="status" role="status">Loading recordings…</p></div>
+          <button id="refresh" type="button">Refresh</button>
+        </div>
+        <div id="recordings" class="recordings" aria-live="polite"></div>
+      </section>
+    </main>
+    <template id="recording-template">
+      <article class="recording-card">
+        <div class="film" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="recording-details"><p class="recording-name"></p><p class="recording-meta"></p></div>
+        <div class="recording-actions"><a class="play" target="_blank" rel="noopener">Play</a><a class="download" download>Download</a></div>
+      </article>
+    </template>
+    <script src="./app.js"></script>
+  </body>
+</html>
