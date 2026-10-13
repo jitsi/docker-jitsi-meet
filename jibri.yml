@@ -58,6 +58,9 @@ services:
             - JIBRI_STRIP_DOMAIN_JID
             - JIBRI_STATSD_HOST
             - JIBRI_STATSD_PORT
+            - JVB_XMPP_AUTH_DOMAIN
+            - JVB_XMPP_INTERNAL_MUC_DOMAIN
+            - JVB_XMPP_PORT
             - LOCAL_ADDRESS
             - PUBLIC_URL
             - TZ
