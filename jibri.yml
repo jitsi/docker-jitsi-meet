@@ -46,6 +46,11 @@ services:
             - JIBRI_XORG_HORIZ_SYNC
             - JIBRI_XORG_VERT_REFRESH
             - JIBRI_BREWERY_MUC
+            - JIBRI_BREWERY_XMPP_AUTH_DOMAIN
+            - JIBRI_BREWERY_XMPP_INTERNAL_MUC_DOMAIN
+            - JIBRI_BREWERY_XMPP_ONLY
+            - JIBRI_BREWERY_XMPP_PORT
+            - JIBRI_BREWERY_XMPP_SERVER
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
             - JIBRI_RECORDING_DIR
@@ -53,6 +58,9 @@ services:
             - JIBRI_STRIP_DOMAIN_JID
             - JIBRI_STATSD_HOST
             - JIBRI_STATSD_PORT
+            - JVB_XMPP_AUTH_DOMAIN
+            - JVB_XMPP_INTERNAL_MUC_DOMAIN
+            - JVB_XMPP_PORT
             - LOCAL_ADDRESS
             - PUBLIC_URL
             - TZ
