@@ -107,6 +107,10 @@ VirtualHost 'v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}'
       "{{ join "\";\n\"" (splitList "," .Env.XMPP_MODULES | compact) }}";
       {{ end }}
       'features_identity';
+      -- Keeps client messages on the routes that the rooms control: a client
+      -- can address a message to a MUC or to a component, not to the JID of
+      -- an account.
+      'filter_direct_messages';
     }
     main_muc = '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DOMAIN }}';
     shard_name = "{{ $SHARD_NAME }}"
