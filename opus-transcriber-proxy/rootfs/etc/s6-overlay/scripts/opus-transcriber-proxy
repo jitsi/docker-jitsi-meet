@@ -1,0 +1,4 @@
+#!/command/with-contenv bash
+
+cd /opt/opus-transcriber-proxy
+exec node dist/bundle/server.js
