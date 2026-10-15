@@ -1,0 +1,10 @@
+services:
+    recordings:
+        build:
+            context: ./recordings
+        restart: ${RESTART_POLICY:-unless-stopped}
+        ports:
+            # Deliberately bind to loopback: Jibri recordings may contain private content.
+            - '127.0.0.1:${RECORDINGS_PORT:-8090}:80'
+        volumes:
+            - ${CONFIG}/storage/jibri/recordings:/recordings:ro,Z
