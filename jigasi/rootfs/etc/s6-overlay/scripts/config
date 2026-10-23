@@ -64,6 +64,13 @@ tpl /defaults/logging.properties > /run/jigasi/config/logging.properties
 tpl /defaults/sip-communicator.properties > /run/jigasi/config/sip-communicator.properties
 tpl /defaults/xmpp-sip-communicator.properties >> /run/jigasi/config/sip-communicator.properties
 
+# Jigasi's certificate service replaces javax.net.ssl.trustStore with this
+# property at startup and removes it when unset, so set it to the custom CA
+# trust store too
+if [[ -f /run/ca/cacerts ]]; then
+    echo "net.java.sip.communicator.service.cert.truststore.file=/run/ca/cacerts" >> /run/jigasi/config/sip-communicator.properties
+fi
+
 if [[ "$JIGASI_MODE" == "sip" ]]; then
     tpl /defaults/sipserver-sip-communicator.properties >> /run/jigasi/config/sip-communicator.properties
 elif [[ "$JIGASI_MODE" == "transcriber" ]]; then
