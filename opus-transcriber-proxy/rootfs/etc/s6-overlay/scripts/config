@@ -1,0 +1,12 @@
+#!/command/with-contenv bash
+
+if [[ -z "$OPENAI_API_KEY" ]] && \
+   [[ -z "$DEEPGRAM_API_KEY" ]] && \
+   [[ -z "$GEMINI_API_KEY" ]] && \
+   [[ -z "$XAI_API_KEY" ]] && \
+   [[ "$ENABLE_DUMMY_PROVIDER" != "true" ]] && \
+   [[ "$ENABLE_OPENAI_CUSTOM_PROVIDER" != "true" ]]; then
+    echo 'FATAL ERROR: at least one speech-to-text provider must be configured'
+    echo 'Set OPENAI_API_KEY, DEEPGRAM_API_KEY, GEMINI_API_KEY or XAI_API_KEY'
+    exit 1
+fi
