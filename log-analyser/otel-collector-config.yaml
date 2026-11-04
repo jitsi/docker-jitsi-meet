@@ -71,8 +71,8 @@ processors:
 exporters:
   debug:
     verbosity: detailed
-  loki:
-    endpoint: "http://loki:3100/loki/api/v1/push"
+  otlphttp/loki:
+    endpoint: "http://loki:3100/otlp"
   prometheus:
     endpoint: "0.0.0.0:9464"
 
@@ -81,7 +81,7 @@ service:
     logs:
       receivers: [otlp, filelog/jitsi-containers]
       processors: [batch]
-      exporters: [loki]
+      exporters: [otlphttp/loki]
     metrics:
       receivers: [docker_stats]
       processors: [batch]
