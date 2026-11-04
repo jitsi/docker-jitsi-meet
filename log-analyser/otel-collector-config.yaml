@@ -10,7 +10,7 @@ receivers:
       grpc:
         endpoint: 0.0.0.0:4317
 
-  filelog/jitsi-containers:
+  file_log/jitsi-containers:
       include:
         - /var/lib/docker/containers/*/*-json.log
       encoding: utf-8
@@ -60,7 +60,7 @@ processors:
 exporters:
   debug:
     verbosity: detailed
-  otlphttp/loki:
+  otlp_http/loki:
     endpoint: "http://loki:3100/otlp"
   prometheus:
     endpoint: "0.0.0.0:9464"
@@ -69,9 +69,9 @@ service:
   extensions: [file_storage]
   pipelines:
     logs:
-      receivers: [otlp, filelog/jitsi-containers]
+      receivers: [otlp, file_log/jitsi-containers]
       processors: [batch]
-      exporters: [otlphttp/loki]
+      exporters: [otlp_http/loki]
     metrics:
       receivers: [docker_stats]
       processors: [batch]

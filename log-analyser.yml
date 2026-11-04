@@ -14,7 +14,7 @@ services:
       meet.jitsi:
 
   otel:
-    image: otel/opentelemetry-collector-contrib:0.130.0
+    image: otel/opentelemetry-collector-contrib:0.164.0
     restart: unless-stopped
     user: "0" # required for reading docker container logs
     volumes:
