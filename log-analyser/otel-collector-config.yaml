@@ -64,6 +64,7 @@ receivers:
         to: attributes.message
   docker_stats:
     endpoint: "unix:///var/run/docker.sock"
+    api_version: "1.40"
 processors:
   batch:
 
