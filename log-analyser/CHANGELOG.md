@@ -24,12 +24,14 @@ All notable changes to the optional Jitsi Meet observability stack are documente
 - Docker Compose override example moved to `log-analyser/`.
 - README expanded with deployment, permissions, persistence, and validation instructions.
 - Upgraded OpenTelemetry Collector Contrib from `0.130.0` to `0.164.0`.
+- Upgraded Grafana Loki from `3.0.0` to `3.7.9`.
 - Replaced deprecated Collector component aliases (`filelog` → `file_log`, `otlphttp` → `otlp_http`).
-- Validated the upgrade on an existing Jitsi Meet deployment with Docker Engine 29.9.2 and Loki 3.0.0:
+- Validated the upgrade on an existing Jitsi Meet deployment with Docker Engine 29.9.2 and Loki 3.7.9:
   - Collector starts successfully without deprecation warnings.
   - Existing filelog checkpoints are recognized after the upgrade.
   - Log ingestion verified for Jicofo, JVB, Prosody, and Web.
-  - Loki returned 223 log entries across all four services in a 10-minute query window.
+  - No regressions found
+
 
 ### Compatibility and migration
 - Existing `docker-compose.override.yml` files must not be overwritten. Merge the required logging settings manually.
