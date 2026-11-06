@@ -2,7 +2,7 @@ services:
   # Log Analyser: used for setting up a log analysis system for visualization, log collection and log processing.
 
   loki:
-    image: grafana/loki:3.0.0
+    image: grafana/loki:3.7.9
     restart: unless-stopped
     command: -config.file=/conf/loki-config.yaml
     volumes:
