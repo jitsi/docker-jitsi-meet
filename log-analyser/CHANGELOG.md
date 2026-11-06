@@ -30,7 +30,7 @@ All notable changes to the optional Jitsi Meet observability stack are documente
   - Collector starts successfully without deprecation warnings.
   - Existing filelog checkpoints are recognized after the upgrade.
   - Log ingestion verified for Jicofo, JVB, Prosody, and Web.
-  - No regressions found
+  - No regressions observed during validation
 
 
 ### Compatibility and migration
