@@ -349,6 +349,10 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         "muc_max_occupants";
         {{ end }}
         "muc_password_whitelist";
+        {{ if and $ENABLE_VISITORS .Env.VISITORS_XMPP_SERVER -}}
+        -- a component does not load the global s2s_whitelist module, it needs it in its own list
+        "s2s_whitelist";
+        {{ end -}}
         {{ if $ENABLE_FILTER_MESSAGES }}
         "filter_messages";
         {{ end }}
