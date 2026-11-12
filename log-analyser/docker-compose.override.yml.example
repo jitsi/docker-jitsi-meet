@@ -1,0 +1,36 @@
+
+# Optional Docker logging configuration for Jitsi observability.
+#
+# Copy this file to docker-compose.override.yml before creating
+# or recreating the Jitsi containers.
+#
+# Docker's json-file logging driver does not include container labels
+# in log records unless explicitly configured to do so.
+#
+# The OpenTelemetry filelog receiver requires attrs.service to
+# identify the Jitsi service associated with each log record.
+
+services:
+  web:
+    logging:
+      driver: json-file
+      options:
+        labels: "service"
+
+  prosody:
+    logging:
+      driver: json-file
+      options:
+        labels: "service"
+
+  jicofo:
+    logging:
+      driver: json-file
+      options:
+        labels: "service"
+
+  jvb:
+    logging:
+      driver: json-file
+      options:
+        labels: "service"
