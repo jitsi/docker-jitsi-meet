@@ -1,5 +1,7 @@
 {{ $ENABLE_ADAPTIVE_MODE := .Env.ENABLE_ADAPTIVE_MODE | default "true" | toBool -}}
 {{ $ENABLE_ADVANCED_AUDIO_SETTINGS := .Env.ENABLE_ADVANCED_AUDIO_SETTINGS | default "true" | toBool -}}
+{{ $ENABLE_AUDIO_OUTPUT_MANAGER := .Env.ENABLE_AUDIO_OUTPUT_MANAGER | default "false" | toBool -}}
+{{ $AUDIO_OUTPUT_SWITCH_TIMEOUT := .Env.AUDIO_OUTPUT_SWITCH_TIMEOUT | default "5000" -}}
 {{ $ENABLE_AUDIO_PROCESSING := .Env.ENABLE_AUDIO_PROCESSING | default "true" | toBool -}}
 {{ $ENABLE_AUDIO_TRANSLATION := .Env.ENABLE_AUDIO_TRANSLATION | default "false" | toBool -}}
 {{ $AUDIO_TRANSLATION_DUCKED_VOLUME := .Env.AUDIO_TRANSLATION_DUCKED_VOLUME | default "0.15" -}}
@@ -122,6 +124,11 @@ config.enableNoAudioDetection = {{ $ENABLE_NO_AUDIO_DETECTION }};
 config.enableTalkWhileMuted = {{ $ENABLE_TALK_WHILE_MUTED }};
 config.disableAP = {{ not $ENABLE_AUDIO_PROCESSING }};
 config.disableAGC = {{ not $ENABLE_AUTOMATIC_GAIN_CONTROL }};
+
+config.audioOutput = {
+    manager: {{ $ENABLE_AUDIO_OUTPUT_MANAGER }},
+    switchTimeout: {{ $AUDIO_OUTPUT_SWITCH_TIMEOUT }}
+};
 
 config.audioQuality = {
     enableAdvancedAudioSettings: {{ $ENABLE_ADVANCED_AUDIO_SETTINGS }},
