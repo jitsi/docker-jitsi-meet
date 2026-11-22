@@ -1,5 +1,7 @@
 #!/command/with-contenv bash
 
+[ -f /run/ca/env ] && . /run/ca/env
+
 if [[ -n "$AUTOSCALER_URL" ]] && [[ -f "/run/autoscaler-sidecar/config" ]]; then
     DAEMON="/usr/bin/node /usr/share/jitsi-autoscaler-sidecar/app.js"
     exec /bin/bash -c ". /run/autoscaler-sidecar/config && exec $DAEMON"

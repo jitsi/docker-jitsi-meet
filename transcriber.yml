@@ -4,11 +4,12 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
-            - /run:size=16M,mode=1750,exec
+            - /run:size=32M,mode=1750,exec
             - /tmp:size=128M,mode=1777,noexec
         volumes:
             - ${CONFIG}/transcriber:/config:Z
             - ${CONFIG}/storage/transcripts:/tmp/transcripts:z
+            - ${CONFIG}/transcriber/custom-ca:/usr/local/share/ca-certificates:ro,z
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
             - AUTOSCALER_SIDECAR_KEY_ID

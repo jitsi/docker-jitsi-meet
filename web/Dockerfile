@@ -16,7 +16,6 @@ COPY rootfs/ /
 RUN \
   apt-dpkg-wrap apt-get update && \
   apt-dpkg-wrap apt-get install -y \
-    cron \
     dnsutils \
     jitsi-meet-web \
     jq \

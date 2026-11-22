@@ -4,40 +4,41 @@ set -o pipefail -xeu
 
 dpkgArch="$(dpkg --print-architecture)"
 
-if [ "${USE_CHROMIUM}" = 1 -o "${dpkgArch##*-}" = "arm64" ]; then
-    echo "Using Debian's Chromium"
-    apt-dpkg-wrap apt-get install -y chromium chromium-driver chromium-sandbox
-    chromium --version
-else
-    if  [ "${CHROME_RELEASE}" = "latest" ]; then
-        wget -qO - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmour > /etc/apt/trusted.gpg.d/google.gpg
-        echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list
-        apt-dpkg-wrap apt-get update
-        apt-dpkg-wrap apt-get install -y google-chrome-stable
-    else
-        CHROME_DEB="/tmp/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
-        curl -4so ${CHROME_DEB} "https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_RELEASE}-1_amd64.deb"
-        apt-dpkg-wrap apt-get install -y ${CHROME_DEB}
-        rm -f ${CHROME_DEB}
-    fi
+case "${dpkgArch##*-}" in
+    "amd64")
+        CFT_ARCH=linux64
+        ;;
+    "arm64")
+        CFT_ARCH=linux-arm64
+        ;;
+    *)
+        echo "unsupported architecture"
+        exit 1
+        ;;
+esac
 
-    google-chrome --version
+# Chrome and chromedriver both come from the same chrome-for-testing (CfT)
+# build, which guarantees an exact chrome<->chromedriver match and keeps
+# pinned versions addressable (unlike the .deb pool, which prunes old
+# builds). CfT ships plain zips with no dependency metadata, so Chrome's
+# runtime libraries are installed explicitly in the Dockerfile.
+CFT_BASE_URL="https://storage.googleapis.com/chrome-for-testing-public/${CHROME_RELEASE}/${CFT_ARCH}"
 
-    BASE_URL=https://googlechromelabs.github.io/chrome-for-testing
+CHROME_ZIP="/tmp/chrome.zip"
+curl -4Lso ${CHROME_ZIP} "${CFT_BASE_URL}/chrome-${CFT_ARCH}.zip"
+unzip ${CHROME_ZIP} -d /tmp/
+mkdir -p /opt/chrome
+mv /tmp/chrome-${CFT_ARCH}/* /opt/chrome/
+ln -sf /opt/chrome/chrome /usr/bin/google-chrome
+rm -rf ${CHROME_ZIP} /tmp/chrome-${CFT_ARCH}
 
-    if [ "${CHROME_RELEASE}" = "latest" ]; then
-        CHROMEDRIVER_RELEASE="$(curl -4Ls ${BASE_URL}/LATEST_RELEASE_STABLE)"
-    else
-        CHROMEDRIVER_MAJOR_RELEASE=$(echo $CHROME_RELEASE | cut -d. -f1)
-        CHROMEDRIVER_RELEASE="$(curl -4Ls ${BASE_URL}/LATEST_RELEASE_${CHROMEDRIVER_MAJOR_RELEASE})"
-    fi
+google-chrome --version
 
-    CHROMEDRIVER_ZIP="/tmp/chromedriver_linux64.zip"
-    curl -4Lso ${CHROMEDRIVER_ZIP} "https://storage.googleapis.com/chrome-for-testing-public/${CHROMEDRIVER_RELEASE}/linux64/chromedriver-linux64.zip"
-    unzip ${CHROMEDRIVER_ZIP} -d /tmp/
-    mv /tmp/chromedriver-linux64/chromedriver /usr/bin/
-    chmod +x /usr/bin/chromedriver
-    rm -rf /tmp/chromedriver*
-fi
+CHROMEDRIVER_ZIP="/tmp/chromedriver.zip"
+curl -4Lso ${CHROMEDRIVER_ZIP} "${CFT_BASE_URL}/chromedriver-${CFT_ARCH}.zip"
+unzip ${CHROMEDRIVER_ZIP} -d /tmp/
+mv /tmp/chromedriver-${CFT_ARCH}/chromedriver /usr/bin/
+chmod +x /usr/bin/chromedriver
+rm -rf ${CHROMEDRIVER_ZIP} /tmp/chromedriver-${CFT_ARCH}
 
 chromedriver --version

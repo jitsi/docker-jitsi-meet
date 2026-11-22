@@ -11,6 +11,7 @@
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
 {{ $ENABLE_JAAS_COMPONENTS := .Env.ENABLE_JAAS_COMPONENTS | default "0" | toBool -}}
 {{ $ENABLE_LOBBY := .Env.ENABLE_LOBBY | default "true" | toBool -}}
+{{ $ENABLE_MESSAGE_MODERATION := .Env.ENABLE_MESSAGE_MODERATION | default "true" | toBool -}}
 {{ $ENABLE_MUC_RESOURCE_VALIDATE := .Env.PROSODY_ENABLE_MUC_RESOURCE_VALIDATE | default "true" | toBool -}}
 {{ $MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT := .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT | default "false" | toBool -}}
 {{ $ENABLE_RATE_LIMITS := .Env.PROSODY_ENABLE_RATE_LIMITS | default "0" | toBool -}}
@@ -19,6 +20,7 @@
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "0" | toBool -}}
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
+{{ $ENABLE_S2S := or $ENABLE_VISITORS ( .Env.PROSODY_ENABLE_S2S | default "0" | toBool ) -}}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool -}}
 {{ $GUEST_AUTH_TYPE := .Env.PROSODY_GUEST_AUTH_TYPE | default "jitsi-anonymous" -}}
 {{ $JIBRI_RECORDER_USER := .Env.JIBRI_RECORDER_USER | default "recorder" -}}
@@ -52,6 +54,7 @@
 {{ $XMPP_MUC_DOMAIN := .Env.XMPP_MUC_DOMAIN | default "muc.meet.jitsi" -}}
 {{ $XMPP_MUC_DOMAIN_PREFIX := (split "." $XMPP_MUC_DOMAIN)._0 -}}
 {{ $XMPP_HIDDEN_DOMAIN := .Env.XMPP_HIDDEN_DOMAIN | default "hidden.meet.jitsi" -}}
+{{ $ENABLE_TRACING := .Env.ENABLE_TRACING | default "0" | toBool -}}
 
 admins = {
     {{ if .Env.JIGASI_XMPP_PASSWORD }}
@@ -206,6 +209,10 @@ VirtualHost "{{ $XMPP_DOMAIN }}"
         {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
         "jibri_session";
         {{- end }}
+        -- Keeps client messages on the routes that the rooms control: a client
+        -- can address a message to a MUC or to a component, not to the JID of
+        -- an account.
+        "filter_direct_messages";
 
     }
 
@@ -245,6 +252,10 @@ VirtualHost "{{ $XMPP_GUEST_DOMAIN }}"
         {{ if .Env.XMPP_MODULES }}
         "{{ join "\";\n        \"" (splitList "," .Env.XMPP_MODULES | compact) }}";
         {{ end }}
+        -- Keeps client messages on the routes that the rooms control: a client
+        -- can address a message to a MUC or to a component, not to the JID of
+        -- an account.
+        "filter_direct_messages";
     }
     main_muc = "{{ $XMPP_MUC_DOMAIN }}"
     c2s_require_encryption = {{ $C2S_REQUIRE_ENCRYPTION }}
@@ -295,6 +306,9 @@ Component "{{ $XMPP_INTERNAL_MUC_DOMAIN }}" "muc"
         {{ if .Env.XMPP_INTERNAL_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_INTERNAL_MUC_MODULES | compact) }}";
         {{ end -}}
+        {{ if $ENABLE_TRACING }}
+        "trace";
+        {{ end -}}
     }
     restrict_room_creation = true
     muc_filter_whitelist="{{ $XMPP_AUTH_DOMAIN }}"
@@ -336,11 +350,18 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         "muc_max_occupants";
         {{ end }}
         "muc_password_whitelist";
+        {{ if $ENABLE_S2S -}}
+        -- a component does not load the global s2s_whitelist module, it needs it in its own list
+        "s2s_whitelist";
+        {{ end -}}
         {{ if $ENABLE_FILTER_MESSAGES }}
         "filter_messages";
         {{ end }}
         {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
         "muc_resource_validate";
+        {{ end -}}
+        {{ if $ENABLE_MESSAGE_MODERATION -}}
+        "muc_message_moderation";
         {{ end -}}
     }
 
@@ -360,6 +381,7 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
     -- List of regular expressions for IP addresses that are not limited by this module.
     rate_limit_whitelist = {
         "127.0.0.1";
+        "::1";
 {{ range $index, $cidr := (splitList "," $RATE_LIMIT_ALLOW_RANGES | compact) }}
         "{{ $cidr }}";
 {{ end }}
@@ -475,6 +497,9 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ end -}}
         {{ if $ENABLE_FILTER_MESSAGES -}}
         "filter_messages";
+        {{ end -}}
+        {{ if $ENABLE_MESSAGE_MODERATION -}}
+        "muc_message_moderation";
         {{ end -}}
     }
 {{ end }}

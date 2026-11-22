@@ -13,8 +13,8 @@ services:
         volumes:
             - ${CONFIG}/web:/config:Z
             - ${CONFIG}/storage/web:/storage:Z
+            - ${CONFIG}/web/custom-ca:/usr/local/share/ca-certificates:ro,z
             - ${CONFIG}/storage/transcripts:/usr/share/jitsi-meet/transcripts:ro,z
-            - ${CONFIG}/tmp/web-crontabs:/var/spool/cron/crontabs:Z
             - ${CONFIG}/tmp/web-load-test:/usr/share/jitsi-meet/load-test:Z
         labels:
             service: "jitsi-web"
@@ -23,6 +23,7 @@ services:
             - ANALYTICS_SCRIPT_URLS
             - ANALYTICS_WHITELISTED_EVENTS
             - AUDIO_QUALITY_OPUS_BITRATE
+            - AUDIO_TRANSLATION_DUCKED_VOLUME
             - AUTO_CAPTION_ON_RECORD
             - BRANDING_DATA_URL
             - BWE_ESTIMATOR_ENGINE
@@ -47,6 +48,7 @@ services:
             - DIALOUT_AUTH_URL
             - DIALOUT_CODES_URL
             - DISABLE_AUDIO_LEVELS
+            - DISABLE_AV1_DECODE_FOR_FF
             - DISABLE_DEEP_LINKING
             - DISABLE_GRANT_MODERATOR
             - DISABLE_HTTPS
@@ -62,6 +64,7 @@ services:
             - DROPBOX_REDIRECT_URI
             - DYNAMIC_BRANDING_URL
             - ENABLE_ADAPTIVE_MODE
+            - ENABLE_ADVANCED_AUDIO_SETTINGS
             - ENABLE_AUDIO_PROCESSING
             - ENABLE_AUDIO_TRANSLATION
             - ENABLE_AUTOMATIC_GAIN_CONTROL
@@ -74,6 +77,8 @@ services:
             - ENABLE_GUESTS
             - ENABLE_HSTS
             - ENABLE_HTTP_REDIRECT
+            - ENABLE_ICE_RESTART
+            - ENABLE_ICE_RESTART_ON_NETWORK_CHANGE
             - ENABLE_IPV6
             - ENABLE_LETSENCRYPT
             - ENABLE_NO_AUDIO_DETECTION
@@ -101,6 +106,7 @@ services:
             - ENABLE_SUBDOMAINS
             - ENABLE_TALK_WHILE_MUTED
             - ENABLE_TCC
+            - ENABLE_THIRD_PARTY_REQUESTS
             - ENABLE_TRANSCRIPTIONS
             - ENABLE_VLA
             - ENABLE_XMPP_WEBSOCKET
@@ -156,6 +162,8 @@ services:
             - TRANSLATION_LANGUAGES_HEAD
             - TZ
             - USE_APP_LANGUAGE
+            - VIDEOQUALITY_AV1_USE_KSVC
+            - VIDEOQUALITY_AV1_USE_SIMULCAST
             - VIDEOQUALITY_BITRATE_H264_LOW
             - VIDEOQUALITY_BITRATE_H264_STANDARD
             - VIDEOQUALITY_BITRATE_H264_HIGH
@@ -180,7 +188,12 @@ services:
             - VIDEOQUALITY_BITRATE_AV1_FULL
             - VIDEOQUALITY_BITRATE_AV1_ULTRA
             - VIDEOQUALITY_BITRATE_AV1_SS_HIGH
+            - VIDEOQUALITY_MIN_HEIGHT_FOR_QUALITY_LVL
+            - VIDEOQUALITY_MOBILE_SCREENSHARE_CODEC
             - VIDEOQUALITY_PREFERRED_CODEC
+            - VIDEOQUALITY_SCREENSHARE_CODEC
+            - VIDEOQUALITY_VP9_USE_KSVC
+            - VIDEOQUALITY_VP9_USE_SIMULCAST
             - XMPP_AUTH_DOMAIN
             - XMPP_BOSH_URL_BASE
             - XMPP_DOMAIN
@@ -215,6 +228,7 @@ services:
             - ${CONFIG}/prosody/config:/config:Z
             - ${CONFIG}/prosody/prosody-plugins-custom:/prosody-plugins-custom:Z
             - ${CONFIG}/storage/prosody:/var/lib/prosody:Z
+            - ${CONFIG}/prosody/custom-ca:/usr/local/share/ca-certificates:ro,z
         environment:
             - AUTH_TYPE
             - DISABLE_POLLS
@@ -232,6 +246,8 @@ services:
             - ENABLE_VISITORS
             - ENABLE_XMPP_WEBSOCKET
             - ENABLE_JAAS_COMPONENTS
+            - ENABLE_TRACING
+            - TRACING_HTTP_ENDPOINT
             - GC_TYPE
             - GC_INC_TH
             - GC_INC_SPEED
@@ -362,12 +378,13 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
-            - /run:size=16M,mode=1750,exec
+            - /run:size=32M,mode=1750,exec
             - /tmp:size=16M,mode=1777,noexec
         ports:
             - '127.0.0.1:${JICOFO_REST_PORT:-8888}:8888'
         volumes:
             - ${CONFIG}/jicofo:/config:Z
+            - ${CONFIG}/jicofo/custom-ca:/usr/local/share/ca-certificates:ro,z
         labels:
             service: "jitsi-jicofo"
         environment:
@@ -389,6 +406,9 @@ services:
             - ENABLE_TRANSCRIPTIONS
             - ENABLE_VISITORS
             - ENABLE_AUTO_LOGIN
+            - ENABLE_TRACING
+            - TRACING_ENDPOINT
+            - TRACING_PROTOCOL
             - JICOFO_AUTH_LIFETIME
             - JICOFO_AUTH_PASSWORD
             - JICOFO_AUTH_TYPE
@@ -463,13 +483,14 @@ services:
         restart: ${RESTART_POLICY:-unless-stopped}
         read_only: true
         tmpfs:
-            - /run:size=16M,mode=1750,exec
+            - /run:size=32M,mode=1750,exec
             - /tmp:size=16M,mode=1777,noexec
         ports:
             - '${JVB_PORT:-10000}:${JVB_PORT:-10000}/udp'
             - '127.0.0.1:${JVB_COLIBRI_PORT:-8080}:8080'
         volumes:
             - ${CONFIG}/jvb:/config:Z
+            - ${CONFIG}/jvb/custom-ca:/usr/local/share/ca-certificates:ro,z
         labels:
             service: "jitsi-jvb"
         environment:
@@ -486,6 +507,9 @@ services:
             - DOCKER_HOST_ADDRESS
             - ENABLE_JVB_XMPP_SERVER
             - ENABLE_OCTO
+            - ENABLE_TRACING
+            - TRACING_ENDPOINT
+            - TRACING_PROTOCOL
             - JVB_ADVERTISE_IPS
             - JVB_ADVERTISE_PRIVATE_CANDIDATES
             - JVB_AUTH_USER

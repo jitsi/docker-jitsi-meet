@@ -9,6 +9,7 @@ services:
         volumes:
             - ${CONFIG}/jibri:/config:Z
             - ${CONFIG}/storage/jibri:/storage:Z
+            - ${CONFIG}/jibri/custom-ca:/usr/local/share/ca-certificates:ro,z
         shm_size: '2gb'
         environment:
             - AUTOSCALER_SIDECAR_KEY_FILE
@@ -25,6 +26,8 @@ services:
             - DISPLAY=:0
             - ENABLE_STATS_D
             - IGNORE_CERTIFICATE_ERRORS
+            - JIBRI_CHROMEDRIVER_DEBUG
+            - JIBRI_CHROMEDRIVER_DEBUG_LOG
             - JIBRI_WEBHOOK_SUBSCRIBERS
             - JIBRI_INSTANCE_ID
             - JIBRI_ENABLE_PROMETHEUS
@@ -43,6 +46,11 @@ services:
             - JIBRI_XORG_HORIZ_SYNC
             - JIBRI_XORG_VERT_REFRESH
             - JIBRI_BREWERY_MUC
+            - JIBRI_BREWERY_XMPP_AUTH_DOMAIN
+            - JIBRI_BREWERY_XMPP_INTERNAL_MUC_DOMAIN
+            - JIBRI_BREWERY_XMPP_ONLY
+            - JIBRI_BREWERY_XMPP_PORT
+            - JIBRI_BREWERY_XMPP_SERVER
             - JIBRI_RECORDER_USER
             - JIBRI_RECORDER_PASSWORD
             - JIBRI_RECORDING_DIR
@@ -50,6 +58,9 @@ services:
             - JIBRI_STRIP_DOMAIN_JID
             - JIBRI_STATSD_HOST
             - JIBRI_STATSD_PORT
+            - JVB_XMPP_AUTH_DOMAIN
+            - JVB_XMPP_INTERNAL_MUC_DOMAIN
+            - JVB_XMPP_PORT
             - LOCAL_ADDRESS
             - PUBLIC_URL
             - TZ
