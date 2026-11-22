@@ -284,7 +284,7 @@ services:
             - MATRIX_UVS_AUTH_TOKEN
             - MATRIX_UVS_SYNC_POWER_LEVELS
             - MATRIX_LOBBY_BYPASS
-            - LOG_LEVEL
+            - PROSODY_LOG_LEVEL
             - LDAP_AUTH_METHOD
             - LDAP_BASE
             - LDAP_BINDDN
@@ -430,6 +430,7 @@ services:
             - JICOFO_ICE_FAILURE_INTERVAL
             - JICOFO_ICE_FAILURE_MIN_ENDPOINTS
             - JICOFO_ICE_FAILURE_THRESHOLD
+            - JICOFO_LOG_LEVEL
             - JICOFO_MAX_MEMORY
             - JICOFO_MULTI_STREAM_BACKWARD_COMPAT
             - JICOFO_OCTO_REGION
@@ -523,6 +524,7 @@ services:
             - JVB_MUC_NICKNAME
             - JVB_STUN_SERVERS
             - JVB_LOG_FILE
+            - JVB_LOG_LEVEL
             - JVB_OCTO_BIND_ADDRESS
             - JVB_OCTO_REGION
             - JVB_OCTO_RELAY_ID
