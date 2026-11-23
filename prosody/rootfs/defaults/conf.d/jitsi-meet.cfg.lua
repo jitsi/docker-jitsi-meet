@@ -501,7 +501,17 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ if $ENABLE_MESSAGE_MODERATION -}}
         "muc_message_moderation";
         {{ end -}}
+        {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
+        -- the occupant resource is the bridge endpoint ID in a breakout room too
+        "muc_resource_validate";
+        {{ end -}}
     }
+    {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
+    anonymous_strict = {{ if $MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT }}true{{ else }}false{{ end }};
+    {{ if .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS -}}
+    anonymous_auth_methods = { "{{ join "\"; \"" (splitList "," .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS | compact) }}" };
+    {{ end -}}
+    {{ end -}}
 {{ end }}
 
 Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"

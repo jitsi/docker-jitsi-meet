@@ -1,6 +1,7 @@
 {{ $DISABLE_POLLS := .Env.DISABLE_POLLS | default "false" | toBool -}}
 {{ $ENABLE_AUTH := .Env.ENABLE_AUTH | default "0" | toBool -}}
 {{ $ENABLE_GUEST_DOMAIN := and $ENABLE_AUTH (.Env.ENABLE_GUESTS | default "0" | toBool) -}}
+{{ $ENABLE_MUC_RESOURCE_VALIDATE := .Env.PROSODY_ENABLE_MUC_RESOURCE_VALIDATE | default "true" | toBool -}}
 {{ $ENABLE_RATE_LIMITS := .Env.PROSODY_ENABLE_RATE_LIMITS | default "0" | toBool -}}
 {{ $ENABLE_RECORDING := .Env.ENABLE_RECORDING | default "0" | toBool -}}
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
@@ -9,6 +10,7 @@
 {{ $JIBRI_RECORDER_USER := .Env.JIBRI_RECORDER_USER | default "recorder" -}}
 {{ $JIGASI_TRANSCRIBER_USER := .Env.JIGASI_TRANSCRIBER_USER | default "transcriber" -}}
 {{ $LIMIT_MESSAGES_CHECK_TOKEN := .Env.PROSODY_LIMIT_MESSAGES_CHECK_TOKEN | default "0" | toBool -}}
+{{ $MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT := .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT | default "false" | toBool -}}
 {{ $RATE_LIMIT_LOGIN_RATE := .Env.PROSODY_RATE_LIMIT_LOGIN_RATE | default "3" -}}
 {{ $RATE_LIMIT_SESSION_RATE := .Env.PROSODY_RATE_LIMIT_SESSION_RATE | default "200" -}}
 {{ $RATE_LIMIT_TIMEOUT := .Env.PROSODY_RATE_LIMIT_TIMEOUT | default "60" -}}
@@ -151,7 +153,17 @@ Component '{{ $VISITORS_MUC_PREFIX }}.v{{ $VISITOR_INDEX }}.{{ $VISITORS_XMPP_DO
         {{ if .Env.XMPP_MUC_MODULES -}}
         "{{ join "\";\n\"" (splitList "," .Env.XMPP_MUC_MODULES | compact) }}";
         {{ end -}}
+        {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
+        -- the same check as on the main MUC, whose occupants are mirrored here
+        "muc_resource_validate";
+        {{ end -}}
       }
+    {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
+    anonymous_strict = {{ if $MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT }}true{{ else }}false{{ end }};
+    {{ if .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS -}}
+    anonymous_auth_methods = { "{{ join "\"; \"" (splitList "," .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS | compact) }}" };
+    {{ end -}}
+    {{ end -}}
     muc_room_default_presence_broadcast = {
         visitor = false;
         participant = true;
