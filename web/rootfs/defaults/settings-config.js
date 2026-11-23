@@ -23,6 +23,7 @@
 {{ $ENABLE_LIVESTREAMING_VALIDATOR_REGEXP_STRING := .Env.ENABLE_LIVESTREAMING_VALIDATOR_REGEXP_STRING | default "^(?:[a-zA-Z0-9]{4}(?:-(?!$)|$)){4}" -}}
 {{ $ENABLE_REMB := .Env.ENABLE_REMB | default "true" | toBool -}}
 {{ $ENABLE_REQUIRE_DISPLAY_NAME := .Env.ENABLE_REQUIRE_DISPLAY_NAME | default "false" | toBool -}}
+{{ $ENABLE_RTP_MID_DEMUX := .Env.ENABLE_RTP_MID_DEMUX | default "false" | toBool -}}
 {{ $ENABLE_SIMULCAST := .Env.ENABLE_SIMULCAST | default "true" | toBool -}}
 {{ $ENABLE_STEREO := .Env.ENABLE_STEREO | default "false" | toBool -}}
 {{ $ENABLE_OPUS_RED := .Env.ENABLE_OPUS_RED | default "false" | toBool -}}
@@ -102,7 +103,8 @@ config.startWithVideoMuted = {{ $START_WITH_VIDEO_MUTED }};
 config.flags = {
     sourceNameSignaling: true,
     sendMultipleVideoStreams: true,
-    receiveMultipleVideoStreams: true
+    receiveMultipleVideoStreams: true,
+    rtpMidDemuxEnabled: {{ $ENABLE_RTP_MID_DEMUX }}
 };
 
 // ScreenShare Configuration.
