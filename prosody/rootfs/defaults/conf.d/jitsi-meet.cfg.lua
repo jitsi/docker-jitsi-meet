@@ -282,9 +282,6 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     }
     modules_enabled = {
         "limits_exception";
-        {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
-        "jibri_session";
-        {{- end }}
         "smacks";
     }
     authentication = "internal_hashed"
