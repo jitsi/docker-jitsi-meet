@@ -270,6 +270,7 @@ services:
             - JIGASI_XMPP_PASSWORD
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
+            - JVB_XMPP_AUTH_DOMAIN
             - JWT_APP_ID
             - JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
