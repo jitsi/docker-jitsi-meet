@@ -2,7 +2,8 @@ services:
   # Log Analyser: used for setting up a log analysis system for visualization, log collection and log processing.
 
   loki:
-    image: grafana/loki:3.0.0
+    image: grafana/loki:3.7.9
+    restart: unless-stopped
     command: -config.file=/conf/loki-config.yaml
     volumes:
       - ./log-analyser/loki/data:/data
@@ -13,7 +14,8 @@ services:
       meet.jitsi:
 
   otel:
-    image: otel/opentelemetry-collector-contrib:0.130.0
+    image: otel/opentelemetry-collector-contrib:0.164.0
+    restart: unless-stopped
     user: "0" # required for reading docker container logs
     volumes:
       - ./log-analyser/otel-collector-config.yaml:/etc/otelcol-contrib/config.yaml

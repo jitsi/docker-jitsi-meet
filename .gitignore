@@ -6,3 +6,5 @@ log-analyser/grafana
 **/.DS_Store
 **/.idea
 /tracing/tempo-data
+docker-jitsi-meet.code-workspace
+log-analyser/mod-otlphttp-README.md
