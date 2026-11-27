@@ -41,6 +41,7 @@ services:
             - JIGASI_JVB_TIMEOUT
             - JIGASI_LOCAL_REGION
             - JIGASI_LOG_FILE
+            - JIGASI_LOG_LEVEL
             - JIGASI_MODE=sip
             - JIGASI_SIP_URI
             - JIGASI_SIP_PASSWORD
