@@ -99,6 +99,7 @@ services:
             - ENABLE_RECORDING
             - ENABLE_REMB
             - ENABLE_REQUIRE_DISPLAY_NAME
+            - ENABLE_RTP_MID_DEMUX
             - ENABLE_SERVICE_RECORDING
             - ENABLE_SIMULCAST
             - ENABLE_STATS_ID
@@ -269,6 +270,7 @@ services:
             - JIGASI_XMPP_PASSWORD
             - JVB_AUTH_USER
             - JVB_AUTH_PASSWORD
+            - JVB_XMPP_AUTH_DOMAIN
             - JWT_APP_ID
             - JWT_APP_SECRET
             - JWT_ACCEPTED_ISSUERS
@@ -425,6 +427,7 @@ services:
             - JICOFO_ENABLE_HEALTH_CHECKS
             - JICOFO_ENABLE_ICE_FAILURE_DETECTION
             - JICOFO_ENABLE_LOAD_REDISTRIBUTION
+            - JICOFO_ENABLE_MID
             - JICOFO_ENABLE_REST
             - JICOFO_HEALTH_CHECKS_USE_PRESENCE
             - JICOFO_ICE_FAILURE_INTERVAL

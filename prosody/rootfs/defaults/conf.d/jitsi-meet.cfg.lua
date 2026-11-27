@@ -20,6 +20,7 @@
 {{ $ENABLE_SUBDOMAINS := .Env.ENABLE_SUBDOMAINS | default "true" | toBool -}}
 {{ $ENABLE_TRANSCRIPTIONS := .Env.ENABLE_TRANSCRIPTIONS | default "0" | toBool -}}
 {{ $ENABLE_VISITORS := .Env.ENABLE_VISITORS | default "0" | toBool -}}
+{{ $ENABLE_S2S := or $ENABLE_VISITORS ( .Env.PROSODY_ENABLE_S2S | default "0" | toBool ) -}}
 {{ $ENABLE_XMPP_WEBSOCKET := .Env.ENABLE_XMPP_WEBSOCKET | default "1" | toBool -}}
 {{ $GUEST_AUTH_TYPE := .Env.PROSODY_GUEST_AUTH_TYPE | default "jitsi-anonymous" -}}
 {{ $JIBRI_RECORDER_USER := .Env.JIBRI_RECORDER_USER | default "recorder" -}}
@@ -281,9 +282,6 @@ VirtualHost "{{ $XMPP_AUTH_DOMAIN }}"
     }
     modules_enabled = {
         "limits_exception";
-        {{- if and $ENABLE_RECORDING_METADATA $ENABLE_AUTH (eq $PROSODY_AUTH_TYPE "jwt") $ENABLE_RECORDING }}
-        "jibri_session";
-        {{- end }}
         "smacks";
     }
     authentication = "internal_hashed"
@@ -349,6 +347,10 @@ Component "{{ $XMPP_MUC_DOMAIN }}" "muc"
         "muc_max_occupants";
         {{ end }}
         "muc_password_whitelist";
+        {{ if $ENABLE_S2S -}}
+        -- a component does not load the global s2s_whitelist module, it needs it in its own list
+        "s2s_whitelist";
+        {{ end -}}
         {{ if $ENABLE_FILTER_MESSAGES }}
         "filter_messages";
         {{ end }}
@@ -496,7 +498,17 @@ Component "breakout.{{ $XMPP_DOMAIN }}" "muc"
         {{ if $ENABLE_MESSAGE_MODERATION -}}
         "muc_message_moderation";
         {{ end -}}
+        {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
+        -- the occupant resource is the bridge endpoint ID in a breakout room too
+        "muc_resource_validate";
+        {{ end -}}
     }
+    {{ if $ENABLE_MUC_RESOURCE_VALIDATE -}}
+    anonymous_strict = {{ if $MUC_RESOURCE_VALIDATE_ANONYMOUS_STRICT }}true{{ else }}false{{ end }};
+    {{ if .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS -}}
+    anonymous_auth_methods = { "{{ join "\"; \"" (splitList "," .Env.PROSODY_MUC_RESOURCE_VALIDATE_ANON_METHODS | compact) }}" };
+    {{ end -}}
+    {{ end -}}
 {{ end }}
 
 Component "metadata.{{ $XMPP_DOMAIN }}" "room_metadata_component"

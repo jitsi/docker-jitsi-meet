@@ -48,7 +48,6 @@ RUN set -x && \
       sasl2-bin \
       libsasl2-modules-ldap \
       lua-cyrussasl \
-      lua-inspect \
       lua-ldap \
       lua-luaossl \
       lua-sec \
@@ -59,7 +58,6 @@ RUN set -x && \
     rm -rf /tmp/pkg /var/cache/apt && \
     apt-cleanup && \
     rm -rf /etc/prosody && \
-    mv /usr/share/lua/5.3/inspect.lua /usr/share/lua/5.4/ && \
     wget https://github.com/matrix-org/prosody-mod-auth-matrix-user-verification/archive/refs/tags/v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     tar -xf v$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN.tar.gz && \
     mv prosody-mod-auth-matrix-user-verification-$VERSION_MATRIX_USER_VERIFICATION_SERVICE_PLUGIN/mod_auth_matrix_user_verification.lua /prosody-plugins && \

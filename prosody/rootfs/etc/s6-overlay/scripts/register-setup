@@ -32,7 +32,7 @@ if [[ "$PROSODY_MODE" == "visitors" ]]; then
 elif [[ "$PROSODY_MODE" == "brewery" ]]; then
     echo "Prosody brewery mode, using alternate config"
     # force jicofo into auth domain for brewer prosody
-    [ -z "$JVB_XMPP_AUTH_DOMAIN" ] && JVB_XMPP_AUTH_DOMAIN="auth.meet.jitsi"
+    [ -z "$JVB_XMPP_AUTH_DOMAIN" ] && JVB_XMPP_AUTH_DOMAIN="auth.jvb.meet.jitsi"
     # ensure proper certs are generated
     export XMPP_AUTH_DOMAIN="$JVB_XMPP_AUTH_DOMAIN"
 else
